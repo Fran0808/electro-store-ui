@@ -59,7 +59,35 @@ Determinados modulos de negocio requieren dos tipos de interacciones: un listado
 
 ---
 
-## 3. Uso de Scene Builder
+## 3. Organizacion y Modularidad de Estilos CSS
+
+Para prevenir conflictos de fusion en Git al trabajar de forma paralela en diferentes ramas, los estilos CSS se organizaran de manera estrictamente modular en dos niveles:
+
+### A. Estilo CSS Global (`styles/style.css`)
+*   **Ruta:** `src/main/resources/com/store/inventario/styles/style.css`
+*   **Proposito:** Contiene unicamente las definiciones del **Design System global** y de uso comun en toda la aplicacion:
+    *   Variables de color y tipografia base (Inter).
+    *   Estilos compartidos para botones estandar (`.btn-primary`, `.btn-secondary`).
+    *   Clases generales de la raiz del sistema (`.root`, `.view-container`).
+*   *Nota:* Este archivo es general y **no debe modificarse por cada persona para añadir estilos especificos de su vista**.
+
+### B. Estilos CSS Especificos por Modulo (Estilo Local)
+*   **Ruta:** Cada desarrollador debera crear un archivo CSS **en la misma subcarpeta de su vista**.
+    *   Ejemplo para Productos (Persona 2): `views/productos/productos.css`
+    *   Ejemplo para Ventas (Persona 2): `views/ventas/ventas.css`
+    *   Ejemplo para Clientes (Persona 3): `views/clientes/clientes.css`
+*   **Proposito:** Almacena los estilos visuales exclusivos de ese modulo (tarjetas de metricas especificas, rejillas de datos especificas, alineaciones personalizadas de tablas, etc.).
+*   **Carga de Estilos en el FXML:** Cada archivo `.fxml` del modulo debe importar tanto el CSS global como su CSS local en la etiqueta `<stylesheets>`:
+    ```xml
+    <stylesheets>
+        <URL value="@../../styles/style.css" /> <!-- Global -->
+        <URL value="@productos.css" />          <!-- Local de Modulo -->
+    </stylesheets>
+    ```
+
+---
+
+## 4. Uso de Scene Builder
 Para agilizar el diseño visual de las interfaces de manera interactiva, se utilizara la herramienta **Gluon Scene Builder**.
 
 *Nota importante:* En esta etapa, el trabajo se concentra **exclusivamente en el diseño visual de las interfaces**. No es necesario preocuparse por la logica ni realizar implementaciones de codigo Java por el momento.
@@ -81,7 +109,7 @@ Para agilizar el diseño visual de las interfaces de manera interactiva, se util
 
 ---
 
-## 4. Distribucion de Trabajo y Ramas de Git
+## 5. Distribucion de Trabajo y Ramas de Git
 
 Para organizar el desarrollo de manera colaborativa, se define la siguiente reparticion de tareas y ramas de trabajo en Git.
 
@@ -113,7 +141,7 @@ Para organizar el desarrollo de manera colaborativa, se define la siguiente repa
 
 ---
 
-## 5. Tutorial de Git: Trabajo en Ramas
+## 6. Tutorial de Git: Trabajo en Ramas
 
 Para evitar conflictos y trabajar de forma segura, cada persona debe trabajar en su respectiva rama.
 
