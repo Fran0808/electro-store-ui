@@ -1,0 +1,68 @@
+.root {
+    -fx-font-family: "Inter", "Segoe UI", "Helvetica Neue", sans-serif;
+    -fx-background-color: #F8FAFC;
+}
+
+/* Contenedor Principal de Vistas */
+.view-container {
+    -fx-padding: 30px;
+    -fx-spacing: 24px;
+    -fx-background-color: #F8FAFC;
+}
+
+/* Tipografía de Cabecera */
+.header-title {
+    -fx-font-size: 24px;
+    -fx-font-family: "Inter", "Segoe UI", sans-serif;
+    -fx-font-weight: bold;
+    -fx-text-fill: #0F172A;
+}
+
+.header-subtitle {
+    -fx-font-size: 14px;
+    -fx-font-family: "Inter", "Segoe UI", sans-serif;
+    -fx-text-fill: #64748B;
+}
+
+/* Estilos de Botones */
+.button {
+    -fx-cursor: hand;
+    -fx-font-size: 13px;
+    -fx-font-family: "Inter", "Segoe UI", sans-serif;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8px;
+    -fx-border-radius: 8px;
+    -fx-transition: all 0.2s ease-in-out;
+}
+
+/* Botón Primario*/
+.btn-primary {
+    -fx-background-color: #2563EB;
+    -fx-text-fill: #FFFFFF;
+    -fx-padding: 10px 18px;
+    -fx-border-width: 0px;
+}
+
+.btn-primary:hover {
+    -fx-background-color: #1D4ED8;
+}
+
+/* Botón Secundario*/
+.btn-secondary {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #E2E8F0;
+    -fx-border-width: 1px;
+    -fx-text-fill: #475569;
+    -fx-padding: 10px 18px;
+}
+
+.btn-secondary:hover {
+    -fx-background-color: #F1F5F9;
+    -fx-border-color: #CBD5E1;
+}
+
+/* Iconos o símbolos básicos */
+.btn-icon {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
