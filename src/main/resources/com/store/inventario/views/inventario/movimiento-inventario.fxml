@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import java.net.URL?>
+<AnchorPane xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.store.inventario.controller.MovimientosController" prefHeight="800.0" prefWidth="1040.0">
+    <stylesheets>
+        <URL value="@../../styles/style.css" />
+        <URL value="@inventario.css" />
+    </stylesheets>
+    <VBox styleClass="view-container" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" spacing="20">
+        <HBox alignment="CENTER_LEFT" spacing="16">
+            <VBox spacing="4">
+                <Label styleClass="header-title" text="Movimientos de Inventario" />
+                <Label styleClass="header-subtitle" text="Control y seguimiento de entradas y salidas del stock" />
+            </VBox>
+            <HBox alignment="CENTER_RIGHT" spacing="12" HBox.hgrow="ALWAYS">
+                <Button fx:id="btnExportar" styleClass="btn-secondary" text="Exportar" />
+                <Button fx:id="btnNuevoMovimiento" styleClass="btn-primary" text="Registrar Movimiento" />
+            </HBox>
+        </HBox>
+        <HBox alignment="CENTER" spacing="12" styleClass="search-container">
+            <TextField fx:id="txtBuscarGuia" promptText="Código de guía, producto o referencia..." styleClass="search-field" HBox.hgrow="ALWAYS" />
+            <ComboBox fx:id="cbTipo" promptText="Tipo" styleClass="filter-combo" />
+            <ComboBox fx:id="cbUsuario" promptText="Usuario" styleClass="filter-combo" />
+            <ComboBox fx:id="cbFecha" promptText="Fecha" styleClass="filter-combo" />
+            <Button fx:id="btnLimpiar" styleClass="btn-secondary" text="Limpiar" />
+            <Button fx:id="btnBuscar" styleClass="btn-primary" text="Buscar" />
+        </HBox>
+        <TableView fx:id="tblMovimientos" VBox.vgrow="ALWAYS" styleClass="products-table">
+            <columns>
+                <TableColumn fx:id="colGuia" text="Guía" prefWidth="120" />
+                <TableColumn fx:id="colFecha" text="Fecha" prefWidth="150" />
+                <TableColumn fx:id="colProducto" text="Producto" prefWidth="200" />
+                <TableColumn fx:id="colTipo" text="Tipo" prefWidth="100" />
+                <TableColumn fx:id="colCantidad" text="Cantidad" prefWidth="80" />
+                <TableColumn fx:id="colMotivo" text="Motivo" prefWidth="200" />
+                <TableColumn fx:id="colUsuario" text="Usuario" prefWidth="120" />
+            </columns>
+        </TableView>
+        <HBox alignment="CENTER_LEFT" spacing="20" styleClass="pagination-container">
+            <Label fx:id="lblResumenPaginacion" maxWidth="Infinity" styleClass="pagination-summary" text="Mostrando 1-20 de 0 movimientos" HBox.hgrow="ALWAYS" />
+            <HBox alignment="CENTER_RIGHT" spacing="8">
+                <Button fx:id="btnAnterior" styleClass="btn-secondary" text="Anterior" />
+                <Button fx:id="btnSiguiente" styleClass="btn-secondary" text="Siguiente" />
+            </HBox>
+        </HBox>
+    </VBox>
+</AnchorPane>
