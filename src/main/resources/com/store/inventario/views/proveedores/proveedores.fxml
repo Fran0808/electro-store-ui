@@ -2,12 +2,79 @@
 
 <?import javafx.scene.layout.*?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Button?>
+
 <AnchorPane prefHeight="800.0"
             prefWidth="1040.0"
             xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
+            stylesheets="@proveedor-style.css"
             fx:controller="CONTROLLER_NAME">
 
-   <fx:include source="../../components/table-layout.fxml"/>
+   <children>
 
+      <VBox spacing="25.0"
+            AnchorPane.topAnchor="20.0"
+            AnchorPane.leftAnchor="20.0"
+            AnchorPane.rightAnchor="20.0"
+            AnchorPane.bottomAnchor="20.0">
+
+         <padding>
+            <Insets top="20"
+                    right="20"
+                    left="20"
+                    bottom="20"/>
+         </padding>
+
+         <VBox spacing="5">
+            <Label text="Gestión de Proveedores" styleClass="page-title"/>
+            <Label text="Administra los proveedores vinculados al sistema" styleClass="page-subtitle"/>
+         </VBox>
+
+         <HBox spacing="20">
+            <VBox styleClass="metric-card"
+                  spacing="10"
+                  HBox.hgrow="ALWAYS"
+                  maxWidth="Infinity">
+               <Label text="Total de proveedores" styleClass="card-title"/>
+               <Label text="---" styleClass="card-value"/>
+            </VBox>
+
+            <VBox styleClass="metric-card"
+                  spacing="10"
+                  HBox.hgrow="ALWAYS"
+                  maxWidth="Infinity">
+               <Label text="Compras mensuales" styleClass="card-title"/>
+               <Label text="---" styleClass="card-value"/>
+            </VBox>
+
+            <VBox styleClass="metric-card"
+                  spacing="10"
+                  HBox.hgrow="ALWAYS"
+                  maxWidth="Infinity">
+               <Label text="Último registrado" styleClass="card-title"/>
+               <Label text="Empresa X S.A." styleClass="card-value"/>
+               <Label text="Hace 2 horas" styleClass="card-subtitle"/>
+            </VBox>
+         </HBox>
+
+         <HBox spacing="15"
+               alignment="CENTER_LEFT">
+            <TextField promptText="Buscar por nombre, RUC..."
+                       HBox.hgrow="ALWAYS"
+                       styleClass="search-input"/>
+            <Button text="+ Nuevo Proveedor"
+                    styleClass="proveedor-button"/>
+         </HBox>
+
+         <VBox VBox.vgrow="ALWAYS">
+            <fx:include source="../../components/table-layout.fxml"/>
+         </VBox>
+
+      </VBox>
+
+   </children>
 </AnchorPane>

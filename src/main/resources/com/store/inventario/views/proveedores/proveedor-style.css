@@ -1,0 +1,56 @@
+.root {
+    -fx-font-family: "Inter", "Segoe UI", "Helvetica Neue", sans-serif;
+    -fx-background-color: #ffffff;
+}
+
+.page-title {
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+}
+
+.page-subtitle {
+    -fx-text-fill: #64748B;
+    -fx-font-size: 14px;
+}
+
+.metric-card {
+    -fx-background-color: white;
+    -fx-padding: 20;
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+    -fx-border-color: #E5E7EB;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 20, 0, 0, 2);
+}
+
+.card-title {
+    -fx-text-fill: #64748B;
+    -fx-font-size: 14px;
+}
+
+.card-value {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+}
+
+.card-subtitle {
+    -fx-text-fill: #94A3B8;
+}
+
+.search-input {
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-border-color: #D1D5DB;
+    -fx-padding: 10;
+}
+
+.proveedor-button {
+    -fx-background-color: #005AC2;
+    -fx-text-fill: white;
+    -fx-background-radius: 10;
+    -fx-padding: 10 20;
+    -fx-cursor: hand;
+}
+
+.proveedor-button:hover {
+    -fx-background-color: #004799;
+}
