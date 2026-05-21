@@ -1,76 +1,75 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.*?>
-
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.Button?>
-<AnchorPane prefHeight="800.0"
-            prefWidth="1040.0"
-            xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            stylesheets="@compras-style.css"
-            fx:controller="CONTROLLER_NAME">
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane prefHeight="800.0" prefWidth="1040.0" stylesheets="@compras-style.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CONTROLLER_NAME">
 
     <children>
 
-        <VBox spacing="25.0"
-              AnchorPane.topAnchor="20.0"
-              AnchorPane.leftAnchor="20.0"
-              AnchorPane.rightAnchor="20.0"
-              AnchorPane.bottomAnchor="20.0">
+        <VBox spacing="25.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
 
             <padding>
-                <Insets top="20"
-                        right="20"
-                        left="20"
-                        bottom="20"/>
+                <Insets bottom="20" left="20" right="20" top="20" />
             </padding>
 
             <VBox spacing="5">
-                <Label text="Gestión de Compras" styleClass="page-title"/>
-                <Label text="Administración de compras e ingreso de productos al inventario" styleClass="page-subtitle"/>
+                <Label styleClass="page-title" text="Gestión de Compras" />
+                <Label styleClass="page-subtitle" text="Administración de compras e ingreso de productos al inventario" />
             </VBox>
 
             <HBox spacing="20">
-                <VBox styleClass="metric-card"
-                      spacing="10"
-                      HBox.hgrow="ALWAYS"
-                      maxWidth="Infinity">
-                    <Label text="Compras semanales" styleClass="card-title"/>
-                    <Label text="---" styleClass="card-value"/>
+                <VBox maxWidth="Infinity" spacing="10" styleClass="metric-card" HBox.hgrow="ALWAYS">
+                    <Label styleClass="card-title" text="Compras semanales" />
+                    <Label styleClass="card-value" text="---" />
                 </VBox>
 
-                <VBox styleClass="metric-card"
-                      spacing="10"
-                      HBox.hgrow="ALWAYS"
-                      maxWidth="Infinity">
-                    <Label text="Productos ingresados mensuales" styleClass="card-title"/>
-                    <Label text="---" styleClass="card-value"/>
+                <VBox maxWidth="Infinity" spacing="10" styleClass="metric-card" HBox.hgrow="ALWAYS">
+                    <Label styleClass="card-title" text="Productos ingresados mensuales" />
+                    <Label styleClass="card-value" text="---" />
                 </VBox>
 
-                <VBox styleClass="metric-card"
-                      spacing="10"
-                      HBox.hgrow="ALWAYS"
-                      maxWidth="Infinity">
-                    <Label text="Proveedor frecuente" styleClass="card-title"/>
-                    <Label text="Empresa X S.A." styleClass="card-value"/>
-                    <Label text="x compras realizadas" styleClass="card-subtitle"/>
+                <VBox maxWidth="Infinity" spacing="10" styleClass="metric-card" HBox.hgrow="ALWAYS">
+                    <Label styleClass="card-title" text="Proveedor frecuente" />
+                    <Label styleClass="card-value" text="Empresa X S.A." />
+                    <Label styleClass="card-subtitle" text="x compras realizadas" />
                 </VBox>
             </HBox>
 
-            <HBox spacing="15"
-                  alignment="CENTER_LEFT">
-                <TextField promptText="Buscar por código de compra, proveedor..."
-                           HBox.hgrow="ALWAYS"
-                           styleClass="search-input"/>
-                <Button text="Nueva Compra"
-                        styleClass="compra-button"/>
+            <HBox alignment="CENTER_LEFT" spacing="15">
+                <TextField promptText="Buscar por código de compra, proveedor..." styleClass="search-input" HBox.hgrow="ALWAYS" />
+                <Button styleClass="compra-button" text="Nueva Compra" />
             </HBox>
 
-            <VBox VBox.vgrow="ALWAYS">
-                <fx:include source="../../components/table-layout.fxml"/>
+            <VBox spacing="20.0" VBox.vgrow="ALWAYS">
+                <TableView fx:id="tableView" styleClass="design-table" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn prefWidth="80" text="Código" />
+                        <TableColumn prefWidth="174.0" text="Proveedor" />
+                        <TableColumn prefWidth="181.0" text="Usuario" />
+                        <TableColumn prefWidth="111.0" text="Fecha" />
+                        <TableColumn prefWidth="140.0" text="Cantidad Productos" />
+                        <TableColumn prefWidth="79.0" text="Total" />
+                        <TableColumn prefWidth="184.0" text="Acciones" />
+                    </columns>
+
+                </TableView>
+
+                <HBox alignment="CENTER_RIGHT" spacing="10.0" styleClass="pagination-container">
+                    <Label text="Mostrando 1 a 5 de ** registros" />
+                    <Button styleClass="pagination-button" text="Anterior" />
+                    <Button styleClass="pagination-button" text="1" />
+                    <Button styleClass="pagination-button" text="2" />
+                    <Button styleClass="pagination-button" text="3" />
+                    <Button styleClass="pagination-button" text="Siguiente" />
+                </HBox>
             </VBox>
 
         </VBox>
