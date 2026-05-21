@@ -1,20 +1,146 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 
-<AnchorPane prefHeight="800.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CONTROLLER_NAME">
-   <stylesheets>
-        <URL value="@../../styles/style.css" />
-        
-    </stylesheets>
-
+<AnchorPane prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CONTROLLER_NAME">
    <children>
-      <VBox layoutX="-4.0" prefHeight="800.0" prefWidth="1080.0">
+      <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" style="-fx-background-color: #F9F9F9;">
          <children>
-            <HBox prefHeight="100.0" prefWidth="200.0" />
+            <HBox prefHeight="100.0" prefWidth="1280.0" style="-fx-background-color: #F3F0F2;">
+               <children>
+                  <Label prefHeight="77.0" prefWidth="456.0" style="-fx-font-weight: bold;" text="  ProSecure">
+                     <font>
+                        <Font size="31.0" />
+                     </font>
+                  </Label>
+                  <Label prefHeight="18.0" prefWidth="891.0" />
+                  <ImageView fitHeight="49.0" fitWidth="100.0" nodeOrientation="RIGHT_TO_LEFT" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS">
+                     <image>
+                        <Image url="@../../../../../../../../../Downloads/imagen_login.png" />
+                     </image>
+                  </ImageView>
+                  <Label alignment="CENTER_RIGHT" prefHeight="77.0" prefWidth="139.0" text="ES" textFill="#050505">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+            <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" nodeOrientation="RIGHT_TO_LEFT" prefHeight="593.0" prefWidth="1280.0" style="-fx-background-color: #F8FAFC;">
+               <children>
+                  <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="554.0" prefWidth="402.0" spacing="2.0" style="-fx-border-color: #cbd5e1; -fx-background-color: #FFFFFF;">
+                     <children>
+                        <Label alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="59.0" prefWidth="402.0" style="-fx-text-fill: #000000; -fx-font-size: 24x; -fx-font-weight: bold;" text="Bienvenido" textAlignment="CENTER">
+                           <font>
+                              <Font size="43.0" />
+                           </font>
+                        </Label>
+                        <Label alignment="TOP_CENTER" prefHeight="82.0" prefWidth="347.0" text="Ingresa tus credenciales para continuar" textFill="#1b1b1d">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Label contentDisplay="BOTTOM" nodeOrientation="LEFT_TO_RIGHT" prefHeight="20.0" prefWidth="291.0" text="Nombre de usuario" textFill="#1b1b1d" textOverrun="CLIP">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <TextField alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="41.0" prefWidth="293.0" promptText="eje.juan.perez">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </TextField>
+                        <HBox alignment="BOTTOM_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="53.0" prefWidth="287.0">
+                           <children>
+                              <Hyperlink alignment="TOP_LEFT" contentDisplay="BOTTOM" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="12.0" prefWidth="215.0" text="¿Olvidaste tu contraseña?" textFill="#004395">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Hyperlink>
+                              <Label alignment="CENTER_RIGHT" prefHeight="22.0" prefWidth="82.0" text="Contraseña" textFill="#1b1b1d">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                        <TextField alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="41.0" prefWidth="293.0" promptText="********">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </TextField>
+                        <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="110.0" prefWidth="293.0" spacing="20.0">
+                           <children>
+                              <CheckBox alignment="BOTTOM_LEFT" contentDisplay="TOP" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" prefHeight="35.0" prefWidth="292.0" text="Recordar sesión" textFill="#1b1b1d" />
+                              <Button contentDisplay="BOTTOM" mnemonicParsing="false" prefHeight="40.0" prefWidth="291.0" style="-fx-background-color: #000000; -fx-font-weight: bold; -fx-text-fill: white; -fx-border-radius: 6px;" text="Iniciar sesión" textFill="WHITE" />
+                           </children>
+                        </VBox>
+                        <HBox alignment="BOTTOM_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="54.0" prefWidth="287.0">
+                           <children>
+                              <Hyperlink alignment="CENTER_RIGHT" prefHeight="20.0" prefWidth="150.0" text="Contacta a soporte" textFill="#004395">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Hyperlink>
+                              <Label prefHeight="26.0" prefWidth="158.0" text="¿No tienes un cuenta?" textFill="#1b1b1d">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                     </children>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </VBox>
+               </children>
+               <padding>
+                  <Insets bottom="20.0" top="20.0" />
+               </padding>
+            </VBox>
+            <HBox prefHeight="70.0" prefWidth="1280.0" style="-fx-background-color: #F3F0F2;">
+               <children>
+                  <Label alignment="CENTER" prefHeight="44.0" prefWidth="161.0" style="-fx-font-weight: bold;" text="ProSecure System" textFill="#131b2e">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Hyperlink alignment="CENTER_RIGHT" prefHeight="44.0" prefWidth="341.0" text="Terms of Service" textFill="#050505" underline="true">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Hyperlink>
+                  <Hyperlink alignment="CENTER_RIGHT" prefHeight="44.0" prefWidth="145.0" text="Privacy Policy" textFill="#050505" underline="true">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Hyperlink>
+                  <Hyperlink alignment="CENTER_RIGHT" prefHeight="44.0" prefWidth="145.0" text="Contac Support" textFill="#050505" underline="true">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Hyperlink>
+                  <Label alignment="CENTER_RIGHT" prefHeight="44.0" prefWidth="489.0" text="© 2024 ProSecure Systems. All rights reserved." textFill="#050505">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+            <HBox prefHeight="105.0" prefWidth="1280.0" />
          </children>
       </VBox>
    </children>
