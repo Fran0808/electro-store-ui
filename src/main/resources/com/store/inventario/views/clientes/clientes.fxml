@@ -1,47 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.*?>
-
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="800.0"
-            prefWidth="1040.0"
-            xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            stylesheets="@cliente-style.css"
-            fx:controller="CONTROLLER_NAME">
+<AnchorPane prefHeight="800.0" prefWidth="1040.0" stylesheets="@cliente-style.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CONTROLLER_NAME">
 
     <children>
 
-        <VBox spacing="25.0"
-              AnchorPane.topAnchor="20.0"
-              AnchorPane.leftAnchor="20.0"
-              AnchorPane.rightAnchor="20.0"
-              AnchorPane.bottomAnchor="20.0">
+        <VBox spacing="25.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
 
             <padding>
-                <Insets top="20"
-                        right="20"
-                        left="20"
-                        bottom="20"/>
+                <Insets bottom="20" left="20" right="20" top="20" />
             </padding>
 
             <VBox spacing="5">
-                <Label text="Control de Clientes" styleClass="page-title"/>
-                <Label text="Supervisión, seguimiento y control detallado de clientes registrados en el sistema" styleClass="page-subtitle"/>
+                <Label styleClass="page-title" text="Control de Clientes" />
+                <Label styleClass="page-subtitle" text="Supervisión, seguimiento y control detallado de clientes registrados en el sistema" />
             </VBox>
 
-            <HBox spacing="15"
-                  alignment="CENTER_LEFT">
-                <TextField promptText="Buscar por DNI..."
-                           HBox.hgrow="ALWAYS"
-                           styleClass="search-input"/>
+            <HBox alignment="CENTER_LEFT" spacing="15">
+                <TextField promptText="Buscar por DNI..." styleClass="search-input" HBox.hgrow="ALWAYS" />
             </HBox>
 
-            <VBox VBox.vgrow="ALWAYS">
-                <fx:include source="../../components/table-layout.fxml"/>
+            <VBox spacing="20.0" VBox.vgrow="ALWAYS">
+
+                <TableView fx:id="tableView" styleClass="design-table" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn prefWidth="80" text="Código" />
+                        <TableColumn prefWidth="235.0" text="Nombre" />
+                        <TableColumn prefWidth="226.0" text="DNI" />
+                        <TableColumn prefWidth="231.0" text="RUC" />
+                        <TableColumn prefWidth="178.0" text="Teléfono" />
+                    </columns>
+
+                </TableView>
+
+                <HBox alignment="CENTER_RIGHT" spacing="10.0" styleClass="pagination-container">
+                    <Label text="Mostrando 1 a 5 de ** registros" />
+                    <Button styleClass="pagination-button" text="Anterior" />
+                    <Button styleClass="pagination-button" text="1" />
+                    <Button styleClass="pagination-button" text="2" />
+                    <Button styleClass="pagination-button" text="3" />
+                    <Button styleClass="pagination-button" text="Siguiente" />
+                </HBox>
             </VBox>
 
         </VBox>
