@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.SVGPath?>
 
-<AnchorPane prefHeight="800.0" prefWidth="1040.0" styleClass="root" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml">
+<AnchorPane prefHeight="800.0" prefWidth="1040.0" styleClass="root" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="com.store.inventario.controller.ventas.VentaController">
 
     <stylesheets>
         <URL value="@../../styles/style.css" />
@@ -27,7 +27,7 @@
                 <Label styleClass="header-subtitle" text="Visualiza, analiza y gestiona las transacciones comerciales del sistema." />
             </VBox>
             <HBox alignment="CENTER_RIGHT" spacing="12">
-                <Button fx:id="btnNuevaVenta" styleClass="btn-primary" text="Nueva Venta" />
+                <Button fx:id="btnNuevaVenta" styleClass="btn-primary" text="Nueva Venta" onAction="#handleForm" />
             </HBox>
         </HBox>
 
