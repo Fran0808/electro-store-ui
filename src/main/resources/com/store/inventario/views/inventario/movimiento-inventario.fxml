@@ -5,7 +5,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import java.net.URL?>
-<AnchorPane xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.store.inventario.controller.MovimientosController" prefHeight="800.0" prefWidth="1040.0">
+<AnchorPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.store.inventario.controller.MovimientosController" prefHeight="800.0" prefWidth="1040.0">
     <stylesheets>
         <URL value="@../../styles/style.css" />
     </stylesheets>
