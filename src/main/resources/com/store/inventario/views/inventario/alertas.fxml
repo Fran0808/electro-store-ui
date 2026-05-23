@@ -4,7 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="800.0" prefWidth="1040.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="800.0" prefWidth="1040.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.store.inventario.controller.inventario.AlertaController">
     <stylesheets>
         <URL value="@../../styles/style.css" />
         <URL value="@alertas.css" />
@@ -17,7 +17,7 @@
             </VBox>
            <HBox alignment="CENTER_RIGHT" prefHeight="41.0" prefWidth="798.0" spacing="12">
             <children>
-                  <Button fx:id="btnConfigLimite" styleClass="btn-primary" text="Configurar Límite" />
+                  <Button fx:id="btnConfigLimite" styleClass="btn-primary" text="Configurar Límite" onAction="#handleForm"/>
             </children>
            </HBox>
         </HBox>
