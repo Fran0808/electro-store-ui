@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<AnchorPane
+        xmlns="http://javafx.com/javafx"
+        xmlns:fx="http://javafx.com/fxml"
+        fx:controller=""
+        stylesheets="@../../styles/style.css"
+        prefHeight="620.0"
+        prefWidth="500.0">
+
+    <children>
+        <VBox spacing="25.0" styleClass="modal-container" AnchorPane.bottomAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.topAnchor="0">
+
+            <padding>
+                <Insets top="30" right="30" left="30" bottom="30"/>
+            </padding>
+
+            <VBox spacing="10">
+                <Label fx:id="lblTitulo" text="Ver Detalle de Compra " styleClass="header-title"/>
+                <Label text="Consulta la trazabilidad y documentos asociados a esta transacción" styleClass="header-subtitle"/>
+            </VBox>
+
+            <HBox spacing="16" styleClass="metrics-container">
+                    <Label styleClass="metric-label" text="Código de compra" />
+                    <Label styleClass="metric-value" text="---" />
+                    <Label styleClass="metric-label" text="Fecha" />
+                    <Label styleClass="metric-value" text="---" />
+                    <Label styleClass="metric-label" text="Proveedor" />
+                    <Label styleClass="metric-value" text="---" />
+                    <Label styleClass="metric-label" text="Responsable" />
+                    <Label styleClass="metric-value" text="---" />
+            </HBox>
+
+            <VBox>
+                <Label text="Productos Comprados"/>
+                <Label text="Items: --"/>
+                <TableView fx:id="tblNewCompra" styleClass="table-view" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn prefWidth="80" text="Producto"/>
+                        <TableColumn prefWidth="174.0" text="cantidad"/>
+                        <TableColumn prefWidth="181.0" text="Precio Unitario"/>
+                        <TableColumn prefWidth="181.0" text="subtotal"/>
+                    </columns>
+                </TableView>
+            </VBox>
+
+            <HBox spacing="16" styleClass="metrics-container">
+                <VBox spacing="8" styleClass="metric-card" HBox.hgrow="ALWAYS">
+                    <Label styleClass="metric-label" text="Código de guía: " />
+                    <Label styleClass="metric-value" text="Descripción: " />
+                </VBox>
+                <VBox spacing="8" styleClass="metric-card" HBox.hgrow="ALWAYS">
+                    <Label styleClass="metric-label" text="Subtotal de compra: " />
+                    <Label styleClass="metric-label" text="S/0.00" />
+                    <Label styleClass="metric-value" text="Impuesto (IGV 18%):" />
+                    <Label styleClass="metric-label" text="S/0.00" />
+                    <Label styleClass="metric-value" text="Total Final:" />
+                    <Label styleClass="metric-label" text="S/0.00" />
+                </VBox>
+            </HBox>
+
+            <HBox spacing="12">
+                <Button text="Cerrar" styleClass="btn-secondary" HBox.hgrow="ALWAYS" maxWidth="Infinity" fx:id="btnCancelar" onAction="#cerrarModal"/>
+                <Button text="Imprimir Guía" styleClass="btn-secondary" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+            </HBox>
+        </VBox>
+    </children>
+</AnchorPane>

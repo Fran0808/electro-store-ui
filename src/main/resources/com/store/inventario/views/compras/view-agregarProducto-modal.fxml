@@ -18,8 +18,8 @@
             </padding>
 
             <VBox spacing="10">
-                <Label fx:id="lblTitulo" text="Nueva Compra" styleClass="header-title"/>
-                <Label text="Completa la información de la compra" styleClass="header-subtitle"/>
+                <Label fx:id="lblTitulo" text="Productos" styleClass="header-title"/>
+                <Label text="Selecciona el producto y agregalo" styleClass="header-subtitle"/>
             </VBox>
 
             <VBox spacing="20">
@@ -27,41 +27,37 @@
                     <Label text="Proveedor"/>
                     <ComboBox fx:id="" promptText="Seleccione un proveedor"/>
                 </VBox>
-
-                <VBox spacing="6">
-                    <Label text="Usuario"/>
-                    <ComboBox fx:id="" promptText="Seleccione un proveedor"/>
-                </VBox>
-
-                <VBox spacing="6">
-                    <Label text="Fecha de operación"/>
-                    <DatePicker fx:id=""/>
-                </VBox>
+                <ComboBox promptText="Marca" styleClass="filter-combo"/>
+                <ComboBox promptText="Categoría" styleClass="filter-combo"/>
+                <ComboBox promptText="Modelo" styleClass="filter-combo"/>
             </VBox>
 
             <VBox>
-                <Label text="Detalle Producto"/>
-                <Button text="Agregar Producto"/>
+                <Label text="Productos"/>
                 <VBox>
-                    <TableView fx:id="tblNewCompra" styleClass="table-view" VBox.vgrow="ALWAYS">
+                    <TableView fx:id="" styleClass="table-view" VBox.vgrow="ALWAYS">
                         <columns>
                             <TableColumn prefWidth="80" text="Producto"/>
-                            <TableColumn prefWidth="174.0" text="Precio Compra"/>
-                            <TableColumn prefWidth="181.0" text="Cantidad"/>
-                            <TableColumn prefWidth="181.0" text="subtotal"/>
-                            <TableColumn prefWidth="181.0"/> <!-- En esta columna irá el icono de tacho para eliminar -->
+                            <TableColumn prefWidth="80" text=""/> <!-- En esta columna irá el icono de tacho para Agregar -->
                         </columns>
                     </TableView>
                 </VBox>
-                <HBox alignment="CENTER_RIGHT" spacing="10.0" styleClass="pagination-container">
-                    <Label text="TOTAL ESTIMADO" styleClass="pagination-summary"/>
-                    <Label text="S/00.00" styleClass="pagination-summary"/>
-                </HBox>
+            </VBox>
+            <VBox>
+                <Label text="Productos Seleccionados"/>
+                <VBox>
+                    <TableView fx:id="" styleClass="table-view" VBox.vgrow="ALWAYS">
+                        <columns>
+                            <TableColumn prefWidth="80" text="Producto"/>
+                            <TableColumn prefWidth="80" text=""/> <!-- En esta columna irá el icono de tacho para eliminar -->
+                        </columns>
+                    </TableView>
+                </VBox>
             </VBox>
 
             <HBox spacing="12">
                 <Button text="Cancelar" styleClass="btn-secondary" HBox.hgrow="ALWAYS" maxWidth="Infinity" fx:id="btnCancelar" onAction="#cerrarModal"/>
-                <Button text="Registrar Compra" styleClass="btn-secondary" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                <Button text="Registrar" styleClass="btn-secondary" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
             </HBox>
         </VBox>
     </children>
