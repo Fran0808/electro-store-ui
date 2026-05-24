@@ -17,7 +17,7 @@ public class GuiaFormController {
     @FXML
     private RadioButton rbEntry, rbExit;
     @FXML
-    private TextArea txtDescripcion;
+    private TextField txtDescripcion;
     @FXML
     private ComboBox<String> cbProducto;
     @FXML

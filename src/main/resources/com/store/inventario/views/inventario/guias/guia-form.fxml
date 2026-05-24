@@ -46,7 +46,7 @@
                 
                 <VBox spacing="8.0">
                     <Label text="Descripción (opcional)" />
-                    <TextArea fx:id="txtDescripcion" prefRowCount="2" promptText="Detalles adicionales del ajuste..." wrapText="true" />
+                    <TextField fx:id="txtDescripcion" promptText="Detalles adicionales del ajuste..." />
                 </VBox>
             </VBox>
 
@@ -56,7 +56,10 @@
                 <Label style="-fx-font-size:13px; -fx-font-weight:bold;" text="Detalle de Productos *" />
 
                 <HBox alignment="CENTER_LEFT" spacing="12.0">
-                    <ComboBox fx:id="cbProducto" prefWidth="350.0" promptText="Buscar y seleccionar producto..." styleClass="filter-combo" HBox.hgrow="ALWAYS" />
+                    <VBox minWidth="100.0" spacing="2.0">
+                        <Label style="-fx-font-size:11px; -fx-text-fill:#666;" text="Buscar y seleccionar" />
+                        <ComboBox fx:id="cbProducto" prefWidth="350.0" styleClass="filter-combo" HBox.hgrow="ALWAYS" />
+                    </VBox>
                     <VBox minWidth="100.0" spacing="2.0">
                         <Label style="-fx-font-size:11px; -fx-text-fill:#666;" text="Stock actual" />
                         <TextField fx:id="txtStockActual" editable="false" prefHeight="32.0" style="-fx-font-size:11px;" styleClass="disabled-field" />
