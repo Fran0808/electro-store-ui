@@ -49,7 +49,22 @@ public class GuiasController {
         colAcciones.setCellFactory(col -> new TableCell<GuiaRow, Void>() {
             private final Button btnVer = new Button("Ver detalle");
             {
-                btnVer.setStyle("-fx-padding: 5 10;");
+                btnVer.setStyle("-fx-background-color: #FFFFFF;\n" +
+                        "    -fx-border-color: #E2E8F0;\n" +
+                        "    -fx-border-width: 1px;\n" +
+                        "    -fx-text-fill: #475569;\n" +
+                        "    -fx-padding: 10px 15px; \n" +
+                        "    -fx-cursor: hand;\n" +
+                        "    -fx-font-size: 11px;\n" +
+                        "    -fx-font-family: \"Inter\", \"Segoe UI\", sans-serif;\n" +
+                        "    -fx-font-weight: bold;\n" +
+                        "    -fx-background-radius: 4px;\n" +
+                        "    -fx-border-radius: 4px;\n" +
+                        "    -fx-min-height: 30px;\n" +
+                        "    -fx-pref-height: 40px;\n" +
+                        "    -fx-max-height: 40px;\n" +
+                        "    -fx-transition: all 0.2s ease-in-out;"
+                );
                 btnVer.setOnAction(e -> {
                     try {
                         handleVerDetalle();
