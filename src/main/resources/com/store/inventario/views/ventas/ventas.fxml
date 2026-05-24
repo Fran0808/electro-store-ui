@@ -65,8 +65,7 @@
             </HBox>
 
             <HBox alignment="CENTER_LEFT" spacing="12" styleClass="search-container">
-                <TextField fx:id="txtBuscarVenta" HBox.hgrow="ALWAYS" promptText="Buscar ventas por cliente o comprobante..." styleClass="search-field" />
-                <ComboBox fx:id="cbTipoComprobante" promptText="Comprobante" styleClass="filter-combo" />
+                <TextField fx:id="txtBuscarVenta" HBox.hgrow="ALWAYS" promptText="Buscar ventas por cliente o código..." styleClass="search-field" />
                 <ComboBox fx:id="cbVendedor" promptText="Vendedor" styleClass="filter-combo" />
                 <ComboBox fx:id="cbRangoFecha" promptText="Fecha" styleClass="filter-combo" />
                 <Button fx:id="btnLimpiarVenta" styleClass="btn-secondary" text="Limpiar" />
@@ -75,7 +74,7 @@
 
             <TableView fx:id="tblHistorialVentas" styleClass="sales-table" VBox.vgrow="ALWAYS">
                 <columns>
-                    <TableColumn fx:id="colComprobante" prefWidth="120.0" text="Comprobante" />
+                    <TableColumn fx:id="colCodigo" prefWidth="120.0" text="Código" />
                     <TableColumn fx:id="colFecha" prefWidth="140.0" text="Fecha y Hora" />
                     <TableColumn fx:id="colCliente" prefWidth="220.0" text="Cliente" />
                     <TableColumn fx:id="colVendedor" prefWidth="180.0" text="Vendedor" />
