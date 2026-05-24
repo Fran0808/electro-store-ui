@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="680.0" prefWidth="820.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.store.inventario.controller.inventario.MovimientoFormController">
+    <stylesheets>
+        <URL value="@../../styles/style.css" />
+    </stylesheets>
+    <children>
+        <VBox spacing="18.0" AnchorPane.bottomAnchor="12.0" AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="12.0" AnchorPane.topAnchor="12.0">
+            <Label style="-fx-font-size:16px; -fx-font-weight:bold;" text="Registrar Movimiento de Inventario" />
+            <HBox spacing="20.0">
+                <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="207.0" prefWidth="202.0" spacing="8.0" HBox.hgrow="ALWAYS">
+                    <Label text="Código guía *" />
+                    <TextField fx:id="txtCodigoGuia" prefHeight="36.0" prefWidth="120.0" />
+                    <Label text="Tipo *" />
+                    <ComboBox fx:id="cbTipo" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="208.0" promptText="Entrada / Salida" styleClass="filter-combo" />
+                    <Label text="Usuario *" />
+                    <ComboBox fx:id="cbUsuario" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="983.0" promptText="Seleccionar usuario" styleClass="filter-combo" />
+                </VBox>
+                <VBox spacing="8.0" HBox.hgrow="ALWAYS">
+                    <Label text="Fecha *" />
+                    <DatePicker fx:id="dpFecha" prefHeight="36.0" />
+                    <Label text="Motivo" />
+                    <TextField fx:id="txtMotivo" prefHeight="36.0" />
+                    <Label text="Descripción" />
+                    <TextArea fx:id="txtDescripcion" prefRowCount="3" />
+                </VBox>
+            </HBox>
+            <Separator />
+
+            <Label text="Detalle de Productos" />
+            <HBox alignment="CENTER_LEFT" spacing="12.0">
+                <ComboBox fx:id="cbProducto" prefWidth="360.0" promptText="Buscar producto..." styleClass="filter-combo" HBox.hgrow="ALWAYS" />
+                <Spinner fx:id="spnCantidad" prefWidth="120.0" styleClass="filter-combo" />
+                <Button fx:id="btnAgregar" onAction="#handleAgregarProducto" styleClass="btn-primary" text="Agregar" />
+            </HBox>
+
+            <TableView fx:id="tblDetalle" VBox.vgrow="ALWAYS">
+                <columns>
+                    <TableColumn fx:id="colCod" prefWidth="100" text="Código" />
+                    <TableColumn fx:id="colProd" prefWidth="300" text="Producto" />
+                    <TableColumn fx:id="colCant" prefWidth="120" text="Cantidad" />
+                    <TableColumn fx:id="colAcc" prefWidth="120" style="-fx-alignment:CENTER;" text="Acciones" />
+                </columns>
+                <columnResizePolicy>
+                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                </columnResizePolicy>
+            </TableView>
+
+            <HBox alignment="CENTER_RIGHT" spacing="12.0">
+                <Button fx:id="btnCancelar" onAction="#handleCancelar" styleClass="btn-secondary" text="Cancelar" />
+                <Button fx:id="btnGuardar" onAction="#handleGuardarMovimiento" styleClass="btn-primary" text="Guardar Movimiento" />
+            </HBox>
+        </VBox>
+    </children>
+</AnchorPane>
