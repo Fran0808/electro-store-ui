@@ -1,4 +1,4 @@
-package com.store.inventario.controller.inventario;
+package com.store.inventario.controller.inventario.guias;
 
 import java.io.IOException;
 
@@ -92,7 +92,7 @@ public class GuiasController {
 
     @FXML
     private void handleNuevaGuia() throws IOException {
-        FXMLLoader Loader = new FXMLLoader(getClass().getResource("/com/store/inventario/views/inventario/guia-form.fxml"));
+        FXMLLoader Loader = new FXMLLoader(getClass().getResource("/com/store/inventario/views/inventario/guias/guia-form.fxml"));
         Parent root = Loader.load();
 
         Stage modal = new Stage();
@@ -104,7 +104,7 @@ public class GuiasController {
 
     @FXML
     private void handleVerDetalle() throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/views/inventario/guia-detail.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/views/inventario/guias/guia-detail.fxml"));
         Parent root = loader.load();
 
         Stage modal = new Stage();

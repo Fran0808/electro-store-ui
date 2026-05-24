@@ -1,4 +1,4 @@
-package com.store.inventario.controller.inventario;
+package com.store.inventario.controller.inventario.movimientos;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

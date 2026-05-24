@@ -9,10 +9,9 @@
 <?import java.net.URL?>
 
 
-<AnchorPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="com.store.inventario.controller.inventario.AlertasFormController" prefHeight="200.0" prefWidth="420.0" >
+<AnchorPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="com.store.inventario.controller.inventario.alertas.AlertasFormController" prefHeight="200.0" prefWidth="420.0" >
     <stylesheets>
-        <URL value="@../../styles/style.css" />
-        <URL value="@alertas.css" />
+        <URL value="@../../../styles/style.css" />
     </stylesheets>
     <children>
         <VBox spacing="12.0" AnchorPane.topAnchor="12.0" AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="12.0" AnchorPane.bottomAnchor="12.0">

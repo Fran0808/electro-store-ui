@@ -1,4 +1,4 @@
-package com.store.inventario.controller.inventario;
+package com.store.inventario.controller.inventario.guias;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
