@@ -13,14 +13,13 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CONTROLLER_NAME">
    <children>
       <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" style="-fx-background-color: #F9F9F9;">
          <children>
             <HBox prefHeight="100.0" prefWidth="1280.0" style="-fx-background-color: #F3F0F2;">
                <children>
-                  <Label prefHeight="77.0" prefWidth="456.0" style="-fx-font-weight: bold;" text="  ProSecure">
+                  <Label prefHeight="77.0" prefWidth="456.0" style="-fx-font-weight: bold;" text="  ElectroStore">
                      <font>
                         <Font size="31.0" />
                      </font>
@@ -31,7 +30,7 @@
                         <Image url="@../../../../../../../../../Downloads/imagen_login.png" />
                      </image>
                   </ImageView>
-                  <Label alignment="CENTER_RIGHT" prefHeight="77.0" prefWidth="139.0" text="ES" textFill="#050505">
+                  <Label prefHeight="77.0" prefWidth="183.0" text="ES" textFill="#050505">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -113,27 +112,27 @@
             </VBox>
             <HBox prefHeight="70.0" prefWidth="1280.0" style="-fx-background-color: #F3F0F2;">
                <children>
-                  <Label alignment="CENTER" prefHeight="44.0" prefWidth="161.0" style="-fx-font-weight: bold;" text="ProSecure System" textFill="#131b2e">
+                  <Label alignment="CENTER" prefHeight="44.0" prefWidth="161.0" style="-fx-font-weight: bold;" text="ElectroStore System" textFill="#131b2e">
                      <font>
                         <Font size="14.0" />
                      </font>
                   </Label>
-                  <Hyperlink alignment="CENTER_RIGHT" prefHeight="44.0" prefWidth="341.0" text="Terms of Service" textFill="#050505" underline="true">
+                  <Hyperlink alignment="CENTER_RIGHT" prefHeight="44.0" prefWidth="350.0" text="Términos de Servicio" textFill="#050505" underline="true">
                      <font>
                         <Font size="14.0" />
                      </font>
                   </Hyperlink>
-                  <Hyperlink alignment="CENTER_RIGHT" prefHeight="44.0" prefWidth="145.0" text="Privacy Policy" textFill="#050505" underline="true">
+                  <Hyperlink alignment="CENTER" prefHeight="44.0" prefWidth="112.0" text="Políticas" textFill="#050505" underline="true">
                      <font>
                         <Font size="14.0" />
                      </font>
                   </Hyperlink>
-                  <Hyperlink alignment="CENTER_RIGHT" prefHeight="44.0" prefWidth="145.0" text="Contac Support" textFill="#050505" underline="true">
+                  <Hyperlink prefHeight="44.0" prefWidth="145.0" text="Contacta Soporte" textFill="#050505" underline="true">
                      <font>
                         <Font size="14.0" />
                      </font>
                   </Hyperlink>
-                  <Label alignment="CENTER_RIGHT" prefHeight="44.0" prefWidth="489.0" text="© 2024 ProSecure Systems. All rights reserved." textFill="#050505">
+                  <Label alignment="CENTER_RIGHT" prefHeight="44.0" prefWidth="489.0" text="© Todos los derechos reservados." textFill="#050505">
                      <font>
                         <Font size="14.0" />
                      </font>
