@@ -5,7 +5,7 @@
 <AnchorPane
         xmlns="http://javafx.com/javafx"
         xmlns:fx="http://javafx.com/fxml"
-        fx:controller="a"
+        fx:controller="com.store.inventario.controller.compra.CompraFormController"
         stylesheets="@../../styles/style.css"
         prefHeight="620.0"
         prefWidth="500.0">
@@ -25,31 +25,31 @@
             <VBox spacing="20">
                 <VBox spacing = "6">
                     <Label text="Proveedor"/>
-                    <ComboBox fx:id="" promptText="Seleccione un proveedor"/>
+                    <ComboBox fx:id="cbProveedor" promptText="Seleccione un proveedor" styleClass="filter-combo"/>
                 </VBox>
 
                 <VBox spacing="6">
                     <Label text="Usuario"/>
-                    <ComboBox fx:id="" promptText="Seleccione un proveedor"/>
+                    <ComboBox fx:id="cbUsuario" promptText="Seleccione un usuario" styleClass="filter-combo"/>
                 </VBox>
 
                 <VBox spacing="6">
                     <Label text="Fecha de operación"/>
-                    <DatePicker fx:id=""/>
+                    <DatePicker fx:id="dpFechaOperacion"/>
                 </VBox>
             </VBox>
 
             <VBox>
                 <Label text="Detalle Producto"/>
-                <Button text="Agregar Producto"/>
+                <Button text="Agregar Producto" styleClass="btn-primary"/>
                 <VBox>
-                    <TableView fx:id="tblNewCompra" styleClass="table-view" VBox.vgrow="ALWAYS">
+                    <TableView fx:id="tblNewCompra" styleClass="table-view" prefHeight="200">
                         <columns>
                             <TableColumn prefWidth="80" text="Producto"/>
                             <TableColumn prefWidth="174.0" text="Precio Compra"/>
                             <TableColumn prefWidth="181.0" text="Cantidad"/>
                             <TableColumn prefWidth="181.0" text="subtotal"/>
-                            <TableColumn prefWidth="181.0"/> <!-- En esta columna irá el icono de tacho para eliminar -->
+                            <TableColumn prefWidth="181.0" text="Eiminar"/> <!-- En esta columna irá el icono de tacho para eliminar -->
                         </columns>
                     </TableView>
                 </VBox>
@@ -61,7 +61,7 @@
 
             <HBox spacing="12">
                 <Button text="Cancelar" styleClass="btn-secondary" HBox.hgrow="ALWAYS" maxWidth="Infinity" fx:id="btnCancelar" onAction="#cerrarModal"/>
-                <Button text="Registrar Compra" styleClass="btn-secondary" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                <Button text="Registrar Compra" styleClass="btn-primary" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
             </HBox>
         </VBox>
     </children>

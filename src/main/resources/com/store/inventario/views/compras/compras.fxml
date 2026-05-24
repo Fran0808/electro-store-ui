@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -9,11 +10,9 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<?import javafx.scene.control.ComboBox?>
-<AnchorPane prefHeight="800.0" prefWidth="1040.0" styleClass="root" stylesheets="@../../styles/style.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CONTROLLER_NAME">
+<AnchorPane prefHeight="800.0" prefWidth="1040.0" styleClass="root" stylesheets="@../../styles/style.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.store.inventario.controller.compra.CompraController">
 
     <children>
-
         <VBox spacing="24.0" styleClass="view-container" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
 
             <VBox spacing="5">
@@ -40,28 +39,29 @@
             </HBox>
 
             <HBox alignment="CENTER_LEFT" spacing="12" styleClass="search-container">
-                <TextField promptText="Buscar por código de compra, proveedor..." styleClass="search-field" HBox.hgrow="ALWAYS" />
-                <ComboBox promptText="Fecha" styleClass="filter-combo"/>
-                <ComboBox promptText="Proveedor" styleClass="filter-combo"/>
-                <ComboBox promptText="Usuario" styleClass="filter-combo"/>
-                <Button styleClass="btn-primary" text="Nueva Compra" />
+                <TextField fx:id="txtBuscarCompra" promptText="Buscar por código de compra, proveedor..." styleClass="search-field" HBox.hgrow="ALWAYS" />
+                <ComboBox fx:id="cbFecha" promptText="Fecha" styleClass="filter-combo" />
+                <ComboBox fx:id="cbProveedor" promptText="Proveedor" styleClass="filter-combo" />
+                <ComboBox fx:id="cbUsuario" promptText="Usuario" styleClass="filter-combo" />
+                <Button onAction="#abrirModalNuevaCompra" styleClass="btn-primary" text="Nueva Compra" />
             </HBox>
 
             <VBox spacing="16.0" VBox.vgrow="ALWAYS">
-                <TableView fx:id="tblView" styleClass="table-view" VBox.vgrow="ALWAYS">
+
+                <TableView fx:id="tblCompras" styleClass="table-view" VBox.vgrow="ALWAYS">
                     <columns>
-                        <TableColumn prefWidth="80" text="Código" />
-                        <TableColumn prefWidth="174.0" text="Proveedor" />
-                        <TableColumn prefWidth="181.0" text="Usuario" />
-                        <TableColumn prefWidth="111.0" text="Fecha" />
-                        <TableColumn prefWidth="140.0" text="Cantidad Productos" />
-                        <TableColumn prefWidth="79.0" text="Total" />
-                        <TableColumn prefWidth="184.0" text="Acciones" />
+                        <TableColumn prefWidth="69.0" text="Código" />
+                        <TableColumn prefWidth="193.0" text="Proveedor" />
+                        <TableColumn prefWidth="194.0" text="Usuario" />
+                        <TableColumn prefWidth="128.0" text="Fecha" />
+                        <TableColumn prefWidth="86.0" text="Cantidad" />
+                        <TableColumn prefWidth="113.0" text="Total" />
+                        <TableColumn prefWidth="196.0" text="Acciones" />
                     </columns>
                 </TableView>
 
                 <HBox alignment="CENTER_RIGHT" spacing="10.0" styleClass="pagination-container">
-                    <Label text="Mostrando 1 a 5 de ** registros" styleClass="pagination-summary"/>
+                    <Label styleClass="pagination-summary" text="Mostrando 1 a 5 de ** registros" />
                     <Button styleClass="btn-secondary" text="Anterior" />
                     <Button styleClass="btn-secondary" text="1" />
                     <Button styleClass="btn-secondary" text="2" />
@@ -69,9 +69,7 @@
                     <Button styleClass="btn-secondary" text="Siguiente" />
                 </HBox>
             </VBox>
-
         </VBox>
-
     </children>
 
 </AnchorPane>
