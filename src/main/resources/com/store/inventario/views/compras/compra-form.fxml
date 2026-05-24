@@ -1,68 +1,74 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
+
 <AnchorPane
         xmlns="http://javafx.com/javafx"
         xmlns:fx="http://javafx.com/fxml"
         fx:controller="com.store.inventario.controller.compra.CompraFormController"
         stylesheets="@../../styles/style.css"
-        prefHeight="620.0"
-        prefWidth="500.0">
+        prefHeight="650.0"
+        prefWidth="900.0"
+        styleClass="root">
 
     <children>
-        <VBox spacing="25.0" styleClass="modal-container" AnchorPane.bottomAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.topAnchor="0">
+        <VBox spacing="24.0" styleClass="modal-container" AnchorPane.bottomAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.topAnchor="0">
 
             <padding>
-                <Insets top="30" right="30" left="30" bottom="30"/>
+                <Insets top="28" right="28" left="28" bottom="28"/>
             </padding>
 
-            <VBox spacing="10">
+            <VBox spacing="6">
                 <Label fx:id="lblTitulo" text="Nueva Compra" styleClass="header-title"/>
                 <Label text="Completa la información de la compra" styleClass="header-subtitle"/>
             </VBox>
 
-            <VBox spacing="20">
-                <VBox spacing = "6">
-                    <Label text="Proveedor"/>
-                    <ComboBox fx:id="cbProveedor" promptText="Seleccione un proveedor" styleClass="filter-combo"/>
+
+            <HBox spacing="16">
+                <VBox spacing = "6" HBox.hgrow="ALWAYS">
+                    <Label text="Proveedor" styleClass="metric-label"/>
+                    <ComboBox fx:id="cbProveedor" promptText="Seleccione un proveedor" styleClass="filter-combo" maxWidth="Infinity"/>
                 </VBox>
 
-                <VBox spacing="6">
-                    <Label text="Usuario"/>
-                    <ComboBox fx:id="cbUsuario" promptText="Seleccione un usuario" styleClass="filter-combo"/>
+                <VBox spacing="6" HBox.hgrow="ALWAYS">
+                    <Label text="Usuario" styleClass="metric-label"/>
+                    <ComboBox fx:id="cbUsuario" promptText="Seleccione un usuario" styleClass="filter-combo" maxWidth="Infinity"/>
                 </VBox>
 
-                <VBox spacing="6">
-                    <Label text="Fecha de operación"/>
-                    <DatePicker fx:id="dpFechaOperacion"/>
+                <VBox spacing="6" HBox.hgrow="ALWAYS">
+                    <Label text="Fecha de operación" styleClass="metric-label"/>
+                    <DatePicker fx:id="dpFechaOperacion" maxWidth="Infinity"/>
                 </VBox>
-            </VBox>
-
-            <VBox>
-                <Label text="Detalle Producto"/>
-                <Button text="Agregar Producto" styleClass="btn-primary"/>
-                <VBox>
-                    <TableView fx:id="tblNewCompra" styleClass="table-view" prefHeight="200">
-                        <columns>
-                            <TableColumn prefWidth="80" text="Producto"/>
-                            <TableColumn prefWidth="174.0" text="Precio Compra"/>
-                            <TableColumn prefWidth="181.0" text="Cantidad"/>
-                            <TableColumn prefWidth="181.0" text="subtotal"/>
-                            <TableColumn prefWidth="181.0" text="Eiminar"/> <!-- En esta columna irá el icono de tacho para eliminar -->
-                        </columns>
-                    </TableView>
-                </VBox>
-                <HBox alignment="CENTER_RIGHT" spacing="10.0" styleClass="pagination-container">
-                    <Label text="TOTAL ESTIMADO" styleClass="pagination-summary"/>
-                    <Label text="S/00.00" styleClass="pagination-summary"/>
-                </HBox>
-            </VBox>
-
-            <HBox spacing="12">
-                <Button text="Cancelar" styleClass="btn-secondary" HBox.hgrow="ALWAYS" maxWidth="Infinity" fx:id="btnCancelar" onAction="#cerrarModal"/>
-                <Button text="Registrar Compra" styleClass="btn-primary" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
             </HBox>
+
+            <HBox>
+                <Label text="Detalle de Productos" styleClass="metric-label"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Button text="Agregar Producto" styleClass="btn-secondary"/>
+            </HBox>
+
+            <TableView fx:id="tblDetalleCompra" styleClass="table-view" VBox.vgrow="ALWAYS" prefHeight="280">
+                <columns>
+                    <TableColumn prefWidth="80" text="Producto"/>
+                    <TableColumn prefWidth="174.0" text="Precio Compra"/>
+                    <TableColumn prefWidth="181.0" text="Cantidad"/>
+                    <TableColumn prefWidth="181.0" text="Subtotal"/>
+                    <TableColumn prefWidth="181.0" text="Eliminar"/> <!-- En esta columna irá el icono de tacho para eliminar -->
+                </columns>
+            </TableView>
+
+            <HBox alignment="CENTER_RIGHT" spacing="12.0">
+                <Label text="TOTAL ESTIMADO" styleClass="metric-label"/>
+                <Label  fx:id="lblTotal" text="S/ 0.00" styleClass="metric-value"/>
+            </HBox>
+
+            <HBox alignment="CENTER_RIGHT" spacing="12">
+                <Button text="Cancelar" styleClass="btn-secondary" fx:id="btnCancelar" onAction="#cerrarModal"/>
+                <Button text="Registrar Compra" styleClass="btn-primary"/>
+            </HBox>
+
         </VBox>
     </children>
 </AnchorPane>

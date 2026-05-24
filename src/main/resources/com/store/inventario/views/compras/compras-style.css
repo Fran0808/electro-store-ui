@@ -1,0 +1,13 @@
+.date-picker {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #E2E8F0;
+    -fx-border-width: 1px;
+    -fx-background-radius: 4px;
+    -fx-border-radius: 4px;
+    -fx-font-size: 13px;
+    -fx-font-family: "Inter", "Segoe UI", sans-serif;
+}
+
+.date-picker:focused {
+    -fx-border-color: #0F172A;
+}
