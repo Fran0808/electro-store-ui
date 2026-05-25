@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import java.net.URL?>
+
+
+<AnchorPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="com.store.inventario.controller.inventario.alertas.AlertasFormController" prefHeight="200.0" prefWidth="420.0" >
+    <stylesheets>
+        <URL value="@../../../styles/style.css" />
+    </stylesheets>
+    <children>
+        <VBox spacing="12.0" AnchorPane.topAnchor="12.0" AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="12.0" AnchorPane.bottomAnchor="12.0">
+            <padding>
+                <Insets top="12" right="12" bottom="12" left="12"/>
+            </padding>
+            <children>
+                <Label text="Configurar límite de alertas" style="-fx-font-size:16px; -fx-font-weight:bold;"/>
+                <HBox spacing="8.0" alignment="CENTER_LEFT">
+                    <children>
+                        <Label text="Límite mínimo de stock:"/>
+                        <Spinner fx:id="spnLimite" prefWidth="120.0"/>
+                    </children>
+                </HBox>
+                <HBox spacing="8.0" alignment="CENTER_RIGHT">
+                    <children>
+                        <Region HBox.hgrow="ALWAYS"/>
+                        <Button text="Cancelar" onAction="#handleCancelar" fx:id="btnCancelar" styleClass="btn-secondary"/>
+                        <Button text="Guardar" onAction="#handleGuardar" styleClass="btn-primary"/>
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+    </children>
+</AnchorPane>

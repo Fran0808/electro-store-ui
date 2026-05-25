@@ -1,14 +1,111 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="CONTROLLER_NAME"
-            prefHeight="400.0" prefWidth="600.0">
-
+<AnchorPane prefHeight="600.0" prefWidth="740.0" style="-fx-background-color: #F8FAFC;" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.store.inventario.controller.productos.ProductoFormController">
+    <stylesheets>
+        <URL value="@../../styles/style.css" />
+        <URL value="@productos.css" />
+    </stylesheets>
+    <children>
+        <VBox spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <padding>
+                <Insets bottom="24.0" left="24.0" right="24.0" top="24.0" />
+            </padding>
+            <children>
+                <VBox spacing="4.0">
+                    <children>
+                        <Label styleClass="header-title" text="Añadir Nuevo Producto" />
+                        <Label styleClass="header-subtitle" text="Complete la información comercial y técnica" />
+                    </children>
+                </VBox>
+                <HBox spacing="30.0" VBox.vgrow="ALWAYS">
+                    <children>
+                        <VBox spacing="14.0" HBox.hgrow="ALWAYS">
+                            <children>
+                                <VBox spacing="6.0">
+                                    <children>
+                                        <Label style="-fx-font-weight: bold; -fx-text-fill: #334155; -fx-font-size: 13px;" text="Código del Producto / SKU *" />
+                                        <TextField fx:id="txtCodigo" prefHeight="40.0" styleClass="search-field" />
+                                    </children>
+                                </VBox>
+                                <VBox spacing="6.0">
+                                    <children>
+                                        <Label style="-fx-font-weight: bold; -fx-text-fill: #334155; -fx-font-size: 13px;" text="Nombre del Producto *" />
+                                        <TextField fx:id="txtNombre" prefHeight="40.0" styleClass="search-field" />
+                                    </children>
+                                </VBox>
+                                <VBox spacing="6.0">
+                                    <children>
+                                        <Label style="-fx-font-weight: bold; -fx-text-fill: #334155; -fx-font-size: 13px;" text="Categoría *" />
+                                        <ComboBox fx:id="cbCategoria" prefHeight="40.0" prefWidth="320.0" styleClass="filter-combo" />
+                                    </children>
+                                </VBox>
+                                <VBox spacing="6.0" VBox.vgrow="ALWAYS">
+                                    <children>
+                                        <Label style="-fx-font-weight: bold; -fx-text-fill: #334155; -fx-font-size: 13px;" text="Descripción" />
+                                        <TextArea fx:id="txtDescripcion" prefHeight="130.0" styleClass="search-field" wrapText="true" />
+                                    </children>
+                                </VBox>
+                            </children>
+                        </VBox>
+                        <VBox spacing="14.0" HBox.hgrow="ALWAYS">
+                            <children>
+                                <HBox spacing="14.0">
+                                    <children>
+                                        <VBox spacing="6.0" HBox.hgrow="ALWAYS">
+                                            <children>
+                                                <Label style="-fx-font-weight: bold; -fx-text-fill: #334155; -fx-font-size: 13px;" text="Marca" />
+                                                <TextField fx:id="txtMarca" prefHeight="40.0" styleClass="search-field" />
+                                            </children>
+                                        </VBox>
+                                        <VBox spacing="6.0" HBox.hgrow="ALWAYS">
+                                            <children>
+                                                <Label style="-fx-font-weight: bold; -fx-text-fill: #334155; -fx-font-size: 13px;" text="Modelo" />
+                                                <TextField fx:id="txtModelo" prefHeight="40.0" styleClass="search-field" />
+                                            </children>
+                                        </VBox>
+                                    </children>
+                                </HBox>
+                                <VBox spacing="6.0">
+                                    <children>
+                                        <Label style="-fx-font-weight: bold; -fx-text-fill: #334155; -fx-font-size: 13px;" text="Precio de Venta *" />
+                                        <TextField fx:id="txtPrecio" prefHeight="40.0" styleClass="search-field" />
+                                    </children>
+                                </VBox>
+                                <VBox spacing="6.0">
+                                    <children>
+                                        <Label style="-fx-font-weight: bold; -fx-text-fill: #334155; -fx-font-size: 13px;" text="Stock Inicial *" />
+                                        <TextField fx:id="txtStock" prefHeight="40.0" styleClass="search-field" />
+                                    </children>
+                                </VBox>
+                                <VBox spacing="6.0">
+                                    <children>
+                                        <Label style="-fx-font-weight: bold; -fx-text-fill: #334155; -fx-font-size: 13px;" text="Garantía (Meses)" />
+                                        <TextField fx:id="txtGarantia" prefHeight="40.0" styleClass="search-field" />
+                                    </children>
+                                </VBox>
+                            </children>
+                        </VBox>
+                    </children>
+                </HBox>
+                <HBox alignment="CENTER_RIGHT" spacing="14.0" style="-fx-padding: 10px 0 0 0;">
+                    <children>
+                        <Button fx:id="btnCancelar" onAction="#handleCancelar" prefWidth="120.0" styleClass="btn-secondary" text="Cancelar" />
+                        <Button fx:id="btnGuardar" onAction="#handleGuardar" prefWidth="150.0" styleClass="btn-primary" text="Guardar Producto" />
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+    </children>
 </AnchorPane>
