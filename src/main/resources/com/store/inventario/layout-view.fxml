@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.StackPane?>
+
+<?import javafx.scene.layout.HBox?>
+<StackPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.store.inventario.LayoutController" prefWidth="1280" prefHeight="800">
+    <HBox>
+        <fx:include source="components/sidebar.fxml" fx:id="sidebar" />
+
+        <StackPane fx:id="mainContent" HBox.hgrow="ALWAYS" />
+    </HBox>
+</StackPane>

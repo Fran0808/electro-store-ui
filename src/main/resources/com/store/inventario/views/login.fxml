@@ -13,7 +13,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CONTROLLER_NAME">
+<?import java.net.URL?>
+<AnchorPane prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.store.inventario.controller.login.LoginController">
+   <stylesheets>
+      <URL value="@../styles/style.css" />
+   </stylesheets>
    <children>
       <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" style="-fx-background-color: #F9F9F9;">
          <children>
@@ -41,7 +45,7 @@
                <children>
                   <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="554.0" prefWidth="402.0" spacing="2.0" style="-fx-border-color: #cbd5e1; -fx-background-color: #FFFFFF;">
                      <children>
-                        <Label alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="59.0" prefWidth="402.0" style="-fx-text-fill: #000000; -fx-font-size: 24x; -fx-font-weight: bold;" text="Bienvenido" textAlignment="CENTER">
+                        <Label alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="59.0" prefWidth="402.0" text="Bienvenido" textAlignment="CENTER">
                            <font>
                               <Font size="43.0" />
                            </font>
@@ -83,7 +87,7 @@
                         <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="110.0" prefWidth="293.0" spacing="20.0">
                            <children>
                               <CheckBox alignment="BOTTOM_LEFT" contentDisplay="TOP" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" prefHeight="35.0" prefWidth="292.0" text="Recordar sesión" textFill="#1b1b1d" />
-                              <Button contentDisplay="BOTTOM" mnemonicParsing="false" prefHeight="40.0" prefWidth="291.0" style="-fx-background-color: #000000; -fx-font-weight: bold; -fx-text-fill: white; -fx-border-radius: 6px;" text="Iniciar sesión" textFill="WHITE" />
+                              <Button fx:id="btnLogin" contentDisplay="BOTTOM" mnemonicParsing="false" prefHeight="40.0" prefWidth="291.0" style="-fx-background-color: #000000; -fx-font-weight: bold; -fx-text-fill: white; -fx-border-radius: 6px;" text="Iniciar sesión" textFill="WHITE" onAction="#handleLogging"/>
                            </children>
                         </VBox>
                         <HBox alignment="BOTTOM_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="54.0" prefWidth="287.0">
