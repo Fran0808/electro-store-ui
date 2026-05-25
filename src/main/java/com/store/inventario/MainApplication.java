@@ -11,7 +11,7 @@ public class MainApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader loader = new FXMLLoader(
-                MainApplication.class.getResource("main-view.fxml")
+                MainApplication.class.getResource("views/login.fxml")
         );
         Scene scene = new Scene(loader.load());
         stage.setTitle("Sistema de Inventario");
