@@ -125,7 +125,7 @@
                   </VBox>
                   <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" nodeOrientation="RIGHT_TO_LEFT" prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #2D2F31;">
                      <children>
-                        <Hyperlink alignment="CENTER_RIGHT" contentDisplay="CENTER" prefHeight="26.0" prefWidth="180.0" style="-fx-text-fill: white;" text="Usuario" onAction="#handleUsuarios">
+                        <Hyperlink alignment="CENTER_RIGHT" contentDisplay="CENTER" prefHeight="26.0" prefWidth="180.0" style="-fx-text-fill: white;" text="Empleados" onAction="#handleEmpleados">
                            <font>
                               <Font size="14.0" />
                            </font>

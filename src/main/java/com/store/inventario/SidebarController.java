@@ -29,8 +29,8 @@ public class SidebarController {
         NavigationManager.getInstance().navegar("/com/store/inventario/views/ventas/ventas.fxml");
     }
     @FXML
-    private void handleUsuarios(){
-        NavigationManager.getInstance().navegar("/com/store/inventario/views/usuarios/usuarios.fxml");
+    private void handleEmpleados(){
+        NavigationManager.getInstance().navegar("/com/store/inventario/views/empleados/empleados.fxml");
     }
     @FXML private VBox subMenuInventario;
 
