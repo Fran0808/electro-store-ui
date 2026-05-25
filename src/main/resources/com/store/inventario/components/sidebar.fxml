@@ -10,7 +10,7 @@
 <?import javafx.scene.text.Font?>
 
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="240.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CONTROLLER_NAME">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="240.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.store.inventario.SidebarController">
    <children>
       <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="240.0" style="-fx-background-color: #2D2F31;">
          <padding>
@@ -27,7 +27,7 @@
                <children>
                   <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" nodeOrientation="RIGHT_TO_LEFT" prefHeight="40.0" prefWidth="188.0" style="-fx-background-color: #2D2F31;">
                      <children>
-                        <Hyperlink alignment="CENTER_RIGHT" contentDisplay="CENTER" prefHeight="26.0" prefWidth="180.0" style="-fx-text-fill: white;" text="Dashboard">
+                        <Hyperlink alignment="CENTER_RIGHT" contentDisplay="CENTER" prefHeight="26.0" prefWidth="180.0" style="-fx-text-fill: white;" text="Dashboard" onAction="#handleDashboard">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -37,7 +37,7 @@
                   </HBox>
                   <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" nodeOrientation="RIGHT_TO_LEFT" prefHeight="40.0" prefWidth="186.0" style="-fx-background-color: #2D2F31;">
                      <children>
-                        <Hyperlink alignment="CENTER_RIGHT" contentDisplay="CENTER" prefHeight="26.0" prefWidth="180.0" style="-fx-text-fill: white;" text="Productos">
+                        <Hyperlink alignment="CENTER_RIGHT" contentDisplay="CENTER" prefHeight="26.0" prefWidth="180.0" style="-fx-text-fill: white;" text="Productos" onAction="#handleProductos">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -47,7 +47,7 @@
                   </HBox>
                   <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" nodeOrientation="RIGHT_TO_LEFT" prefHeight="40.0" prefWidth="188.0" style="-fx-background-color: #2D2F31;">
                      <children>
-                        <Hyperlink alignment="CENTER_RIGHT" contentDisplay="CENTER" prefHeight="32.0" prefWidth="180.0" style="-fx-text-fill: white;" text="Clientes">
+                        <Hyperlink alignment="CENTER_RIGHT" contentDisplay="CENTER" prefHeight="32.0" prefWidth="180.0" style="-fx-text-fill: white;" text="Clientes" onAction="#handleClientes">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -57,7 +57,7 @@
                   </HBox>
                   <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" nodeOrientation="RIGHT_TO_LEFT" prefHeight="40.0" prefWidth="188.0" style="-fx-background-color: #2D2F31;">
                      <children>
-                        <Hyperlink alignment="CENTER_RIGHT" contentDisplay="CENTER" prefHeight="26.0" prefWidth="180.0" style="-fx-text-fill: white;" text="Proveedores">
+                        <Hyperlink alignment="CENTER_RIGHT" contentDisplay="CENTER" prefHeight="26.0" prefWidth="180.0" style="-fx-text-fill: white;" text="Proveedores" onAction="#handleProveedores">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -67,7 +67,7 @@
                   </HBox>
                   <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" nodeOrientation="RIGHT_TO_LEFT" prefHeight="40.0" prefWidth="188.0" style="-fx-background-color: #2D2F31;">
                      <children>
-                        <Hyperlink alignment="CENTER_RIGHT" contentDisplay="CENTER" prefHeight="26.0" prefWidth="180.0" style="-fx-text-fill: white;" text="Compras">
+                        <Hyperlink alignment="CENTER_RIGHT" contentDisplay="CENTER" prefHeight="26.0" prefWidth="180.0" style="-fx-text-fill: white;" text="Compras" onAction="#handleCompras">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -77,7 +77,7 @@
                   </HBox>
                   <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" nodeOrientation="RIGHT_TO_LEFT" prefHeight="40.0" prefWidth="188.0" style="-fx-background-color: #2D2F31;">
                      <children>
-                        <Hyperlink alignment="CENTER_RIGHT" contentDisplay="CENTER" prefHeight="26.0" prefWidth="180.0" style="-fx-text-fill: white;" text="Ventas">
+                        <Hyperlink alignment="CENTER_RIGHT" contentDisplay="CENTER" prefHeight="26.0" prefWidth="180.0" style="-fx-text-fill: white;" text="Ventas" onAction="#handleVentas">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -87,7 +87,7 @@
                   </HBox>
                   <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" nodeOrientation="RIGHT_TO_LEFT" prefHeight="40.0" prefWidth="190.0" style="-fx-background-color: #2D2F31;">
                      <children>
-                        <Hyperlink alignment="CENTER_RIGHT" contentDisplay="CENTER" prefHeight="26.0" prefWidth="180.0" style="-fx-text-fill: white;" text="Inventario">
+                        <Hyperlink alignment="CENTER_RIGHT" contentDisplay="CENTER" prefHeight="26.0" prefWidth="180.0" style="-fx-text-fill: white;" text="Inventario" fx:id="lnkInventario" onAction="#handleInventario">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -95,9 +95,37 @@
                         <ImageView fitHeight="28.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true" />
                      </children>
                   </HBox>
+                  <VBox fx:id="subMenuInventario" visible="false" managed="false" style="-fx-background-color: #2D2F31;">
+                     <children>
+                        <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" nodeOrientation="RIGHT_TO_LEFT" prefHeight="40.0" prefWidth="190.0" style="-fx-background-color: #2D2F31;">
+                           <children>
+                              <Hyperlink alignment="CENTER_RIGHT" contentDisplay="CENTER" prefHeight="26.0" prefWidth="180.0" style="-fx-text-fill: #A0AEC0; -fx-padding: 0 0 0 20;" text="Alertas" onAction="#handleAlertas">
+                                 <font><Font size="13.0" /></font>
+                              </Hyperlink>
+                              <ImageView fitHeight="28.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </HBox>
+                        <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" nodeOrientation="RIGHT_TO_LEFT" prefHeight="40.0" prefWidth="190.0" style="-fx-background-color: #2D2F31;">
+                           <children>
+                              <Hyperlink alignment="CENTER_RIGHT" contentDisplay="CENTER" prefHeight="26.0" prefWidth="180.0" style="-fx-text-fill: #A0AEC0; -fx-padding: 0 0 0 20;" text="Movimientos" onAction="#handleMovimientos">
+                                 <font><Font size="13.0" /></font>
+                              </Hyperlink>
+                              <ImageView fitHeight="28.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </HBox>
+                        <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" nodeOrientation="RIGHT_TO_LEFT" prefHeight="40.0" prefWidth="190.0" style="-fx-background-color: #2D2F31;">
+                           <children>
+                              <Hyperlink alignment="CENTER_RIGHT" contentDisplay="CENTER" prefHeight="26.0" prefWidth="180.0" style="-fx-text-fill: #A0AEC0; -fx-padding: 0 0 0 20;" text="Guías" onAction="#handleGuias">
+                                 <font><Font size="13.0" /></font>
+                              </Hyperlink>
+                              <ImageView fitHeight="28.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
                   <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" nodeOrientation="RIGHT_TO_LEFT" prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #2D2F31;">
                      <children>
-                        <Hyperlink alignment="CENTER_RIGHT" contentDisplay="CENTER" prefHeight="26.0" prefWidth="180.0" style="-fx-text-fill: white;" text="Usuario">
+                        <Hyperlink alignment="CENTER_RIGHT" contentDisplay="CENTER" prefHeight="26.0" prefWidth="180.0" style="-fx-text-fill: white;" text="Usuario" onAction="#handleUsuarios">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -107,7 +135,7 @@
                   </HBox>
                </children>
             </VBox>
-            <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" nodeOrientation="RIGHT_TO_LEFT" prefHeight="39.0" prefWidth="211.0" style="-fx-background-color: #2D2F31; -fx-border-color: whiute;">
+            <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" nodeOrientation="RIGHT_TO_LEFT" prefHeight="39.0" prefWidth="211.0" style="-fx-background-color: #2D2F31;">
                <children>
                   <Hyperlink alignment="CENTER_RIGHT" contentDisplay="CENTER" prefHeight="41.0" prefWidth="167.0" style="-fx-text-fill: white;" text="Ajustes">
                      <font>
