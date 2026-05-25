@@ -61,13 +61,12 @@
 
                </TableView>
 
-               <HBox alignment="CENTER_RIGHT" spacing="10.0" styleClass="pagination-container">
-                  <Label text="Mostrando 1 a 10 de ** registros" styleClass="pagination-summary" />
-                  <Button styleClass="btn-secondary" text="Anterior" />
-                  <Button styleClass="btn-secondary" text="1" />
-                  <Button styleClass="btn-secondary" text="2" />
-                  <Button styleClass="btn-secondary" text="3" />
-                  <Button styleClass="btn-secondary" text="Siguiente" />
+               <HBox alignment="CENTER_LEFT" spacing="20" styleClass="pagination-container">
+                  <Label fx:id="lblResumenPaginacion" maxWidth="Infinity" styleClass="pagination-summary" text="Mostrando 1-10 de ** proveedores" HBox.hgrow="ALWAYS" />
+                  <HBox alignment="CENTER_RIGHT" spacing="8">
+                     <Button fx:id="btnAnterior" styleClass="btn-secondary" text="Anterior" />
+                     <Button fx:id="btnSiguiente" styleClass="btn-secondary" text="Siguiente" />
+                  </HBox>
                </HBox>
          </VBox>
 
