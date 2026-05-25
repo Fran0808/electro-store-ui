@@ -293,3 +293,61 @@
     -fx-font-size: 13px;
     -fx-font-family: "Inter", "Segoe UI", sans-serif;
 }
+
+.text-field {
+    -fx-background-color: #F8FAFC;
+    -fx-border-color: #E2E8F0;
+    -fx-border-width: 1px;
+    -fx-background-radius: 4px;
+    -fx-border-radius: 4px;
+    -fx-padding: 10px 14px;
+    -fx-font-size: 13px;
+    -fx-text-fill: #0F172A;
+    -fx-prompt-text-fill: #94A3B8;
+    -fx-font-family: "Inter", "Segoe UI", sans-serif;
+}
+
+.text-field:focused {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #0F172A;
+}
+
+.text-area {
+    -fx-background-color: #F8FAFC;
+    -fx-border-color: #E2E8F0;
+    -fx-border-width: 1px;
+    -fx-background-radius: 4px;
+    -fx-border-radius: 4px;
+    -fx-padding: 10px 14px;
+    -fx-font-size: 13px;
+    -fx-text-fill: #0F172A;
+    -fx-font-family: "Inter", "Segoe UI", sans-serif;
+    -fx-wrap-text: true;
+}
+
+.text-area:focused {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #0F172A;
+}
+
+.text-area .text {
+    -fx-padding: 4px 0 0 0;
+}
+
+.text-area .content {
+    -fx-padding: 0;
+    -fx-background-color: transparent;
+    -fx-border-width: 0;
+}
+
+.disabled-field {
+    -fx-background-color: #F1F5F9;
+    -fx-border-color: #CBD5E1;
+    -fx-border-width: 1px;
+    -fx-background-radius: 4px;
+    -fx-border-radius: 4px;
+    -fx-padding: 10px 14px;
+    -fx-font-size: 13px;
+    -fx-text-fill: #64748B;
+    -fx-font-family: "Inter", "Segoe UI", sans-serif;
+}
