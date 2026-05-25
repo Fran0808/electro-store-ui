@@ -5,59 +5,60 @@
 <AnchorPane
         xmlns="http://javafx.com/javafx"
         xmlns:fx="http://javafx.com/fxml"
-        fx:controller="a"
+        fx:controller="com.store.inventario.controller.compra.CompraFormController"
         stylesheets="@../../styles/style.css"
-        prefHeight="620.0"
-        prefWidth="500.0">
+        prefHeight="650.0"
+        prefWidth="1000.0"
+        styleClass="root">
 
     <children>
-        <VBox spacing="25.0" styleClass="modal-container" AnchorPane.bottomAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.topAnchor="0">
+        <VBox spacing="24.0" styleClass="modal-container" AnchorPane.bottomAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.topAnchor="0">
 
             <padding>
-                <Insets top="30" right="30" left="30" bottom="30"/>
+                <Insets top="28" right="28" left="28" bottom="28"/>
             </padding>
 
-            <VBox spacing="10">
-                <Label fx:id="lblTitulo" text="Productos" styleClass="header-title"/>
-                <Label text="Selecciona el producto y agregalo" styleClass="header-subtitle"/>
+            <VBox spacing="6">
+                <Label text="Seleccionar Productos" styleClass="header-title"/>
+                <Label text="Busca y selecciona los productos para agregarlos a la compra" styleClass="header-subtitle"/>
             </VBox>
 
-            <VBox spacing="20">
-                <VBox spacing = "6">
-                    <Label text="Proveedor"/>
-                    <ComboBox fx:id="" promptText="Seleccione un proveedor"/>
+            <HBox spacing="12" alignment="CENTER_LEFT">
+                <TextField fx:id="txtBuscarProducto" promptText="Buscar producto..." styleClass="search-field" HBox.hgrow="ALWAYS"/>
+                <ComboBox fx:id="cbProveedor" promptText="Proveedor" styleClass="filter-combo"/>
+                <ComboBox fx:id="cbMarca" promptText="Marca" styleClass="filter-combo"/>
+                <ComboBox fx:id="cbCategoria" promptText="Categoría" styleClass="filter-combo"/>
+                <ComboBox fx:id="cbModelo" promptText="Modelo" styleClass="filter-combo"/>
+            </HBox>
+
+            <HBox spacing="20" VBox.vgrow="ALWAYS">
+                <VBox spacing="10" HBox.hgrow="ALWAYS">
+                    <Label text="PRODUCTOS DISPONIBLES" styleClass="metric-label"/>
+                        <TableView fx:id="tblProductos" styleClass="table-view" VBox.vgrow="ALWAYS" prefHeight="350">
+                            <columns>
+                                <TableColumn prefWidth="250" text="Producto"/>
+                                <TableColumn prefWidth="100" text="Stock"/>
+                                <TableColumn prefWidth="100" text="Agregar"/>
+                            </columns>
+                        </TableView>
                 </VBox>
-                <ComboBox promptText="Marca" styleClass="filter-combo"/>
-                <ComboBox promptText="Categoría" styleClass="filter-combo"/>
-                <ComboBox promptText="Modelo" styleClass="filter-combo"/>
-            </VBox>
 
-            <VBox>
-                <Label text="Productos"/>
-                <VBox>
-                    <TableView fx:id="" styleClass="table-view" VBox.vgrow="ALWAYS">
+                <VBox spacing="10" HBox.hgrow="ALWAYS">
+                    <Label text="Productos Seleccionados" styleClass="metric-label"/>
+                    <TableView fx:id="tblProductosSeleccionados" styleClass="table-view" VBox.vgrow="ALWAYS" prefHeight="350">
                         <columns>
-                            <TableColumn prefWidth="80" text="Producto"/>
-                            <TableColumn prefWidth="80" text=""/> <!-- En esta columna irá el icono de tacho para Agregar -->
+                            <TableColumn prefWidth="220" text="Producto"/>
+                            <TableColumn prefWidth="100" text="Cantidad"/>
+                            <TableColumn prefWidth="120" text="Precio"/>
+                            <TableColumn prefWidth="100" text="Eliminar"/>
                         </columns>
                     </TableView>
                 </VBox>
-            </VBox>
-            <VBox>
-                <Label text="Productos Seleccionados"/>
-                <VBox>
-                    <TableView fx:id="" styleClass="table-view" VBox.vgrow="ALWAYS">
-                        <columns>
-                            <TableColumn prefWidth="80" text="Producto"/>
-                            <TableColumn prefWidth="80" text=""/> <!-- En esta columna irá el icono de tacho para eliminar -->
-                        </columns>
-                    </TableView>
-                </VBox>
-            </VBox>
+            </HBox>
 
-            <HBox spacing="12">
-                <Button text="Cancelar" styleClass="btn-secondary" HBox.hgrow="ALWAYS" maxWidth="Infinity" fx:id="btnCancelar" onAction="#cerrarModal"/>
-                <Button text="Registrar" styleClass="btn-secondary" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+            <HBox spacing="12" alignment="CENTER_RIGHT">
+                <Button text="Cancelar" styleClass="btn-secondary" fx:id="btnCancelar" onAction="#cerrarModal"/>
+                <Button text="Registrar" styleClass="btn-secondary" maxWidth="Infinity"/>
             </HBox>
         </VBox>
     </children>

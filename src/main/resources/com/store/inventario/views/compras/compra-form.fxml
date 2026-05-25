@@ -46,7 +46,7 @@
             <HBox>
                 <Label text="Detalle de Productos" styleClass="metric-label"/>
                 <Region HBox.hgrow="ALWAYS"/>
-                <Button text="Agregar Producto" styleClass="btn-secondary"/>
+                <Button text="Agregar Producto" styleClass="btn-secondary" onAction="#abrirModalAgregarProductos"/>
             </HBox>
 
             <TableView fx:id="tblDetalleCompra" styleClass="table-view" VBox.vgrow="ALWAYS" prefHeight="280">
