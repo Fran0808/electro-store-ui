@@ -6,7 +6,7 @@ import javafx.scene.layout.VBox;
 public class SidebarController {
     @FXML
     private void handleDashboard(){
-        NavigationManager.getInstance().navegar("/com/store/inventario/views/dashboard.fxml");
+        NavigationManager.getInstance().navegar("/com/store/inventario/placeholder.fxml");
     }
     @FXML
     private void handleProductos(){
@@ -14,7 +14,7 @@ public class SidebarController {
     }
     @FXML
     private void handleClientes(){
-        NavigationManager.getInstance().navegar("/com/store/inventario/views/clientes/clientes.fxml");
+        NavigationManager.getInstance().navegar("/com/store/inventario/placeholder.fxml");
     }
     @FXML
     private void handleProveedores(){
