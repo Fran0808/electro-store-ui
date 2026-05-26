@@ -14,7 +14,7 @@ public class SidebarController {
     }
     @FXML
     private void handleClientes(){
-        NavigationManager.getInstance().navegar("/com/store/inventario/placeholder.fxml");
+        NavigationManager.getInstance().navegar("/com/store/inventario/views/clientes/clientes.fxml");
     }
     @FXML
     private void handleProveedores(){
