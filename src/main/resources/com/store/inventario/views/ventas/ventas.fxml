@@ -39,7 +39,7 @@
                     </StackPane>
                     <VBox spacing="2">
                         <Label styleClass="metric-label" text="Ventas de Hoy" />
-                        <Label fx:id="lblVendidoHoy" styleClass="metric-value" text="\$4,820.00" />
+                        <Label fx:id="lblVendidoHoy" styleClass="metric-value" text="S/ 4,820.00" />
                     </VBox>
                 </HBox>
 
@@ -59,7 +59,7 @@
                     </StackPane>
                     <VBox spacing="2">
                         <Label styleClass="metric-label" text="Ticket Promedio" />
-                        <Label fx:id="lblTicketPromedio" styleClass="metric-value" text="\$126.84" />
+                        <Label fx:id="lblTicketPromedio" styleClass="metric-value" text="S/ 126.84" />
                     </VBox>
                 </HBox>
             </HBox>

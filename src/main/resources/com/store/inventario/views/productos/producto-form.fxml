@@ -48,7 +48,12 @@
                                 <VBox spacing="6.0">
                                     <children>
                                         <Label style="-fx-font-weight: bold; -fx-text-fill: #334155; -fx-font-size: 13px;" text="Categoría *" />
-                                        <ComboBox fx:id="cbCategoria" prefHeight="40.0" prefWidth="320.0" styleClass="filter-combo" />
+                                        <HBox alignment="CENTER_LEFT" spacing="8.0">
+                                            <children>
+                                                <ComboBox fx:id="cbCategoria" prefHeight="40.0" prefWidth="270.0" styleClass="filter-combo" />
+                                                <Button fx:id="btnNuevaCategoria" onAction="#handleNuevaCategoria" prefHeight="40.0" prefWidth="42.0" styleClass="btn-primary" text="+" />
+                                            </children>
+                                        </HBox>
                                     </children>
                                 </VBox>
                                 <VBox spacing="6.0" VBox.vgrow="ALWAYS">

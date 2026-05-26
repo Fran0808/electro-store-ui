@@ -74,4 +74,39 @@ public class ProductoFormController {
         Stage stage = (Stage) btnCancelar.getScene().getWindow();
         stage.close();
     }
+
+    @FXML
+    private void handleNuevaCategoria() {
+        try {
+            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(getClass().getResource("/com/store/inventario/views/productos/categoria-form-modal.fxml"));
+            javafx.scene.Parent root = loader.load();
+
+            Stage modal = new Stage();
+            modal.initModality(javafx.stage.Modality.APPLICATION_MODAL);
+            modal.setTitle("Nueva Categoría");
+            modal.setScene(new javafx.scene.Scene(root));
+
+            CategoriaFormModalController controller = loader.getController();
+            modal.showAndWait();
+
+            if (controller.isGuardado()) {
+                String cat = controller.getCategoriaNombre().trim();
+                if (!cat.isEmpty()) {
+                    if (!cbCategoria.getItems().contains(cat)) {
+                        cbCategoria.getItems().add(cat);
+                        cbCategoria.setValue(cat);
+                    } else {
+                        cbCategoria.setValue(cat);
+                    }
+                }
+            }
+        } catch (java.io.IOException e) {
+            e.printStackTrace();
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("No se pudo cargar la vista");
+            alert.setContentText("Ocurrió un error al intentar abrir el formulario de categorías.");
+            alert.showAndWait();
+        }
+    }
 }
