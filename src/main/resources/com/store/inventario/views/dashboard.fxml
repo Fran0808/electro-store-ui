@@ -1,14 +1,173 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import java.net.URL?>
+<?import javafx.scene.chart.AreaChart?>
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<!-- PieChart removed: using BarChart for stock distribution -->
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="CONTROLLER_NAME"
-            prefHeight="400.0" prefWidth="600.0">
+<?import javafx.scene.layout.FlowPane?>
+<AnchorPane prefHeight="800.0" prefWidth="1040.0" styleClass="root" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.store.inventario.controller.DashboardController">
+
+    <stylesheets>
+        <URL value="@../styles/style.css" />
+    </stylesheets>
+
+    <VBox spacing="24.0" styleClass="view-container" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
+
+        <VBox spacing="5">
+            <Label styleClass="header-title" text="Dashboard" />
+            <Label styleClass="header-subtitle" text="Resumen ejecutivo del inventario y operaciones" />
+        </VBox>
+
+        <ScrollPane fitToWidth="true" style="-fx-control-inner-background: #0e0f14; -fx-fit-to-width: true; -fx-padding: 0;" VBox.vgrow="ALWAYS">
+            <VBox spacing="24" style="-fx-padding: 0 20 20 0;">
+                <VBox spacing="8">
+                    <HBox spacing="16" styleClass="metrics-container">
+                        <VBox spacing="8" styleClass="metric-card" HBox.hgrow="ALWAYS">
+                            <Label styleClass="metric-label" text="Valor Total Inventario" />
+                            <Label fx:id="lblValorInventario" styleClass="metric-value" text="S/ 125,450.00" />
+                            <Label styleClass="header-subtitle" text="Stock actual valorizado" />
+                        </VBox>
+
+                        <VBox spacing="8" styleClass="metric-card" HBox.hgrow="ALWAYS">
+                            <Label styleClass="metric-label" text="Total de Productos" />
+                            <Label fx:id="lblTotalProductos" styleClass="metric-value" text="1,284" />
+                            <Label styleClass="header-subtitle" text="Unidades en almacén" />
+                        </VBox>
+
+                        <VBox spacing="8" styleClass="metric-card" HBox.hgrow="ALWAYS">
+                            <Label styleClass="metric-label" text="Stock Bajo" />
+                            <Label fx:id="lblStockCritico" styleClass="metric-value" text="42" />
+                            <Label styleClass="header-subtitle" text="Requieren reorden" />
+                        </VBox>
+
+                        <VBox spacing="8" styleClass="metric-card" HBox.hgrow="ALWAYS">
+                            <Label styleClass="metric-label" text="Rotación (últimos 30d)" />
+                            <Label fx:id="lblRotacionPromedio" styleClass="metric-value" text="2.4x" />
+                            <Label styleClass="header-subtitle" text="Veces vendido el stock" />
+                        </VBox>
+
+                    </HBox>
+                </VBox>
+
+                <HBox spacing="16">
+                    <VBox spacing="8" styleClass="card" HBox.hgrow="ALWAYS">
+                        <HBox alignment="CENTER_LEFT" spacing="8">
+                            <Label styleClass="card-title" text="Tendencia: Ventas vs Compras" />
+                            <ComboBox fx:id="cbPeriodoVentas" promptText="Últimos 14 días" style="-fx-max-width: 150" styleClass="filter-combo" />
+                        </HBox>
+                        <LineChart fx:id="chartVentasCompras" legendVisible="true" style="-fx-padding: 10;" VBox.vgrow="ALWAYS" prefHeight="520">
+                            <xAxis>
+                                <CategoryAxis side="BOTTOM" tickLabelRotation="0" />
+                            </xAxis>
+                            <yAxis>
+                                <NumberAxis side="LEFT" />
+                            </yAxis>
+                        </LineChart>
+                    </VBox>
+
+                    <VBox spacing="8" styleClass="card" HBox.hgrow="ALWAYS">
+                        <HBox alignment="CENTER_LEFT" spacing="8">
+                            <Label styleClass="card-title" text="Top 5 Productos Vendidos" />
+                            <ComboBox fx:id="cbPeriodoProductos" promptText="Último mes" style="-fx-max-width: 150" styleClass="filter-combo" />
+                        </HBox>
+                        <BarChart fx:id="chartTopProductos" legendVisible="true" style="-fx-padding: 10;" VBox.vgrow="ALWAYS" prefHeight="520">
+                            <xAxis>
+                                <CategoryAxis side="BOTTOM" tickLabelRotation="0" />
+                            </xAxis>
+                            <yAxis>
+                                <NumberAxis side="LEFT" />
+                            </yAxis>
+                        </BarChart>
+                    </VBox>
+                </HBox>
+
+                <HBox spacing="16" style="-fx-min-height: 550;">
+
+                    <VBox spacing="8" styleClass="card" HBox.hgrow="ALWAYS">
+                        <Label styleClass="card-title" text="Distribución de Stock por Categoría" />
+                        <BarChart fx:id="chartStockCategoria" legendVisible="false" style="-fx-padding: 20;" VBox.vgrow="ALWAYS" prefHeight="520">
+                            <xAxis>
+                                <CategoryAxis side="BOTTOM" tickLabelRotation="0" tickLabelsVisible="false" />
+                            </xAxis>
+                            <yAxis>
+                                <NumberAxis side="LEFT" />
+                            </yAxis>
+                        </BarChart>
+                        <FlowPane hgap="16" vgap="8" prefWrapLength="420" alignment="CENTER" style="-fx-padding: 8 0 12 0;">
+                            <HBox spacing="6" alignment="CENTER">
+                                <Region style="-fx-background-color: #F97316; -fx-min-width: 16; -fx-min-height: 12; -fx-border-radius: 2; -fx-background-radius: 2;" />
+                                <Label text="Electrodomésticos Grandes" />
+                            </HBox>
+                            <HBox spacing="6" alignment="CENTER">
+                                <Region style="-fx-background-color: #F59E0B; -fx-min-width: 16; -fx-min-height: 12; -fx-border-radius: 2; -fx-background-radius: 2;" />
+                                <Label text="Electrónica" />
+                            </HBox>
+                            <HBox spacing="6" alignment="CENTER">
+                                <Region style="-fx-background-color: #10B981; -fx-min-width: 16; -fx-min-height: 12; -fx-border-radius: 2; -fx-background-radius: 2;" />
+                                <Label text="Pequeños Electrodomésticos" />
+                            </HBox>
+                            <HBox spacing="6" alignment="CENTER">
+                                <Region style="-fx-background-color: #3B82F6; -fx-min-width: 16; -fx-min-height: 12; -fx-border-radius: 2; -fx-background-radius: 2;" />
+                                <Label text="Accesorios" />
+                            </HBox>
+                            <HBox spacing="6" alignment="CENTER">
+                                <Region style="-fx-background-color: #6366F1; -fx-min-width: 16; -fx-min-height: 12; -fx-border-radius: 2; -fx-background-radius: 2;" />
+                                <Label text="Otros" />
+                            </HBox>
+                        </FlowPane>
+                    </VBox>
+
+                    <VBox spacing="8" styleClass="card" HBox.hgrow="ALWAYS">
+                        <HBox alignment="CENTER_LEFT" spacing="8">
+                            <Label styleClass="card-title" text="Análisis de Rotación (14 días)" />
+                            <ComboBox fx:id="cbPeriodoRotacion" promptText="Últimas 2 semanas" style="-fx-max-width: 150" styleClass="filter-combo" />
+                        </HBox>
+                        <AreaChart fx:id="chartRotacion" legendVisible="true" VBox.vgrow="ALWAYS">
+                            <xAxis>
+                                <CategoryAxis side="BOTTOM" />
+                            </xAxis>
+                            <yAxis>
+                                <NumberAxis side="LEFT" />
+                            </yAxis>
+                        </AreaChart>
+                    </VBox>
+                </HBox>
+                <VBox spacing="8">
+                    <HBox alignment="CENTER_LEFT" spacing="8">
+                        <Label styleClass="section-title" text="ALERTAS CRÍTICAS" />
+                        <Button fx:id="btnVerTodasAlertas" style="-fx-font-size: 11;" styleClass="btn-secondary" text="Ver todas" />
+                    </HBox>
+
+                    <TableView fx:id="tblAlertasCriticas" prefHeight="200" styleClass="table-view">
+                        <columns>
+                            <TableColumn fx:id="colProducto" prefWidth="250" text="Producto" />
+                            <TableColumn fx:id="colStock" prefWidth="80" text="Stock Actual" />
+                            <TableColumn fx:id="colLimite" prefWidth="80" text="Límite" />
+                            <TableColumn fx:id="colProveedor" prefWidth="200" text="Proveedor" />
+                            <TableColumn fx:id="colAccion" prefWidth="150" text="Acción" />
+                        </columns>
+                    </TableView>
+                </VBox>
+
+                <Region style="-fx-min-height: 20;" VBox.vgrow="ALWAYS" />
+
+            </VBox>
+        </ScrollPane>
+
+    </VBox>
 
 </AnchorPane>
