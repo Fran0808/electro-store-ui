@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.store.inventario.controller.login.LoginController">
+<AnchorPane prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.store.inventario.controller.login.LoginController">
    <stylesheets>
       <URL value="@../styles/style.css" />
    </stylesheets>
@@ -35,7 +35,7 @@
                      <children>
                         <VBox alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="59.0" prefWidth="87.0">
                            <children>
-                              <ImageView fitHeight="40.0" fitWidth="62.0" pickOnBounds="true" preserveRatio="true" style="-fx-opacity: #F3F0F2;">
+                              <ImageView fitHeight="40.0" fitWidth="62.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../../../../../../../../Downloads/imagen_login.png" />
                                  </image>
