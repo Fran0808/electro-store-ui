@@ -41,13 +41,13 @@
                                 <VBox spacing="6.0">
                                     <children>
                                         <Label style="-fx-font-weight: bold; -fx-text-fill: #334155; -fx-font-size: 13px;" text="Código de Venta *" />
-                                        <TextField fx:id="txtCodigoVenta" prefHeight="40.0" styleClass="search-field" />
+                                        <TextField fx:id="txtCodigoVenta" prefHeight="40.0" styleClass="search-field" VBox.vgrow="NEVER" />
                                     </children>
                                 </VBox>
                                 <VBox spacing="6.0">
                                     <children>
                                         <Label style="-fx-font-weight: bold; -fx-text-fill: #334155; -fx-font-size: 13px;" text="Cliente" />
-                                        <ComboBox fx:id="cbCliente" prefHeight="40.0" prefWidth="320.0" styleClass="filter-combo" />
+                                        <ComboBox fx:id="cbCliente" maxWidth="1.7976931348623157E308" prefHeight="40.0" prefWidth="320.0" styleClass="filter-combo" VBox.vgrow="NEVER" />
                                     </children>
                                 </VBox>
                             </children>
@@ -57,13 +57,13 @@
                                 <VBox spacing="6.0">
                                     <children>
                                         <Label style="-fx-font-weight: bold; -fx-text-fill: #334155; -fx-font-size: 13px;" text="Vendedor *" />
-                                        <ComboBox fx:id="cbVendedor" prefHeight="40.0" prefWidth="320.0" styleClass="filter-combo" />
+                                        <ComboBox fx:id="cbVendedor" maxWidth="1.7976931348623157E308" prefHeight="40.0" prefWidth="320.0" styleClass="filter-combo" VBox.vgrow="NEVER" />
                                     </children>
                                 </VBox>
                                 <VBox spacing="6.0">
                                     <children>
                                         <Label style="-fx-font-weight: bold; -fx-text-fill: #334155; -fx-font-size: 13px;" text="Fecha de Venta *" />
-                                        <DatePicker fx:id="dpFechaVenta" prefHeight="40.0" prefWidth="320.0" styleClass="search-field" />
+                                        <DatePicker fx:id="dpFechaVenta" maxWidth="1.7976931348623157E308" prefHeight="40.0" prefWidth="320.0" VBox.vgrow="NEVER" />
                                     </children>
                                 </VBox>
                             </children>
@@ -76,18 +76,18 @@
                 <VBox spacing="10.0">
                     <children>
                         <Label style="-fx-font-weight: bold; -fx-text-fill: #0F172A; -fx-font-size: 15px;" text="Detalle de Productos" />
-                        <HBox alignment="CENTER_LEFT" spacing="12.0">
+                        <HBox alignment="BOTTOM_LEFT" spacing="12.0">
                             <children>
-                        <VBox prefHeight="38.0" prefWidth="150.0">
-                           <children>
-                              <Label style="-fx-text-fill: #64748B; -fx-font-size: 11px;" text="Buscar Producto" />
-                                      <ComboBox fx:id="cbProducto" prefHeight="40.0" prefWidth="191.0" styleClass="filter-combo" />
-                           </children>
-                        </VBox>
+                                <VBox spacing="2.0" HBox.hgrow="ALWAYS">
+                                    <children>
+                                        <Label style="-fx-text-fill: #64748B; -fx-font-size: 11px;" text="Buscar Producto" />
+                                        <ComboBox fx:id="cbProducto" maxWidth="1.7976931348623157E308" prefHeight="40.0" styleClass="filter-combo" />
+                                    </children>
+                                </VBox>
                                 <VBox spacing="2.0">
                                     <children>
                                         <Label style="-fx-text-fill: #64748B; -fx-font-size: 11px;" text="Cantidad" />
-                                        <Spinner fx:id="spnCantidad" prefHeight="40.0" prefWidth="100.0" styleClass="search-field" />
+                                        <Spinner fx:id="spnCantidad" prefHeight="40.0" prefWidth="100.0" />
                                     </children>
                                 </VBox>
                                 <VBox spacing="2.0">
@@ -96,7 +96,7 @@
                                         <TextField fx:id="txtPrecioUnitario" prefHeight="40.0" prefWidth="130.0" promptText="0.00" styleClass="search-field" />
                                     </children>
                                 </VBox>
-                                <Button fx:id="btnAgregarProducto" onAction="#handleAgregarProducto" styleClass="btn-primary" text="Agregar" />
+                                <Button fx:id="btnAgregarProducto" onAction="#handleAgregarProducto" prefHeight="40.0" styleClass="btn-primary" text="Agregar" />
                             </children>
                         </HBox>
                     </children>
