@@ -73,7 +73,7 @@
                               <Font size="14.0" />
                            </font>
                         </Label>
-                        <TextField alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" nodeOrientation="LEFT_TO_RIGHT" prefHeight="48.0" prefWidth="340.0" promptText="eje.juan.perez" style="-fx-background-color: white;">
+                        <TextField fx:id="txtUsuario" alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" nodeOrientation="LEFT_TO_RIGHT" prefHeight="48.0" prefWidth="340.0" promptText="eje.juan.perez" style="-fx-background-color: white;">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -92,7 +92,7 @@
                               </Label>
                            </children>
                         </HBox>
-                        <PasswordField alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" nodeOrientation="LEFT_TO_RIGHT" prefHeight="48.0" prefWidth="340.0" promptText="********" style="-fx-background-color: white;">
+                        <PasswordField fx:id="txtPassword" alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" nodeOrientation="LEFT_TO_RIGHT" prefHeight="48.0" prefWidth="340.0" promptText="********" style="-fx-background-color: white;">
                            <font>
                               <Font size="14.0" />
                            </font>

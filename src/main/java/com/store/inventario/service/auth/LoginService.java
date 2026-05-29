@@ -1,0 +1,48 @@
+package com.store.inventario.service.auth;
+
+import com.google.gson.Gson;
+import com.store.inventario.model.auth.LoginRequest;
+import com.store.inventario.model.auth.LoginResponse;
+import com.store.inventario.security.SessionManager;
+
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+
+public class LoginService {
+    private static final String URL_LOGIN = "http://localhost:8080/api/auth/login";
+    private final HttpClient client;
+    private final Gson gson;
+
+    public LoginService() {
+        this.client = HttpClient.newHttpClient();
+        this.gson = new Gson();
+    }
+
+    public boolean autenticar(String username, String password) {
+        try {
+            LoginRequest loginRequest = new LoginRequest(username, password);
+            String jsonRequestBody = gson.toJson(loginRequest);
+
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(URL_LOGIN))
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(jsonRequestBody))
+                    .build();
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() == 200) {
+                LoginResponse loginResponse = gson.fromJson(response.body(), LoginResponse.class);
+
+                SessionManager.getInstance().guardarSesion(loginResponse.getToken(), loginResponse.getUsername());
+                return true;
+            }
+            return false;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+}

@@ -1,6 +1,8 @@
 module com.store.inventario {
     requires javafx.controls;
     requires javafx.fxml;
+    requires java.net.http;
+    requires com.google.gson;
 
 
     exports com.store.inventario;
@@ -15,6 +17,10 @@ module com.store.inventario {
     opens com.store.inventario.controller.empleados to javafx.fxml;
     opens com.store.inventario.controller.proveedor to javafx.fxml;
     opens com.store.inventario.controller to javafx.fxml;
-    //opens com.store.inventario.controller.clientes to javafx.fxml;
+    opens com.store.inventario.model.auth to com.google.gson;
+    opens com.store.inventario.model.producto to com.google.gson;
+    opens com.store.inventario.model to com.google.gson;
+    opens com.store.inventario.model.categoria to com.google.gson;
+
 
 }
