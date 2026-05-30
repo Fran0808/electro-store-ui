@@ -25,20 +25,15 @@
             <children>
                 <VBox spacing="4.0">
                     <children>
-                        <Label styleClass="header-title" text="Añadir Nuevo Producto" />
-                        <Label styleClass="header-subtitle" text="Complete la información comercial y técnica" />
+                        <Label fx:id="lblTitulo" styleClass="header-title" text="Añadir Nuevo Producto" />
+                        <Label fx:id="lblSubtitulo" styleClass="header-subtitle" text="Complete la información comercial y técnica" />
                     </children>
                 </VBox>
                 <HBox spacing="30.0" VBox.vgrow="ALWAYS">
                     <children>
                         <VBox spacing="14.0" HBox.hgrow="ALWAYS">
                             <children>
-                                <VBox spacing="6.0">
-                                    <children>
-                                        <Label style="-fx-font-weight: bold; -fx-text-fill: #334155; -fx-font-size: 13px;" text="Código del Producto / SKU *" />
-                                        <TextField fx:id="txtCodigo" prefHeight="40.0" styleClass="search-field" />
-                                    </children>
-                                </VBox>
+
                                 <VBox spacing="6.0">
                                     <children>
                                         <Label style="-fx-font-weight: bold; -fx-text-fill: #334155; -fx-font-size: 13px;" text="Nombre del Producto *" />
@@ -88,12 +83,7 @@
                                         <TextField fx:id="txtPrecio" prefHeight="40.0" styleClass="search-field" />
                                     </children>
                                 </VBox>
-                                <VBox spacing="6.0">
-                                    <children>
-                                        <Label style="-fx-font-weight: bold; -fx-text-fill: #334155; -fx-font-size: 13px;" text="Stock Inicial *" />
-                                        <TextField fx:id="txtStock" prefHeight="40.0" styleClass="search-field" />
-                                    </children>
-                                </VBox>
+
                                 <VBox spacing="6.0">
                                     <children>
                                         <Label style="-fx-font-weight: bold; -fx-text-fill: #334155; -fx-font-size: 13px;" text="Garantía (Meses)" />
