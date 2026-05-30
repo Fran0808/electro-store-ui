@@ -55,4 +55,8 @@ public class SidebarController {
         NavigationManager.getInstance().navegar("/com/store/inventario/views/inventario/guias/guias.fxml");
     }
 
+    @FXML
+    private void handleUsuarios() {
+        NavigationManager.getInstance().navegar("/com/store/inventario/views/inventario/usuarios/usuarios.fxml");
+    }
 }

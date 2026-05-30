@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.geometry.Insets?>
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.store.inventario.controller.usuarios.UsuarioFormController"
+            prefHeight="620.0" prefWidth="500.0"
+            stylesheets="@../../styles/style.css">
+
+    <children>
+
+        <VBox spacing="25.0" styleClass="modal-container" AnchorPane.bottomAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.topAnchor="0">
+
+            <padding>
+                <Insets top="30" right="30" left="30" bottom="30"/>
+            </padding>
+
+            <VBox spacing="10">
+                <Label fx:id="lblTitulo" text="Nuevo Usuario" styleClass="header-title"/>
+                <Label text="Completa la información del Usuario" styleClass="header-subtitle"/>
+            </VBox>
+
+            <VBox spacing="20">
+                <VBox spacing = "6">
+                    <Label text="Nombre"/>
+                    <TextField fx:id="txtNombreComercial" promptText="Ingrese el nombre del Usuario" styleClass="search-field"/>
+                </VBox>
+                <VBox spacing="6">
+                    <Label text="DNI"/>
+                    <TextField fx:id="txtRazonSocial" promptText="Ingrese el DNI" styleClass="search-field"/>
+                </VBox>
+                <VBox spacing="6">
+                    <Label text="Cargo"/>
+                    <TextField fx:id="txtRuc" promptText="Ingrese el cargo" styleClass="search-field"/>
+                </VBox>
+                <VBox spacing="6">
+                    <Label text="Teléfono"/>
+                    <TextField fx:id="txtTelefono" promptText="Ingrese el teléfono" styleClass="search-field"/>
+                </VBox>
+            </VBox>
+
+            <HBox spacing="12">
+                <Button text="Cancelar" styleClass="btn-secondary" HBox.hgrow="ALWAYS" maxWidth="Infinity" fx:id="btnCancelar" onAction="#cerrarModal"/>
+                <Button text="Guardar" styleClass="btn-secondary" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+            </HBox>
+
+        </VBox>
+
+    </children>
+
+</AnchorPane>
