@@ -1,5 +1,7 @@
 package com.store.inventario.controller.productos;
 
+import com.store.inventario.model.categoria.Categoria;
+import com.store.inventario.service.categoria.CategoriaService;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -17,7 +19,8 @@ public class CategoriaFormModalController {
     @FXML
     private Button btnCancelar;
 
-    private String categoriaNombre = "";
+    private final CategoriaService categoriaService = new CategoriaService();
+    private Categoria categoriaCreada = null;
     private boolean guardado = false;
 
     @FXML
@@ -32,11 +35,21 @@ public class CategoriaFormModalController {
             return;
         }
 
-        categoriaNombre = nombre;
-        guardado = true;
+        try {
+            Categoria nueva = new Categoria(null, nombre);
+            categoriaCreada = categoriaService.crearCategoria(nueva);
+            guardado = true;
 
-        Stage stage = (Stage) btnGuardar.getScene().getWindow();
-        stage.close();
+            Stage stage = (Stage) btnGuardar.getScene().getWindow();
+            stage.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("No se pudo crear la categoría");
+            alert.setContentText("Ocurrió un error al guardar: " + e.getMessage());
+            alert.showAndWait();
+        }
     }
 
     @FXML
@@ -45,8 +58,12 @@ public class CategoriaFormModalController {
         stage.close();
     }
 
+    public Categoria getCategoriaCreada() {
+        return categoriaCreada;
+    }
+
     public String getCategoriaNombre() {
-        return categoriaNombre;
+        return categoriaCreada != null ? categoriaCreada.getName() : "";
     }
 
     public boolean isGuardado() {

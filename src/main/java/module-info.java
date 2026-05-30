@@ -17,10 +17,10 @@ module com.store.inventario {
     opens com.store.inventario.controller.empleados to javafx.fxml;
     opens com.store.inventario.controller.proveedor to javafx.fxml;
     opens com.store.inventario.controller to javafx.fxml;
-    opens com.store.inventario.model.auth to com.google.gson;
-    opens com.store.inventario.model.producto to com.google.gson;
-    opens com.store.inventario.model to com.google.gson;
-    opens com.store.inventario.model.categoria to com.google.gson;
+    opens com.store.inventario.model.auth;
+    opens com.store.inventario.model.producto;
+    opens com.store.inventario.model;
+    opens com.store.inventario.model.categoria;
 
 
 }
