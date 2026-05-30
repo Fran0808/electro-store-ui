@@ -36,7 +36,7 @@ public class LoginService {
             if (response.statusCode() == 200) {
                 LoginResponse loginResponse = gson.fromJson(response.body(), LoginResponse.class);
 
-                SessionManager.getInstance().guardarSesion(loginResponse.getToken(), loginResponse.getUsername());
+                SessionManager.getInstance().guardarSesion(loginResponse.getToken(), loginResponse.getAuth().getUsername());
                 return true;
             }
             return false;
