@@ -21,9 +21,9 @@ import javafx.util.Callback;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
-import java.util.List;
-import java.util.Optional;
-import java.util.ResourceBundle;
+import java.util.*;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 
 public class ProductoController implements Initializable {
 
@@ -60,6 +60,24 @@ public class ProductoController implements Initializable {
     private Label lblAgotados;
     @FXML
     private Label lblCategorias;
+    @FXML
+    private Label lblResumenPaginacion;
+    @FXML
+    private Button btnAnterior;
+    @FXML
+    private Button btnSiguiente;
+    @FXML
+    private TextField txtBuscar;
+    @FXML
+    private ComboBox<String> cbCategoria;
+    @FXML
+    private ComboBox<String> cbMarca;
+    @FXML
+    private ComboBox<String> cbEstado;
+    @FXML
+    private Button btnLimpiar;
+    @FXML
+    private Button btnBuscar;
 
     private final ProductoService productoService = new ProductoService();
 
@@ -74,6 +92,7 @@ public class ProductoController implements Initializable {
         colStock.setCellValueFactory(new PropertyValueFactory<>("stock"));
         colGarantia.setCellValueFactory(new PropertyValueFactory<>("warrantyMonths"));
         configurarColumnaAcciones();
+        configurarFiltros();
         obtenerProductos();
     }
 
@@ -206,12 +225,41 @@ public class ProductoController implements Initializable {
         try {
             PageResponse<Producto> response = productoService.obtenerProductos();
             List<Producto> productos = response.getContent();
+
             tblProductos.setItems(FXCollections.observableArrayList(productos));
 
+            actualizarFiltrosDinamicos(productos);
+
             actualizarMetricas(response, productos);
+            actualizarPaginacion(response);
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void configurarFiltros() {
+        cbEstado.setItems(FXCollections.observableArrayList("Todos", "Con Stock", "Stock Bajo", "Agotados"));
+        cbEstado.setValue("Todos");
+    }
+
+    private void actualizarFiltrosDinamicos(List<Producto> productos) {
+        // Extraer categorías únicas
+        Set<String> categoriasSet = new TreeSet<>();
+        categoriasSet.add("Todas");
+        // Extraer marcas únicas
+        Set<String> marcasSet = new TreeSet<>();
+        marcasSet.add("Todas");
+
+        for (Producto p : productos) {
+            if (p.getCategoryName() != null) categoriasSet.add(p.getCategoryName());
+            if (p.getBrand() != null) marcasSet.add(p.getBrand());
+        }
+
+        cbCategoria.setItems(FXCollections.observableArrayList(categoriasSet));
+        cbCategoria.setValue("Categoría");
+
+        cbMarca.setItems(FXCollections.observableArrayList(marcasSet));
+        cbMarca.setValue("Marca");
     }
 
     private void actualizarMetricas(PageResponse<Producto> response, List<Producto> productos) {
@@ -232,5 +280,22 @@ public class ProductoController implements Initializable {
                 .distinct()
                 .count();
         lblCategorias.setText(String.valueOf(categorias));
+    }
+
+    private void actualizarPaginacion(PageResponse<Producto> activeResponse) {
+        long total = activeResponse.getTotalElements();
+        int paginas = activeResponse.getTotalPages();
+        int paginaActual = activeResponse.getNumber();
+        int pageSize = activeResponse.getSize();
+        
+        if (total == 0) {
+            lblResumenPaginacion.setText("No hay productos para mostrar");
+            return;
+        }
+        
+        long desde = (long) paginaActual * pageSize + 1;
+        long hasta = Math.min(desde + pageSize - 1, total);
+        
+        lblResumenPaginacion.setText("Mostrando " + desde + "-" + hasta + " de " + total + " productos (Página " + (paginaActual + 1) + " de " + paginas + ")");
     }
 }

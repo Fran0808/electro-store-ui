@@ -262,12 +262,36 @@
     -fx-size: 42px;
 }
 
+.table-view .table-row-cell:empty,
+.sales-table .table-row-cell:empty,
+.products-table .table-row-cell:empty {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.table-view .table-row-cell:empty .table-cell,
+.sales-table .table-row-cell:empty .table-cell,
+.products-table .table-row-cell:empty .table-cell {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-text-fill: transparent;
+}
+
 .table-view .table-row-cell:odd, .sales-table .table-row-cell:odd, .products-table .table-row-cell:odd {
     -fx-background-color: #FAFAFA;
 }
 
+.table-view .table-row-cell:odd:empty, .sales-table .table-row-cell:odd:empty, .products-table .table-row-cell:odd:empty {
+    -fx-background-color: transparent;
+}
+
 .table-view .table-row-cell:hover, .sales-table .table-row-cell:hover, .products-table .table-row-cell:hover {
     -fx-background-color: #F8FAFC;
+}
+
+.table-view .table-row-cell:hover:empty, .sales-table .table-row-cell:hover:empty, .products-table .table-row-cell:hover:empty {
+    -fx-background-color: transparent;
+    -fx-cursor: default;
 }
 
 .table-view .table-row-cell:selected, .sales-table .table-row-cell:selected, .products-table .table-row-cell:selected {

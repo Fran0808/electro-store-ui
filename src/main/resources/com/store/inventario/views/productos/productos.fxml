@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.SVGPath?>
 
-<AnchorPane prefHeight="800.0" prefWidth="1040.0" styleClass="root" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.store.inventario.controller.productos.ProductoController">
+<AnchorPane prefHeight="600.0" prefWidth="1040.0" styleClass="root" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.store.inventario.controller.productos.ProductoController">
 
     <stylesheets>
         <URL value="@../../styles/style.css" />
@@ -84,7 +84,7 @@
                     <Button fx:id="btnBuscar" styleClass="btn-primary" text="Buscar" />
                 </HBox>
 
-                <TableView fx:id="tblProductos" VBox.vgrow="ALWAYS" styleClass="products-table">
+                <TableView fx:id="tblProductos" VBox.vgrow="ALWAYS" minHeight="150.0" styleClass="products-table">
                     <columns>
                         <TableColumn fx:id="colCodigo" prefWidth="100.0" text="Código" />
                         <TableColumn fx:id="colNombre" prefWidth="220.0" text="Nombre del Producto" />
