@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.store.inventario.model.PageResponse;
 import com.store.inventario.model.usuario.Usuario;
+import com.store.inventario.security.SessionManager;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -23,12 +24,19 @@ public class UsuarioService {
     }
 
     public PageResponse<Usuario> obtenerUsuarios() {
-
         try {
-            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(URL)).GET().build();
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(URL))
+                    .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
+                    .GET()
+                    .build();
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            Type type = new TypeToken<PageResponse<Usuario>>() {}.getType();
 
+            if (response.statusCode() >= 400) {
+                throw new RuntimeException("Error al obtener usuarios: HTTP " + response.statusCode());
+            }
+
+            Type type = new TypeToken<PageResponse<Usuario>>() {}.getType();
             return gson.fromJson(response.body(), type);
 
         } catch (IOException | InterruptedException e) {
@@ -42,6 +50,7 @@ public class UsuarioService {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(URL))
                     .header("Content-Type", "application/json")
+                    .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
                     .POST(HttpRequest.BodyPublishers.ofString(json))
                     .build();
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -51,6 +60,44 @@ public class UsuarioService {
             }
 
             return gson.fromJson(response.body(), Usuario.class);
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public Usuario actualizarUsuario(String code, Usuario usuario) {
+        try {
+            String json = gson.toJson(usuario);
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(URL + "/" + code))
+                    .header("Content-Type", "application/json")
+                    .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
+                    .PUT(HttpRequest.BodyPublishers.ofString(json))
+                    .build();
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() >= 400) {
+                throw new RuntimeException("Error al actualizar usuario: HTTP " + response.statusCode());
+            }
+
+            return gson.fromJson(response.body(), Usuario.class);
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void eliminarUsuario(String code) {
+        try {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(URL + "/" + code))
+                    .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
+                    .DELETE()
+                    .build();
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() >= 400) {
+                throw new RuntimeException("Error al eliminar usuario: HTTP " + response.statusCode());
+            }
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }

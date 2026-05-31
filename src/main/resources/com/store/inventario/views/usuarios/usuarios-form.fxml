@@ -24,27 +24,27 @@
             </VBox>
 
             <VBox spacing="20">
-                <VBox spacing = "6">
-                    <Label text="Nombre"/>
-                    <TextField fx:id="txtNombreComercial" promptText="Ingrese el nombre del Usuario" styleClass="search-field"/>
+                <VBox spacing="6">
+                    <Label text="Usuario"/>
+                    <TextField fx:id="txtUsername" promptText="Ingrese el nombre de usuario" styleClass="search-field"/>
                 </VBox>
                 <VBox spacing="6">
-                    <Label text="DNI"/>
-                    <TextField fx:id="txtRazonSocial" promptText="Ingrese el DNI" styleClass="search-field"/>
+                    <Label text="Contraseña"/>
+                    <PasswordField fx:id="txtPassword" promptText="Ingrese la contraseña" styleClass="search-field"/>
                 </VBox>
                 <VBox spacing="6">
-                    <Label text="Cargo"/>
-                    <TextField fx:id="txtRuc" promptText="Ingrese el cargo" styleClass="search-field"/>
+                    <Label text="Rol"/>
+                    <ComboBox fx:id="cbRol" promptText="Seleccione un rol" styleClass="search-field" maxWidth="Infinity"/>
                 </VBox>
                 <VBox spacing="6">
-                    <Label text="Teléfono"/>
-                    <TextField fx:id="txtTelefono" promptText="Ingrese el teléfono" styleClass="search-field"/>
+                    <Label text="Empleado"/>
+                    <ComboBox fx:id="cbEmpleado" promptText="Seleccione el empleado" styleClass="search-field" maxWidth="Infinity"/>
                 </VBox>
             </VBox>
 
             <HBox spacing="12">
                 <Button text="Cancelar" styleClass="btn-secondary" HBox.hgrow="ALWAYS" maxWidth="Infinity" fx:id="btnCancelar" onAction="#cerrarModal"/>
-                <Button text="Guardar" styleClass="btn-secondary" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                <Button text="Guardar" styleClass="btn-primary" HBox.hgrow="ALWAYS" maxWidth="Infinity" fx:id="btnGuardar" onAction="#guardarUsuario"/>
             </HBox>
 
         </VBox>
