@@ -86,6 +86,7 @@ public class UsuarioFormController implements Initializable {
             Usuario nuevoUsuario = new Usuario(
                 esNuevo ? null : usuarioEditar.getCode(),
                 username.trim(),
+                (password != null && !password.trim().isEmpty()) ? password.trim() : null,
                 rol,
                 employeeCode,
                 "",

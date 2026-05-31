@@ -3,6 +3,7 @@ package com.store.inventario.model.usuario;
 public class Usuario {
     private String code;
     private String username;
+    private String password;
     private String role;
     private String employeeCode;
     private String firstName;
@@ -11,9 +12,10 @@ public class Usuario {
     public Usuario() {
     }
 
-    public Usuario(String code, String username, String role,String employeeCode, String firstName, String lastName) {
+    public Usuario(String code, String username, String password, String role, String employeeCode, String firstName, String lastName) {
         this.code = code;
         this.username = username;
+        this.password = password;
         this.role = role;
         this.employeeCode = employeeCode;
         this.firstName = firstName;
@@ -26,6 +28,10 @@ public class Usuario {
 
     public String getUsername() {
         return username;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     public String getRole() {
