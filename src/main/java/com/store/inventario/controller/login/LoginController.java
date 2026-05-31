@@ -46,6 +46,8 @@ public class LoginController {
                 Stage layoutStage = new Stage();
                 layoutStage.setTitle("ElectroStore System");
                 layoutStage.setScene(new Scene(root));
+                layoutStage.setMinWidth(1280);
+                layoutStage.setMinHeight(800);
                 layoutStage.show();
 
                 Stage loginStage = (Stage) btnLogin.getScene().getWindow();
