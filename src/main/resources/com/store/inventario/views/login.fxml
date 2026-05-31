@@ -99,7 +99,7 @@
                         </PasswordField>
                         <VBox alignment="TOP_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="110.0" prefWidth="340.0" spacing="20.0">
                            <children>
-                              <CheckBox alignment="BOTTOM_LEFT" contentDisplay="TOP" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" prefHeight="35.0" prefWidth="292.0" style="-fx-background-color: white;" text="Recordar sesión" textFill="#1b1b1d" />
+                              <CheckBox fx:id="chMantenerSesion" alignment="BOTTOM_LEFT" contentDisplay="TOP" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" prefHeight="35.0" prefWidth="292.0" style="-fx-background-color: white;" text="Recordar sesión" textFill="#1b1b1d" />
                               <Button fx:id="btnLogin" contentDisplay="BOTTOM" mnemonicParsing="false" onAction="#handleLogging" prefHeight="40.0" prefWidth="340.0" style="-fx-background-color: #000000; -fx-font-weight: bold; -fx-text-fill: white; -fx-border-radius: 6px;" text="Iniciar sesión" textFill="WHITE" />
                            </children>
                         </VBox>
