@@ -115,6 +115,29 @@ public class ProductoController implements Initializable {
         obtenerProductos();
     }
 
+    @FXML
+    private void handleGestionarCategorias() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/views/productos/gestion-categorias.fxml"));
+            Parent root = loader.load();
+
+            Stage modal = new Stage();
+            modal.initModality(Modality.APPLICATION_MODAL);
+            modal.setTitle("Gestión de Categorías");
+            modal.setScene(new Scene(root));
+            modal.showAndWait();
+
+            obtenerProductos();
+        } catch (Exception e) {
+            e.printStackTrace();
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("No se pudo abrir la gestión de categorías");
+            alert.setContentText("Ocurrió un error: " + e.getMessage());
+            alert.showAndWait();
+        }
+    }
+
     private void handleEditar(Producto producto) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/views/productos/producto-form.fxml"));

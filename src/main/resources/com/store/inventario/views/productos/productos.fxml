@@ -28,6 +28,7 @@
 
                     <HBox alignment="CENTER_RIGHT" spacing="12">
                         <Button fx:id="btnActualizar" onAction="#handleActualizar" styleClass="btn-secondary" text="Actualizar" />
+                        <Button fx:id="btnGestionarCategorias" onAction="#handleGestionarCategorias" styleClass="btn-secondary" text="Categorías" />
                         <Button fx:id="btnNuevoProducto" styleClass="btn-primary" text="Nuevo Producto" onAction="#handleForm"/>
                     </HBox>
                 </HBox>
