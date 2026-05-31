@@ -49,11 +49,11 @@
                 <TableView fx:id="tblClientes" styleClass="table-view" VBox.vgrow="ALWAYS">
                     <columns>
                         <TableColumn fx:id="colCodigo" prefWidth="100.0" text="Código" />
-                        <TableColumn fx:id="colNombre" prefWidth="250.0" text="Nombre" />
+                        <TableColumn fx:id="colNombre" prefWidth="210.0" text="Nombre" />
                         <TableColumn fx:id="colDni" prefWidth="160.0" text="DNI" />
                         <TableColumn fx:id="colRuc" prefWidth="160.0" text="RUC" />
-                        <TableColumn fx:id="colTelefono" prefWidth="160.0" text="Teléfono" />
-                        <TableColumn fx:id="colAcciones" prefWidth="150.0" text="Acciones" />
+                        <TableColumn fx:id="colTelefono" prefWidth="100.0" text="Teléfono" />
+                        <TableColumn fx:id="colAcciones" prefWidth="60.0" text="Acciones" />
                     </columns>
                 </TableView>
 

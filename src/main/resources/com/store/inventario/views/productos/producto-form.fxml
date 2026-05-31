@@ -15,7 +15,6 @@
 <AnchorPane prefHeight="600.0" prefWidth="740.0" style="-fx-background-color: #F8FAFC;" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.store.inventario.controller.productos.ProductoFormController">
     <stylesheets>
         <URL value="@../../styles/style.css" />
-        <URL value="@productos.css" />
     </stylesheets>
     <children>
         <VBox spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">

@@ -565,5 +565,80 @@
     -fx-border-insets: 0;
 }
 
+.btn-acciones {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #E2E8F0;
+    -fx-border-width: 1px;
+    -fx-text-fill: #64748B;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 2px 10px;
+    -fx-background-radius: 4px;
+    -fx-border-radius: 4px;
+    -fx-cursor: hand;
+    -fx-min-height: 26px;
+    -fx-pref-height: 26px;
+    -fx-max-height: 26px;
+}
+
+.btn-acciones:hover {
+    -fx-background-color: #F1F5F9;
+    -fx-border-color: #CBD5E1;
+    -fx-text-fill: #0F172A;
+}
+
+.context-menu {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #E2E8F0;
+    -fx-border-width: 1px;
+    -fx-background-radius: 6px;
+    -fx-border-radius: 6px;
+    -fx-padding: 4px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.08), 8, 0, 0, 4);
+}
+
+.menu-item {
+    -fx-background-color: transparent;
+    -fx-padding: 6px 12px;
+    -fx-background-radius: 4px;
+    -fx-border-radius: 4px;
+}
+
+.menu-item .label {
+    -fx-font-size: 12px;
+    -fx-font-family: "Inter", "Segoe UI", sans-serif;
+    -fx-text-fill: #475569;
+}
+
+.menu-item:focused, .menu-item:hover {
+    -fx-background-color: #F1F5F9;
+    -fx-cursor: hand;
+}
+
+.menu-item:focused .label, .menu-item:hover .label {
+    -fx-text-fill: #0F172A;
+}
+
+.menu-item-editar:focused, .menu-item-editar:hover {
+    -fx-background-color: #EFF6FF;
+}
+
+.menu-item-editar:focused .label, .menu-item-editar:hover .label {
+    -fx-text-fill: #2563EB;
+}
+
+.menu-item-eliminar:focused, .menu-item-eliminar:hover {
+    -fx-background-color: #FEF2F2;
+}
+
+.menu-item-eliminar:focused .label, .menu-item-eliminar:hover .label {
+    -fx-text-fill: #EF4444;
+}
+
+#btnActualizar, #btnNuevoProducto {
+    -fx-min-width: 160px;
+    -fx-pref-width: 160px;
+}
+
 
 

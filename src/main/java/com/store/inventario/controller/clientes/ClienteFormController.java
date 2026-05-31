@@ -64,7 +64,7 @@ public class ClienteFormController implements Initializable {
             txtApellidos.setText(cliente.getPerson().getLastName());
             txtTelefono.setText(cliente.getPerson().getPhone());
 
-            if (cliente.getTaxId() != null && !cliente.getTaxId().isEmpty()) {
+            if (cliente.getTaxId() != null && !cliente.getTaxId().isEmpty() && !cliente.getTaxId().startsWith("DNI-")) {
                 cbTipoDocumento.setValue("RUC");
                 txtNumeroDocumento.setText(cliente.getTaxId());
             } else {
@@ -108,13 +108,13 @@ public class ClienteFormController implements Initializable {
                 CreatePersonaRequest personRequest = new CreatePersonaRequest(
                         nombres, 
                         "DNI".equals(tipoDoc) ? apellidos : "-", // Si es RUC, se rellena con guion
-                        "DNI".equals(tipoDoc) ? numeroDoc : "", 
+                        "DNI".equals(tipoDoc) ? numeroDoc : ("RUC-" + numeroDoc), 
                         telefono
                 );
                 
                 CreateClienteRequest createRequest = new CreateClienteRequest(
                         personRequest,
-                        "RUC".equals(tipoDoc) ? numeroDoc : ""
+                        "RUC".equals(tipoDoc) ? numeroDoc : ("DNI-" + numeroDoc)
                 );
                 
                 clienteService.crearCliente(createRequest);
@@ -123,13 +123,13 @@ public class ClienteFormController implements Initializable {
                 UpdatePersonaRequest personRequest = new UpdatePersonaRequest(
                         nombres,
                         "DNI".equals(tipoDoc) ? apellidos : "-",
-                        "DNI".equals(tipoDoc) ? numeroDoc : "",
+                        "DNI".equals(tipoDoc) ? numeroDoc : ("RUC-" + numeroDoc),
                         telefono
                 );
                 
                 UpdateClienteRequest updateRequest = new UpdateClienteRequest(
                         personRequest,
-                        "RUC".equals(tipoDoc) ? numeroDoc : ""
+                        "RUC".equals(tipoDoc) ? numeroDoc : ("DNI-" + numeroDoc)
                 );
                 
                 clienteService.actualizarCliente(clienteEditar.getCode(), updateRequest);

@@ -71,6 +71,27 @@ public class ClienteController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        tblClientes.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
+        colCodigo.setPrefWidth(170);
+        colCodigo.setMinWidth(110);
+        
+        colNombre.setPrefWidth(200);
+        colNombre.setMinWidth(180);
+        
+        colDni.setPrefWidth(100);
+        colDni.setMinWidth(90);
+        
+        colRuc.setPrefWidth(110);
+        colRuc.setMinWidth(100);
+        
+        colTelefono.setPrefWidth(110);
+        colTelefono.setMinWidth(90);
+        
+        colAcciones.setPrefWidth(95);
+        colAcciones.setMinWidth(95);
+        colAcciones.setMaxWidth(110);
+        colAcciones.setStyle("-fx-alignment: CENTER;");
+        
         colCodigo.setCellValueFactory(new PropertyValueFactory<>("code"));
         
         colNombre.setCellValueFactory(cellData -> {
@@ -80,10 +101,21 @@ public class ClienteController implements Initializable {
         
         colDni.setCellValueFactory(cellData -> {
             var person = cellData.getValue().getPerson();
-            return new SimpleStringProperty(person != null ? person.getNationalId() : "");
+            if (person == null || person.getNationalId() == null) return new SimpleStringProperty("");
+            String nationalId = person.getNationalId();
+            if (nationalId.startsWith("RUC-")) {
+                return new SimpleStringProperty("");
+            }
+            return new SimpleStringProperty(nationalId);
         });
         
-        colRuc.setCellValueFactory(new PropertyValueFactory<>("taxId"));
+        colRuc.setCellValueFactory(cellData -> {
+            String taxId = cellData.getValue().getTaxId();
+            if (taxId == null || taxId.startsWith("DNI-")) {
+                return new SimpleStringProperty("");
+            }
+            return new SimpleStringProperty(taxId);
+        });
         
         colTelefono.setCellValueFactory(cellData -> {
             var person = cellData.getValue().getPerson();
@@ -233,13 +265,13 @@ public class ClienteController implements Initializable {
             }
             if (lblClientesDni != null) {
                 long totalDni = clientes.stream()
-                        .filter(c -> c.getPerson() != null && c.getPerson().getNationalId() != null && !c.getPerson().getNationalId().isEmpty())
+                        .filter(c -> c.getPerson() != null && c.getPerson().getNationalId() != null && !c.getPerson().getNationalId().isEmpty() && !c.getPerson().getNationalId().startsWith("RUC-"))
                         .count();
                 lblClientesDni.setText(String.valueOf(totalDni));
             }
             if (lblClientesRuc != null) {
                 long totalRuc = clientes.stream()
-                        .filter(c -> c.getTaxId() != null && !c.getTaxId().isEmpty())
+                        .filter(c -> c.getTaxId() != null && !c.getTaxId().isEmpty() && !c.getTaxId().startsWith("DNI-"))
                         .count();
                 lblClientesRuc.setText(String.valueOf(totalRuc));
             }
