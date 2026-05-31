@@ -3,6 +3,7 @@ module com.store.inventario {
     requires javafx.fxml;
     requires java.net.http;
     requires com.google.gson;
+    requires java.desktop;
 
 
     exports com.store.inventario;
@@ -21,6 +22,7 @@ module com.store.inventario {
     opens com.store.inventario.model.producto;
     opens com.store.inventario.model;
     opens com.store.inventario.model.categoria;
-
+    opens com.store.inventario.model.empleado;
+    opens com.store.inventario.model.persona;
 
 }

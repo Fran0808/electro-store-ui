@@ -4,6 +4,5 @@ import com.store.inventario.model.persona.UpdatePersonaRequest;
 import java.math.BigDecimal;
 
 public record UpdateEmployeeRequest (UpdatePersonaRequest person,
-                                     String position,
-                                     BigDecimal salary){
-}
+                                     EmployeePosition position,
+                                     BigDecimal salary){}

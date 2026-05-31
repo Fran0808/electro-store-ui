@@ -1,7 +1,6 @@
 package com.store.inventario.model.empleado;
 
 import com.store.inventario.model.persona.Persona;
-
 import java.math.BigDecimal;
 
 public class Empleado {
@@ -9,12 +8,12 @@ public class Empleado {
 // datos que se requieren para post: code, person, position and salary.
     private String code;
     private Persona person;
-    private String position;
+    private EmployeePosition position;
     private BigDecimal salary;
 
     public Empleado() {}
 
-    public Empleado(String code, Persona person, String position, BigDecimal salary) {
+    public Empleado(String code, Persona person, EmployeePosition position, BigDecimal salary) {
         this.code = code;
         this.person = person;
         this.position = position;
@@ -37,11 +36,11 @@ public class Empleado {
         this.person = person;
     }
 
-    public String getPosition() {
+    public EmployeePosition getPosition() {
         return position;
     }
 
-    public void setPosition(String position) {
+    public void setPosition(EmployeePosition position) {
         this.position = position;
     }
 
