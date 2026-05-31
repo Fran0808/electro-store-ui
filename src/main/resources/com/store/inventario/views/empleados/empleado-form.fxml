@@ -1,50 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<?import javafx.geometry.Insets?>
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.store.inventario.controller.empleados.EmpleadosFormController"
-            prefHeight="620.0" prefWidth="500.0"
-            stylesheets="@../../styles/style.css">
+<AnchorPane prefHeight="620.0" prefWidth="500.0" stylesheets="@../../styles/style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.store.inventario.controller.empleados.EmpleadosFormController">
 
     <children>
 
-        <VBox spacing="25.0" styleClass="modal-container" AnchorPane.bottomAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.topAnchor="0">
+        <VBox spacing="25.0" styleClass="modal-container" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
 
             <padding>
-                <Insets top="30" right="30" left="30" bottom="30"/>
+                <Insets bottom="30" left="30" right="30" top="30" />
             </padding>
 
             <VBox spacing="10">
-                <Label fx:id="lblTitulo" text="Nuevo Empleado" styleClass="header-title"/>
-                <Label text="Completa la información del Empleado" styleClass="header-subtitle"/>
+                <Label fx:id="lblTitulo" styleClass="header-title" text="Nuevo Empleado" />
+                <Label fx:id="lblSubtitulo" styleClass="header-subtitle" text="Completa la información del Empleado" />
             </VBox>
 
             <VBox spacing="20">
-                <VBox spacing = "6">
-                    <Label text="Nombre"/>
-                    <TextField fx:id="txtNombreComercial" promptText="Ingrese el nombre del empleado" styleClass="search-field"/>
+                <VBox spacing="6">
+                    <Label text="Nombre" />
+                    <TextField fx:id="txtNombre" promptText="Ingrese el nombre del empleado" styleClass="search-field" />
                 </VBox>
                 <VBox spacing="6">
-                    <Label text="DNI"/>
-                    <TextField fx:id="txtRazonSocial" promptText="Ingrese el DNI" styleClass="search-field"/>
+                    <Label text="Apellido" />
+                    <TextField fx:id="txtApellido" promptText="Ingrese el apellido del empleado" styleClass="search-field" />
                 </VBox>
                 <VBox spacing="6">
-                    <Label text="Cargo"/>
-                    <TextField fx:id="txtRuc" promptText="Ingrese el cargo" styleClass="search-field"/>
+                    <Label text="Teléfono" />
+                    <TextField fx:id="txtTelefono" promptText="Ingrese el teléfono" styleClass="search-field" />
                 </VBox>
                 <VBox spacing="6">
-                    <Label text="Teléfono"/>
-                    <TextField fx:id="txtTelefono" promptText="Ingrese el teléfono" styleClass="search-field"/>
+                    <Label text="DNI" />
+                    <TextField fx:id="txtDni" promptText="Ingrese el DNI" styleClass="search-field" />
+                </VBox>
+                <VBox spacing="6">
+                    <Label text="Cargo" />
+                    <ComboBox fx:id="cbCargo" promptText="Seleccione un cargo" styleClass="filter-combo" maxWidth="Infinity" VBox.vgrow="ALWAYS"/>
+                </VBox>
+                <VBox spacing="6">
+                    <Label text="Sueldo" />
+                    <TextField fx:id="txtSueldo" promptText="Ingrese el Sueldo" styleClass="search-field" />
                 </VBox>
             </VBox>
 
             <HBox spacing="12">
-                <Button text="Cancelar" styleClass="btn-secondary" HBox.hgrow="ALWAYS" maxWidth="Infinity" fx:id="btnCancelar" onAction="#cerrarModal"/>
-                <Button text="Guardar" styleClass="btn-secondary" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                <Button fx:id="btnCancelar" maxWidth="Infinity" onAction="#cerrarModal" styleClass="btn-secondary" text="Cancelar" HBox.hgrow="ALWAYS" />
+                <Button fx:id="btnGuardar" maxWidth="Infinity" onAction="#guardarEmpleado" styleClass="btn-primary" text="Guardar" HBox.hgrow="ALWAYS" />
             </HBox>
 
         </VBox>
