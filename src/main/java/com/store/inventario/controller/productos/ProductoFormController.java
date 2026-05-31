@@ -64,6 +64,8 @@ public class ProductoFormController {
     @FXML
     public void initialize() {
         cargarCategorias();
+        com.store.inventario.utils.ValidationUtils.hacerSoloDecimal(txtPrecio);
+        com.store.inventario.utils.ValidationUtils.hacerSoloNumerico(txtGarantia);
     }
 
     public void setProductoEditar(Producto producto) {

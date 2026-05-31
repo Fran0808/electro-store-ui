@@ -45,6 +45,9 @@ public class EmpleadosFormController {
     @FXML
     public void initialize() {
         cbCargo.setItems(FXCollections.observableArrayList(EmployeePosition.values()));
+        com.store.inventario.utils.ValidationUtils.hacerSoloNumericoConLimite(txtDni, 8);
+        com.store.inventario.utils.ValidationUtils.hacerSoloTelefono(txtTelefono);
+        com.store.inventario.utils.ValidationUtils.hacerSoloDecimal(txtSueldo);
     }
 
     public void setEmpleadoEditar(Empleado empleado) {
@@ -73,6 +76,15 @@ public class EmpleadosFormController {
             alert.setTitle("Advertencia");
             alert.setHeaderText("Campos incompletos");
             alert.setContentText("Complete todos los campos.");
+            alert.showAndWait();
+            return;
+        }
+
+        if (txtDni.getText().trim().length() != 8) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Advertencia");
+            alert.setHeaderText("Formato inválido");
+            alert.setContentText("El DNI debe tener exactamente 8 dígitos.");
             alert.showAndWait();
             return;
         }

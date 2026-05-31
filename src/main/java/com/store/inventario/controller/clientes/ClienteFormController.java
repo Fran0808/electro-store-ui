@@ -43,7 +43,11 @@ public class ClienteFormController implements Initializable {
         cbTipoDocumento.getItems().addAll("DNI", "RUC");
         cbTipoDocumento.setValue("DNI");
 
+        com.store.inventario.utils.ValidationUtils.hacerSoloTelefono(txtTelefono);
+
+        // Limitar numero de documento dinamicamente segun el tipo seleccionado
         cbTipoDocumento.valueProperty().addListener((observable, oldValue, newValue) -> {
+            txtNumeroDocumento.setText(""); // Limpiar para evitar conflicto de longitud
             if ("RUC".equals(newValue)) {
                 lblApellidos.setVisible(false);
                 txtApellidos.setVisible(false);
@@ -51,6 +55,20 @@ public class ClienteFormController implements Initializable {
             } else {
                 lblApellidos.setVisible(true);
                 txtApellidos.setVisible(true);
+            }
+        });
+
+        // Validar en tiempo real que solo ingresen digitos y respetar el limite
+        txtNumeroDocumento.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue == null) return;
+            String tipoDoc = cbTipoDocumento.getValue();
+            int limite = "RUC".equals(tipoDoc) ? 11 : 8;
+            String sanitized = newValue.replaceAll("[^\\d]", "");
+            if (sanitized.length() > limite) {
+                sanitized = sanitized.substring(0, limite);
+            }
+            if (!newValue.equals(sanitized)) {
+                txtNumeroDocumento.setText(sanitized);
             }
         });
     }
@@ -95,6 +113,16 @@ public class ClienteFormController implements Initializable {
 
         if (numeroDoc.isEmpty()) {
             mostrarAlerta("Campos Requeridos", "El número de documento es obligatorio.");
+            return;
+        }
+
+        if ("DNI".equals(tipoDoc) && numeroDoc.length() != 8) {
+            mostrarAlerta("Formato Inválido", "El DNI debe tener exactamente 8 dígitos.");
+            return;
+        }
+
+        if ("RUC".equals(tipoDoc) && numeroDoc.length() != 11) {
+            mostrarAlerta("Formato Inválido", "El RUC debe tener exactamente 11 dígitos.");
             return;
         }
 
