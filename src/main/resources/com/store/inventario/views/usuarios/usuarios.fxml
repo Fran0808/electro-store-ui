@@ -48,9 +48,9 @@
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                     </columnResizePolicy>
                     <columns>
-                        <TableColumn prefWidth="90" text="Código" fx:id="colCodigo"/>
+                        <TableColumn prefWidth="220.0" minWidth="180.0" text="Código" fx:id="colCodigo"/>
                         <TableColumn prefWidth="130" text="Usuario" fx:id="colUsuario"/>
-                        <TableColumn prefWidth="130" text="Rol" fx:id="colRol"/>
+                        <TableColumn prefWidth="100" text="Rol" fx:id="colRol"/>
                         <TableColumn prefWidth="150" text="Código Empleado" fx:id="colCodigoEmpleado"/>
                         <TableColumn prefWidth="170" text="Primer nombre" fx:id="colNombre"/>
                         <TableColumn prefWidth="170" text="Segundo nombre" fx:id="colApellido"/>

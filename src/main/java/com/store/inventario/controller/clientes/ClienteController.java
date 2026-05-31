@@ -71,27 +71,6 @@ public class ClienteController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        tblClientes.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
-        colCodigo.setPrefWidth(170);
-        colCodigo.setMinWidth(110);
-        
-        colNombre.setPrefWidth(200);
-        colNombre.setMinWidth(180);
-        
-        colDni.setPrefWidth(100);
-        colDni.setMinWidth(90);
-        
-        colRuc.setPrefWidth(110);
-        colRuc.setMinWidth(100);
-        
-        colTelefono.setPrefWidth(110);
-        colTelefono.setMinWidth(90);
-        
-        colAcciones.setPrefWidth(95);
-        colAcciones.setMinWidth(95);
-        colAcciones.setMaxWidth(110);
-        colAcciones.setStyle("-fx-alignment: CENTER;");
-        
         colCodigo.setCellValueFactory(new PropertyValueFactory<>("code"));
         
         colNombre.setCellValueFactory(cellData -> {

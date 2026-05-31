@@ -50,9 +50,6 @@ public class DashboardController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         initializeCombos();
                 loadKPIs();
-                if (tblAlertasCriticas != null) {
-                        tblAlertasCriticas.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-                }
                 loadChartVentasCompras();
                 loadChartTopProductos();
                 loadChartStockCategoria();

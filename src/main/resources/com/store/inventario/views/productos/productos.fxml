@@ -86,7 +86,7 @@
 
                 <TableView fx:id="tblProductos" VBox.vgrow="ALWAYS" minHeight="150.0" styleClass="products-table">
                     <columns>
-                        <TableColumn fx:id="colCodigo" prefWidth="100.0" text="Código" />
+                        <TableColumn fx:id="colCodigo" prefWidth="230.0" text="Código" />
                         <TableColumn fx:id="colNombre" prefWidth="220.0" text="Nombre del Producto" />
                         <TableColumn fx:id="colCategoria" prefWidth="120.0" text="Categoría" />
                         <TableColumn fx:id="colMarca" prefWidth="120.0" text="Marca" />

@@ -37,6 +37,9 @@
                 <VBox spacing="10" HBox.hgrow="ALWAYS">
                     <Label styleClass="metric-label" text="PRODUCTOS DISPONIBLES" />
                         <TableView fx:id="tblProductos" prefHeight="350" styleClass="table-view" VBox.vgrow="ALWAYS">
+                            <columnResizePolicy>
+                                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                            </columnResizePolicy>
                             <columns>
                                 <TableColumn prefWidth="224.0" text="Producto" />
                                 <TableColumn prefWidth="76.0" text="Stock" />
@@ -48,6 +51,9 @@
                 <VBox spacing="10" HBox.hgrow="ALWAYS">
                     <Label styleClass="metric-label" text="Productos Seleccionados" />
                     <TableView fx:id="tblProductosSeleccionados" prefHeight="350" styleClass="table-view" VBox.vgrow="ALWAYS">
+                        <columnResizePolicy>
+                            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                        </columnResizePolicy>
                         <columns>
                             <TableColumn prefWidth="289.0" text="Producto" />
                             <TableColumn text="Cantidad" />
