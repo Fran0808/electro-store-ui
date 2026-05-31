@@ -5,7 +5,6 @@ import java.math.BigDecimal;
 
 public class Empleado {
 
-// datos que se requieren para post: code, person, position and salary.
     private String code;
     private Persona person;
     private EmployeePosition position;

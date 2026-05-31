@@ -19,6 +19,8 @@ public class EmpleadosFormController {
     @FXML
     private Label lblTitulo;
     @FXML
+    private Label lblSubtitulo;
+    @FXML
     private TextField txtNombre;
     @FXML
     private TextField txtApellido;
@@ -49,6 +51,7 @@ public class EmpleadosFormController {
         this.empleadoEditar = empleado;
         this.modoEdicion = true;
         lblTitulo.setText("Editar Empleado");
+        lblSubtitulo.setText("Modifique la información del empleado");
         btnGuardar.setText("Actualizar");
         txtNombre.setText(empleado.getPerson().getFirstName());
         txtApellido.setText(empleado.getPerson().getLastName());
@@ -80,8 +83,8 @@ public class EmpleadosFormController {
                 UpdatePersonaRequest personRequest = new UpdatePersonaRequest(
                         txtNombre.getText().trim(),
                         txtApellido.getText().trim(),
-                        txtTelefono.getText().trim(),
-                        txtDni.getText().trim());
+                        txtDni.getText().trim(),
+                        txtTelefono.getText().trim());
                 UpdateEmployeeRequest updateRequest = new UpdateEmployeeRequest(
                         personRequest,
                         cbCargo.getValue(),
@@ -96,8 +99,8 @@ public class EmpleadosFormController {
                 CreatePersonaRequest personRequest = new CreatePersonaRequest(
                         txtNombre.getText().trim(),
                         txtApellido.getText().trim(),
-                        txtTelefono.getText().trim(),
-                        txtDni.getText().trim()
+                        txtDni.getText().trim(),
+                        txtTelefono.getText().trim()
                 );
                 CreateEmployeeRequest createRequest = new CreateEmployeeRequest(
                         personRequest,

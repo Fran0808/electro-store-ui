@@ -16,7 +16,7 @@
 
             <VBox spacing="10">
                 <Label fx:id="lblTitulo" styleClass="header-title" text="Nuevo Empleado" />
-                <Label styleClass="header-subtitle" text="Completa la información del Empleado" />
+                <Label fx:id="lblSubtitulo" styleClass="header-subtitle" text="Completa la información del Empleado" />
             </VBox>
 
             <VBox spacing="20">
