@@ -1,7 +1,13 @@
 package com.store.inventario;
 
+import com.store.inventario.security.SessionManager;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+import java.io.IOException;
 
 public class SidebarController {
     @FXML
@@ -57,6 +63,32 @@ public class SidebarController {
 
     @FXML
     private void handleUsuarios() {
-        NavigationManager.getInstance().navegar("/com/store/inventario/views/inventario/usuarios/usuarios.fxml");
+        NavigationManager.getInstance().navegar("/com/store/inventario/views/usuarios/usuarios.fxml");
+    }
+
+    @FXML
+    private void handleLogout() {
+        try {
+            // Cerrar la sesión en SessionManager
+            SessionManager.getInstance().cerrarSesion();
+
+            // Cargar la vista de login
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/views/login.fxml"));
+            Parent root = loader.load();
+
+            // Crear y mostrar el Stage de login
+            Stage loginStage = new Stage();
+            loginStage.setTitle("Sistema de Inventario");
+            loginStage.setScene(new Scene(root));
+            loginStage.setMinWidth(1280);
+            loginStage.setMinHeight(800);
+            loginStage.show();
+
+            // Cerrar el Stage actual (del sidebar/layout principal)
+            Stage currentStage = (Stage) subMenuInventario.getScene().getWindow();
+            currentStage.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

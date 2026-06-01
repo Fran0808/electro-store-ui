@@ -17,12 +17,17 @@ module com.store.inventario {
     opens com.store.inventario.controller.compra to javafx.fxml;
     opens com.store.inventario.controller.empleados to javafx.fxml;
     opens com.store.inventario.controller.proveedor to javafx.fxml;
+    opens com.store.inventario.controller.clientes to javafx.fxml;
     opens com.store.inventario.controller to javafx.fxml;
+    opens com.store.inventario.controller.usuarios to javafx.fxml;
+    opens com.store.inventario.controller.categorias to javafx.fxml;
     opens com.store.inventario.model.auth;
     opens com.store.inventario.model.producto;
     opens com.store.inventario.model;
     opens com.store.inventario.model.categoria;
-    opens com.store.inventario.model.empleado;
     opens com.store.inventario.model.persona;
+    opens com.store.inventario.model.clientes;
+    opens com.store.inventario.model.usuario;
+    opens com.store.inventario.model.empleado;
 
 }

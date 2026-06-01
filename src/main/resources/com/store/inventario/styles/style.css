@@ -460,9 +460,6 @@
     -fx-border-color: #CBD5E1;
 }
 
-/*--------------------------------------------*/
-
-/* ComboBox popup and list styling to match theme */
 .combo-box-popup .list-view {
     -fx-background-color: #FFFFFF;
     -fx-border-color: #E2E8F0;
@@ -485,3 +482,163 @@
     -fx-background-color: #EFF6FF;
     -fx-text-fill: #0F172A;
 }
+
+
+.sidebar-container {
+    -fx-background-color: #0F172A;
+}
+
+.sidebar-title {
+    -fx-text-fill: #3B82F6;
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+    -fx-font-family: "Inter", "Segoe UI", sans-serif;
+}
+
+.sidebar-subtitle {
+    -fx-text-fill: #64748B;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-font-family: "Inter", "Segoe UI", sans-serif;
+}
+
+.sidebar-item {
+    -fx-background-color: transparent;
+    -fx-background-radius: 6px;
+    -fx-padding: 8px 12px;
+    -fx-spacing: 12px;
+    -fx-alignment: center-left;
+    -fx-cursor: hand;
+}
+
+.sidebar-item:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.08);
+}
+
+.sidebar-link {
+    -fx-text-fill: #94A3B8;
+    -fx-underline: false;
+    -fx-font-size: 14px;
+    -fx-font-family: "Inter", "Segoe UI", sans-serif;
+}
+
+.sidebar-item:hover .sidebar-link {
+    -fx-text-fill: #FFFFFF;
+}
+
+.sidebar-sub-item {
+    -fx-background-color: transparent;
+    -fx-background-radius: 6px;
+    -fx-padding: 6px 12px 6px 36px;
+    -fx-spacing: 10px;
+    -fx-alignment: center-left;
+    -fx-cursor: hand;
+}
+
+.sidebar-sub-item:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.05);
+}
+
+.sidebar-sub-link {
+    -fx-text-fill: #64748B;
+    -fx-underline: false;
+    -fx-font-size: 13px;
+    -fx-font-family: "Inter", "Segoe UI", sans-serif;
+}
+
+.sidebar-sub-item:hover .sidebar-sub-link {
+    -fx-text-fill: #E2E8F0;
+}
+
+.sidebar-icon {
+    -fx-fill: #64748B;
+}
+
+.sidebar-item:hover .sidebar-icon {
+    -fx-fill: #FFFFFF;
+}
+
+.hyperlink:focused {
+    -fx-border-color: transparent;
+    -fx-border-style: none;
+    -fx-border-width: 0;
+    -fx-border-insets: 0;
+}
+
+.btn-acciones {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #E2E8F0;
+    -fx-border-width: 1px;
+    -fx-text-fill: #64748B;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 2px 10px;
+    -fx-background-radius: 4px;
+    -fx-border-radius: 4px;
+    -fx-cursor: hand;
+    -fx-min-height: 26px;
+    -fx-pref-height: 26px;
+    -fx-max-height: 26px;
+}
+
+.btn-acciones:hover {
+    -fx-background-color: #F1F5F9;
+    -fx-border-color: #CBD5E1;
+    -fx-text-fill: #0F172A;
+}
+
+.context-menu {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #E2E8F0;
+    -fx-border-width: 1px;
+    -fx-background-radius: 6px;
+    -fx-border-radius: 6px;
+    -fx-padding: 4px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.08), 8, 0, 0, 4);
+}
+
+.menu-item {
+    -fx-background-color: transparent;
+    -fx-padding: 6px 12px;
+    -fx-background-radius: 4px;
+    -fx-border-radius: 4px;
+}
+
+.menu-item .label {
+    -fx-font-size: 12px;
+    -fx-font-family: "Inter", "Segoe UI", sans-serif;
+    -fx-text-fill: #475569;
+}
+
+.menu-item:focused, .menu-item:hover {
+    -fx-background-color: #F1F5F9;
+    -fx-cursor: hand;
+}
+
+.menu-item:focused .label, .menu-item:hover .label {
+    -fx-text-fill: #0F172A;
+}
+
+.menu-item-editar:focused, .menu-item-editar:hover {
+    -fx-background-color: #EFF6FF;
+}
+
+.menu-item-editar:focused .label, .menu-item-editar:hover .label {
+    -fx-text-fill: #2563EB;
+}
+
+.menu-item-eliminar:focused, .menu-item-eliminar:hover {
+    -fx-background-color: #FEF2F2;
+}
+
+.menu-item-eliminar:focused .label, .menu-item-eliminar:hover .label {
+    -fx-text-fill: #EF4444;
+}
+
+#btnActualizar, #btnNuevoProducto {
+    -fx-min-width: 160px;
+    -fx-pref-width: 160px;
+}
+
+
+

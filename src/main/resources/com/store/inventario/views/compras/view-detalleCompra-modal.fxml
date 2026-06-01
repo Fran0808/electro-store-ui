@@ -51,6 +51,9 @@
             </HBox>
 
             <TableView fx:id="tblDetalleCompra" prefHeight="280" styleClass="table-view" VBox.vgrow="ALWAYS">
+                <columnResizePolicy>
+                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                </columnResizePolicy>
                 <columns>
                     <TableColumn prefWidth="595.0" text="Producto" />
                     <TableColumn text="cantidad" />

@@ -17,7 +17,6 @@
 
     <stylesheets>
         <URL value="@../../styles/style.css" />
-        <URL value="@productos.css" />
     </stylesheets>
 
     <VBox styleClass="view-container" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -29,6 +28,7 @@
 
                     <HBox alignment="CENTER_RIGHT" spacing="12">
                         <Button fx:id="btnActualizar" onAction="#handleActualizar" styleClass="btn-secondary" text="Actualizar" />
+                        <Button fx:id="btnGestionarCategorias" onAction="#handleGestionarCategorias" styleClass="btn-secondary" text="Categorías" />
                         <Button fx:id="btnNuevoProducto" styleClass="btn-primary" text="Nuevo Producto" onAction="#handleForm"/>
                     </HBox>
                 </HBox>
@@ -86,7 +86,7 @@
 
                 <TableView fx:id="tblProductos" VBox.vgrow="ALWAYS" minHeight="150.0" styleClass="products-table">
                     <columns>
-                        <TableColumn fx:id="colCodigo" prefWidth="100.0" text="Código" />
+                        <TableColumn fx:id="colCodigo" prefWidth="230.0" text="Código" />
                         <TableColumn fx:id="colNombre" prefWidth="220.0" text="Nombre del Producto" />
                         <TableColumn fx:id="colCategoria" prefWidth="120.0" text="Categoría" />
                         <TableColumn fx:id="colMarca" prefWidth="120.0" text="Marca" />

@@ -13,6 +13,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
@@ -21,31 +22,30 @@
       <URL value="@../styles/style.css" />
    </stylesheets>
    <children>
-      <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" style="-fx-background-color: #F9F9F9;">
+      <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" style="-fx-background-color: #F9F9F9;" AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <children>
-            <HBox prefHeight="60.0" prefWidth="1280.0" style="-fx-background-color: #F3F0F2;">
+            <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="1280.0" style="-fx-background-color: #F3F0F2;">
+               <padding>
+                  <Insets left="20.0" right="20.0" />
+               </padding>
                <children>
-                  <Label prefHeight="77.0" prefWidth="456.0" style="-fx-font-weight: bold;" text="  ElectroStore">
+                  <Label style="-fx-font-weight: bold;" text="ElectroStore">
                      <font>
                         <Font size="31.0" />
                      </font>
                   </Label>
-                  <Label prefHeight="18.0" prefWidth="891.0" />
-                  <HBox prefHeight="100.0" prefWidth="200.0">
+                  <Pane HBox.hgrow="ALWAYS" />
+                  <HBox alignment="CENTER_RIGHT" spacing="10.0">
                      <children>
-                        <VBox alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="59.0" prefWidth="87.0">
-                           <children>
-                              <ImageView fitHeight="40.0" fitWidth="62.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../../../../../../../../../Downloads/imagen_login.png" />
-                                 </image>
-                                 <effect>
-                                    <ColorAdjust contrast="-0.11" />
-                                 </effect>
-                              </ImageView>
-                           </children>
-                        </VBox>
-                        <Label contentDisplay="RIGHT" prefHeight="60.0" prefWidth="49.0" text="ES" textFill="#050505">
+                        <ImageView fitHeight="40.0" fitWidth="62.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../../../../../../Downloads/imagen_login.png" />
+                           </image>
+                           <effect>
+                              <ColorAdjust contrast="-0.11" />
+                           </effect>
+                        </ImageView>
+                        <Label text="ES" textFill="#050505">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -54,102 +54,131 @@
                   </HBox>
                </children>
             </HBox>
-            <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" nodeOrientation="RIGHT_TO_LEFT" prefHeight="670.0" prefWidth="1280.0" style="-fx-background-color: #F8FAFC;">
+
+            <VBox alignment="CENTER" prefHeight="670.0" prefWidth="1280.0" style="-fx-background-color: #F8FAFC;" VBox.vgrow="ALWAYS">
                <children>
-                  <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="500.0" spacing="2.0" style="-fx-border-color: #cbd5e1; -fx-background-color: #FFFFFF;">
+                  <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="500.0" spacing="16.0" style="-fx-border-color: #cbd5e1; -fx-background-color: #FFFFFF; -fx-border-radius: 4px; -fx-background-radius: 4px;">
+                     <padding>
+                        <Insets top="40.0" bottom="40.0" left="50.0" right="50.0" />
+                     </padding>
                      <children>
-                        <Label alignment="BOTTOM_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="84.0" prefWidth="402.0" style="-fx-font-weight: bold;" text="Bienvenido" textAlignment="CENTER">
-                           <font>
-                              <Font size="43.0" />
-                           </font>
-                        </Label>
-                        <Label alignment="TOP_CENTER" prefHeight="82.0" prefWidth="347.0" text="Ingresa tus credenciales para continuar" textFill="#1b1b1d">
-                           <font>
-                              <Font size="17.0" />
-                           </font>
-                        </Label>
-                        <Label contentDisplay="BOTTOM" nodeOrientation="LEFT_TO_RIGHT" prefHeight="20.0" prefWidth="340.0" text="Nombre de usuario" textFill="#1b1b1d" textOverrun="CLIP">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                        </Label>
-                        <TextField fx:id="txtUsuario" alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" nodeOrientation="LEFT_TO_RIGHT" prefHeight="48.0" prefWidth="340.0" promptText="eje.juan.perez" style="-fx-background-color: white;">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                        </TextField>
-                        <HBox alignment="BOTTOM_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="53.0" prefWidth="340.0">
+                        <VBox alignment="CENTER" spacing="6.0">
                            <children>
-                              <Hyperlink alignment="TOP_LEFT" contentDisplay="BOTTOM" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="26.0" prefWidth="270.0" style="-fx-text-fill: #005AC2;" text="¿Olvidaste tu contraseña?" textFill="#004395">
+                              <Label style="-fx-font-weight: bold;" text="Bienvenido" textAlignment="CENTER">
                                  <font>
-                                    <Font size="14.0" />
+                                    <Font size="43.0" />
                                  </font>
-                              </Hyperlink>
-                              <Label alignment="CENTER_RIGHT" prefHeight="22.0" prefWidth="82.0" text="Contraseña" textFill="#1b1b1d">
+                              </Label>
+                              <Label text="Ingresa tus credenciales para continuar" textFill="#1b1b1d" textAlignment="CENTER">
+                                 <font>
+                                    <Font size="17.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="10.0" />
+                           </VBox.margin>
+                        </VBox>
+
+                        <VBox alignment="CENTER_LEFT" spacing="6.0" maxWidth="340.0">
+                           <children>
+                              <Label text="Nombre de usuario" textFill="#1b1b1d">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
                               </Label>
-                           </children>
-                        </HBox>
-                        <PasswordField fx:id="txtPassword" alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" nodeOrientation="LEFT_TO_RIGHT" prefHeight="48.0" prefWidth="340.0" promptText="********" style="-fx-background-color: white;">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                        </PasswordField>
-                        <VBox alignment="TOP_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="110.0" prefWidth="340.0" spacing="20.0">
-                           <children>
-                              <CheckBox alignment="BOTTOM_LEFT" contentDisplay="TOP" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" prefHeight="35.0" prefWidth="292.0" style="-fx-background-color: white;" text="Recordar sesión" textFill="#1b1b1d" />
-                              <Button fx:id="btnLogin" contentDisplay="BOTTOM" mnemonicParsing="false" onAction="#handleLogging" prefHeight="40.0" prefWidth="340.0" style="-fx-background-color: #000000; -fx-font-weight: bold; -fx-text-fill: white; -fx-border-radius: 6px;" text="Iniciar sesión" textFill="WHITE" />
+                              <TextField fx:id="txtUsuario" prefHeight="48.0" prefWidth="340.0" promptText="eje.juan.perez" style="-fx-background-color: white; -fx-border-color: #cbd5e1; -fx-border-radius: 4px; -fx-background-radius: 4px;" />
                            </children>
                         </VBox>
-                        <HBox alignment="BOTTOM_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="76.0" prefWidth="340.0">
+
+                        <VBox alignment="CENTER_LEFT" spacing="6.0" maxWidth="340.0">
                            <children>
-                              <Hyperlink alignment="CENTER_RIGHT" prefHeight="20.0" prefWidth="191.0" style="-fx-text-fill: #005AC2;" text="Contacta a soporte" textFill="#004395">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </Hyperlink>
-                              <Label prefHeight="26.0" prefWidth="197.0" text="¿No tienes un cuenta?" textFill="#1b1b1d">
+                              <HBox alignment="CENTER_LEFT" prefWidth="340.0">
+                                 <children>
+                                    <Label text="Contraseña" textFill="#1b1b1d">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <Pane HBox.hgrow="ALWAYS" />
+                                    <Hyperlink style="-fx-text-fill: #005AC2;" text="¿Olvidaste tu contraseña?" textFill="#004395">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Hyperlink>
+                                 </children>
+                              </HBox>
+                              <PasswordField fx:id="txtPassword" prefHeight="48.0" prefWidth="340.0" promptText="********" style="-fx-background-color: white; -fx-border-color: #cbd5e1; -fx-border-radius: 4px; -fx-background-radius: 4px;" />
+                           </children>
+                        </VBox>
+
+                        <VBox alignment="CENTER_LEFT" spacing="16.0" maxWidth="340.0">
+                           <children>
+                              <CheckBox fx:id="chMantenerSesion" mnemonicParsing="false" style="-fx-background-color: white;" text="Recordar sesión" textFill="#1b1b1d" />
+                              <Button fx:id="btnLogin" mnemonicParsing="false" onAction="#handleLogging" prefHeight="40.0" prefWidth="340.0" style="-fx-background-color: #000000; -fx-font-weight: bold; -fx-text-fill: white; -fx-background-radius: 6px;" text="Iniciar sesión" textFill="WHITE" />
+                           </children>
+                           <VBox.margin>
+                              <Insets top="10.0" />
+                           </VBox.margin>
+                        </VBox>
+
+                        <HBox alignment="CENTER" spacing="6.0" maxWidth="340.0">
+                           <children>
+                              <Label text="¿No tienes un cuenta?" textFill="#1b1b1d">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
                               </Label>
+                              <Hyperlink style="-fx-text-fill: #005AC2;" text="Contacta a soporte" textFill="#004395">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Hyperlink>
                            </children>
+                           <VBox.margin>
+                              <Insets top="20.0" />
+                           </VBox.margin>
                         </HBox>
                      </children>
-                     <VBox.margin>
-                        <Insets />
-                     </VBox.margin>
                   </VBox>
                </children>
                <padding>
                   <Insets bottom="20.0" top="20.0" />
                </padding>
             </VBox>
-            <HBox prefHeight="70.0" prefWidth="1280.0" style="-fx-background-color: #F3F0F2;">
+
+            <HBox alignment="CENTER" prefHeight="70.0" prefWidth="1280.0" style="-fx-background-color: #F3F0F2;">
+               <padding>
+                  <Insets left="20.0" right="20.0" />
+               </padding>
                <children>
-                  <Label alignment="CENTER" prefHeight="44.0" prefWidth="161.0" style="-fx-font-weight: bold;" text="ElectroStore System" textFill="#131b2e">
+                  <Label style="-fx-font-weight: bold;" text="ElectroStore System" textFill="#131b2e">
                      <font>
                         <Font size="14.0" />
                      </font>
                   </Label>
-                  <Hyperlink alignment="CENTER_RIGHT" prefHeight="44.0" prefWidth="350.0" text="Términos de Servicio" textFill="#050505" underline="true">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Hyperlink>
-                  <Hyperlink alignment="CENTER" prefHeight="44.0" prefWidth="112.0" text="Políticas" textFill="#050505" underline="true">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Hyperlink>
-                  <Hyperlink prefHeight="44.0" prefWidth="145.0" text="Contacta Soporte" textFill="#050505" underline="true">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Hyperlink>
-                  <Label alignment="CENTER_RIGHT" prefHeight="44.0" prefWidth="489.0" text="© Todos los derechos reservados." textFill="#050505">
+                  <Pane HBox.hgrow="ALWAYS" />
+                  <HBox spacing="15.0" alignment="CENTER">
+                     <children>
+                        <Hyperlink text="Términos de Servicio" textFill="#050505" underline="true">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Hyperlink>
+                        <Hyperlink text="Políticas" textFill="#050505" underline="true">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Hyperlink>
+                        <Hyperlink text="Contacta Soporte" textFill="#050505" underline="true">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Hyperlink>
+                     </children>
+                  </HBox>
+                  <Pane HBox.hgrow="ALWAYS" />
+                  <Label text="© Todos los derechos reservados." textFill="#050505">
                      <font>
                         <Font size="14.0" />
                      </font>

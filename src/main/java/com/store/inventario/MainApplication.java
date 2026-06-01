@@ -16,6 +16,8 @@ public class MainApplication extends Application {
         Scene scene = new Scene(loader.load());
         stage.setTitle("Sistema de Inventario");
         stage.setScene(scene);
+        stage.setMinWidth(1280);
+        stage.setMinHeight(800);
         stage.show();
     }
 

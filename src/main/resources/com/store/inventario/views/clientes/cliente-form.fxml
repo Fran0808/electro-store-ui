@@ -1,14 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="CONTROLLER_NAME"
-            prefHeight="400.0" prefWidth="600.0">
+<AnchorPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="com.store.inventario.controller.clientes.ClienteFormController" stylesheets="@../../styles/style.css" prefHeight="680.0" prefWidth="500.0">
 
+    <children>
+
+        <VBox spacing="25.0" styleClass="modal-container" AnchorPane.bottomAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.topAnchor="0">
+
+            <padding>
+                <Insets top="30" right="30" left="30" bottom="30"/>
+            </padding>
+
+            <VBox spacing="10">
+                <Label fx:id="lblTitulo" text="Nuevo Cliente" styleClass="header-title"/>
+                <Label text="Completa la información detallada del cliente" styleClass="header-subtitle"/>
+            </VBox>
+
+            <VBox spacing="16">
+                <HBox spacing="12">
+                    <VBox spacing="6" HBox.hgrow="ALWAYS">
+                        <Label text="DNI (Opcional)"/>
+                        <TextField fx:id="txtDni" promptText="Ingrese el DNI" styleClass="search-field"/>
+                    </VBox>
+                    <VBox spacing="6" HBox.hgrow="ALWAYS">
+                        <Label text="RUC (Opcional)"/>
+                        <TextField fx:id="txtRuc" promptText="Ingrese el RUC" styleClass="search-field"/>
+                    </VBox>
+                </HBox>
+
+                <VBox spacing="6">
+                    <Label text="Nombres / Razón Social *"/>
+                    <TextField fx:id="txtNombres" promptText="Ingrese nombres o razón social" styleClass="search-field"/>
+                </VBox>
+                
+                <VBox spacing="6">
+                    <Label fx:id="lblApellidos" text="Apellidos"/>
+                    <TextField fx:id="txtApellidos" promptText="Ingrese los apellidos del cliente" styleClass="search-field"/>
+                </VBox>
+                
+                <VBox spacing="6">
+                    <Label text="Teléfono"/>
+                    <TextField fx:id="txtTelefono" promptText="Ingrese el número telefónico" styleClass="search-field"/>
+                </VBox>
+            </VBox>
+
+            <HBox spacing="12">
+                <Button fx:id="btnCancelar" text="Cancelar" styleClass="btn-secondary" HBox.hgrow="ALWAYS" maxWidth="Infinity" onAction="#cerrarModal"/>
+                <Button fx:id="btnGuardar" text="Guardar" styleClass="btn-primary" HBox.hgrow="ALWAYS" maxWidth="Infinity" onAction="#guardarCliente"/>
+            </HBox>
+
+        </VBox>
+
+    </children>
 </AnchorPane>

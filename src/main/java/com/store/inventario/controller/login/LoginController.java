@@ -1,17 +1,16 @@
 package com.store.inventario.controller.login;
 
 import com.store.inventario.service.auth.LoginService;
+import com.store.inventario.utils.DialogUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 
 public class LoginController {
@@ -24,6 +23,7 @@ public class LoginController {
 
     @FXML
     private void initialize() {
+        btnLogin.setDefaultButton(true);
     }
 
     @FXML
@@ -32,39 +32,38 @@ public class LoginController {
         String password = txtPassword.getText() != null ? txtPassword.getText().trim() : "";
 
         if (usuario.isEmpty() || password.isEmpty()) {
-            mostrarAlerta("Campos Requeridos", "Por favor, introduce tu usuario y contraseña.", Alert.AlertType.WARNING);
+            mostrarAlerta("Campos Requeridos", "Por favor, introduce tu usuario y contraseña.", "ADVERTENCIA", "ADVERTENCIA");
             return;
         }
 
-        boolean loginExitoso = loginService.autenticar(usuario, password);
+        try {
+            boolean loginExitoso = loginService.autenticar(usuario, password);
 
-        if (loginExitoso) {
-            try {
+            if (loginExitoso) {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/layout-view.fxml"));
                 Parent root = loader.load();
 
                 Stage layoutStage = new Stage();
                 layoutStage.setTitle("ElectroStore System");
                 layoutStage.setScene(new Scene(root));
+                layoutStage.setMinWidth(1280);
+                layoutStage.setMinHeight(800);
                 layoutStage.show();
 
                 Stage loginStage = (Stage) btnLogin.getScene().getWindow();
                 loginStage.close();
-
-            } catch (IOException e) {
-                e.printStackTrace();
-                mostrarAlerta("Error de Carga", "No se pudo cargar la vista principal.", Alert.AlertType.ERROR);
+            } else {
+                mostrarAlerta("Acceso Denegado", "Usuario o contraseña inválidos.", "ERROR", "ERROR");
             }
-        } else {
-            mostrarAlerta("Acceso Denegado", "Usuario o contraseña inválidos. Verifica tus credenciales.", Alert.AlertType.ERROR);
+        } catch (RuntimeException e) {
+            mostrarAlerta("Servidor no disponible", "No se pudo conectar con el backend.", "CONEXIÓN", "ERROR");
+        } catch (IOException e) {
+            mostrarAlerta("Error de Carga", "No se pudo cargar la vista principal.", "SISTEMA", "ERROR");
         }
     }
 
-    private void mostrarAlerta(String titulo, String contenido, Alert.AlertType tipo) {
-        Alert alerta = new Alert(tipo);
-        alerta.setTitle(titulo);
-        alerta.setHeaderText(null);
-        alerta.setContentText(contenido);
-        alerta.showAndWait();
+    private void mostrarAlerta(String titulo, String contenido, String categoria, String icono) {
+        Stage stageActual = (Stage) btnLogin.getScene().getWindow();
+        DialogUtils.mostrarMensaje(stageActual, titulo, contenido, categoria, icono, null, false, true);
     }
 }

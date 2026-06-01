@@ -1,4 +1,4 @@
-package com.store.inventario.controller.productos;
+package com.store.inventario.controller.categorias;
 
 import com.store.inventario.model.categoria.Categoria;
 import com.store.inventario.service.categoria.CategoriaService;

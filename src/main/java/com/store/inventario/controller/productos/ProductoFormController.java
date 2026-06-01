@@ -2,6 +2,7 @@ package com.store.inventario.controller.productos;
 
 import com.store.inventario.model.PageResponse;
 import com.store.inventario.model.categoria.Categoria;
+import com.store.inventario.controller.categorias.CategoriaFormModalController;
 import com.store.inventario.model.producto.CreateProductRequest;
 import com.store.inventario.model.producto.Producto;
 import com.store.inventario.model.producto.UpdateProductRequest;
@@ -63,6 +64,8 @@ public class ProductoFormController {
     @FXML
     public void initialize() {
         cargarCategorias();
+        com.store.inventario.utils.ValidationUtils.hacerSoloDecimal(txtPrecio);
+        com.store.inventario.utils.ValidationUtils.hacerSoloNumerico(txtGarantia);
     }
 
     public void setProductoEditar(Producto producto) {

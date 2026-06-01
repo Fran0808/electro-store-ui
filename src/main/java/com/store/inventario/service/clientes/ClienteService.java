@@ -1,9 +1,11 @@
-package com.store.inventario.service.usuario;
+package com.store.inventario.service.clientes;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.store.inventario.model.PageResponse;
-import com.store.inventario.model.usuario.Usuario;
+import com.store.inventario.model.clientes.Cliente;
+import com.store.inventario.model.clientes.CreateClienteRequest;
+import com.store.inventario.model.clientes.UpdateClienteRequest;
 import com.store.inventario.security.SessionManager;
 
 import java.io.IOException;
@@ -13,18 +15,18 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
-public class UsuarioService {
-    private static final String URL = "http://localhost:8080/api/users";
+public class ClienteService {
+    private static final String URL = "http://localhost:8080/api/customers";
     private final HttpClient client;
     private final Gson gson;
 
-    public UsuarioService() {
+    public ClienteService() {
         client = HttpClient.newHttpClient();
         gson = new Gson();
     }
 
-    public PageResponse<Usuario> obtenerUsuarios() {
-        try {
+    public PageResponse<Cliente> obtenerClientes() {
+        try{
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(URL))
                     .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
@@ -33,10 +35,9 @@ public class UsuarioService {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
             if (response.statusCode() >= 400) {
-                throw new RuntimeException("Error al obtener usuarios: HTTP " + response.statusCode());
+                throw new RuntimeException("Error al obtener clientes: HTTP " + response.statusCode());
             }
-
-            Type type = new TypeToken<PageResponse<Usuario>>() {}.getType();
+            Type type = new TypeToken<PageResponse<Cliente>>() {}.getType();
             return gson.fromJson(response.body(), type);
 
         } catch (IOException | InterruptedException e) {
@@ -44,9 +45,9 @@ public class UsuarioService {
         }
     }
 
-    public Usuario crearUsuario(Usuario usuario) {
+    public Cliente crearCliente(CreateClienteRequest createRequest) {
         try {
-            String json = gson.toJson(usuario);
+            String json = gson.toJson(createRequest);
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(URL))
                     .header("Content-Type", "application/json")
@@ -56,18 +57,18 @@ public class UsuarioService {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
             if (response.statusCode() >= 400) {
-                throw new RuntimeException("Error al crear usuario: HTTP " + response.statusCode());
+                throw new RuntimeException("Error al crear cliente: HTTP " + response.statusCode());
             }
 
-            return gson.fromJson(response.body(), Usuario.class);
+            return gson.fromJson(response.body(), Cliente.class);
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public Usuario actualizarUsuario(String code, Usuario usuario) {
+    public Cliente actualizarCliente(String code, UpdateClienteRequest updateRequest) {
         try {
-            String json = gson.toJson(usuario);
+            String json = gson.toJson(updateRequest);
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(URL + "/" + code))
                     .header("Content-Type", "application/json")
@@ -77,16 +78,16 @@ public class UsuarioService {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
             if (response.statusCode() >= 400) {
-                throw new RuntimeException("Error al actualizar usuario: HTTP " + response.statusCode());
+                throw new RuntimeException("Error al actualizar cliente: HTTP " + response.statusCode());
             }
 
-            return gson.fromJson(response.body(), Usuario.class);
+            return gson.fromJson(response.body(), Cliente.class);
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public void eliminarUsuario(String code) {
+    public void eliminarCliente(String code) {
         try {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(URL + "/" + code))
@@ -96,7 +97,7 @@ public class UsuarioService {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
             if (response.statusCode() >= 400) {
-                throw new RuntimeException("Error al eliminar usuario: HTTP " + response.statusCode());
+                throw new RuntimeException("Error al eliminar cliente: HTTP " + response.statusCode());
             }
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);

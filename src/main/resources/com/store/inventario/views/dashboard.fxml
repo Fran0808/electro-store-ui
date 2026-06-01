@@ -153,6 +153,9 @@
                     </HBox>
 
                     <TableView fx:id="tblAlertasCriticas" prefHeight="200" styleClass="table-view">
+                        <columnResizePolicy>
+                            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                        </columnResizePolicy>
                         <columns>
                             <TableColumn fx:id="colProducto" prefWidth="250" text="Producto" />
                             <TableColumn fx:id="colStock" prefWidth="80" text="Stock Actual" />

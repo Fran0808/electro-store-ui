@@ -66,4 +66,42 @@ public class CategoriaService {
             throw new RuntimeException(e);
         }
     }
+
+    public Categoria actualizarCategoria(String code, Categoria categoria) {
+        try {
+            String json = gson.toJson(categoria);
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(URL + "/" + code))
+                    .header("Content-Type", "application/json")
+                    .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
+                    .PUT(HttpRequest.BodyPublishers.ofString(json))
+                    .build();
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() >= 400) {
+                throw new RuntimeException("Error al actualizar categoría: HTTP " + response.statusCode());
+            }
+
+            return gson.fromJson(response.body(), Categoria.class);
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void eliminarCategoria(String code) {
+        try {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(URL + "/" + code))
+                    .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
+                    .DELETE()
+                    .build();
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() >= 400) {
+                throw new RuntimeException("Error al eliminar categoría: HTTP " + response.statusCode());
+            }
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
