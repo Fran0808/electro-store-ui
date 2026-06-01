@@ -80,20 +80,12 @@ public class ClienteController implements Initializable {
         
         colDni.setCellValueFactory(cellData -> {
             var person = cellData.getValue().getPerson();
-            if (person == null || person.getNationalId() == null) return new SimpleStringProperty("");
-            String nationalId = person.getNationalId();
-            if (nationalId.startsWith("RUC-")) {
-                return new SimpleStringProperty("");
-            }
-            return new SimpleStringProperty(nationalId);
+            return new SimpleStringProperty(person != null && person.getNationalId() != null ? person.getNationalId() : "");
         });
         
         colRuc.setCellValueFactory(cellData -> {
             String taxId = cellData.getValue().getTaxId();
-            if (taxId == null || taxId.startsWith("DNI-")) {
-                return new SimpleStringProperty("");
-            }
-            return new SimpleStringProperty(taxId);
+            return new SimpleStringProperty(taxId != null ? taxId : "");
         });
         
         colTelefono.setCellValueFactory(cellData -> {
@@ -244,13 +236,13 @@ public class ClienteController implements Initializable {
             }
             if (lblClientesDni != null) {
                 long totalDni = clientes.stream()
-                        .filter(c -> c.getPerson() != null && c.getPerson().getNationalId() != null && !c.getPerson().getNationalId().isEmpty() && !c.getPerson().getNationalId().startsWith("RUC-"))
+                        .filter(c -> c.getPerson() != null && c.getPerson().getNationalId() != null && !c.getPerson().getNationalId().isEmpty())
                         .count();
                 lblClientesDni.setText(String.valueOf(totalDni));
             }
             if (lblClientesRuc != null) {
                 long totalRuc = clientes.stream()
-                        .filter(c -> c.getTaxId() != null && !c.getTaxId().isEmpty() && !c.getTaxId().startsWith("DNI-"))
+                        .filter(c -> c.getTaxId() != null && !c.getTaxId().isEmpty())
                         .count();
                 lblClientesRuc.setText(String.valueOf(totalRuc));
             }

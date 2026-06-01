@@ -19,9 +19,9 @@ public class ClienteFormController implements Initializable {
     @FXML
     private Label lblTitulo;
     @FXML
-    private ComboBox<String> cbTipoDocumento;
+    private TextField txtDni;
     @FXML
-    private TextField txtNumeroDocumento;
+    private TextField txtRuc;
     @FXML
     private TextField txtNombres;
     @FXML
@@ -40,35 +40,29 @@ public class ClienteFormController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        cbTipoDocumento.getItems().addAll("DNI", "RUC");
-        cbTipoDocumento.setValue("DNI");
-
         com.store.inventario.utils.ValidationUtils.hacerSoloTelefono(txtTelefono);
 
-        // Limitar numero de documento dinamicamente segun el tipo seleccionado
-        cbTipoDocumento.valueProperty().addListener((observable, oldValue, newValue) -> {
-            txtNumeroDocumento.setText(""); // Limpiar para evitar conflicto de longitud
-            if ("RUC".equals(newValue)) {
-                lblApellidos.setVisible(false);
-                txtApellidos.setVisible(false);
-                txtApellidos.setText("");
-            } else {
-                lblApellidos.setVisible(true);
-                txtApellidos.setVisible(true);
+        // Validar DNI en tiempo real (solo dígitos, máximo 8 caracteres)
+        txtDni.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue == null) return;
+            String sanitized = newValue.replaceAll("[^\\d]", "");
+            if (sanitized.length() > 8) {
+                sanitized = sanitized.substring(0, 8);
+            }
+            if (!newValue.equals(sanitized)) {
+                txtDni.setText(sanitized);
             }
         });
 
-        // Validar en tiempo real que solo ingresen digitos y respetar el limite
-        txtNumeroDocumento.textProperty().addListener((observable, oldValue, newValue) -> {
+        // Validar RUC en tiempo real (solo dígitos, máximo 11 caracteres)
+        txtRuc.textProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue == null) return;
-            String tipoDoc = cbTipoDocumento.getValue();
-            int limite = "RUC".equals(tipoDoc) ? 11 : 8;
             String sanitized = newValue.replaceAll("[^\\d]", "");
-            if (sanitized.length() > limite) {
-                sanitized = sanitized.substring(0, limite);
+            if (sanitized.length() > 11) {
+                sanitized = sanitized.substring(0, 11);
             }
             if (!newValue.equals(sanitized)) {
-                txtNumeroDocumento.setText(sanitized);
+                txtRuc.setText(sanitized);
             }
         });
     }
@@ -79,16 +73,10 @@ public class ClienteFormController implements Initializable {
 
         if (cliente.getPerson() != null) {
             txtNombres.setText(cliente.getPerson().getFirstName());
-            txtApellidos.setText(cliente.getPerson().getLastName());
+            txtApellidos.setText(cliente.getPerson().getLastName() != null ? cliente.getPerson().getLastName() : "");
             txtTelefono.setText(cliente.getPerson().getPhone());
-
-            if (cliente.getTaxId() != null && !cliente.getTaxId().isEmpty() && !cliente.getTaxId().startsWith("DNI-")) {
-                cbTipoDocumento.setValue("RUC");
-                txtNumeroDocumento.setText(cliente.getTaxId());
-            } else {
-                cbTipoDocumento.setValue("DNI");
-                txtNumeroDocumento.setText(cliente.getPerson().getNationalId());
-            }
+            txtDni.setText(cliente.getPerson().getNationalId() != null ? cliente.getPerson().getNationalId() : "");
+            txtRuc.setText(cliente.getTaxId() != null ? cliente.getTaxId() : "");
         }
     }
 
@@ -102,47 +90,41 @@ public class ClienteFormController implements Initializable {
     private void guardarCliente() {
         String nombres = txtNombres.getText().trim();
         String apellidos = txtApellidos.getText().trim();
-        String numeroDoc = txtNumeroDocumento.getText().trim();
+        String dni = txtDni.getText().trim();
+        String ruc = txtRuc.getText().trim();
         String telefono = txtTelefono.getText().trim();
-        String tipoDoc = cbTipoDocumento.getValue();
 
         if (nombres.isEmpty()) {
             mostrarAlerta("Campos Requeridos", "El nombre o razón social es obligatorio.");
             return;
         }
 
-        if (numeroDoc.isEmpty()) {
-            mostrarAlerta("Campos Requeridos", "El número de documento es obligatorio.");
-            return;
-        }
-
-        if ("DNI".equals(tipoDoc) && numeroDoc.length() != 8) {
+        if (!dni.isEmpty() && dni.length() != 8) {
             mostrarAlerta("Formato Inválido", "El DNI debe tener exactamente 8 dígitos.");
             return;
         }
 
-        if ("RUC".equals(tipoDoc) && numeroDoc.length() != 11) {
+        if (!ruc.isEmpty() && ruc.length() != 11) {
             mostrarAlerta("Formato Inválido", "El RUC debe tener exactamente 11 dígitos.");
             return;
         }
 
-        if ("DNI".equals(tipoDoc) && apellidos.isEmpty()) {
-            mostrarAlerta("Campos Requeridos", "Los apellidos son obligatorios para personas con DNI.");
-            return;
-        }
+        String finalNationalId = dni.isEmpty() ? null : dni;
+        String finalTaxId = ruc.isEmpty() ? null : ruc;
+        String finalApellidos = apellidos.isEmpty() ? null : apellidos;
 
         try {
             if (clienteEditar == null) {
                 CreatePersonaRequest personRequest = new CreatePersonaRequest(
                         nombres, 
-                        "DNI".equals(tipoDoc) ? apellidos : "-", // Si es RUC, se rellena con guion
-                        "DNI".equals(tipoDoc) ? numeroDoc : ("RUC-" + numeroDoc), 
+                        finalApellidos, 
+                        finalNationalId, 
                         telefono
                 );
                 
                 CreateClienteRequest createRequest = new CreateClienteRequest(
                         personRequest,
-                        "RUC".equals(tipoDoc) ? numeroDoc : ("DNI-" + numeroDoc)
+                        finalTaxId
                 );
                 
                 clienteService.crearCliente(createRequest);
@@ -150,14 +132,14 @@ public class ClienteFormController implements Initializable {
             } else {
                 UpdatePersonaRequest personRequest = new UpdatePersonaRequest(
                         nombres,
-                        "DNI".equals(tipoDoc) ? apellidos : "-",
-                        "DNI".equals(tipoDoc) ? numeroDoc : ("RUC-" + numeroDoc),
+                        finalApellidos,
+                        finalNationalId,
                         telefono
                 );
                 
                 UpdateClienteRequest updateRequest = new UpdateClienteRequest(
                         personRequest,
-                        "RUC".equals(tipoDoc) ? numeroDoc : ("DNI-" + numeroDoc)
+                        finalTaxId
                 );
                 
                 clienteService.actualizarCliente(clienteEditar.getCode(), updateRequest);

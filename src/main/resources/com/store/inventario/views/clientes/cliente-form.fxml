@@ -22,12 +22,12 @@
             <VBox spacing="16">
                 <HBox spacing="12">
                     <VBox spacing="6" HBox.hgrow="ALWAYS">
-                        <Label text="Tipo Documento *"/>
-                        <ComboBox fx:id="cbTipoDocumento" promptText="Seleccionar" styleClass="filter-combo" maxWidth="Infinity"/>
+                        <Label text="DNI (Opcional)"/>
+                        <TextField fx:id="txtDni" promptText="Ingrese el DNI" styleClass="search-field"/>
                     </VBox>
                     <VBox spacing="6" HBox.hgrow="ALWAYS">
-                        <Label text="N° Documento *"/>
-                        <TextField fx:id="txtNumeroDocumento" promptText="Ingrese el documento" styleClass="search-field"/>
+                        <Label text="RUC (Opcional)"/>
+                        <TextField fx:id="txtRuc" promptText="Ingrese el RUC" styleClass="search-field"/>
                     </VBox>
                 </HBox>
 
