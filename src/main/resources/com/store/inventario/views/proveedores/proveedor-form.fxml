@@ -20,7 +20,7 @@
 
             <VBox spacing="10">
                 <Label fx:id="lblTitulo" text="Nuevo Proveedor" styleClass="header-title"/>
-                <Label text="Completa la información del proveedor" styleClass="header-subtitle"/>
+                <Label fx:id="lblSubtitulo" text="Completa la información del proveedor" styleClass="header-subtitle"/>
             </VBox>
 
             <VBox spacing="20">
@@ -43,8 +43,8 @@
             </VBox>
 
             <HBox spacing="12">
-                <Button text="Cancelar" styleClass="btn-secondary" HBox.hgrow="ALWAYS" maxWidth="Infinity" fx:id="btnCancelar" onAction="#cerrarModal"/>
-                <Button text="Guardar" styleClass="btn-secondary" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                <Button text="Cancelar" styleClass="btn-secondary" HBox.hgrow="ALWAYS" maxWidth="Infinity" fx:id="btnCancelar" onAction="#handleCancelar"/>
+                <Button text="Guardar" styleClass="btn-secondary" HBox.hgrow="ALWAYS" maxWidth="Infinity" fx:id="btnGuardar" onAction="#handleGuardar"/>
             </HBox>
 
         </VBox>
