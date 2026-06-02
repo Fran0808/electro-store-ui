@@ -69,8 +69,8 @@ public class ProductoFormController {
     @FXML
     public void initialize() {
         cargarCategorias();
-        com.store.inventario.utils.ValidationUtils.hacerSoloDecimal(txtPrecio);
-        com.store.inventario.utils.ValidationUtils.hacerSoloNumerico(txtGarantia);
+        com.store.inventario.utils.ValidationUtils.hacerSoloDecimal(txtPrecio, 10);
+        com.store.inventario.utils.ValidationUtils.hacerSoloNumericoConLimite(txtGarantia, 3);
         String roleActual = SessionManager.getInstance().getRole();
 
         if(!"ADMIN".equalsIgnoreCase(roleActual)){
@@ -119,8 +119,48 @@ public class ProductoFormController {
         }
 
         try {
-            BigDecimal precio = new BigDecimal(txtPrecio.getText().trim());
-            Integer garantia = Integer.parseInt(txtGarantia.getText().trim());
+            BigDecimal precio;
+            try {
+                precio = new BigDecimal(txtPrecio.getText().trim());
+            } catch (NumberFormatException e) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Advertencia");
+                alert.setHeaderText("Precio Inválido");
+                alert.setContentText("El precio de venta ingresado no es válido.");
+                alert.showAndWait();
+                return;
+            }
+
+            if (precio.compareTo(BigDecimal.ZERO) <= 0 || precio.compareTo(new BigDecimal("10000000")) > 0) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Advertencia");
+                alert.setHeaderText("Precio Fuera de Rango");
+                alert.setContentText("El precio de venta debe ser mayor a 0 y no debe superar los 10,000,000.");
+                alert.showAndWait();
+                return;
+            }
+
+            Long garantiaLong;
+            try {
+                garantiaLong = Long.parseLong(txtGarantia.getText().trim());
+            } catch (NumberFormatException e) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Advertencia");
+                alert.setHeaderText("Garantía Inválida");
+                alert.setContentText("El valor de garantía es demasiado grande o no es válido.");
+                alert.showAndWait();
+                return;
+            }
+
+            if (garantiaLong < 0 || garantiaLong > 240) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Advertencia");
+                alert.setHeaderText("Garantía Fuera de Rango");
+                alert.setContentText("Los meses de garantía deben estar entre 0 y 240 meses (máximo 20 años).");
+                alert.showAndWait();
+                return;
+            }
+            Integer garantia = garantiaLong.intValue();
 
             if (modoEdicion) {
                 UpdateProductRequest updateRequest = new UpdateProductRequest(
@@ -163,12 +203,6 @@ public class ProductoFormController {
             Stage stage = (Stage) btnGuardar.getScene().getWindow();
             stage.close();
 
-        } catch (NumberFormatException e) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Advertencia");
-            alert.setHeaderText("Formato Inválido");
-            alert.setContentText("Verifique que Precio y Garantía sean valores numéricos válidos.");
-            alert.showAndWait();
         } catch (Exception e) {
             e.printStackTrace();
             Alert alert = new Alert(Alert.AlertType.ERROR);

@@ -36,6 +36,20 @@ public class ValidationUtils {
         });
     }
 
+    public static void hacerSoloDecimal(TextField textField, int limite) {
+        textField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue == null) return;
+            if (newValue.isEmpty()) return;
+            if (!newValue.matches("\\d*(\\.\\d*)?")) {
+                textField.setText(oldValue != null ? oldValue : "");
+                return;
+            }
+            if (newValue.length() > limite) {
+                textField.setText(oldValue != null ? oldValue : "");
+            }
+        });
+    }
+
     public static void hacerSoloTelefono(TextField textField) {
         textField.textProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue == null) return;
