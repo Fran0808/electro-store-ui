@@ -1,18 +1,21 @@
 package com.store.inventario.controller.usuarios;
-
+ 
 import com.store.inventario.model.usuario.Usuario;
 import com.store.inventario.service.usuario.UsuarioService;
+import com.store.inventario.service.empleado.EmpleadoService;
+import com.store.inventario.model.empleado.Empleado;
+import com.store.inventario.model.PageResponse;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-
+ 
 import java.net.URL;
 import java.util.ResourceBundle;
-
+ 
 public class UsuarioFormController implements Initializable {
-
+ 
     @FXML
     private Label lblTitulo;
     @FXML
@@ -20,30 +23,96 @@ public class UsuarioFormController implements Initializable {
     @FXML
     private PasswordField txtPassword;
     @FXML
-    private ComboBox<String> cbRol;
+    private TextField txtRol;
     @FXML
     private ComboBox<String> cbEmpleado;
     @FXML
     private Button btnCancelar;
     @FXML
     private Button btnGuardar;
-
+ 
     private final UsuarioService usuarioService = new UsuarioService();
     private Usuario usuarioEditar;
-
+    private java.util.List<Empleado> listaEmpleados = new java.util.ArrayList<>();
+    private java.util.Set<String> empleadosConUsuario = new java.util.HashSet<>();
+ 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // Cargar Roles del enum del backend
-        cbRol.setItems(FXCollections.observableArrayList("ADMIN", "RECEPTION", "STOREKEEPER"));
+        cargarEmpleados();
+        
+        filtrarYMostrarEmpleados(true);
 
-        // Cargar empleados de muestra para la vista, de ahi se cambiaa
-        cbEmpleado.setItems(FXCollections.observableArrayList(
-            "EMP001 - Juan Pérez",
-            "EMP002 - María Gómez",
-            "EMP003 - Carlos Rodríguez"
-        ));
+        cbEmpleado.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                String employeeCode = newValue.split(" - ")[0];
+                Empleado seleccionado = listaEmpleados.stream()
+                        .filter(e -> e.getCode().equals(employeeCode))
+                        .findFirst()
+                        .orElse(null);
+                if (seleccionado != null) {
+                    txtRol.setText(getSystemRoleFromPosition(seleccionado.getPosition()));
+                }
+            } else {
+                txtRol.setText("");
+            }
+        });
     }
 
+    private String getSystemRoleFromPosition(com.store.inventario.model.empleado.EmployeePosition position) {
+        if (position == null) return "";
+        switch (position) {
+            case MANAGER: return "ADMIN";
+            case SELLER: return "RECEPTION";
+            case STOREKEEPER: return "STOREKEEPER";
+            default: return "";
+        }
+    }
+ 
+    private void cargarEmpleados() {
+        try {
+            PageResponse<Usuario> usuariosResponse = usuarioService.obtenerUsuarios();
+            empleadosConUsuario.clear();
+            if (usuariosResponse != null && usuariosResponse.getContent() != null) {
+                for (Usuario u : usuariosResponse.getContent()) {
+                    if (u.getEmployeeCode() != null) {
+                        empleadosConUsuario.add(u.getEmployeeCode());
+                    }
+                }
+            }
+
+            EmpleadoService empleadoService = new EmpleadoService();
+            PageResponse<Empleado> response = empleadoService.obtenerEmpleados();
+            if (response != null && response.getContent() != null) {
+                this.listaEmpleados = response.getContent();
+            } else {
+                this.listaEmpleados = new java.util.ArrayList<>();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            this.listaEmpleados = new java.util.ArrayList<>();
+            this.empleadosConUsuario.clear();
+            mostrarAlerta("Error al cargar empleados", "No se pudieron obtener los empleados registrados desde el servidor: " + e.getMessage());
+        }
+    }
+
+    private void filtrarYMostrarEmpleados(boolean soloSinUsuario) {
+        javafx.collections.ObservableList<String> items = FXCollections.observableArrayList();
+        for (Empleado emp : this.listaEmpleados) {
+            if (soloSinUsuario && empleadosConUsuario.contains(emp.getCode())) {
+                continue;
+            }
+
+            String nombre = "";
+            if (emp.getPerson() != null) {
+                String fn = emp.getPerson().getFirstName() != null ? emp.getPerson().getFirstName() : "";
+                String ln = emp.getPerson().getLastName() != null ? emp.getPerson().getLastName() : "";
+                nombre = (fn + " " + ln).trim();
+            }
+            items.add(emp.getCode() + " - " + nombre);
+        }
+        cbEmpleado.setItems(items);
+    }
+ 
     public void setUsuarioEditar(Usuario usuario) {
         this.usuarioEditar = usuario;
         if (lblTitulo != null) {
@@ -51,9 +120,12 @@ public class UsuarioFormController implements Initializable {
         }
         txtUsername.setText(usuario.getUsername());
         txtUsername.setEditable(false);
-        cbRol.setValue(usuario.getRole());
+        txtRol.setText(usuario.getRole());
+        
+        filtrarYMostrarEmpleados(false);
         cbEmpleado.setValue(usuario.getEmployeeCode() + " - " + usuario.getFullName());
-
+        cbEmpleado.setDisable(true);
+ 
         txtPassword.setPromptText("Opcional (Dejar vacío para no cambiar)");
     }
 
@@ -67,15 +139,15 @@ public class UsuarioFormController implements Initializable {
     private void guardarUsuario() {
         String username = txtUsername.getText();
         String password = txtPassword.getText();
-        String rol = cbRol.getValue();
+        String rol = txtRol.getText();
         String empleadoSeleccionado = cbEmpleado.getValue();
-
+ 
         boolean esNuevo = (usuarioEditar == null);
         
         if (username == null || username.trim().isEmpty() ||
             (esNuevo && (password == null || password.trim().isEmpty())) ||
-            rol == null || empleadoSeleccionado == null) {
-
+            rol == null || rol.trim().isEmpty() || empleadoSeleccionado == null) {
+ 
             mostrarAlerta("Campos Requeridos", "Por favor, complete todos los campos obligatorios.");
             return;
         }

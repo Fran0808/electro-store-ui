@@ -12,6 +12,22 @@ import java.io.IOException;
 
 public class SidebarController {
     @FXML
+    private HBox itemDashboard;
+    @FXML
+    private HBox itemProductos;
+    @FXML
+    private HBox itemClientes;
+    @FXML
+    private HBox itemProveedores;
+    @FXML
+    private HBox itemCompras;
+    @FXML
+    private HBox itemVentas;
+    @FXML
+    private HBox itemInventario;
+    @FXML
+    private VBox subMenuInventario;
+    @FXML
     private HBox itemEmpleados;
     @FXML
     private HBox itemUsuarios;
@@ -30,8 +46,28 @@ public class SidebarController {
                 itemUsuarios.setManaged(false);
             }
         }
+
+        if("STOREKEEPER".equalsIgnoreCase(role)) {
+            ocultarComponente(itemClientes);
+            ocultarComponente(itemProveedores);
+            ocultarComponente(itemCompras);
+            ocultarComponente(itemVentas);
+        }
+        if("RECEPTION".equalsIgnoreCase(role)) {
+            ocultarComponente(itemInventario);
+            if (subMenuInventario != null) {
+                subMenuInventario.setVisible(false);
+                subMenuInventario.setManaged(false);
+            }
+        }
     }
 
+    private void ocultarComponente(HBox item){
+        if(item != null){
+            item.setVisible(false);
+            item.setManaged(false);
+        }
+    }
     @FXML
     private void handleDashboard(){
         NavigationManager.getInstance().navegar("/com/store/inventario/views/dashboard.fxml");
@@ -60,7 +96,6 @@ public class SidebarController {
     private void handleEmpleados(){
         NavigationManager.getInstance().navegar("/com/store/inventario/views/empleados/empleados.fxml");
     }
-    @FXML private VBox subMenuInventario;
 
     @FXML
     private void handleInventario() {
