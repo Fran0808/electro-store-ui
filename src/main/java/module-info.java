@@ -29,5 +29,6 @@ module com.store.inventario {
     opens com.store.inventario.model.clientes;
     opens com.store.inventario.model.usuario;
     opens com.store.inventario.model.empleado;
+    opens com.store.inventario.model.proveedor;
 
 }

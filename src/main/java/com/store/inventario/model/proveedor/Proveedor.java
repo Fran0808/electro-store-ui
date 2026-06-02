@@ -2,20 +2,20 @@ package com.store.inventario.model.proveedor;
 
 public class Proveedor {
     private String code;
-    private String ruc;
+    private String taxId;
     private String tradeName;
     private String phone;
-    private String companyName;
+    private String legalName;
 
     public Proveedor (){
     }
 
-    public Proveedor(String code, String ruc, String tradeName, String phone, String companyName){
+    public Proveedor(String code, String taxId, String tradeName, String phone, String legalName){
         this.code = code;
-        this.ruc = ruc;
+        this.taxId = taxId;
         this.tradeName = tradeName;
         this.phone = phone;
-        this.companyName = companyName;
+        this.legalName = legalName;
     }
 
     public String getCode() {
@@ -26,12 +26,12 @@ public class Proveedor {
         this.code = code;
     }
 
-    public String getRuc() {
-        return ruc;
+    public String getTaxId() {
+        return taxId;
     }
 
-    public void setRuc(String ruc) {
-        this.ruc = ruc;
+    public void setTaxId(String taxId) {
+        this.taxId = taxId;
     }
 
     public String getTradeName() {
@@ -50,11 +50,11 @@ public class Proveedor {
         this.phone = phone;
     }
 
-    public String getCompanyName() {
-        return companyName;
+    public String getLegalName() {
+        return legalName;
     }
 
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
+    public void setLegalName(String legalName) {
+        this.legalName = legalName;
     }
 }
