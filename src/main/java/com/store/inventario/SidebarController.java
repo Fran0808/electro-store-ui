@@ -5,11 +5,33 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import java.io.IOException;
 
 public class SidebarController {
+    @FXML
+    private HBox itemEmpleados;
+    @FXML
+    private HBox itemUsuarios;
+
+    @FXML
+    private void initialize() {
+        String role = SessionManager.getInstance().getRole();
+
+        if (role == null || !"ADMIN".equalsIgnoreCase(role.trim())) {
+            if (itemEmpleados != null) {
+                itemEmpleados.setVisible(false);
+                itemEmpleados.setManaged(false);
+            }
+            if (itemUsuarios != null) {
+                itemUsuarios.setVisible(false);
+                itemUsuarios.setManaged(false);
+            }
+        }
+    }
+
     @FXML
     private void handleDashboard(){
         NavigationManager.getInstance().navegar("/com/store/inventario/views/dashboard.fxml");
