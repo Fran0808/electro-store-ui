@@ -62,8 +62,8 @@ public class UsuarioFormController implements Initializable {
         if (position == null) return "";
         switch (position) {
             case MANAGER: return "ADMIN";
-            case SELLER: return "RECEPTION";
-            case STOREKEEPER: return "STOREKEEPER";
+            case SELLER: return "RECEPCIONISTA";
+            case STOREKEEPER: return "ALMACENERO";
             default: return "";
         }
     }
@@ -120,7 +120,12 @@ public class UsuarioFormController implements Initializable {
         }
         txtUsername.setText(usuario.getUsername());
         txtUsername.setEditable(false);
-        txtRol.setText(usuario.getRole());
+        
+        String rolEspanol = usuario.getRole();
+        if ("RECEPTION".equalsIgnoreCase(rolEspanol)) rolEspanol = "RECEPCIONISTA";
+        else if ("STOREKEEPER".equalsIgnoreCase(rolEspanol)) rolEspanol = "ALMACENERO";
+        else if (rolEspanol != null) rolEspanol = rolEspanol.toUpperCase().trim();
+        txtRol.setText(rolEspanol);
         
         filtrarYMostrarEmpleados(false);
         cbEmpleado.setValue(usuario.getEmployeeCode() + " - " + usuario.getFullName());
@@ -154,12 +159,16 @@ public class UsuarioFormController implements Initializable {
 
         try {
             String employeeCode = empleadoSeleccionado.split(" - ")[0];
-
+            
+            String rolBackend = rol;
+            if ("RECEPCIONISTA".equals(rol)) rolBackend = "RECEPTION";
+            else if ("ALMACENERO".equals(rol)) rolBackend = "STOREKEEPER";
+ 
             Usuario nuevoUsuario = new Usuario(
                 esNuevo ? null : usuarioEditar.getCode(),
                 username.trim(),
                 (password != null && !password.trim().isEmpty()) ? password.trim() : null,
-                rol,
+                rolBackend,
                 employeeCode,
                 "",
                 ""

@@ -82,10 +82,19 @@ public class EmpleadosController implements Initializable {
                 .getValue()
                 .getPerson()
                 .getNationalId()));
-        colCargo.setCellValueFactory(cellData -> new SimpleStringProperty(cellData
-                .getValue()
-                .getPosition()
-                .name()));
+        colCargo.setCellValueFactory(cellData -> {
+            var position = cellData.getValue().getPosition();
+            String cargoEspanol = "";
+            if (position != null) {
+                switch (position) {
+                    case MANAGER: cargoEspanol = "MANAGER"; break;
+                    case SELLER: cargoEspanol = "RECEPCIONISTA"; break;
+                    case STOREKEEPER: cargoEspanol = "ALMACENERO"; break;
+                    default: cargoEspanol = position.name();
+                }
+            }
+            return new SimpleStringProperty(cargoEspanol);
+        });
         colSueldo.setCellValueFactory(new PropertyValueFactory<>("salary"));
         configurarColumnaAcciones();
         obtenerEmpleados();

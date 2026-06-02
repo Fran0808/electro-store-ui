@@ -45,6 +45,22 @@ public class EmpleadosFormController {
     @FXML
     public void initialize() {
         cbCargo.setItems(FXCollections.observableArrayList(EmployeePosition.values()));
+        cbCargo.setConverter(new javafx.util.StringConverter<EmployeePosition>() {
+            @Override
+            public String toString(EmployeePosition position) {
+                if (position == null) return "";
+                switch (position) {
+                    case MANAGER: return "MANAGER";
+                    case SELLER: return "RECEPCIONISTA";
+                    case STOREKEEPER: return "ALMACENERO";
+                    default: return position.name();
+                }
+            }
+            @Override
+            public EmployeePosition fromString(String string) {
+                return null;
+            }
+        });
         com.store.inventario.utils.ValidationUtils.hacerSoloNumericoConLimite(txtDni, 8);
         com.store.inventario.utils.ValidationUtils.hacerSoloTelefono(txtTelefono);
         com.store.inventario.utils.ValidationUtils.hacerSoloDecimal(txtSueldo);

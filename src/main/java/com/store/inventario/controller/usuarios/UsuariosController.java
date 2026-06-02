@@ -68,7 +68,19 @@ public class UsuariosController {
     private void initialize() {
         colCodigo.setCellValueFactory(new PropertyValueFactory<>("code"));
         colUsuario.setCellValueFactory(new PropertyValueFactory<>("username"));
-        colRol.setCellValueFactory(new PropertyValueFactory<>("role"));
+        colRol.setCellValueFactory(cellData -> {
+            String rolIngles = cellData.getValue().getRole();
+            String rolEspanol = "";
+            if (rolIngles != null) {
+                switch (rolIngles.toUpperCase().trim()) {
+                    case "ADMIN": rolEspanol = "ADMIN"; break;
+                    case "RECEPTION": rolEspanol = "RECEPCIONISTA"; break;
+                    case "STOREKEEPER": rolEspanol = "ALMACENERO"; break;
+                    default: rolEspanol = rolIngles.toUpperCase().trim();
+                }
+            }
+            return new javafx.beans.property.SimpleStringProperty(rolEspanol);
+        });
         colCodigoEmpleado.setCellValueFactory(new PropertyValueFactory<>("employeeCode"));
         colNombre.setCellValueFactory(new PropertyValueFactory<>("firstName"));
         colApellido.setCellValueFactory(new PropertyValueFactory<>("lastName"));
