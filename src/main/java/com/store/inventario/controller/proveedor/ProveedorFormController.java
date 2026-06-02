@@ -38,6 +38,7 @@ public class ProveedorFormController {
     public void initialize() {
         com.store.inventario.utils.ValidationUtils.hacerSoloNumericoConLimite(txtRuc, 11);
         com.store.inventario.utils.ValidationUtils.hacerSoloTelefono(txtTelefono);
+        txtTelefono.setText("+51 ");
     }
 
     public void setProveedorEditar(Proveedor proveedor) {

@@ -41,8 +41,8 @@ public class ClienteFormController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         com.store.inventario.utils.ValidationUtils.hacerSoloTelefono(txtTelefono);
+        txtTelefono.setText("+51 ");
 
-        // Validar DNI en tiempo real (solo dígitos, máximo 8 caracteres)
         txtDni.textProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue == null) return;
             String sanitized = newValue.replaceAll("[^\\d]", "");
@@ -54,7 +54,6 @@ public class ClienteFormController implements Initializable {
             }
         });
 
-        // Validar RUC en tiempo real (solo dígitos, máximo 11 caracteres)
         txtRuc.textProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue == null) return;
             String sanitized = newValue.replaceAll("[^\\d]", "");

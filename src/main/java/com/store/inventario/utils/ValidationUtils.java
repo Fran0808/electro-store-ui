@@ -40,7 +40,7 @@ public class ValidationUtils {
         textField.textProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue == null) return;
             if (newValue.isEmpty()) return;
-            if (!newValue.matches("\\+?[\\d\\s-]*")) {
+            if (!newValue.matches("\\+?[\\d\\s]*")) {
                 textField.setText(oldValue != null ? oldValue : "");
             }
         });
