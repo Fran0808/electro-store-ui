@@ -3,6 +3,7 @@ package com.store.inventario;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import java.io.IOException;
 
@@ -15,6 +16,14 @@ public class MainApplication extends Application {
         );
         Scene scene = new Scene(loader.load());
         stage.setTitle("Sistema de Inventario");
+
+        try {
+            Image icon = new Image(getClass().getResourceAsStream("/logo.png"));
+            stage.getIcons().add(icon);
+        } catch (Exception e) {
+            System.err.println("No se pudo cargar el logo de la aplicación: " + e.getMessage());
+        }
+
         stage.setScene(scene);
         stage.setMinWidth(1280);
         stage.setMinHeight(800);
