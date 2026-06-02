@@ -33,12 +33,12 @@
                     <PasswordField fx:id="txtPassword" promptText="Ingrese la contraseña" styleClass="search-field"/>
                 </VBox>
                 <VBox spacing="6">
-                    <Label text="Rol"/>
-                    <ComboBox fx:id="cbRol" promptText="Seleccione un rol" styleClass="search-field" maxWidth="Infinity"/>
-                </VBox>
-                <VBox spacing="6">
                     <Label text="Empleado"/>
                     <ComboBox fx:id="cbEmpleado" promptText="Seleccione el empleado" styleClass="search-field" maxWidth="Infinity"/>
+                </VBox>
+                <VBox spacing="6">
+                    <Label text="Rol Asociado"/>
+                    <TextField fx:id="txtRol" promptText="Seleccione un empleado para ver su rol" styleClass="search-field" editable="false" focusTraversable="false"/>
                 </VBox>
             </VBox>
 

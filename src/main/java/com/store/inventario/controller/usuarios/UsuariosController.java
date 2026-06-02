@@ -37,6 +37,15 @@ public class UsuariosController {
     private TableColumn<Usuario, String> colApellido;
     @FXML
     private TableColumn<Usuario, Void> colAcciones;
+    
+    @FXML
+    private Label lblTotalUsuarios;
+    @FXML
+    private Label lblTotalAdmins;
+    @FXML
+    private Label lblTotalOperativos;
+    @FXML
+    private Label lblResumenPaginacion;
 
     private final UsuarioService usuarioService = new UsuarioService();
 
@@ -170,6 +179,38 @@ public class UsuariosController {
             PageResponse<Usuario> response = usuarioService.obtenerUsuarios();
             List<Usuario> usuarios = (response != null) ? response.getContent() : java.util.Collections.emptyList();
             tblUsuarios.setItems(FXCollections.observableArrayList(usuarios));
+            
+            if (lblTotalUsuarios != null) {
+                lblTotalUsuarios.setText(String.valueOf(response != null ? response.getTotalElements() : usuarios.size()));
+            }
+            
+            if (lblTotalAdmins != null) {
+                long totalAdmins = usuarios.stream()
+                        .filter(u -> u.getRole() != null && "ADMIN".equalsIgnoreCase(u.getRole().trim()))
+                        .count();
+                lblTotalAdmins.setText(String.valueOf(totalAdmins));
+            }
+            
+            if (lblTotalOperativos != null) {
+                long totalOperativos = usuarios.stream()
+                        .filter(u -> u.getRole() != null && !"ADMIN".equalsIgnoreCase(u.getRole().trim()))
+                        .count();
+                lblTotalOperativos.setText(String.valueOf(totalOperativos));
+            }
+
+            if (lblResumenPaginacion != null && response != null) {
+                long total = response.getTotalElements();
+                int paginaActual = response.getNumber();
+                int pageSize = response.getSize();
+                
+                if (total == 0) {
+                    lblResumenPaginacion.setText("No hay usuarios para mostrar");
+                } else {
+                    long desde = (long) paginaActual * pageSize + 1;
+                    long hasta = Math.min(desde + pageSize - 1, total);
+                    lblResumenPaginacion.setText("Mostrando " + desde + "-" + hasta + " de " + total + " usuarios");
+                }
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
