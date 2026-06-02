@@ -117,6 +117,12 @@ public class GestionCategoriasController {
             return;
         }
 
+        String codigoExcluir = (categoriaEditar != null) ? categoriaEditar.getCode() : null;
+        if (existeCategoriaConNombre(nombre, codigoExcluir)) {
+            mostrarAlerta(Alert.AlertType.WARNING, "Advertencia", "Ya existe una categoría con el nombre '" + nombre + "'.");
+            return;
+        }
+
         try {
             if (categoriaEditar == null) {
                 // Crear Categoría
@@ -136,6 +142,16 @@ public class GestionCategoriasController {
             e.printStackTrace();
             mostrarAlerta(Alert.AlertType.ERROR, "Error", "Ocurrió un error al guardar los cambios: " + e.getMessage());
         }
+    }
+
+    private boolean existeCategoriaConNombre(String nombre, String codigoExcluir) {
+        if (tblCategorias.getItems() == null) {
+            return false;
+        }
+        return tblCategorias.getItems().stream()
+                .anyMatch(c -> c.getName() != null && 
+                               c.getName().trim().equalsIgnoreCase(nombre.trim()) && 
+                               (codigoExcluir == null || !c.getCode().equals(codigoExcluir)));
     }
 
     private void handleEditar(Categoria cat) {
