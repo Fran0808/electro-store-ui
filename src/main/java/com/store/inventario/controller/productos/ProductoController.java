@@ -2,6 +2,7 @@ package com.store.inventario.controller.productos;
 
 import com.store.inventario.model.PageResponse;
 import com.store.inventario.model.producto.Producto;
+import com.store.inventario.security.SessionManager;
 import com.store.inventario.service.producto.ProductoService;
 
 import javafx.collections.FXCollections;
@@ -210,8 +211,14 @@ public class ProductoController implements Initializable {
                         
                         itemEditar.getStyleClass().add("menu-item-editar");
                         itemEliminar.getStyleClass().add("menu-item-eliminar");
-                        menuAcciones.getItems().addAll(itemEditar, itemEliminar);
-                        
+
+                        String rolActual = SessionManager.getInstance().getRole();
+                        if("ADMIN".equalsIgnoreCase(rolActual)) {
+                            menuAcciones.getItems().addAll(itemEditar, itemEliminar);
+                        }else{
+                            menuAcciones.getItems().addAll(itemEditar);
+                        }
+
                         contenedor.setAlignment(Pos.CENTER);
 
                         btnAcciones.setOnAction(event -> {

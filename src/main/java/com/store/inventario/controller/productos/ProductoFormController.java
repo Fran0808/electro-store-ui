@@ -6,6 +6,7 @@ import com.store.inventario.controller.categorias.CategoriaFormModalController;
 import com.store.inventario.model.producto.CreateProductRequest;
 import com.store.inventario.model.producto.Producto;
 import com.store.inventario.model.producto.UpdateProductRequest;
+import com.store.inventario.security.SessionManager;
 import com.store.inventario.service.categoria.CategoriaService;
 import com.store.inventario.service.producto.ProductoService;
 
@@ -15,6 +16,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -55,6 +57,9 @@ public class ProductoFormController {
     @FXML
     private Button btnCancelar;
 
+    @FXML
+    private Button btnNuevaCategoria;
+
     private final CategoriaService categoriaService = new CategoriaService();
     private final ProductoService productoService = new ProductoService();
 
@@ -66,6 +71,12 @@ public class ProductoFormController {
         cargarCategorias();
         com.store.inventario.utils.ValidationUtils.hacerSoloDecimal(txtPrecio);
         com.store.inventario.utils.ValidationUtils.hacerSoloNumerico(txtGarantia);
+        String roleActual = SessionManager.getInstance().getRole();
+
+        if(!"ADMIN".equalsIgnoreCase(roleActual)){
+            btnNuevaCategoria.setVisible(false);
+            btnNuevaCategoria.setManaged(false);
+        }
     }
 
     public void setProductoEditar(Producto producto) {

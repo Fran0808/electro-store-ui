@@ -21,7 +21,7 @@
                         <Label styleClass="header-subtitle" text="Administre las categorías del catálogo para la clasificación de productos." />
                     </children>
                 </VBox>
-                <HBox spacing="12.0" styleClass="search-container">
+                <HBox fx:id="contenedorCrearCategoria" spacing="12.0" styleClass="search-container">
                     <children>
                         <TextField fx:id="txtNombre" promptText="Nombre de la nueva categoría (Ej. Cómputo, Audio...)" styleClass="search-field" HBox.hgrow="ALWAYS" />
                         <Button fx:id="btnCancelarEdicion" managed="false" onAction="#handleCancelarEdicion" styleClass="btn-secondary" text="Cancelar" visible="false" />

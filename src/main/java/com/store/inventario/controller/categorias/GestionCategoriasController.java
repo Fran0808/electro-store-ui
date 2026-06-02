@@ -2,6 +2,7 @@ package com.store.inventario.controller.categorias;
 
 import com.store.inventario.model.PageResponse;
 import com.store.inventario.model.categoria.Categoria;
+import com.store.inventario.security.SessionManager;
 import com.store.inventario.service.categoria.CategoriaService;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -35,6 +36,10 @@ public class GestionCategoriasController {
     @FXML
     private Button btnCerrar;
 
+    @FXML
+    private HBox contenedorCrearCategoria;
+
+
     private final CategoriaService categoriaService = new CategoriaService();
     private Categoria categoriaEditar = null;
 
@@ -45,6 +50,14 @@ public class GestionCategoriasController {
 
         configurarColumnaAcciones();
         cargarCategorias();
+
+        String roleActual = SessionManager.getInstance().getRole();
+
+        if(!"ADMIN".equals(roleActual)){
+            contenedorCrearCategoria.setVisible(false);
+            contenedorCrearCategoria.setManaged(false);
+            tblCategorias.getColumns().remove(colAcciones);
+        }
     }
 
     private void configurarColumnaAcciones() {

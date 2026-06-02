@@ -37,6 +37,10 @@ public class SidebarController {
         String role = SessionManager.getInstance().getRole();
 
         if (role == null || !"ADMIN".equalsIgnoreCase(role.trim())) {
+            if(itemDashboard != null) {
+                itemDashboard.setVisible(false);
+                itemDashboard.setManaged(false);
+            }
             if (itemEmpleados != null) {
                 itemEmpleados.setVisible(false);
                 itemEmpleados.setManaged(false);
