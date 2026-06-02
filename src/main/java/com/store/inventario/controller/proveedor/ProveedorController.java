@@ -2,6 +2,7 @@ package com.store.inventario.controller.proveedor;
 
 import com.store.inventario.model.PageResponse;
 import com.store.inventario.model.proveedor.Proveedor;
+import com.store.inventario.security.SessionManager;
 import com.store.inventario.service.proveedor.ProveedorService;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -161,7 +162,15 @@ public class ProveedorController implements Initializable {
                             {
                                 btnAcciones.getStyleClass().add("btn-acciones");
                                 contenedor.setAlignment(Pos.CENTER);
-                                menuAcciones.getItems().addAll(itemEditar, itemEliminar);
+
+                                String rolActual = SessionManager.getInstance().getRole();
+
+                                if(!"ADMIN".equalsIgnoreCase(rolActual)){
+                                    menuAcciones.getItems().addAll(itemEditar);
+                                }else{
+                                    menuAcciones.getItems().addAll(itemEditar, itemEliminar);
+                                }
+
                                 btnAcciones.setOnAction(event -> {
                                     menuAcciones.show(
                                             btnAcciones,

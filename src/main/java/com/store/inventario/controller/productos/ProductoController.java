@@ -79,8 +79,11 @@ public class ProductoController implements Initializable {
     private Button btnLimpiar;
     @FXML
     private Button btnBuscar;
+    @FXML
+    private Button btnGestionarCategorias;
 
     private final ProductoService productoService = new ProductoService();
+    private final String rolActual = SessionManager.getInstance().getRole();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -95,6 +98,16 @@ public class ProductoController implements Initializable {
         configurarColumnaAcciones();
         configurarFiltros();
         obtenerProductos();
+
+        if("RECEPTION".equals(rolActual)){
+            btnNuevoProducto.setVisible(false);
+            btnNuevoProducto.setManaged(false);
+            btnGestionarCategorias.setVisible(false);
+            btnGestionarCategorias.setManaged(false);
+            tblProductos.getColumns().remove(colAcciones);
+        }
+
+
     }
 
     @FXML
@@ -212,7 +225,7 @@ public class ProductoController implements Initializable {
                         itemEditar.getStyleClass().add("menu-item-editar");
                         itemEliminar.getStyleClass().add("menu-item-eliminar");
 
-                        String rolActual = SessionManager.getInstance().getRole();
+
                         if("ADMIN".equalsIgnoreCase(rolActual)) {
                             menuAcciones.getItems().addAll(itemEditar, itemEliminar);
                         }else{

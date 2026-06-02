@@ -3,6 +3,7 @@ package com.store.inventario.controller.clientes;
 import com.store.inventario.controller.clientes.ClienteFormController;
 import com.store.inventario.model.PageResponse;
 import com.store.inventario.model.clientes.Cliente;
+import com.store.inventario.security.SessionManager;
 import com.store.inventario.service.clientes.ClienteService;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -143,7 +144,14 @@ public class ClienteController implements Initializable {
 
                         itemEditar.getStyleClass().add("menu-item-editar");
                         itemEliminar.getStyleClass().add("menu-item-eliminar");
-                        menuAcciones.getItems().addAll(itemEditar, itemEliminar);
+
+                        String rolActual = SessionManager.getInstance().getRole();
+
+                        if(!"ADMIN".equalsIgnoreCase(rolActual)){
+                            menuAcciones.getItems().addAll(itemEditar);
+                        }else{
+                            menuAcciones.getItems().addAll(itemEditar, itemEliminar);
+                        }
 
                         contenedor.setAlignment(Pos.CENTER);
 
