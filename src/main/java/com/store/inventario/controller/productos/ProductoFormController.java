@@ -69,7 +69,7 @@ public class ProductoFormController {
     @FXML
     public void initialize() {
         cargarCategorias();
-        com.store.inventario.utils.ValidationUtils.hacerSoloDecimal(txtPrecio, 10);
+        com.store.inventario.utils.ValidationUtils.hacerSoloDecimal(txtPrecio, 8, 2);
         com.store.inventario.utils.ValidationUtils.hacerSoloNumericoConLimite(txtGarantia, 3);
         String roleActual = SessionManager.getInstance().getRole();
 

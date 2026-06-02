@@ -70,7 +70,7 @@ public class VentaFormController {
 
     @FXML
     public void initialize() {
-        com.store.inventario.utils.ValidationUtils.hacerSoloDecimal(txtPrecioUnitario);
+        com.store.inventario.utils.ValidationUtils.hacerSoloDecimal(txtPrecioUnitario, 8, 2);
 
         cbCliente.getItems().addAll(
                 "Juan Pérez",

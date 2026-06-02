@@ -23,9 +23,7 @@ public class ProveedorService {
     private final Gson gson = new Gson();
 
     public PageResponse<Proveedor> listar(int page, int size) {
-
         try {
-
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(URL + "?page=" + page + "&size=" + size))
                     .header("Authorization",
@@ -36,8 +34,11 @@ public class ProveedorService {
             HttpResponse<String> response =
                     client.send(request, HttpResponse.BodyHandlers.ofString());
 
-            Type type = new TypeToken<PageResponse<Proveedor>>() {}.getType();
+            if (response.statusCode() >= 400) {
+                throw new RuntimeException("Error al obtener proveedores: HTTP " + response.statusCode());
+            }
 
+            Type type = new TypeToken<PageResponse<Proveedor>>() {}.getType();
             return gson.fromJson(response.body(), type);
 
         } catch (IOException | InterruptedException e) {
@@ -55,6 +56,9 @@ public class ProveedorService {
                     .POST(HttpRequest.BodyPublishers.ofString(json))
                     .build();
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() >= 400) {
+                throw new RuntimeException("Error al crear proveedor: HTTP " + response.statusCode());
+            }
             return gson.fromJson(response.body(), Proveedor.class);
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
@@ -71,6 +75,9 @@ public class ProveedorService {
                     .PUT(HttpRequest.BodyPublishers.ofString(json))
                     .build();
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() >= 400) {
+                throw new RuntimeException("Error al actualizar proveedor: HTTP " + response.statusCode());
+            }
             return gson.fromJson(response.body(), Proveedor.class);
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
@@ -84,7 +91,10 @@ public class ProveedorService {
                     .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
                     .DELETE()
                     .build();
-            client.send(request, HttpResponse.BodyHandlers.ofString());
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() >= 400) {
+                throw new RuntimeException("Error al eliminar proveedor: HTTP " + response.statusCode());
+            }
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }

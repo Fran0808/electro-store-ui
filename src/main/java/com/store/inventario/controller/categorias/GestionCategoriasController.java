@@ -53,7 +53,7 @@ public class GestionCategoriasController {
 
         String roleActual = SessionManager.getInstance().getRole();
 
-        if(!"ADMIN".equals(roleActual)){
+        if(!"ADMIN".equalsIgnoreCase(roleActual)){
             contenedorCrearCategoria.setVisible(false);
             contenedorCrearCategoria.setManaged(false);
             tblCategorias.getColumns().remove(colAcciones);

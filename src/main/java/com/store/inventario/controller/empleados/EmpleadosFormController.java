@@ -64,7 +64,7 @@ public class EmpleadosFormController {
         com.store.inventario.utils.ValidationUtils.hacerSoloNumericoConLimite(txtDni, 8);
         com.store.inventario.utils.ValidationUtils.hacerSoloTelefono(txtTelefono);
         txtTelefono.setText("+51 ");
-        com.store.inventario.utils.ValidationUtils.hacerSoloDecimal(txtSueldo, 6);
+        com.store.inventario.utils.ValidationUtils.hacerSoloDecimal(txtSueldo, 8, 2);
     }
 
     public void setEmpleadoEditar(Empleado empleado) {

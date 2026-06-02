@@ -59,6 +59,7 @@ public class SidebarController {
         }
         if("RECEPTION".equalsIgnoreCase(role)) {
             ocultarComponente(itemInventario);
+            ocultarComponente(itemProveedores);
             if (subMenuInventario != null) {
                 subMenuInventario.setVisible(false);
                 subMenuInventario.setManaged(false);

@@ -99,7 +99,7 @@ public class ProductoController implements Initializable {
         configurarFiltros();
         obtenerProductos();
 
-        if("RECEPTION".equals(rolActual)){
+        if("RECEPTION".equalsIgnoreCase(rolActual)){
             btnNuevoProducto.setVisible(false);
             btnNuevoProducto.setManaged(false);
             btnGestionarCategorias.setVisible(false);

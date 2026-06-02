@@ -50,6 +50,17 @@ public class ValidationUtils {
         });
     }
 
+    public static void hacerSoloDecimal(TextField textField, int enteros, int decimales) {
+        String regex = "^\\d{0," + enteros + "}(\\.\\d{0," + decimales + "})?$";
+        textField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue == null) return;
+            if (newValue.isEmpty()) return;
+            if (!newValue.matches(regex)) {
+                textField.setText(oldValue != null ? oldValue : "");
+            }
+        });
+    }
+
     public static void hacerSoloTelefono(TextField textField) {
         textField.textProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue == null) return;
