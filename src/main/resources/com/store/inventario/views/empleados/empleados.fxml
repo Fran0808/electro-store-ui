@@ -24,7 +24,7 @@
             <VBox spacing="16" VBox.vgrow="ALWAYS">
                 <TableView fx:id="tblView" minHeight="150.0" styleClass="table-view" VBox.vgrow="ALWAYS">
                     <columns>
-                        <TableColumn fx:id="colCodigo" prefWidth="180.0" text="Código" />
+                        <TableColumn fx:id="colCodigo" prefWidth="200.0" text="Código" />
                         <TableColumn fx:id="colNombre" prefWidth="140.0" text="Nombres" />
                         <TableColumn fx:id="colApellido" prefWidth="140.0" text="Apellidos" />
                         <TableColumn fx:id="colTelefono" prefWidth="150.0" text="Teléfono" />

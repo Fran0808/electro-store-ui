@@ -56,12 +56,12 @@
                      <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                   </columnResizePolicy>
                   <columns>
-                     <TableColumn fx:id="colCodigo" prefWidth="80" text="Código" />
+                     <TableColumn fx:id="colCodigo" prefWidth="200" text="Código" />
                      <TableColumn fx:id="colNombreComercial" prefWidth="220" text="Nombre Comercial" />
                      <TableColumn fx:id="colRazonSocial" prefWidth="180" text="Razón Social" />
                      <TableColumn fx:id="colRuc" prefWidth="220" text="RUC" />
                      <TableColumn fx:id="colTelefono" prefWidth="121.0" text="Teléfono" />
-                     <TableColumn fx:id="colAcciones" prefWidth="158.0" text="Acciones" />
+                     <TableColumn fx:id="colAcciones" prefWidth="100.0" text="Acciones" />
                   </columns>
 
                </TableView>
