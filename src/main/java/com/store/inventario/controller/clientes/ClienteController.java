@@ -206,30 +206,37 @@ public class ClienteController implements Initializable {
     }
 
     private void handleEliminar(Cliente cliente) {
-        Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
-        confirmacion.setTitle("Confirmar Eliminación");
-        confirmacion.setHeaderText("¿Eliminar cliente?");
-        confirmacion.setContentText("Se eliminará al cliente \"" + 
-                (cliente.getPerson() != null ? cliente.getPerson().getFirstName() + " " + cliente.getPerson().getLastName() : "") + 
-                "\" (Código: " + cliente.getCode() + "). Esta acción no se puede deshacer.");
+        javafx.application.Platform.runLater(() -> {
+            Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
+            confirmacion.setTitle("Confirmar Eliminación");
+            confirmacion.setHeaderText("¿Eliminar cliente?");
+            confirmacion.setContentText("Se eliminará al cliente \"" + 
+                    (cliente.getPerson() != null ? cliente.getPerson().getFirstName() + " " + cliente.getPerson().getLastName() : "") + 
+                    "\" (Código: " + cliente.getCode() + "). Esta acción no se puede deshacer.");
 
-        Optional<ButtonType> resultado = confirmacion.showAndWait();
+            Optional<ButtonType> resultado = confirmacion.showAndWait();
 
-        if (resultado.isPresent() && resultado.get() == ButtonType.OK) {
-            try {
-                clienteService.eliminarCliente(cliente.getCode());
+            if (resultado.isPresent() && resultado.get() == ButtonType.OK) {
+                try {
+                    clienteService.eliminarCliente(cliente.getCode());
 
-                Alert exito = new Alert(Alert.AlertType.INFORMATION);
-                exito.setTitle("Éxito");
-                exito.setHeaderText("Cliente Eliminado");
-                exito.setContentText("El cliente se ha eliminado correctamente del sistema.");
-                exito.showAndWait();
+                    Alert exito = new Alert(Alert.AlertType.INFORMATION);
+                    exito.setTitle("Éxito");
+                    exito.setHeaderText("Cliente Eliminado");
+                    exito.setContentText("El cliente se ha eliminado correctamente del sistema.");
+                    exito.showAndWait();
 
-                obtenerClientes();
-            } catch (Exception e) {
-                e.printStackTrace();
+                    obtenerClientes();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Alert error = new Alert(Alert.AlertType.ERROR);
+                    error.setTitle("Error");
+                    error.setHeaderText("No se pudo eliminar el cliente");
+                    error.setContentText("Ocurrió un error al intentar eliminar al cliente. Asegúrese de que no tenga registros dependientes en el sistema: " + e.getMessage());
+                    error.showAndWait();
+                }
             }
-        }
+        });
     }
 
     private void obtenerClientes() {

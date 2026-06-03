@@ -3,6 +3,7 @@ package com.store.inventario.controller.empleados;
 import com.store.inventario.model.PageResponse;
 import com.store.inventario.model.empleado.Empleado;
 import com.store.inventario.service.empleado.EmpleadoService;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -25,7 +26,6 @@ import java.util.ResourceBundle;
 
 public class EmpleadosController implements Initializable {
 
-    // Buscador, boton buscar y limpiar
     @FXML
     private TextField txtBuscar;
     @FXML
@@ -33,7 +33,6 @@ public class EmpleadosController implements Initializable {
     @FXML
     private Button btnBuscar;
 
-    // Tabla y columnas
     @FXML
     private TableView<Empleado> tblView;
     @FXML
@@ -53,7 +52,6 @@ public class EmpleadosController implements Initializable {
     @FXML
     private TableColumn<Empleado, Void> colAcciones;
 
-    // Paginación y botón de siguiente y anterior
     @FXML
     private Label lblResumenPaginacion;
     @FXML
@@ -152,31 +150,37 @@ public class EmpleadosController implements Initializable {
     }
 
     private void handleEliminar(Empleado empleado){
-        Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
-        confirmacion.setContentText("Se eliminará al empleado " + empleado.getPerson().getFirstName()
-        + " "
-        + empleado.getPerson().getLastName()
-        + ".");
+        Platform.runLater(() -> {
+            Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
+            confirmacion.setTitle("Confirmar Eliminacion");
+            confirmacion.setHeaderText(null);
+            confirmacion.setContentText("Se eliminara al empleado " + empleado.getPerson().getFirstName()
+                    + " "
+                    + empleado.getPerson().getLastName()
+                    + ".");
 
-        Optional<ButtonType> resultado = confirmacion.showAndWait();
-        if(resultado.isPresent() && resultado.get() == ButtonType.OK){
-            try {
-                empleadoService.eliminarEmpleado(empleado.getCode());
-                Alert exito = new Alert(Alert.AlertType.INFORMATION);
-                exito.setTitle("Éxito");
-                exito.setHeaderText("Empleado eliminado");
-                exito.setContentText("El empleado se eliminó correctamente.");
-                exito.showAndWait();
-                obtenerEmpleados();
-            } catch (Exception e) {
-                e.printStackTrace();
-                Alert error = new Alert(Alert.AlertType.ERROR);
-                error.setTitle("Error");
-                error.setHeaderText("No se pudo eliminar el empleado");
-                error.setContentText(e.getMessage());
-                error.showAndWait();
+            Optional<ButtonType> resultado = confirmacion.showAndWait();
+            if (resultado.isPresent() && resultado.get() == ButtonType.OK) {
+                try {
+                    empleadoService.eliminarEmpleado(empleado.getCode());
+                    
+                    Alert exito = new Alert(Alert.AlertType.INFORMATION);
+                    exito.setTitle("Exito");
+                    exito.setHeaderText("Empleado eliminado");
+                    exito.setContentText("El empleado se elimino correctamente.");
+                    exito.showAndWait();
+                    
+                    obtenerEmpleados();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Alert error = new Alert(Alert.AlertType.ERROR);
+                    error.setTitle("Error");
+                    error.setHeaderText("No se pudo eliminar el empleado");
+                    error.setContentText("No se pudo eliminar al empleado. El empleado tiene un usuario asociado en el sistema o registros dependientes.");
+                    error.showAndWait();
+                }
             }
-        }
+        });
     }
 
     private void configurarColumnaAcciones(){

@@ -178,33 +178,35 @@ public class ProductoController implements Initializable {
     }
 
     private void handleEliminar(Producto producto) {
-        Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
-        confirmacion.setTitle("Confirmar Eliminación");
-        confirmacion.setHeaderText("¿Eliminar producto?");
-        confirmacion.setContentText("Se eliminará \"" + producto.getName() + "\" (Código: " + producto.getCode() + "). Esta acción no se puede deshacer.");
+        javafx.application.Platform.runLater(() -> {
+            Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
+            confirmacion.setTitle("Confirmar Eliminación");
+            confirmacion.setHeaderText("¿Eliminar producto?");
+            confirmacion.setContentText("Se eliminará \"" + producto.getName() + "\" (Código: " + producto.getCode() + "). Esta acción no se puede deshacer.");
 
-        Optional<ButtonType> resultado = confirmacion.showAndWait();
+            Optional<ButtonType> resultado = confirmacion.showAndWait();
 
-        if (resultado.isPresent() && resultado.get() == ButtonType.OK) {
-            try {
-                productoService.eliminarProducto(producto.getCode());
+            if (resultado.isPresent() && resultado.get() == ButtonType.OK) {
+                try {
+                    productoService.eliminarProducto(producto.getCode());
 
-                Alert exito = new Alert(Alert.AlertType.INFORMATION);
-                exito.setTitle("Éxito");
-                exito.setHeaderText("Producto Eliminado");
-                exito.setContentText("El producto se ha eliminado correctamente.");
-                exito.showAndWait();
+                    Alert exito = new Alert(Alert.AlertType.INFORMATION);
+                    exito.setTitle("Éxito");
+                    exito.setHeaderText("Producto Eliminado");
+                    exito.setContentText("El producto se ha eliminado correctamente.");
+                    exito.showAndWait();
 
-                obtenerProductos();
-            } catch (Exception e) {
-                e.printStackTrace();
-                Alert error = new Alert(Alert.AlertType.ERROR);
-                error.setTitle("Error");
-                error.setHeaderText("No se pudo eliminar el producto");
-                error.setContentText("Ocurrió un error: " + e.getMessage());
-                error.showAndWait();
+                    obtenerProductos();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Alert error = new Alert(Alert.AlertType.ERROR);
+                    error.setTitle("Error");
+                    error.setHeaderText("No se pudo eliminar el producto");
+                    error.setContentText("Ocurrió un error: " + e.getMessage());
+                    error.showAndWait();
+                }
             }
-        }
+        });
     }
 
     private void configurarColumnaAcciones() {

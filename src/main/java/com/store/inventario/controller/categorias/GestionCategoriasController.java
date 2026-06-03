@@ -176,25 +176,27 @@ public class GestionCategoriasController {
     }
 
     private void handleEliminar(Categoria cat) {
-        Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
-        confirmacion.setTitle("Confirmar Eliminación");
-        confirmacion.setHeaderText("¿Eliminar categoría?");
-        confirmacion.setContentText("Se eliminará la categoría \"" + cat.getName() + "\" (Código: " + cat.getCode() + "). Esta acción no se puede deshacer.");
+        javafx.application.Platform.runLater(() -> {
+            Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
+            confirmacion.setTitle("Confirmar Eliminación");
+            confirmacion.setHeaderText("¿Eliminar categoría?");
+            confirmacion.setContentText("Se eliminará la categoría \"" + cat.getName() + "\" (Código: " + cat.getCode() + "). Esta acción no se puede deshacer.");
 
-        Optional<ButtonType> resultado = confirmacion.showAndWait();
-        if (resultado.isPresent() && resultado.get() == ButtonType.OK) {
-            try {
-                categoriaService.eliminarCategoria(cat.getCode());
-                mostrarAlerta(Alert.AlertType.INFORMATION, "Éxito", "La categoría se ha eliminado correctamente.");
-                cargarCategorias();
-                if (categoriaEditar != null && categoriaEditar.getCode().equals(cat.getCode())) {
-                    handleCancelarEdicion();
+            Optional<ButtonType> resultado = confirmacion.showAndWait();
+            if (resultado.isPresent() && resultado.get() == ButtonType.OK) {
+                try {
+                    categoriaService.eliminarCategoria(cat.getCode());
+                    mostrarAlerta(Alert.AlertType.INFORMATION, "Éxito", "La categoría se ha eliminado correctamente.");
+                    cargarCategorias();
+                    if (categoriaEditar != null && categoriaEditar.getCode().equals(cat.getCode())) {
+                        handleCancelarEdicion();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    mostrarAlerta(Alert.AlertType.ERROR, "Error", "No se pudo eliminar la categoría. Asegúrese de que no tenga productos asociados: " + e.getMessage());
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
-                mostrarAlerta(Alert.AlertType.ERROR, "Error", "No se pudo eliminar la categoría. Asegúrese de que no tenga productos asociados: " + e.getMessage());
             }
-        }
+        });
     }
 
     @FXML

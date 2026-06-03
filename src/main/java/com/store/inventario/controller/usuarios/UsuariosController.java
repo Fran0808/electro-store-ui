@@ -3,6 +3,7 @@ package com.store.inventario.controller.usuarios;
 import com.store.inventario.model.PageResponse;
 import com.store.inventario.model.usuario.Usuario;
 import com.store.inventario.service.usuario.UsuarioService;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -162,28 +163,35 @@ public class UsuariosController {
     }
 
     private void handleEliminar(Usuario usuario) {
-        Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
-        confirmacion.setTitle("Confirmar Eliminación");
-        confirmacion.setHeaderText("¿Eliminar usuario?");
-        confirmacion.setContentText("Se eliminará permanentemente al usuario \"" + usuario.getUsername() + "\" (Código: " + usuario.getCode() + "). Esta acción no se puede deshacer.");
+        Platform.runLater(() -> {
+            Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
+            confirmacion.setTitle("Confirmar Eliminacion");
+            confirmacion.setHeaderText("Eliminar usuario");
+            confirmacion.setContentText("Se eliminara permanentemente al usuario " + usuario.getUsername() + " (Codigo: " + usuario.getCode() + "). Esta accion no se puede deshacer.");
 
-        Optional<ButtonType> resultado = confirmacion.showAndWait();
+            Optional<ButtonType> resultado = confirmacion.showAndWait();
 
-        if (resultado.isPresent() && resultado.get() == ButtonType.OK) {
-            try {
-                usuarioService.eliminarUsuario(usuario.getCode());
+            if (resultado.isPresent() && resultado.get() == ButtonType.OK) {
+                try {
+                    usuarioService.eliminarUsuario(usuario.getCode());
 
-                Alert exito = new Alert(Alert.AlertType.INFORMATION);
-                exito.setTitle("Éxito");
-                exito.setHeaderText("Usuario Eliminado");
-                exito.setContentText("El usuario se ha eliminado correctamente del sistema.");
-                exito.showAndWait();
+                    Alert exito = new Alert(Alert.AlertType.INFORMATION);
+                    exito.setTitle("Exito");
+                    exito.setHeaderText("Usuario Eliminado");
+                    exito.setContentText("El usuario se ha eliminado correctamente del sistema.");
+                    exito.showAndWait();
 
-                obtenerUsuarios();
-            } catch (Exception e) {
-                e.printStackTrace();
+                    obtenerUsuarios();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Alert error = new Alert(Alert.AlertType.ERROR);
+                    error.setTitle("Error");
+                    error.setHeaderText("No se pudo eliminar el usuario");
+                    error.setContentText("No se pudo eliminar al usuario: " + e.getMessage());
+                    error.showAndWait();
+                }
             }
-        }
+        });
     }
 
     private void obtenerUsuarios() {

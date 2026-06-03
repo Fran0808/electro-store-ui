@@ -124,29 +124,31 @@ public class ProveedorController implements Initializable {
     }
 
     private void handleEliminar(Proveedor proveedor) {
-        Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
-        confirmacion.setTitle("Confirmar Eliminación");
-        confirmacion.setHeaderText("¿Eliminar proveedor?");
-        confirmacion.setContentText("Se eliminará el proveedor \"" + proveedor.getTradeName() + "\"");
-        Optional<ButtonType> resultado = confirmacion.showAndWait();
-        if (resultado.isPresent() && resultado.get() == ButtonType.OK) {
-            try {
-                proveedorService.eliminar(proveedor.getCode());
-                Alert exito = new Alert(Alert.AlertType.INFORMATION);
-                exito.setTitle("Éxito");
-                exito.setHeaderText("Proveedor eliminado");
-                exito.setContentText("El proveedor se eliminó correctamente");
-                exito.showAndWait();
-                obtenerProveedores();
-            } catch (Exception e) {
-                e.printStackTrace();
-                Alert error = new Alert(Alert.AlertType.ERROR);
-                error.setTitle("Error");
-                error.setHeaderText("No se pudo eliminar el proveedor");
-                error.setContentText(e.getMessage());
-                error.showAndWait();
+        javafx.application.Platform.runLater(() -> {
+            Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
+            confirmacion.setTitle("Confirmar Eliminación");
+            confirmacion.setHeaderText("¿Eliminar proveedor?");
+            confirmacion.setContentText("Se eliminará el proveedor \"" + proveedor.getTradeName() + "\"");
+            Optional<ButtonType> resultado = confirmacion.showAndWait();
+            if (resultado.isPresent() && resultado.get() == ButtonType.OK) {
+                try {
+                    proveedorService.eliminar(proveedor.getCode());
+                    Alert exito = new Alert(Alert.AlertType.INFORMATION);
+                    exito.setTitle("Éxito");
+                    exito.setHeaderText("Proveedor eliminado");
+                    exito.setContentText("El proveedor se eliminó correctamente");
+                    exito.showAndWait();
+                    obtenerProveedores();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Alert error = new Alert(Alert.AlertType.ERROR);
+                    error.setTitle("Error");
+                    error.setHeaderText("No se pudo eliminar el proveedor");
+                    error.setContentText(e.getMessage());
+                    error.showAndWait();
+                }
             }
-        }
+        });
     }
 
     private void configurarColumnaAcciones() {
