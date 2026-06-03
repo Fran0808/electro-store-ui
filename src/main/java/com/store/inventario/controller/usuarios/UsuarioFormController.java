@@ -128,7 +128,26 @@ public class UsuarioFormController implements Initializable {
         txtRol.setText(rolEspanol);
         
         filtrarYMostrarEmpleados(false);
-        cbEmpleado.setValue(usuario.getEmployeeCode() + " - " + usuario.getFullName());
+        Empleado matchingEmp = null;
+        if (usuario.getEmployeeCode() != null) {
+            matchingEmp = listaEmpleados.stream()
+                    .filter(e -> usuario.getEmployeeCode().equals(e.getCode()))
+                    .findFirst()
+                    .orElse(null);
+        }
+        String empValue;
+        if (matchingEmp != null) {
+            String nombre = "";
+            if (matchingEmp.getPerson() != null) {
+                String fn = matchingEmp.getPerson().getFirstName() != null ? matchingEmp.getPerson().getFirstName() : "";
+                String ln = matchingEmp.getPerson().getLastName() != null ? matchingEmp.getPerson().getLastName() : "";
+                nombre = (fn + " " + ln).trim();
+            }
+            empValue = matchingEmp.getCode() + " - " + nombre;
+        } else {
+            empValue = usuario.getEmployeeCode() + " - " + usuario.getFullName();
+        }
+        cbEmpleado.setValue(empValue);
         cbEmpleado.setDisable(true);
  
         txtPassword.setPromptText("Opcional (Dejar vacío para no cambiar)");
