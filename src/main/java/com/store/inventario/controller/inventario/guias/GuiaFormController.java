@@ -1,21 +1,36 @@
 package com.store.inventario.controller.inventario.guias;
 
+import com.store.inventario.model.PageResponse;
+import com.store.inventario.model.guia.CreateGuideDetailRequest;
+import com.store.inventario.model.guia.CreateInventoryGuideRequest;
+import com.store.inventario.model.guia.InventoryGuide;
+import com.store.inventario.model.producto.Producto;
+import com.store.inventario.service.guia.InventoryGuideService;
+import com.store.inventario.service.producto.ProductoService;
+import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.Spinner;
-import javafx.scene.control.SpinnerValueFactory;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class GuiaFormController {
     @FXML
-    private TextField txtCodigo, txtMotivo, txtUsuario, txtStockActual;
+    private TextField txtCodigo;
     @FXML
-    private RadioButton rbEntry, rbExit;
+    private TextField txtMotivo;
+    @FXML
+    private TextField txtUsuario;
+    @FXML
+    private TextField txtStockActual;
+    @FXML
+    private RadioButton rbEntry;
+    @FXML
+    private RadioButton rbExit;
     @FXML
     private TextField txtDescripcion;
     @FXML
@@ -23,22 +38,132 @@ public class GuiaFormController {
     @FXML
     private Spinner<Integer> spnCantidad;
     @FXML
-    private Button btnCancelar, btnGuardar, btnAgregarProducto;
+    private TableView<DetalleFila> tblDetalle;
+    @FXML
+    private TableColumn<DetalleFila, String> colCod;
+    @FXML
+    private TableColumn<DetalleFila, String> colProducto;
+    @FXML
+    private TableColumn<DetalleFila, Integer> colCantidad;
+    @FXML
+    private TableColumn<DetalleFila, Void> colAcciones;
+    @FXML
+    private Label lblTotalProductos;
+    @FXML
+    private Label lblTotalUnidades;
+    @FXML
+    private Button btnCancelar;
+    @FXML
+    private Button btnGuardar;
+
+    private final InventoryGuideService guideService = new InventoryGuideService();
+    private final ProductoService productoService = new ProductoService();
+    private final ObservableList<DetalleFila> filas = FXCollections.observableArrayList();
+    private List<Producto> listaProductos = new ArrayList<>();
 
     @FXML
     public void initialize() {
-        txtCodigo.setText("GU-" + String.format("%06d", (int)(Math.random() * 1000000)));
-        txtUsuario.setText("Usuario Actual");
-        
-        cbProducto.getItems().addAll(
-            "Cable HDMI 2.1 4K 2m",
-            "Teclado Mecánico RGB TKL",
-            "Mouse Inalámbrico Pro",
-            "Monitor 27\" 4K IPS",
-            "Laptop Business Pro 14\""
-        );
-        
-        spnCantidad.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 10000, 1));
+        txtCodigo.setText("AUTO-GENERADO");
+        txtUsuario.setText("Sesión Activa");
+
+        spnCantidad.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 10000, 1));
+
+        colCod.setCellValueFactory(new PropertyValueFactory<>("codigo"));
+        colProducto.setCellValueFactory(new PropertyValueFactory<>("nombre"));
+        colCantidad.setCellValueFactory(new PropertyValueFactory<>("cantidad"));
+
+        tblDetalle.setItems(filas);
+
+        colAcciones.setCellFactory(param -> new TableCell<>() {
+            private final Button btnQuitar = new Button("Quitar");
+            {
+                btnQuitar.getStyleClass().add("btn-secondary");
+                btnQuitar.setOnAction(e -> {
+                    DetalleFila fila = getTableView().getItems().get(getIndex());
+                    filas.remove(fila);
+                    actualizarResumen();
+                });
+            }
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                setGraphic(empty ? null : btnQuitar);
+            }
+        });
+
+        cargarProductos();
+
+        cbProducto.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                String productCode = newValue.split(" - ")[0];
+                Producto p = listaProductos.stream()
+                        .filter(prod -> prod.getCode().equals(productCode))
+                        .findFirst()
+                        .orElse(null);
+                if (p != null) {
+                    txtStockActual.setText(String.valueOf(p.getStock()));
+                }
+            } else {
+                txtStockActual.setText("");
+            }
+        });
+    }
+
+    private void cargarProductos() {
+        try {
+            PageResponse<Producto> response = productoService.obtenerProductos();
+            if (response != null && response.getContent() != null) {
+                listaProductos = response.getContent();
+                ObservableList<String> items = FXCollections.observableArrayList();
+                for (Producto p : listaProductos) {
+                    items.add(p.getCode() + " - " + p.getName());
+                }
+                cbProducto.setItems(items);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void handleAgregarProducto() {
+        String prodSeleccionado = cbProducto.getValue();
+        if (prodSeleccionado == null) {
+            mostrarAlerta(Alert.AlertType.WARNING, "Advertencia", "Seleccione un producto para agregar.");
+            return;
+        }
+
+        int cantidad = spnCantidad.getValue();
+        if (cantidad <= 0) {
+            mostrarAlerta(Alert.AlertType.WARNING, "Advertencia", "Ingrese una cantidad válida.");
+            return;
+        }
+
+        String productCode = prodSeleccionado.split(" - ")[0];
+        String productName = prodSeleccionado.split(" - ")[1];
+
+        // Verificar si ya está en la lista
+        DetalleFila existente = filas.stream()
+                .filter(f -> f.getCodigo().equals(productCode))
+                .findFirst()
+                .orElse(null);
+
+        if (existente != null) {
+            existente.setCantidad(existente.getCantidad() + cantidad);
+            tblDetalle.refresh();
+        } else {
+            filas.add(new DetalleFila(productCode, productName, cantidad));
+        }
+
+        cbProducto.setValue(null);
+        spnCantidad.getValueFactory().setValue(1);
+        actualizarResumen();
+    }
+
+    private void actualizarResumen() {
+        lblTotalProductos.setText(String.valueOf(filas.size()));
+        int totalUnidades = filas.stream().mapToInt(DetalleFila::getCantidad).sum();
+        lblTotalUnidades.setText(String.valueOf(totalUnidades));
     }
 
     @FXML
@@ -49,39 +174,83 @@ public class GuiaFormController {
 
     @FXML
     private void handleGuardar() {
-        String motivo = txtMotivo.getText();
+        String motivo = txtMotivo.getText() != null ? txtMotivo.getText().trim() : "";
         if (motivo.isEmpty()) {
-            mostrarAlerta(Alert.AlertType.WARNING, "Campo requerido", "Ingrese un motivo");
+            mostrarAlerta(Alert.AlertType.WARNING, "Advertencia", "Debe ingresar el motivo de la guía.");
             return;
         }
-        
-        String tipo = rbEntry.isSelected() ? "ENTRY" : "EXIT";
-        mostrarAlerta(Alert.AlertType.INFORMATION, "Guardado", "Guía " + txtCodigo.getText() + " (" + tipo + ") registrada");
-        
-        Stage stage = (Stage) btnGuardar.getScene().getWindow();
-        stage.close();
-    }
 
-    @FXML
-    private void handleAgregarProducto() {
-        if (cbProducto.getValue() == null) {
-            mostrarAlerta(Alert.AlertType.WARNING, "Campo requerido", "Seleccione un producto");
+        if (filas.isEmpty()) {
+            mostrarAlerta(Alert.AlertType.WARNING, "Advertencia", "Debe agregar al menos un producto a la guía.");
             return;
         }
-        if (spnCantidad.getValue() <= 0) {
-            mostrarAlerta(Alert.AlertType.WARNING, "Valor inválido", "Ingrese una cantidad mayor a 0");
-            return;
+
+        String tipo = rbEntry.isSelected() ? "ENTRY" : "EXIT";
+        String desc = txtDescripcion.getText() != null ? txtDescripcion.getText().trim() : "";
+
+        List<CreateGuideDetailRequest> details = new ArrayList<>();
+        for (DetalleFila f : filas) {
+            details.add(new CreateGuideDetailRequest(f.getCodigo(), f.getCantidad()));
         }
-        
-        mostrarAlerta(Alert.AlertType.INFORMATION, "Producto agregado", 
-            cbProducto.getValue() + " - Cantidad: " + spnCantidad.getValue());
+
+        CreateInventoryGuideRequest request = new CreateInventoryGuideRequest(tipo, motivo, desc, details);
+
+        Platform.runLater(() -> {
+            try {
+                InventoryGuide guide = guideService.crearGuia(request);
+                
+                Alert exito = new Alert(Alert.AlertType.INFORMATION);
+                exito.setTitle("Éxito");
+                exito.setHeaderText("Guía Creada");
+                exito.setContentText("La guía de inventario " + guide.getCode() + " se ha registrado correctamente.");
+                exito.showAndWait();
+
+                Stage stage = (Stage) btnGuardar.getScene().getWindow();
+                stage.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+                Alert error = new Alert(Alert.AlertType.ERROR);
+                error.setTitle("Error al Guardar");
+                error.setHeaderText("No se pudo crear la guía");
+                error.setContentText("Ocurrió un error en el servidor: " + e.getMessage());
+                error.showAndWait();
+            }
+        });
     }
 
     private void mostrarAlerta(Alert.AlertType tipo, String titulo, String mensaje) {
-        Alert alert = new Alert(tipo);
-        alert.setTitle(titulo);
-        alert.setHeaderText(null);
-        alert.setContentText(mensaje);
-        alert.showAndWait();
+        Alert alerta = new Alert(tipo);
+        alerta.setTitle(titulo);
+        alerta.setHeaderText(null);
+        alerta.setContentText(mensaje);
+        alerta.showAndWait();
+    }
+
+    public static class DetalleFila {
+        private final String codigo;
+        private final String nombre;
+        private int cantidad;
+
+        public DetalleFila(String codigo, String nombre, int cantidad) {
+            this.codigo = codigo;
+            this.nombre = nombre;
+            this.cantidad = cantidad;
+        }
+
+        public String getCodigo() {
+            return codigo;
+        }
+
+        public String getNombre() {
+            return nombre;
+        }
+
+        public int getCantidad() {
+            return cantidad;
+        }
+
+        public void setCantidad(int cantidad) {
+            this.cantidad = cantidad;
+        }
     }
 }
