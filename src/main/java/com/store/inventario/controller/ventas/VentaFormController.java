@@ -22,16 +22,16 @@ public class VentaFormController {
     private TextField txtCodigoVenta;
 
     @FXML
-    private ComboBox<String> cbCliente;
+    private TextField cbCliente;
 
     @FXML
-    private ComboBox<String> cbVendedor;
+    private TextField txtVendedor;
 
     @FXML
     private DatePicker dpFechaVenta;
 
     @FXML
-    private ComboBox<String> cbProducto;
+    private TextField cbProducto;
 
     @FXML
     private Spinner<Integer> spnCantidad;
@@ -72,25 +72,12 @@ public class VentaFormController {
     public void initialize() {
         com.store.inventario.utils.ValidationUtils.hacerSoloDecimal(txtPrecioUnitario, 8, 2);
 
-        cbCliente.getItems().addAll(
-                "Juan Pérez",
-                "María García",
-                "Carlos López",
-                "Ana Torres"
-        );
 
-        cbVendedor.getItems().addAll(
-                "Vendedor 1",
-                "Vendedor 2",
-                "Vendedor 3"
-        );
+        dpFechaVenta.setValue(java.time.LocalDate.now());
 
-        cbProducto.getItems().addAll(
-                "P001 - Televisor LED 32\"",
-                "P002 - Laptop Ultra",
-                "P003 - Smartphone Pro",
-                "P004 - Auriculares Bluetooth"
-        );
+
+
+
 
         spnCantidad.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 100, 1));
 
@@ -129,12 +116,12 @@ public class VentaFormController {
 
     @FXML
     private void handleAgregarProducto() {
-        if (cbProducto.getValue() == null || txtPrecioUnitario.getText().isEmpty()) {
+        if (cbProducto.getText().isEmpty() || txtPrecioUnitario.getText().isEmpty()) {
             mostrarAlerta(Alert.AlertType.WARNING, "Campos incompletos", "Seleccione un producto y escriba un precio");
             return;
         }
 
-        String productoSeleccionado = cbProducto.getValue();
+        String productoSeleccionado = cbProducto.getText();
         String codigoProducto = extraerCodigo(productoSeleccionado);
         int cantidad = spnCantidad.getValue();
         double precio;
@@ -154,15 +141,15 @@ public class VentaFormController {
         tblDetalleVenta.refresh();
         actualizarTotal();
 
-        cbProducto.getSelectionModel().clearSelection();
+        cbProducto.clear();
         spnCantidad.getValueFactory().setValue(1);
         txtPrecioUnitario.clear();
     }
 
     @FXML
     private void handleRegistrarVenta() {
-        if (txtCodigoVenta.getText().isEmpty() || cbVendedor.getValue() == null || dpFechaVenta.getValue() == null) {
-            mostrarAlerta(Alert.AlertType.WARNING, "Campos obligatorios", "Complete el código de venta, el vendedor y la fecha de venta.");
+        if (cbCliente.getText().isEmpty() || txtVendedor.getText().isEmpty() || dpFechaVenta.getValue() == null) {
+            mostrarAlerta(Alert.AlertType.WARNING, "Campos obligatorios", "Complete el cliente, el vendedor y todos los datos requeridos.");
             return;
         }
 

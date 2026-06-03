@@ -40,14 +40,14 @@
                             <children>
                                 <VBox spacing="6.0">
                                     <children>
-                                        <Label style="-fx-font-weight: bold; -fx-text-fill: #334155; -fx-font-size: 13px;" text="Código de Venta *" />
-                                        <TextField fx:id="txtCodigoVenta" prefHeight="40.0" styleClass="search-field" VBox.vgrow="NEVER" />
+                                        <Label style="-fx-font-weight: bold; -fx-text-fill: #334155; -fx-font-size: 13px;" text="Código de Venta" />
+                                        <TextField fx:id="txtCodigoVenta" editable="false" prefHeight="40.0" styleClass="search-field" style="-fx-background-color: #F1F5F9; -fx-text-fill: #64748B; -fx-border-color: #E2E8F0; -fx-border-width: 1px; -fx-border-radius: 6px; -fx-background-radius: 6px;" VBox.vgrow="NEVER" />
                                     </children>
                                 </VBox>
                                 <VBox spacing="6.0">
                                     <children>
                                         <Label style="-fx-font-weight: bold; -fx-text-fill: #334155; -fx-font-size: 13px;" text="Cliente" />
-                                        <ComboBox fx:id="cbCliente" maxWidth="1.7976931348623157E308" prefHeight="40.0" prefWidth="320.0" styleClass="filter-combo" VBox.vgrow="NEVER" />
+                                        <TextField fx:id="cbCliente" editable="false" prefHeight="40.0" prefWidth="320.0" styleClass="search-field" style="-fx-background-color: #F1F5F9; -fx-text-fill: #64748B; -fx-border-color: #E2E8F0; -fx-border-width: 1px; -fx-border-radius: 6px; -fx-background-radius: 6px;" VBox.vgrow="NEVER" />
                                     </children>
                                 </VBox>
                             </children>
@@ -56,16 +56,22 @@
                             <children>
                                 <VBox spacing="6.0">
                                     <children>
-                                        <Label style="-fx-font-weight: bold; -fx-text-fill: #334155; -fx-font-size: 13px;" text="Vendedor *" />
-                                        <ComboBox fx:id="cbVendedor" maxWidth="1.7976931348623157E308" prefHeight="40.0" prefWidth="320.0" styleClass="filter-combo" VBox.vgrow="NEVER" />
+                                        <Label style="-fx-font-weight: bold; -fx-text-fill: #334155; -fx-font-size: 13px;" text="Vendedor" />
+                                        <TextField fx:id="txtVendedor" editable="false" prefHeight="40.0" styleClass="search-field" style="-fx-background-color: #F1F5F9; -fx-text-fill: #64748B; -fx-border-color: #E2E8F0; -fx-border-width: 1px; -fx-border-radius: 6px; -fx-background-radius: 6px;" VBox.vgrow="NEVER" />
                                     </children>
                                 </VBox>
                                 <VBox spacing="6.0">
                                     <children>
-                                        <Label style="-fx-font-weight: bold; -fx-text-fill: #334155; -fx-font-size: 13px;" text="Fecha de Venta *" />
-                                        <DatePicker fx:id="dpFechaVenta" maxWidth="1.7976931348623157E308" prefHeight="40.0" prefWidth="320.0" VBox.vgrow="NEVER" />
+                                        <Label style="-fx-font-weight: bold; -fx-text-fill: #334155; -fx-font-size: 13px;" text="Buscar cliente" />
+                                        <HBox spacing="10.0" alignment="CENTER_LEFT">
+                                            <children>
+                                                <TextField fx:id="txtClienteBuscar" editable="false" prefHeight="40.0" HBox.hgrow="ALWAYS" styleClass="search-field" style="-fx-background-color: #F1F5F9; -fx-text-fill: #64748B; -fx-border-color: #E2E8F0; -fx-border-width: 1px; -fx-border-radius: 6px; -fx-background-radius: 6px;" />
+                                                <Button fx:id="btnBuscarCliente" prefHeight="40.0" text="Buscar" styleClass="btn-primary" />
+                                            </children>
+                                        </HBox>
                                     </children>
                                 </VBox>
+                                <DatePicker fx:id="dpFechaVenta" visible="false" managed="false" />
                             </children>
                         </VBox>
                     </children>
@@ -81,7 +87,7 @@
                                 <VBox spacing="2.0" HBox.hgrow="ALWAYS">
                                     <children>
                                         <Label style="-fx-text-fill: #64748B; -fx-font-size: 11px;" text="Buscar Producto" />
-                                        <ComboBox fx:id="cbProducto" maxWidth="1.7976931348623157E308" prefHeight="40.0" styleClass="filter-combo" />
+                                        <TextField fx:id="cbProducto" editable="false" prefHeight="40.0" styleClass="search-field" style="-fx-background-color: #F1F5F9; -fx-text-fill: #64748B; -fx-border-color: #E2E8F0; -fx-border-width: 1px; -fx-border-radius: 6px; -fx-background-radius: 6px;" />
                                     </children>
                                 </VBox>
                                 <VBox spacing="2.0">
