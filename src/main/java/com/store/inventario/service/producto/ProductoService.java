@@ -26,10 +26,15 @@ public class ProductoService {
     }
 
     public PageResponse<Producto> obtenerProductos() {
+        return obtenerProductos(0, 1000);
+    }
+
+    public PageResponse<Producto> obtenerProductos(int page, int size) {
 
         try {
+            String paginatedUrl = URL + "?page=" + page + "&size=" + size;
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(URL))
+                    .uri(URI.create(paginatedUrl))
                     .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
                     .GET()
                     .build();

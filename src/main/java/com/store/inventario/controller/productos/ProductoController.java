@@ -84,6 +84,9 @@ public class ProductoController implements Initializable {
 
     private final ProductoService productoService = new ProductoService();
     private final String rolActual = SessionManager.getInstance().getRole();
+    private int paginaActual = 0;
+    private final int tamanoPagina = 20;
+    private int totalPaginas = 1;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -97,6 +100,8 @@ public class ProductoController implements Initializable {
         colGarantia.setCellValueFactory(new PropertyValueFactory<>("warrantyMonths"));
         configurarColumnaAcciones();
         configurarFiltros();
+        btnAnterior.setOnAction(event -> handlePaginaAnterior());
+        btnSiguiente.setOnAction(event -> handlePaginaSiguiente());
         obtenerProductos();
 
         if("RECEPTION".equalsIgnoreCase(rolActual)){
@@ -266,10 +271,28 @@ public class ProductoController implements Initializable {
         colAcciones.setCellFactory(cellFactory);
     }
 
+    private void handlePaginaAnterior() {
+        if (paginaActual > 0) {
+            paginaActual--;
+            obtenerProductos();
+        }
+    }
+
+    private void handlePaginaSiguiente() {
+        if (paginaActual < totalPaginas - 1) {
+            paginaActual++;
+            obtenerProductos();
+        }
+    }
+
     private void obtenerProductos() {
         try {
-            PageResponse<Producto> response = productoService.obtenerProductos();
+            PageResponse<Producto> response = productoService.obtenerProductos(paginaActual, tamanoPagina);
             List<Producto> productos = response.getContent();
+
+            totalPaginas = response.getTotalPages();
+            btnAnterior.setDisable(paginaActual == 0);
+            btnSiguiente.setDisable(paginaActual >= totalPaginas - 1);
 
             tblProductos.setItems(FXCollections.observableArrayList(productos));
 
