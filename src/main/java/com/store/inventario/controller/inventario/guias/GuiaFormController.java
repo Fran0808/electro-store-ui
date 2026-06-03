@@ -4,6 +4,7 @@ import com.store.inventario.model.PageResponse;
 import com.store.inventario.model.guia.CreateGuideDetailRequest;
 import com.store.inventario.model.guia.CreateInventoryGuideRequest;
 import com.store.inventario.model.guia.InventoryGuide;
+import com.store.inventario.model.guia.DetalleFila;
 import com.store.inventario.model.producto.Producto;
 import com.store.inventario.service.guia.InventoryGuideService;
 import com.store.inventario.service.producto.ProductoService;
@@ -19,8 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GuiaFormController {
-    @FXML
-    private TextField txtCodigo;
     @FXML
     private TextField txtMotivo;
     @FXML
@@ -63,9 +62,14 @@ public class GuiaFormController {
 
     @FXML
     public void initialize() {
-        txtCodigo.setText("AUTO-GENERADO");
-        txtUsuario.setText("Sesión Activa");
+        String activeUser = com.store.inventario.security.SessionManager.getInstance().getUsername();
+        if (activeUser != null && !activeUser.isEmpty()) {
+            txtUsuario.setText(activeUser.substring(0, 1).toUpperCase() + activeUser.substring(1));
+        } else {
+            txtUsuario.setText("Sesión Activa");
+        }
 
+        rbEntry.setSelected(true);
         spnCantidad.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 10000, 1));
 
         colCod.setCellValueFactory(new PropertyValueFactory<>("codigo"));
@@ -139,8 +143,9 @@ public class GuiaFormController {
             return;
         }
 
-        String productCode = prodSeleccionado.split(" - ")[0];
-        String productName = prodSeleccionado.split(" - ")[1];
+        String[] parts = prodSeleccionado.split(" - ", 2);
+        String productCode = parts[0];
+        String productName = parts[1];
 
         // Verificar si ya está en la lista
         DetalleFila existente = filas.stream()
@@ -226,31 +231,4 @@ public class GuiaFormController {
         alerta.showAndWait();
     }
 
-    public static class DetalleFila {
-        private final String codigo;
-        private final String nombre;
-        private int cantidad;
-
-        public DetalleFila(String codigo, String nombre, int cantidad) {
-            this.codigo = codigo;
-            this.nombre = nombre;
-            this.cantidad = cantidad;
-        }
-
-        public String getCodigo() {
-            return codigo;
-        }
-
-        public String getNombre() {
-            return nombre;
-        }
-
-        public int getCantidad() {
-            return cantidad;
-        }
-
-        public void setCantidad(int cantidad) {
-            this.cantidad = cantidad;
-        }
-    }
 }
