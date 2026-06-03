@@ -94,12 +94,6 @@
                               <Hyperlink styleClass="sidebar-sub-link" text="Alertas" onAction="#handleAlertas" />
                            </children>
                         </HBox>
-                        <HBox styleClass="sidebar-sub-item" onMouseClicked="#handleMovimientos">
-                           <children>
-                              <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true" />
-                              <Hyperlink styleClass="sidebar-sub-link" text="Movimientos" onAction="#handleMovimientos" />
-                           </children>
-                        </HBox>
                         <HBox styleClass="sidebar-sub-item" onMouseClicked="#handleGuias">
                            <children>
                               <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true" />

@@ -13,7 +13,6 @@ module com.store.inventario {
     opens com.store.inventario.controller.productos to javafx.fxml;
     opens com.store.inventario.controller.inventario.alertas to javafx.fxml;
     opens com.store.inventario.controller.inventario.guias to javafx.fxml;
-    opens com.store.inventario.controller.inventario.movimientos to javafx.fxml;
     opens com.store.inventario.controller.compra to javafx.fxml;
     opens com.store.inventario.controller.empleados to javafx.fxml;
     opens com.store.inventario.controller.proveedor to javafx.fxml;
@@ -30,5 +29,6 @@ module com.store.inventario {
     opens com.store.inventario.model.usuario;
     opens com.store.inventario.model.empleado;
     opens com.store.inventario.model.proveedor;
+    opens com.store.inventario.model.guia;
 
 }

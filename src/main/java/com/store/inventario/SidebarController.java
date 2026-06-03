@@ -113,10 +113,7 @@ public class SidebarController {
         NavigationManager.getInstance().navegar("/com/store/inventario/views/inventario/alertas/alertas.fxml");
     }
 
-    @FXML
-    private void handleMovimientos() {
-        NavigationManager.getInstance().navegar("/com/store/inventario/views/inventario/movimientos/movimiento-inventario.fxml");
-    }
+
 
     @FXML
     private void handleGuias() {
