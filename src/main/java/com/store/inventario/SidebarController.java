@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -128,14 +129,11 @@ public class SidebarController {
     @FXML
     private void handleLogout() {
         try {
-            // Cerrar la sesión en SessionManager
             SessionManager.getInstance().cerrarSesion();
 
-            // Cargar la vista de login
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/views/login.fxml"));
             Parent root = loader.load();
 
-            // Crear y mostrar el Stage de login
             Stage loginStage = new Stage();
             loginStage.setTitle("Sistema de Inventario");
             loginStage.setScene(new Scene(root));
@@ -143,7 +141,6 @@ public class SidebarController {
             loginStage.setMinHeight(800);
             loginStage.show();
 
-            // Cerrar el Stage actual (del sidebar/layout principal)
             Stage currentStage = (Stage) subMenuInventario.getScene().getWindow();
             currentStage.close();
         } catch (IOException e) {

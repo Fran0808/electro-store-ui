@@ -3,7 +3,9 @@ package com.store.inventario;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 
@@ -13,6 +15,19 @@ public class LayoutController {
 
     @FXML
     private void initialize() {
+        javafx.application.Platform.runLater(() -> {
+            try {
+                if (mainContent.getScene() != null && mainContent.getScene().getWindow() instanceof Stage) {
+                    Stage stage = (Stage) mainContent.getScene().getWindow();
+                    Image icon = new Image(getClass().getResourceAsStream("/logo.png"));
+                    if (stage.getIcons().isEmpty() || !stage.getIcons().contains(icon)) {
+                        stage.getIcons().add(icon);
+                    }
+                }
+            } catch (Exception e) {
+                System.err.println("No se pudo cargar el logo de la aplicación: " + e.getMessage());
+            }
+        });
         NavigationManager.getInstance().setOnNavegar(path -> {
             try {
                 cargarVista(path);
@@ -20,7 +35,6 @@ public class LayoutController {
                 e.printStackTrace();
             }
         });
-
         NavigationManager.getInstance().navegar("/com/store/inventario/views/index.fxml");
     }
 
