@@ -140,6 +140,14 @@ public class SidebarController {
             loginStage.setScene(new Scene(root));
             loginStage.setMinWidth(1280);
             loginStage.setMinHeight(800);
+            
+            try {
+                Image icon = new Image(getClass().getResourceAsStream("/logo.png"));
+                loginStage.getIcons().add(icon);
+            } catch (Exception e) {
+                System.err.println("No se pudo cargar el logo de la aplicación: " + e.getMessage());
+            }
+
             loginStage.show();
 
             Stage currentStage = (Stage) subMenuInventario.getScene().getWindow();
