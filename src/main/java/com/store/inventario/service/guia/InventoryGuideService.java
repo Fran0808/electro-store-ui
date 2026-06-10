@@ -65,4 +65,23 @@ public class InventoryGuideService {
             throw new RuntimeException(e);
         }
     }
+
+    public InventoryGuide obtenerGuiaPorCodigo(String code) {
+        try {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(URL + "/" + code))
+                    .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
+                    .GET()
+                    .build();
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() >= 400) {
+                throw new RuntimeException("Error al obtener detalle de guía: HTTP " + response.statusCode());
+            }
+
+            return gson.fromJson(response.body(), InventoryGuide.class);
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
