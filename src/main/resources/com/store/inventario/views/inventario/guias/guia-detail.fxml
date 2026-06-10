@@ -24,7 +24,7 @@
                         <Label style="-fx-font-size:11px; -fx-text-fill:#666;" text="Tipo" />
                         <HBox spacing="8.0">
                             <Label fx:id="lblTipo" style="-fx-font-size:13px; -fx-font-weight:bold;" text="Entrada" />
-                            <Label fx:id="lblBadgeTipo" style="-fx-padding: 2 8; -fx-background-color: #10b98140; -fx-text-fill: #059669; -fx-border-radius: 4; -fx-padding: 4 8; -fx-font-size: 11px;" text="ENTRY" />
+                            <Label fx:id="lblBadgeTipo" styleClass="badge, badge-success" text="ENTRY" />
                         </HBox>
                     </VBox>
                     
