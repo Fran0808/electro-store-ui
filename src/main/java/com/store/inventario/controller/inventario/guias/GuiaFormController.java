@@ -3,12 +3,12 @@ package com.store.inventario.controller.inventario.guias;
 import com.store.inventario.model.PageResponse;
 import com.store.inventario.model.guia.CreateGuideDetailRequest;
 import com.store.inventario.model.guia.CreateInventoryGuideRequest;
-import com.store.inventario.model.guia.InventoryGuide;
 import com.store.inventario.model.guia.DetalleFila;
+import com.store.inventario.model.guia.InventoryGuide;
 import com.store.inventario.model.producto.Producto;
+import com.store.inventario.security.SessionManager;
 import com.store.inventario.service.guia.InventoryGuideService;
 import com.store.inventario.service.producto.ProductoService;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -20,71 +20,73 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GuiaFormController {
-    @FXML
-    private TextField txtMotivo;
-    @FXML
-    private TextField txtUsuario;
-    @FXML
-    private TextField txtStockActual;
-    @FXML
-    private RadioButton rbEntry;
-    @FXML
-    private RadioButton rbExit;
-    @FXML
-    private TextField txtDescripcion;
-    @FXML
-    private ComboBox<String> cbProducto;
-    @FXML
-    private Spinner<Integer> spnCantidad;
-    @FXML
-    private TableView<DetalleFila> tblDetalle;
-    @FXML
-    private TableColumn<DetalleFila, String> colCod;
-    @FXML
-    private TableColumn<DetalleFila, String> colProducto;
-    @FXML
-    private TableColumn<DetalleFila, Integer> colCantidad;
-    @FXML
-    private TableColumn<DetalleFila, Void> colAcciones;
-    @FXML
-    private Label lblTotalProductos;
-    @FXML
-    private Label lblTotalUnidades;
-    @FXML
-    private Button btnCancelar;
-    @FXML
-    private Button btnGuardar;
+
+    @FXML private TextField txtMotivo;
+    @FXML private TextField txtUsuario;
+    @FXML private TextField txtDescripcion;
+    @FXML private RadioButton rbEntry;
+    @FXML private RadioButton rbExit;
+
+    @FXML private TextField txtBuscarProducto;
+    @FXML private Button btnBuscarProducto;
+    @FXML private TextField txtStockActual;
+    @FXML private TextField txtCantidad;
+
+    @FXML private TableView<DetalleFila> tblDetalle;
+    @FXML private TableColumn<DetalleFila, String> colCod;
+    @FXML private TableColumn<DetalleFila, String> colProducto;
+    @FXML private TableColumn<DetalleFila, Integer> colStockActual;
+    @FXML private TableColumn<DetalleFila, Integer> colCantidad;
+    @FXML private TableColumn<DetalleFila, Void> colAcciones;
+
+    @FXML private Label lblTotalProductos;
+    @FXML private Label lblTotalUnidades;
+    @FXML private Button btnCancelar;
+    @FXML private Button btnGuardar;
 
     private final InventoryGuideService guideService = new InventoryGuideService();
     private final ProductoService productoService = new ProductoService();
     private final ObservableList<DetalleFila> filas = FXCollections.observableArrayList();
     private List<Producto> listaProductos = new ArrayList<>();
+    private Producto productoSeleccionado;
 
     @FXML
     public void initialize() {
-        String activeUser = com.store.inventario.security.SessionManager.getInstance().getUsername();
-        if (activeUser != null && !activeUser.isEmpty()) {
-            txtUsuario.setText(activeUser.substring(0, 1).toUpperCase() + activeUser.substring(1));
-        } else {
-            txtUsuario.setText("Sesión Activa");
-        }
+        String user = SessionManager.getInstance().getUsername();
+        txtUsuario.setText(user != null && !user.isEmpty()
+                ? user.substring(0, 1).toUpperCase() + user.substring(1)
+                : "Sesión Activa");
 
         rbEntry.setSelected(true);
-        spnCantidad.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 10000, 1));
 
         colCod.setCellValueFactory(new PropertyValueFactory<>("codigo"));
         colProducto.setCellValueFactory(new PropertyValueFactory<>("nombre"));
+        colStockActual.setCellValueFactory(new PropertyValueFactory<>("stockActual"));
         colCantidad.setCellValueFactory(new PropertyValueFactory<>("cantidad"));
-
+        configurarColumnaQuitar();
         tblDetalle.setItems(filas);
 
-        colAcciones.setCellFactory(param -> new TableCell<>() {
+        cargarProductos();
+    }
+
+    private void cargarProductos() {
+        try {
+            PageResponse<Producto> response = productoService.obtenerProductos();
+            if (response != null && response.getContent() != null) {
+                listaProductos = response.getContent();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void configurarColumnaQuitar() {
+        colAcciones.setCellFactory(col -> new TableCell<>() {
             private final Button btnQuitar = new Button("Quitar");
             {
                 btnQuitar.getStyleClass().add("btn-secondary");
                 btnQuitar.setOnAction(e -> {
-                    DetalleFila fila = getTableView().getItems().get(getIndex());
-                    filas.remove(fila);
+                    filas.remove(getTableView().getItems().get(getIndex()));
                     actualizarResumen();
                 });
             }
@@ -94,62 +96,45 @@ public class GuiaFormController {
                 setGraphic(empty ? null : btnQuitar);
             }
         });
-
-        cargarProductos();
-
-        cbProducto.valueProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue != null) {
-                String productCode = newValue.split(" - ")[0];
-                Producto p = listaProductos.stream()
-                        .filter(prod -> prod.getCode().equals(productCode))
-                        .findFirst()
-                        .orElse(null);
-                if (p != null) {
-                    txtStockActual.setText(String.valueOf(p.getStock()));
-                }
-            } else {
-                txtStockActual.setText("");
-            }
-        });
     }
 
-    private void cargarProductos() {
-        try {
-            PageResponse<Producto> response = productoService.obtenerProductos();
-            if (response != null && response.getContent() != null) {
-                listaProductos = response.getContent();
-                ObservableList<String> items = FXCollections.observableArrayList();
-                for (Producto p : listaProductos) {
-                    items.add(p.getCode() + " - " + p.getName());
-                }
-                cbProducto.setItems(items);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+    @FXML
+    private void handleBuscarProducto() {
+        String busqueda = txtBuscarProducto.getText() != null ? txtBuscarProducto.getText().trim() : "";
+        if (busqueda.isEmpty()) {
+            mostrarAlerta(Alert.AlertType.WARNING, "Advertencia", "Ingrese el nombre del producto a buscar.");
+            return;
+        }
+
+        productoSeleccionado = listaProductos.stream()
+                .filter(p -> p.getName().toLowerCase().contains(busqueda.toLowerCase()))
+                .findFirst()
+                .orElse(null);
+
+        if (productoSeleccionado != null) {
+            txtBuscarProducto.setText(productoSeleccionado.getName());
+            txtStockActual.setText(String.valueOf(productoSeleccionado.getStock()));
+        } else {
+            txtStockActual.setText("");
+            mostrarAlerta(Alert.AlertType.WARNING, "No encontrado",
+                    "No se encontró un producto que coincida con: \"" + busqueda + "\"");
         }
     }
 
     @FXML
     private void handleAgregarProducto() {
-        String prodSeleccionado = cbProducto.getValue();
-        if (prodSeleccionado == null) {
-            mostrarAlerta(Alert.AlertType.WARNING, "Advertencia", "Seleccione un producto para agregar.");
+        if (productoSeleccionado == null) {
+            mostrarAlerta(Alert.AlertType.WARNING, "Advertencia", "Primero busque un producto válido.");
             return;
         }
 
-        int cantidad = spnCantidad.getValue();
-        if (cantidad <= 0) {
-            mostrarAlerta(Alert.AlertType.WARNING, "Advertencia", "Ingrese una cantidad válida.");
-            return;
-        }
+        int cantidad = parseCantidad();
+        if (cantidad <= 0) return;
 
-        String[] parts = prodSeleccionado.split(" - ", 2);
-        String productCode = parts[0];
-        String productName = parts[1];
+        String code = productoSeleccionado.getCode();
 
-        // Verificar si ya está en la lista
         DetalleFila existente = filas.stream()
-                .filter(f -> f.getCodigo().equals(productCode))
+                .filter(f -> f.getCodigo().equals(code))
                 .findFirst()
                 .orElse(null);
 
@@ -157,24 +142,19 @@ public class GuiaFormController {
             existente.setCantidad(existente.getCantidad() + cantidad);
             tblDetalle.refresh();
         } else {
-            filas.add(new DetalleFila(productCode, productName, cantidad));
+            filas.add(new DetalleFila(
+                    code,
+                    productoSeleccionado.getName(),
+                    productoSeleccionado.getStock(),
+                    cantidad
+            ));
         }
 
-        cbProducto.setValue(null);
-        spnCantidad.getValueFactory().setValue(1);
+        productoSeleccionado = null;
+        txtBuscarProducto.clear();
+        txtStockActual.clear();
+        txtCantidad.clear();
         actualizarResumen();
-    }
-
-    private void actualizarResumen() {
-        lblTotalProductos.setText(String.valueOf(filas.size()));
-        int totalUnidades = filas.stream().mapToInt(DetalleFila::getCantidad).sum();
-        lblTotalUnidades.setText(String.valueOf(totalUnidades));
-    }
-
-    @FXML
-    private void handleCancelar() {
-        Stage stage = (Stage) btnCancelar.getScene().getWindow();
-        stage.close();
     }
 
     @FXML
@@ -184,7 +164,6 @@ public class GuiaFormController {
             mostrarAlerta(Alert.AlertType.WARNING, "Advertencia", "Debe ingresar el motivo de la guía.");
             return;
         }
-
         if (filas.isEmpty()) {
             mostrarAlerta(Alert.AlertType.WARNING, "Advertencia", "Debe agregar al menos un producto a la guía.");
             return;
@@ -198,29 +177,48 @@ public class GuiaFormController {
             details.add(new CreateGuideDetailRequest(f.getCodigo(), f.getCantidad()));
         }
 
-        CreateInventoryGuideRequest request = new CreateInventoryGuideRequest(tipo, motivo, desc, details);
+        try {
+            InventoryGuide guide = guideService.crearGuia(
+                    new CreateInventoryGuideRequest(tipo, motivo, desc, details)
+            );
+            mostrarAlerta(Alert.AlertType.INFORMATION, "Éxito",
+                    "Guía " + guide.getCode() + " registrada correctamente.");
+            cerrarVentana(btnGuardar);
+        } catch (Exception e) {
+            e.printStackTrace();
+            mostrarAlerta(Alert.AlertType.ERROR, "Error al Guardar",
+                    "No se pudo crear la guía: " + e.getMessage());
+        }
+    }
 
-        Platform.runLater(() -> {
-            try {
-                InventoryGuide guide = guideService.crearGuia(request);
-                
-                Alert exito = new Alert(Alert.AlertType.INFORMATION);
-                exito.setTitle("Éxito");
-                exito.setHeaderText("Guía Creada");
-                exito.setContentText("La guía de inventario " + guide.getCode() + " se ha registrado correctamente.");
-                exito.showAndWait();
+    @FXML
+    private void handleCancelar() {
+        cerrarVentana(btnCancelar);
+    }
 
-                Stage stage = (Stage) btnGuardar.getScene().getWindow();
-                stage.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-                Alert error = new Alert(Alert.AlertType.ERROR);
-                error.setTitle("Error al Guardar");
-                error.setHeaderText("No se pudo crear la guía");
-                error.setContentText("Ocurrió un error en el servidor: " + e.getMessage());
-                error.showAndWait();
+    private int parseCantidad() {
+        try {
+            int cantidad = Integer.parseInt(txtCantidad.getText().trim());
+            if (cantidad <= 0) {
+                mostrarAlerta(Alert.AlertType.WARNING, "Advertencia", "La cantidad debe ser mayor a 0.");
+                return -1;
             }
-        });
+            return cantidad;
+        } catch (NumberFormatException | NullPointerException e) {
+            mostrarAlerta(Alert.AlertType.WARNING, "Advertencia", "Ingrese una cantidad numérica válida.");
+            return -1;
+        }
+    }
+
+    private void actualizarResumen() {
+        lblTotalProductos.setText(String.valueOf(filas.size()));
+        lblTotalUnidades.setText(String.valueOf(
+                filas.stream().mapToInt(DetalleFila::getCantidad).sum()
+        ));
+    }
+
+    private void cerrarVentana(Button origen) {
+        ((Stage) origen.getScene().getWindow()).close();
     }
 
     private void mostrarAlerta(Alert.AlertType tipo, String titulo, String mensaje) {
@@ -230,5 +228,4 @@ public class GuiaFormController {
         alerta.setContentText(mensaje);
         alerta.showAndWait();
     }
-
 }

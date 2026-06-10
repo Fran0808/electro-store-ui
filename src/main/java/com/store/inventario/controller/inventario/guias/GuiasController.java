@@ -89,27 +89,15 @@ public class GuiasController {
         colAcciones.setCellFactory(col -> new TableCell<InventoryGuide, Void>() {
             private final Button btnVer = new Button("Ver detalle");
             {
-                btnVer.setStyle("-fx-background-color: #FFFFFF;\n" +
-                        "    -fx-border-color: #E2E8F0;\n" +
-                        "    -fx-border-width: 1px;\n" +
-                        "    -fx-text-fill: #475569;\n" +
-                        "    -fx-padding: 10px 15px; \n" +
-                        "    -fx-cursor: hand;\n" +
-                        "    -fx-font-size: 11px;\n" +
-                        "    -fx-font-family: \"Inter\", \"Segoe UI\", sans-serif;\n" +
-                        "    -fx-font-weight: bold;\n" +
-                        "    -fx-background-radius: 4px;\n" +
-                        "    -fx-border-radius: 4px;\n" +
-                        "    -fx-min-height: 30px;\n" +
-                        "    -fx-pref-height: 40px;\n" +
-                        "    -fx-max-height: 40px;\n" +
-                        "    -fx-transition: all 0.2s ease-in-out;"
-                );
+                btnVer.getStyleClass().add("btn-acciones");
                 btnVer.setOnAction(e -> {
-                    try {
-                        handleVerDetalle();
-                    } catch (IOException ex) {
-                        ex.printStackTrace();
+                    InventoryGuide selected = getTableRow().getItem();
+                    if (selected != null) {
+                        try {
+                            handleVerDetalle(selected);
+                        } catch (IOException ex) {
+                            ex.printStackTrace();
+                        }
                     }
                 });
             }
@@ -156,14 +144,16 @@ public class GuiasController {
         cargarGuias();
     }
 
-    @FXML
-    private void handleVerDetalle() throws IOException {
+    private void handleVerDetalle(InventoryGuide guide) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/views/inventario/guias/guia-detail.fxml"));
         Parent root = loader.load();
 
+        GuiaDetailController controller = loader.getController();
+        controller.setGuideCode(guide.getCode());
+
         Stage modal = new Stage();
         modal.initModality(Modality.APPLICATION_MODAL);
-        modal.setTitle("Detalle de Guía");
+        modal.setTitle("Detalle de Guía - " + guide.getCode());
         modal.setScene(new Scene(root));
         modal.showAndWait();
     }
