@@ -640,5 +640,23 @@
     -fx-pref-width: 160px;
 }
 
+.badge {
+    -fx-padding: 4px 8px;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+}
+
+.badge-success {
+    -fx-background-color: #10b98140;
+    -fx-text-fill: #059669;
+}
+
+.badge-danger {
+    -fx-background-color: #ef444440;
+    -fx-text-fill: #dc2626;
+}
+
 
 
