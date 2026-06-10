@@ -25,9 +25,13 @@ public class InventoryGuideService {
     }
 
     public PageResponse<InventoryGuide> obtenerGuias() {
+        return obtenerGuias(0, 10);
+    }
+
+    public PageResponse<InventoryGuide> obtenerGuias(int page, int size) {
         try {
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(URL))
+                    .uri(URI.create(URL + "?page=" + page + "&size=" + size + "&sort=guideDate,desc"))
                     .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
                     .GET()
                     .build();

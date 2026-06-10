@@ -84,10 +84,13 @@ public class GuiaFormController {
         colAcciones.setCellFactory(col -> new TableCell<>() {
             private final Button btnQuitar = new Button("Quitar");
             {
-                btnQuitar.getStyleClass().add("btn-secondary");
+                btnQuitar.getStyleClass().add("btn-acciones");
                 btnQuitar.setOnAction(e -> {
-                    filas.remove(getTableView().getItems().get(getIndex()));
-                    actualizarResumen();
+                    DetalleFila selected = getTableRow().getItem();
+                    if (selected != null) {
+                        filas.remove(selected);
+                        actualizarResumen();
+                    }
                 });
             }
             @Override

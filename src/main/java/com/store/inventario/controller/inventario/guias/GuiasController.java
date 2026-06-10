@@ -41,12 +41,23 @@ public class GuiasController {
     @FXML
     private Label lblResumenPaginacion;
 
+    @FXML
+    private Button btnAnterior;
+    @FXML
+    private Button btnSiguiente;
+
     private final InventoryGuideService guideService = new InventoryGuideService();
+    private int paginaActual = 0;
+    private final int tamanoPagina = 10;
+    private int totalPaginas = 1;
 
     @FXML
     private void initialize() {
         cbTipo.getItems().addAll("ENTRY", "EXIT", "Todos");
         cbUsuario.getItems().addAll("Todos");
+
+        btnAnterior.setOnAction(e -> handlePaginaAnterior());
+        btnSiguiente.setOnAction(e -> handlePaginaSiguiente());
 
         colCodigo.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getCode()));
         
@@ -114,19 +125,47 @@ public class GuiasController {
 
     private void cargarGuias() {
         try {
-            PageResponse<InventoryGuide> response = guideService.obtenerGuias();
+            PageResponse<InventoryGuide> response = guideService.obtenerGuias(paginaActual, tamanoPagina);
             List<InventoryGuide> guias = (response != null) ? response.getContent() : java.util.Collections.emptyList();
             tblGuias.setItems(FXCollections.observableArrayList(guias));
             
             if (response != null) {
+                totalPaginas = response.getTotalPages();
+                btnAnterior.setDisable(paginaActual == 0);
+                btnSiguiente.setDisable(paginaActual >= totalPaginas - 1);
+
                 long total = response.getTotalElements();
-                lblResumenPaginacion.setText("Mostrando 1-" + guias.size() + " de " + total + " guías");
+                int pageSize = response.getSize();
+                long desde = (long) paginaActual * pageSize + 1;
+                long hasta = Math.min(desde + guias.size() - 1, total);
+                if (total == 0) {
+                    lblResumenPaginacion.setText("No hay guías para mostrar");
+                } else {
+                    lblResumenPaginacion.setText("Mostrando " + desde + "-" + hasta + " de " + total + " guías (Página " + (paginaActual + 1) + " de " + totalPaginas + ")");
+                }
             } else {
+                totalPaginas = 1;
+                btnAnterior.setDisable(true);
+                btnSiguiente.setDisable(true);
                 lblResumenPaginacion.setText("Mostrando 0-0 de 0 guías");
             }
         } catch (Exception e) {
             e.printStackTrace();
             lblResumenPaginacion.setText("Error al cargar guías desde el servidor");
+        }
+    }
+
+    private void handlePaginaAnterior() {
+        if (paginaActual > 0) {
+            paginaActual--;
+            cargarGuias();
+        }
+    }
+
+    private void handlePaginaSiguiente() {
+        if (paginaActual < totalPaginas - 1) {
+            paginaActual++;
+            cargarGuias();
         }
     }
 
