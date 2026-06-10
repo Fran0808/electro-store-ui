@@ -5,6 +5,8 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import java.net.URL?>
+<?import javafx.collections.FXCollections?>
+
 
 <AnchorPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.store.inventario.controller.inventario.guias.GuiasController" prefHeight="800.0" prefWidth="1040.0">
     <stylesheets>
@@ -27,7 +29,17 @@
             <TextField fx:id="txtBuscar" promptText="Código o motivo..." styleClass="search-field" HBox.hgrow="ALWAYS" />
             <ComboBox fx:id="cbTipo" promptText="Tipo" styleClass="filter-combo" />
             <ComboBox fx:id="cbUsuario" promptText="Usuario" styleClass="filter-combo" />
-            <DatePicker fx:id="dpFecha" styleClass="filter-combo" promptText="Fecha" />
+            <ComboBox fx:id="cbFecha" promptText="Fecha" styleClass="filter-combo">
+                <items>
+                    <FXCollections fx:factory="observableArrayList">
+                        <String fx:value="Todos" />
+                        <String fx:value="Hoy" />
+                        <String fx:value="Últimos 7 días" />
+                        <String fx:value="Últimos 30 días" />
+                        <String fx:value="Este mes" />
+                    </FXCollections>
+                </items>
+            </ComboBox>
             <Button fx:id="btnLimpiar" styleClass="btn-secondary" text="Limpiar" />
             <Button fx:id="btnBuscar" styleClass="btn-primary" text="Buscar" />
         </HBox>
