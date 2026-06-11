@@ -28,59 +28,33 @@ import javafx.collections.transformation.FilteredList;
 
 public class ProductoController implements Initializable {
 
-    @FXML
-    private Button btnNuevoProducto;
-    @FXML
-    private Button btnActualizar;
-    @FXML
-    private TableView<Producto> tblProductos;
-    @FXML
-    private TableColumn<Producto, String> colCodigo;
-    @FXML
-    private TableColumn<Producto, String> colNombre;
-    @FXML
-    private TableColumn<Producto, String> colCategoria;
-    @FXML
-    private TableColumn<Producto, String> colMarca;
-    @FXML
-    private TableColumn<Producto, String> colModelo;
-    @FXML
-    private TableColumn<Producto, BigDecimal> colPrecio;
-    @FXML
-    private TableColumn<Producto, Integer> colStock;
-    @FXML
-    private TableColumn<Producto, Integer> colGarantia;
-    @FXML
-    private TableColumn<Producto, Void> colAcciones;
+    @FXML private Button btnNuevoProducto;
+    @FXML private Button btnActualizar;
+    @FXML private TableView<Producto> tblProductos;
+    @FXML private TableColumn<Producto, String> colCodigo;
+    @FXML private TableColumn<Producto, String> colNombre;
+    @FXML private TableColumn<Producto, String> colCategoria;
+    @FXML private TableColumn<Producto, String> colMarca;
+    @FXML private TableColumn<Producto, String> colModelo;
+    @FXML private TableColumn<Producto, BigDecimal> colPrecio;
+    @FXML private TableColumn<Producto, Integer> colStock;
+    @FXML private TableColumn<Producto, Integer> colGarantia;
+    @FXML private TableColumn<Producto, Void> colAcciones;
 
-    @FXML
-    private Label lblTotalProductos;
-    @FXML
-    private Label lblStockBajo;
-    @FXML
-    private Label lblAgotados;
-    @FXML
-    private Label lblCategorias;
-    @FXML
-    private Label lblResumenPaginacion;
-    @FXML
-    private Button btnAnterior;
-    @FXML
-    private Button btnSiguiente;
-    @FXML
-    private TextField txtBuscar;
-    @FXML
-    private ComboBox<String> cbCategoria;
-    @FXML
-    private ComboBox<String> cbMarca;
-    @FXML
-    private ComboBox<String> cbEstado;
-    @FXML
-    private Button btnLimpiar;
-    @FXML
-    private Button btnBuscar;
-    @FXML
-    private Button btnGestionarCategorias;
+    @FXML private Label lblTotalProductos;
+    @FXML private Label lblStockBajo;
+    @FXML private Label lblAgotados;
+    @FXML private Label lblCategorias;
+    @FXML private Label lblResumenPaginacion;
+    @FXML private Button btnAnterior;
+    @FXML private Button btnSiguiente;
+    @FXML private TextField txtBuscar;
+    @FXML private ComboBox<String> cbCategoria;
+    @FXML private ComboBox<String> cbMarca;
+    @FXML private ComboBox<String> cbEstado;
+    @FXML private Button btnLimpiar;
+    @FXML private Button btnBuscar;
+    @FXML private Button btnGestionarCategorias;
 
     private final ProductoService productoService = new ProductoService();
     private final String rolActual = SessionManager.getInstance().getRole();

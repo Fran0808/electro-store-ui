@@ -12,67 +12,71 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="650.0" prefWidth="900.0" styleClass="root" stylesheets="@../../styles/style.css" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.store.inventario.controller.compra.CompraFormController">
+<AnchorPane prefHeight="650.0" prefWidth="900.0" styleClass="root" stylesheets="@../../styles/style.css"
+            xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.store.inventario.controller.compra.CompraFormController">
 
-    <children>
-        <VBox spacing="24.0" styleClass="modal-container" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
+    <VBox spacing="24.0" styleClass="modal-container" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0"
+          AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
 
-            <padding>
-                <Insets bottom="28" left="28" right="28" top="28" />
-            </padding>
+        <padding>
+            <Insets bottom="28" left="28" right="28" top="28"/>
+        </padding>
 
-            <VBox spacing="6">
-                <Label fx:id="lblTitulo" styleClass="header-title" text="Nueva Compra" />
-                <Label styleClass="header-subtitle" text="Completa la información de la compra" />
+        <VBox spacing="6">
+            <Label fx:id="lblTitulo" styleClass="header-title" text="Nueva Compra"/>
+            <Label styleClass="header-subtitle" text="Completa la información de la compra"/>
+        </VBox>
+
+
+        <HBox spacing="16">
+            <VBox spacing="6" HBox.hgrow="ALWAYS">
+                <Label styleClass="metric-label" text="Proveedor"/>
+                <ComboBox fx:id="cbProveedor" maxWidth="Infinity" promptText="Seleccione un proveedor"
+                          styleClass="filter-combo"/>
             </VBox>
 
+            <VBox spacing="6" HBox.hgrow="ALWAYS">
+                <Label styleClass="metric-label" text="Usuario"/>
+                <ComboBox fx:id="cbUsuario" maxWidth="Infinity" promptText="Seleccione un usuario"
+                          styleClass="filter-combo"/>
+            </VBox>
 
-            <HBox spacing="16">
-                <VBox spacing="6" HBox.hgrow="ALWAYS">
-                    <Label styleClass="metric-label" text="Proveedor" />
-                    <ComboBox fx:id="cbProveedor" maxWidth="Infinity" promptText="Seleccione un proveedor" styleClass="filter-combo" />
-                </VBox>
+            <VBox spacing="6" HBox.hgrow="ALWAYS">
+                <Label styleClass="metric-label" text="Fecha de operación"/>
+                <DatePicker fx:id="dpFechaOperacion" maxWidth="Infinity"/>
+            </VBox>
+        </HBox>
 
-                <VBox spacing="6" HBox.hgrow="ALWAYS">
-                    <Label styleClass="metric-label" text="Usuario" />
-                    <ComboBox fx:id="cbUsuario" maxWidth="Infinity" promptText="Seleccione un usuario" styleClass="filter-combo" />
-                </VBox>
+        <HBox>
+            <Label styleClass="metric-label" text="Detalle de Productos"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Button onAction="#abrirModalAgregarProductos" styleClass="btn-secondary" text="Agregar Producto"/>
+        </HBox>
 
-                <VBox spacing="6" HBox.hgrow="ALWAYS">
-                    <Label styleClass="metric-label" text="Fecha de operación" />
-                    <DatePicker fx:id="dpFechaOperacion" maxWidth="Infinity" />
-                </VBox>
-            </HBox>
+        <TableView fx:id="tblDetalleCompra" prefHeight="280" styleClass="table-view" VBox.vgrow="ALWAYS">
+            <columnResizePolicy>
+                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+            </columnResizePolicy>
+            <columns>
+                <TableColumn prefWidth="423.0" text="Producto"/>
+                <TableColumn prefWidth="128.0" text="Precio Compra"/>
+                <TableColumn prefWidth="81.0" text="Cantidad"/>
+                <TableColumn prefWidth="127.0" text="Subtotal"/>
+                <TableColumn prefWidth="84.0"
+                             text="Eliminar"/> <!-- En esta columna irá el icono de tacho para eliminar -->
+            </columns>
+        </TableView>
 
-            <HBox>
-                <Label styleClass="metric-label" text="Detalle de Productos" />
-                <Region HBox.hgrow="ALWAYS" />
-                <Button onAction="#abrirModalAgregarProductos" styleClass="btn-secondary" text="Agregar Producto" />
-            </HBox>
+        <HBox alignment="CENTER_RIGHT" spacing="12.0">
+            <Label styleClass="metric-label" text="TOTAL ESTIMADO"/>
+            <Label fx:id="lblTotal" styleClass="metric-value" text="S/ 0.00"/>
+        </HBox>
 
-            <TableView fx:id="tblDetalleCompra" prefHeight="280" styleClass="table-view" VBox.vgrow="ALWAYS">
-                <columnResizePolicy>
-                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                </columnResizePolicy>
-                <columns>
-                    <TableColumn prefWidth="423.0" text="Producto" />
-                    <TableColumn prefWidth="128.0" text="Precio Compra" />
-                    <TableColumn prefWidth="81.0" text="Cantidad" />
-                    <TableColumn prefWidth="127.0" text="Subtotal" />
-                    <TableColumn prefWidth="84.0" text="Eliminar" /> <!-- En esta columna irá el icono de tacho para eliminar -->
-                </columns>
-            </TableView>
+        <HBox alignment="CENTER_RIGHT" spacing="12">
+            <Button fx:id="btnCancelar" onAction="#cerrarModal" styleClass="btn-secondary" text="Cancelar"/>
+            <Button styleClass="btn-primary" text="Registrar Compra"/>
+        </HBox>
 
-            <HBox alignment="CENTER_RIGHT" spacing="12.0">
-                <Label styleClass="metric-label" text="TOTAL ESTIMADO" />
-                <Label fx:id="lblTotal" styleClass="metric-value" text="S/ 0.00" />
-            </HBox>
-
-            <HBox alignment="CENTER_RIGHT" spacing="12">
-                <Button fx:id="btnCancelar" onAction="#cerrarModal" styleClass="btn-secondary" text="Cancelar" />
-                <Button styleClass="btn-primary" text="Registrar Compra" />
-            </HBox>
-
-        </VBox>
-    </children>
+    </VBox>
 </AnchorPane>

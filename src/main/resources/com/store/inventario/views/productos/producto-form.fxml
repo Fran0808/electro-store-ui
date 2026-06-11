@@ -10,96 +10,79 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="740.0" style="-fx-background-color: #F8FAFC;" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.store.inventario.controller.productos.ProductoFormController">
+<AnchorPane prefHeight="600.0" prefWidth="740.0" style="-fx-background-color: #F8FAFC;" xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.store.inventario.controller.productos.ProductoFormController">
     <stylesheets>
-        <URL value="@../../styles/style.css" />
+        <URL value="@../../styles/style.css"/>
     </stylesheets>
-    <children>
-        <VBox spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-            <padding>
-                <Insets bottom="24.0" left="24.0" right="24.0" top="24.0" />
-            </padding>
-            <children>
-                <VBox spacing="4.0">
-                    <children>
-                        <Label fx:id="lblTitulo" styleClass="header-title" text="Añadir Nuevo Producto" />
-                        <Label fx:id="lblSubtitulo" styleClass="header-subtitle" text="Complete la información comercial y técnica" />
-                    </children>
-                </VBox>
-                <HBox spacing="30.0" VBox.vgrow="ALWAYS">
-                    <children>
-                        <VBox spacing="14.0" HBox.hgrow="ALWAYS">
-                            <children>
-
-                                <VBox spacing="6.0">
-                                    <children>
-                                        <Label style="-fx-font-weight: bold; -fx-text-fill: #334155; -fx-font-size: 13px;" text="Nombre del Producto *" />
-                                        <TextField fx:id="txtNombre" prefHeight="40.0" styleClass="search-field" />
-                                    </children>
-                                </VBox>
-                                <VBox spacing="6.0">
-                                    <children>
-                                        <Label style="-fx-font-weight: bold; -fx-text-fill: #334155; -fx-font-size: 13px;" text="Categoría *" />
-                                        <HBox alignment="CENTER_LEFT" spacing="8.0">
-                                            <children>
-                                                <ComboBox fx:id="cbCategoria" prefHeight="40.0" prefWidth="270.0" styleClass="filter-combo" />
-                                                <Button fx:id="btnNuevaCategoria" onAction="#handleNuevaCategoria" prefHeight="40.0" prefWidth="42.0" styleClass="btn-primary" text="+" />
-                                            </children>
-                                        </HBox>
-                                    </children>
-                                </VBox>
-                                <VBox spacing="6.0" VBox.vgrow="ALWAYS">
-                                    <children>
-                                        <Label style="-fx-font-weight: bold; -fx-text-fill: #334155; -fx-font-size: 13px;" text="Descripción" />
-                                        <TextArea fx:id="txtDescripcion" prefHeight="130.0" styleClass="search-field" wrapText="true" />
-                                    </children>
-                                </VBox>
-                            </children>
-                        </VBox>
-                        <VBox spacing="14.0" HBox.hgrow="ALWAYS">
-                            <children>
-                                <HBox spacing="14.0">
-                                    <children>
-                                        <VBox spacing="6.0" HBox.hgrow="ALWAYS">
-                                            <children>
-                                                <Label style="-fx-font-weight: bold; -fx-text-fill: #334155; -fx-font-size: 13px;" text="Marca" />
-                                                <TextField fx:id="txtMarca" prefHeight="40.0" styleClass="search-field" />
-                                            </children>
-                                        </VBox>
-                                        <VBox spacing="6.0" HBox.hgrow="ALWAYS">
-                                            <children>
-                                                <Label style="-fx-font-weight: bold; -fx-text-fill: #334155; -fx-font-size: 13px;" text="Modelo" />
-                                                <TextField fx:id="txtModelo" prefHeight="40.0" styleClass="search-field" />
-                                            </children>
-                                        </VBox>
-                                    </children>
-                                </HBox>
-                                <VBox spacing="6.0">
-                                    <children>
-                                        <Label style="-fx-font-weight: bold; -fx-text-fill: #334155; -fx-font-size: 13px;" text="Precio de Venta *" />
-                                        <TextField fx:id="txtPrecio" prefHeight="40.0" styleClass="search-field" />
-                                    </children>
-                                </VBox>
-
-                                <VBox spacing="6.0">
-                                    <children>
-                                        <Label style="-fx-font-weight: bold; -fx-text-fill: #334155; -fx-font-size: 13px;" text="Garantía (Meses)" />
-                                        <TextField fx:id="txtGarantia" prefHeight="40.0" styleClass="search-field" />
-                                    </children>
-                                </VBox>
-                            </children>
-                        </VBox>
-                    </children>
-                </HBox>
-                <HBox alignment="CENTER_RIGHT" spacing="14.0" style="-fx-padding: 10px 0 0 0;">
-                    <children>
-                        <Button fx:id="btnCancelar" onAction="#handleCancelar" prefWidth="120.0" styleClass="btn-secondary" text="Cancelar" />
-                        <Button fx:id="btnGuardar" onAction="#handleGuardar" prefWidth="150.0" styleClass="btn-primary" text="Guardar Producto" />
-                    </children>
-                </HBox>
-            </children>
+    <VBox spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+          AnchorPane.topAnchor="0.0">
+        <padding>
+            <Insets bottom="24.0" left="24.0" right="24.0" top="24.0"/>
+        </padding>
+        <VBox spacing="4.0">
+            <Label fx:id="lblTitulo" styleClass="header-title" text="Añadir Nuevo Producto"/>
+            <Label fx:id="lblSubtitulo" styleClass="header-subtitle"
+                   text="Complete la información comercial y técnica"/>
         </VBox>
-    </children>
+        <HBox spacing="30.0" VBox.vgrow="ALWAYS">
+            <VBox spacing="14.0" HBox.hgrow="ALWAYS">
+                <VBox spacing="6.0">
+                    <Label style="-fx-font-weight: bold; -fx-text-fill: #334155; -fx-font-size: 13px;"
+                           text="Nombre del Producto *"/>
+                    <TextField fx:id="txtNombre" prefHeight="40.0" styleClass="search-field"/>
+                </VBox>
+                <VBox spacing="6.0">
+                    <Label style="-fx-font-weight: bold; -fx-text-fill: #334155; -fx-font-size: 13px;"
+                           text="Categoría *"/>
+                    <HBox alignment="CENTER_LEFT" spacing="8.0">
+                        <ComboBox fx:id="cbCategoria" prefHeight="40.0" prefWidth="270.0"
+                                  styleClass="filter-combo"/>
+                        <Button fx:id="btnNuevaCategoria" onAction="#handleNuevaCategoria"
+                                prefHeight="40.0" prefWidth="42.0" styleClass="btn-primary"
+                                text="+"/>
+                    </HBox>
+                </VBox>
+                <VBox spacing="6.0" VBox.vgrow="ALWAYS">
+                    <Label style="-fx-font-weight: bold; -fx-text-fill: #334155; -fx-font-size: 13px;"
+                           text="Descripción"/>
+                    <TextArea fx:id="txtDescripcion" prefHeight="130.0" styleClass="search-field"
+                              wrapText="true"/>
+                </VBox>
+            </VBox>
+            <VBox spacing="14.0" HBox.hgrow="ALWAYS">
+                <HBox spacing="14.0">
+                    <VBox spacing="6.0" HBox.hgrow="ALWAYS">
+                        <Label style="-fx-font-weight: bold; -fx-text-fill: #334155; -fx-font-size: 13px;"
+                               text="Marca"/>
+                        <TextField fx:id="txtMarca" prefHeight="40.0" styleClass="search-field"/>
+                    </VBox>
+                    <VBox spacing="6.0" HBox.hgrow="ALWAYS">
+                        <Label style="-fx-font-weight: bold; -fx-text-fill: #334155; -fx-font-size: 13px;"
+                               text="Modelo"/>
+                        <TextField fx:id="txtModelo" prefHeight="40.0" styleClass="search-field"/>
+                    </VBox>
+                </HBox>
+                <VBox spacing="6.0">
+                    <Label style="-fx-font-weight: bold; -fx-text-fill: #334155; -fx-font-size: 13px;"
+                           text="Precio de Venta *"/>
+                    <TextField fx:id="txtPrecio" prefHeight="40.0" styleClass="search-field"/>
+                </VBox>
+
+                <VBox spacing="6.0">
+                    <Label style="-fx-font-weight: bold; -fx-text-fill: #334155; -fx-font-size: 13px;"
+                           text="Garantía (Meses)"/>
+                    <TextField fx:id="txtGarantia" prefHeight="40.0" styleClass="search-field"/>
+                </VBox>
+            </VBox>
+        </HBox>
+        <HBox alignment="CENTER_RIGHT" spacing="14.0" style="-fx-padding: 10px 0 0 0;">
+            <Button fx:id="btnCancelar" onAction="#handleCancelar" prefWidth="120.0" styleClass="btn-secondary"
+                    text="Cancelar"/>
+            <Button fx:id="btnGuardar" onAction="#handleGuardar" prefWidth="150.0" styleClass="btn-primary"
+                    text="Guardar Producto"/>
+        </HBox>
+    </VBox>
 </AnchorPane>

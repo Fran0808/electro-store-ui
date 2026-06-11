@@ -18,53 +18,26 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 public class VentaFormController {
-    @FXML
-    private TextField txtCodigoVenta;
-
-    @FXML
-    private TextField cbCliente;
-
-    @FXML
-    private TextField txtVendedor;
-
-    @FXML
-    private DatePicker dpFechaVenta;
-
-    @FXML
-    private TextField cbProducto;
-
-    @FXML
-    private Spinner<Integer> spnCantidad;
-
-    @FXML
-    private TextField txtPrecioUnitario;
-
-    @FXML
-    private TableView<DetalleVenta> tblDetalleVenta;
-
-    @FXML
-    private TableColumn<DetalleVenta, String> colDetCodigo;
-
-    @FXML
-    private TableColumn<DetalleVenta, String> colDetProducto;
-
-    @FXML
-    private TableColumn<DetalleVenta, String> colDetPrecio;
-
-    @FXML
-    private TableColumn<DetalleVenta, Integer> colDetCantidad;
-
-    @FXML
-    private TableColumn<DetalleVenta, String> colDetSubtotal;
-
-    @FXML
-    private TableColumn<DetalleVenta, Void> colDetAcciones;
-
-    @FXML
-    private Label lblTotalVenta;
-
-    @FXML
-    private Button btnCancelar;
+    @FXML private TextField txtClienteBuscar;
+    @FXML private Button btnBuscarCliente;
+    @FXML private Button btnAgregarProducto;
+    @FXML private Button btnRegistrarVenta;
+    @FXML private TextField txtCodigoVenta;
+    @FXML private TextField cbCliente;
+    @FXML private TextField txtVendedor;
+    @FXML private DatePicker dpFechaVenta;
+    @FXML private TextField cbProducto;
+    @FXML private Spinner<Integer> spnCantidad;
+    @FXML private TextField txtPrecioUnitario;
+    @FXML private TableView<DetalleVenta> tblDetalleVenta;
+    @FXML private TableColumn<DetalleVenta, String> colDetCodigo;
+    @FXML private TableColumn<DetalleVenta, String> colDetProducto;
+    @FXML private TableColumn<DetalleVenta, String> colDetPrecio;
+    @FXML private TableColumn<DetalleVenta, Integer> colDetCantidad;
+    @FXML private TableColumn<DetalleVenta, String> colDetSubtotal;
+    @FXML private TableColumn<DetalleVenta, Void> colDetAcciones;
+    @FXML private Label lblTotalVenta;
+    @FXML private Button btnCancelar;
 
     private final ObservableList<DetalleVenta> detalleVentaList = FXCollections.observableArrayList();
 
@@ -72,13 +45,7 @@ public class VentaFormController {
     public void initialize() {
         com.store.inventario.utils.ValidationUtils.hacerSoloDecimal(txtPrecioUnitario, 8, 2);
 
-
         dpFechaVenta.setValue(java.time.LocalDate.now());
-
-
-
-
-
         spnCantidad.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 100, 1));
 
         colDetCodigo.setCellValueFactory(new PropertyValueFactory<>("codigo"));

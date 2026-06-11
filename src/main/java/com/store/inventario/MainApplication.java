@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import java.io.IOException;
+import java.util.Objects;
 
 public class MainApplication extends Application {
 
@@ -18,7 +19,7 @@ public class MainApplication extends Application {
         stage.setTitle("Sistema de Inventario");
 
         try {
-            Image icon = new Image(getClass().getResourceAsStream("/logo.png"));
+            Image icon = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/logo.png")));
             stage.getIcons().add(icon);
         } catch (Exception e) {
             System.err.println("No se pudo cargar el logo de la aplicación: " + e.getMessage());

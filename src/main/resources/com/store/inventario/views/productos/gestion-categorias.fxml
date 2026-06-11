@@ -5,47 +5,44 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="500.0" prefWidth="680.0" styleClass="root" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.store.inventario.controller.categorias.GestionCategoriasController">
+<AnchorPane prefHeight="500.0" prefWidth="680.0" styleClass="root" xmlns="http://javafx.com/javafx/17.0.12"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.store.inventario.controller.categorias.GestionCategoriasController">
     <stylesheets>
-        <URL value="@../../styles/style.css" />
+        <URL value="@../../styles/style.css"/>
     </stylesheets>
-    <children>
-        <VBox spacing="16.0" styleClass="view-container" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-            <padding>
-                <Insets bottom="24.0" left="24.0" right="24.0" top="24.0" />
-            </padding>
-            <children>
-                <VBox spacing="4.0">
-                    <children>
-                        <Label styleClass="header-title" text="Gestión de Categorías" />
-                        <Label styleClass="header-subtitle" text="Administre las categorías del catálogo para la clasificación de productos." />
-                    </children>
-                </VBox>
-                <HBox fx:id="contenedorCrearCategoria" spacing="12.0" styleClass="search-container">
-                    <children>
-                        <TextField fx:id="txtNombre" promptText="Nombre de la nueva categoría (Ej. Cómputo, Audio...)" styleClass="search-field" HBox.hgrow="ALWAYS" />
-                        <Button fx:id="btnCancelarEdicion" managed="false" onAction="#handleCancelarEdicion" styleClass="btn-secondary" text="Cancelar" visible="false" />
-                        <Button fx:id="btnGuardar" onAction="#handleGuardar" styleClass="btn-primary" text="Guardar" />
-                    </children>
-                </HBox>
-
-                <TableView fx:id="tblCategorias" styleClass="products-table" VBox.vgrow="ALWAYS">
-                    <columns>
-                        <TableColumn fx:id="colCodigo" prefWidth="280.0" text="Código" />
-                        <TableColumn fx:id="colNombre" prefWidth="172.0" text="Nombre de la Categoría" />
-                        <TableColumn fx:id="colAcciones" prefWidth="110.0" text="Acciones" />
-                    </columns>
-                    <columnResizePolicy>
-                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                    </columnResizePolicy>
-                </TableView>
-
-                <HBox alignment="CENTER_RIGHT">
-                    <children>
-                        <Button fx:id="btnCerrar" onAction="#handleCerrar" prefWidth="120.0" styleClass="btn-secondary" text="Cerrar" />
-                    </children>
-                </HBox>
-            </children>
+    <VBox spacing="16.0" styleClass="view-container" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+          AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <padding>
+            <Insets bottom="24.0" left="24.0" right="24.0" top="24.0"/>
+        </padding>
+        <VBox spacing="4.0">
+            <Label styleClass="header-title" text="Gestión de Categorías"/>
+            <Label styleClass="header-subtitle"
+                   text="Administre las categorías del catálogo para la clasificación de productos."/>
         </VBox>
-    </children>
+        <HBox fx:id="contenedorCrearCategoria" spacing="12.0" styleClass="search-container">
+            <TextField fx:id="txtNombre" promptText="Nombre de la nueva categoría (Ej. Cómputo, Audio...)"
+                       styleClass="search-field" HBox.hgrow="ALWAYS"/>
+            <Button fx:id="btnCancelarEdicion" managed="false" onAction="#handleCancelarEdicion"
+                    styleClass="btn-secondary" text="Cancelar" visible="false"/>
+            <Button fx:id="btnGuardar" onAction="#handleGuardar" styleClass="btn-primary" text="Guardar"/>
+        </HBox>
+
+        <TableView fx:id="tblCategorias" styleClass="products-table" VBox.vgrow="ALWAYS">
+            <columns>
+                <TableColumn fx:id="colCodigo" prefWidth="280.0" text="Código"/>
+                <TableColumn fx:id="colNombre" prefWidth="172.0" text="Nombre de la Categoría"/>
+                <TableColumn fx:id="colAcciones" prefWidth="110.0" text="Acciones"/>
+            </columns>
+            <columnResizePolicy>
+                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+            </columnResizePolicy>
+        </TableView>
+
+        <HBox alignment="CENTER_RIGHT">
+            <Button fx:id="btnCerrar" onAction="#handleCerrar" prefWidth="120.0" styleClass="btn-secondary"
+                    text="Cerrar"/>
+        </HBox>
+    </VBox>
 </AnchorPane>

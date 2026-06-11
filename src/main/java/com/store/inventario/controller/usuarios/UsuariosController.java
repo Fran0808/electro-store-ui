@@ -22,31 +22,21 @@ import java.util.List;
 import java.util.Optional;
 
 public class UsuariosController {
-    @FXML
-    private TableView<Usuario> tblUsuarios;
-    @FXML
-    private TableColumn<Usuario, String> colCodigo;
-    @FXML
-    private TableColumn<Usuario, String> colUsuario;
-    @FXML
-    private TableColumn<Usuario, String> colRol;
-    @FXML
-    private TableColumn<Usuario, String> colCodigoEmpleado;
-    @FXML
-    private TableColumn<Usuario, String> colNombre;
-    @FXML
-    private TableColumn<Usuario, String> colApellido;
-    @FXML
-    private TableColumn<Usuario, Void> colAcciones;
+    @FXML private Button btnAnterior;
+    @FXML public Button btnSiguiente;
+    @FXML private TableView<Usuario> tblUsuarios;
+    @FXML private TableColumn<Usuario, String> colCodigo;
+    @FXML private TableColumn<Usuario, String> colUsuario;
+    @FXML private TableColumn<Usuario, String> colRol;
+    @FXML private TableColumn<Usuario, String> colCodigoEmpleado;
+    @FXML private TableColumn<Usuario, String> colNombre;
+    @FXML private TableColumn<Usuario, String> colApellido;
+    @FXML private TableColumn<Usuario, Void> colAcciones;
     
-    @FXML
-    private Label lblTotalUsuarios;
-    @FXML
-    private Label lblTotalAdmins;
-    @FXML
-    private Label lblTotalOperativos;
-    @FXML
-    private Label lblResumenPaginacion;
+    @FXML private Label lblTotalUsuarios;
+    @FXML private Label lblTotalAdmins;
+    @FXML private Label lblTotalOperativos;
+    @FXML private Label lblResumenPaginacion;
 
     private final UsuarioService usuarioService = new UsuarioService();
 

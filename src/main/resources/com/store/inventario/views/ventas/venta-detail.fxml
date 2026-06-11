@@ -4,83 +4,88 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="600.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.store.inventario.controller.ventas.VentaDetailController">
+<AnchorPane prefHeight="600.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/17.0.12"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.store.inventario.controller.ventas.VentaDetailController">
     <stylesheets>
-        <URL value="@../../styles/style.css" />
-        <URL value="@ventas.css" />
+        <URL value="@../../styles/style.css"/>
+        <URL value="@ventas.css"/>
     </stylesheets>
-    <children>
-        <VBox spacing="16.0" AnchorPane.bottomAnchor="12.0" AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="12.0" AnchorPane.topAnchor="12.0">
-            <VBox spacing="12.0" styleClass="form-section">
-                <HBox spacing="20.0" alignment="CENTER_LEFT">
-                    <VBox spacing="4.0">
-                        <Label style="-fx-font-size:11px; -fx-text-fill:#666;" text="Código de Venta" />
-                        <Label fx:id="lblCodigo" style="-fx-font-size:16px; -fx-font-weight:bold;" text="VEN-000001" />
-                    </VBox>
+    <VBox spacing="16.0" AnchorPane.bottomAnchor="12.0" AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="12.0"
+          AnchorPane.topAnchor="12.0">
+        <VBox spacing="12.0" styleClass="form-section">
+            <HBox spacing="20.0" alignment="CENTER_LEFT">
+                <VBox spacing="4.0">
+                    <Label style="-fx-font-size:11px; -fx-text-fill:#666;" text="Código de Venta"/>
+                    <Label fx:id="lblCodigo" style="-fx-font-size:16px; -fx-font-weight:bold;" text="VEN-000001"/>
+                </VBox>
 
-                    <Separator orientation="VERTICAL" />
+                <Separator orientation="VERTICAL"/>
 
-                    <VBox spacing="4.0">
-                        <Label style="-fx-font-size:11px; -fx-text-fill:#666;" text="Fecha y Hora" />
-                        <Label fx:id="lblFechaHora" style="-fx-font-size:13px; -fx-font-weight:bold;" text="24/05/2026 10:32:00" />
-                    </VBox>
+                <VBox spacing="4.0">
+                    <Label style="-fx-font-size:11px; -fx-text-fill:#666;" text="Fecha y Hora"/>
+                    <Label fx:id="lblFechaHora" style="-fx-font-size:13px; -fx-font-weight:bold;"
+                           text="24/05/2026 10:32:00"/>
+                </VBox>
 
-                    <Separator orientation="VERTICAL" />
+                <Separator orientation="VERTICAL"/>
 
-                    <VBox spacing="4.0">
-                        <Label style="-fx-font-size:11px; -fx-text-fill:#666;" text="Vendedor" />
-                        <Label fx:id="lblVendedor" style="-fx-font-size:13px; -fx-font-weight:bold;" text="Carlos Mendoza" />
-                    </VBox>
-                </HBox>
-
-                <Separator />
-
-                <HBox spacing="20.0">
-                    <VBox spacing="4.0" HBox.hgrow="ALWAYS">
-                        <Label style="-fx-font-size:11px; -fx-text-fill:#666;" text="Cliente" />
-                        <Label fx:id="lblCliente" style="-fx-font-size:12px;" text="Consumidor final" />
-                    </VBox>
-                    <VBox spacing="4.0" minWidth="150.0">
-                        <Label style="-fx-font-size:11px; -fx-text-fill:#666;" text="RUC / DNI" />
-                        <Label fx:id="lblClienteId" style="-fx-font-size:12px;" text="—" />
-                    </VBox>
-                </HBox>
-            </VBox>
-
-            <Separator />
-            <VBox spacing="8.0" VBox.vgrow="ALWAYS">
-                <Label style="-fx-font-size:13px; -fx-font-weight:bold;" text="Productos Vendidos" />
-
-                <TableView fx:id="tblProductos" VBox.vgrow="ALWAYS" styleClass="products-table">
-                    <columns>
-                        <TableColumn fx:id="colCodigo"    prefWidth="100" text="Código" />
-                        <TableColumn fx:id="colProducto"  prefWidth="280" text="Producto" />
-                        <TableColumn fx:id="colCantidad"  prefWidth="80"  text="Cantidad"       style="-fx-alignment: CENTER;" />
-                        <TableColumn fx:id="colPrecio"    prefWidth="120" text="Precio unit."    style="-fx-alignment: CENTER_RIGHT;" />
-                        <TableColumn fx:id="colSubtotal"  prefWidth="140" text="Subtotal"        style="-fx-alignment: CENTER_RIGHT;" />
-                    </columns>
-                    <columnResizePolicy>
-                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                    </columnResizePolicy>
-                </TableView>
-
-                <HBox alignment="CENTER_RIGHT" spacing="40.0" style="-fx-padding: 12; -fx-border-width: 1 0 0 0; -fx-border-color: #ddd;">
-                    <VBox spacing="4.0" alignment="CENTER_RIGHT">
-                        <Label style="-fx-font-size:11px; -fx-text-fill:#666;" text="Total artículos:" />
-                        <Label fx:id="lblTotalArticulos" style="-fx-font-size:14px; -fx-font-weight:bold;" text="0" />
-                    </VBox>
-                    <VBox spacing="4.0" alignment="CENTER_RIGHT">
-                        <Label style="-fx-font-size:11px; -fx-text-fill:#666;" text="Total venta:" />
-                        <Label fx:id="lblTotalVenta" style="-fx-font-size:14px; -fx-font-weight:bold;" text="S/ 0.00" />
-                    </VBox>
-                </HBox>
-            </VBox>
-
-            <HBox alignment="CENTER_RIGHT" spacing="12.0">
-                <Button fx:id="btnExportar" styleClass="btn-secondary" text="Exportar" onAction="#handleExportar"/>
-                <Button fx:id="btnCerrar" styleClass="btn-primary" text="Cerrar" onAction="#handleCerrar"/>
+                <VBox spacing="4.0">
+                    <Label style="-fx-font-size:11px; -fx-text-fill:#666;" text="Vendedor"/>
+                    <Label fx:id="lblVendedor" style="-fx-font-size:13px; -fx-font-weight:bold;" text="Carlos Mendoza"/>
+                </VBox>
             </HBox>
 
+            <Separator/>
+
+            <HBox spacing="20.0">
+                <VBox spacing="4.0" HBox.hgrow="ALWAYS">
+                    <Label style="-fx-font-size:11px; -fx-text-fill:#666;" text="Cliente"/>
+                    <Label fx:id="lblCliente" style="-fx-font-size:12px;" text="Consumidor final"/>
+                </VBox>
+                <VBox spacing="4.0" minWidth="150.0">
+                    <Label style="-fx-font-size:11px; -fx-text-fill:#666;" text="RUC / DNI"/>
+                    <Label fx:id="lblClienteId" style="-fx-font-size:12px;" text="—"/>
+                </VBox>
+            </HBox>
         </VBox>
-    </children>
+
+        <Separator/>
+        <VBox spacing="8.0" VBox.vgrow="ALWAYS">
+            <Label style="-fx-font-size:13px; -fx-font-weight:bold;" text="Productos Vendidos"/>
+
+            <TableView fx:id="tblProductos" VBox.vgrow="ALWAYS" styleClass="products-table">
+                <columns>
+                    <TableColumn fx:id="colCodigo" prefWidth="100" text="Código"/>
+                    <TableColumn fx:id="colProducto" prefWidth="280" text="Producto"/>
+                    <TableColumn fx:id="colCantidad" text="Cantidad" style="-fx-alignment: CENTER;"/>
+                    <TableColumn fx:id="colPrecio" prefWidth="120" text="Precio unit."
+                                 style="-fx-alignment: CENTER_RIGHT;"/>
+                    <TableColumn fx:id="colSubtotal" prefWidth="140" text="Subtotal"
+                                 style="-fx-alignment: CENTER_RIGHT;"/>
+                </columns>
+                <columnResizePolicy>
+                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                </columnResizePolicy>
+            </TableView>
+
+            <HBox alignment="CENTER_RIGHT" spacing="40.0"
+                  style="-fx-padding: 12; -fx-border-width: 1 0 0 0; -fx-border-color: #ddd;">
+                <VBox spacing="4.0" alignment="CENTER_RIGHT">
+                    <Label style="-fx-font-size:11px; -fx-text-fill:#666;" text="Total artículos:"/>
+                    <Label fx:id="lblTotalArticulos" style="-fx-font-size:14px; -fx-font-weight:bold;" text="0"/>
+                </VBox>
+                <VBox spacing="4.0" alignment="CENTER_RIGHT">
+                    <Label style="-fx-font-size:11px; -fx-text-fill:#666;" text="Total venta:"/>
+                    <Label fx:id="lblTotalVenta" style="-fx-font-size:14px; -fx-font-weight:bold;" text="S/ 0.00"/>
+                </VBox>
+            </HBox>
+        </VBox>
+
+        <HBox alignment="CENTER_RIGHT" spacing="12.0">
+            <Button fx:id="btnExportar" styleClass="btn-secondary" text="Exportar" onAction="#handleExportar"/>
+            <Button fx:id="btnCerrar" styleClass="btn-primary" text="Cerrar" onAction="#handleCerrar"/>
+        </HBox>
+
+    </VBox>
 </AnchorPane>

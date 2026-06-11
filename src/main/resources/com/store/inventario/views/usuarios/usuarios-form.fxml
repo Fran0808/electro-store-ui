@@ -10,45 +10,46 @@
             prefHeight="620.0" prefWidth="500.0"
             stylesheets="@../../styles/style.css">
 
-    <children>
+    <VBox spacing="25.0" styleClass="modal-container" AnchorPane.bottomAnchor="0" AnchorPane.rightAnchor="0"
+          AnchorPane.leftAnchor="0" AnchorPane.topAnchor="0">
 
-        <VBox spacing="25.0" styleClass="modal-container" AnchorPane.bottomAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.topAnchor="0">
+        <padding>
+            <Insets top="30" right="30" left="30" bottom="30"/>
+        </padding>
 
-            <padding>
-                <Insets top="30" right="30" left="30" bottom="30"/>
-            </padding>
-
-            <VBox spacing="10">
-                <Label fx:id="lblTitulo" text="Nuevo Usuario" styleClass="header-title"/>
-                <Label text="Completa la información del Usuario" styleClass="header-subtitle"/>
-            </VBox>
-
-            <VBox spacing="20">
-                <VBox spacing="6">
-                    <Label text="Usuario"/>
-                    <TextField fx:id="txtUsername" promptText="Ingrese el nombre de usuario" styleClass="search-field"/>
-                </VBox>
-                <VBox spacing="6">
-                    <Label text="Contraseña"/>
-                    <PasswordField fx:id="txtPassword" promptText="Ingrese la contraseña" styleClass="search-field"/>
-                </VBox>
-                <VBox spacing="6">
-                    <Label text="Empleado"/>
-                    <ComboBox fx:id="cbEmpleado" promptText="Seleccione el empleado" styleClass="search-field" maxWidth="Infinity"/>
-                </VBox>
-                <VBox spacing="6">
-                    <Label text="Rol Asociado"/>
-                    <TextField fx:id="txtRol" promptText="Seleccione un empleado para ver su rol" styleClass="search-field" editable="false" focusTraversable="false"/>
-                </VBox>
-            </VBox>
-
-            <HBox spacing="12">
-                <Button text="Cancelar" styleClass="btn-secondary" HBox.hgrow="ALWAYS" maxWidth="Infinity" fx:id="btnCancelar" onAction="#cerrarModal"/>
-                <Button text="Guardar" styleClass="btn-primary" HBox.hgrow="ALWAYS" maxWidth="Infinity" fx:id="btnGuardar" onAction="#guardarUsuario"/>
-            </HBox>
-
+        <VBox spacing="10">
+            <Label fx:id="lblTitulo" text="Nuevo Usuario" styleClass="header-title"/>
+            <Label text="Completa la información del Usuario" styleClass="header-subtitle"/>
         </VBox>
 
-    </children>
+        <VBox spacing="20">
+            <VBox spacing="6">
+                <Label text="Usuario"/>
+                <TextField fx:id="txtUsername" promptText="Ingrese el nombre de usuario" styleClass="search-field"/>
+            </VBox>
+            <VBox spacing="6">
+                <Label text="Contraseña"/>
+                <PasswordField fx:id="txtPassword" promptText="Ingrese la contraseña" styleClass="search-field"/>
+            </VBox>
+            <VBox spacing="6">
+                <Label text="Empleado"/>
+                <ComboBox fx:id="cbEmpleado" promptText="Seleccione el empleado" styleClass="search-field"
+                          maxWidth="Infinity"/>
+            </VBox>
+            <VBox spacing="6">
+                <Label text="Rol Asociado"/>
+                <TextField fx:id="txtRol" promptText="Seleccione un empleado para ver su rol" styleClass="search-field"
+                           editable="false" focusTraversable="false"/>
+            </VBox>
+        </VBox>
+
+        <HBox spacing="12">
+            <Button text="Cancelar" styleClass="btn-secondary" HBox.hgrow="ALWAYS" maxWidth="Infinity"
+                    fx:id="btnCancelar" onAction="#cerrarModal"/>
+            <Button text="Guardar" styleClass="btn-primary" HBox.hgrow="ALWAYS" maxWidth="Infinity" fx:id="btnGuardar"
+                    onAction="#guardarUsuario"/>
+        </HBox>
+
+    </VBox>
 
 </AnchorPane>

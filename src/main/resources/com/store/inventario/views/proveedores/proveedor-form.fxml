@@ -10,44 +10,44 @@
             stylesheets="@../../styles/style.css"
             prefHeight="620.0" prefWidth="500.0">
 
-    <children>
+    <VBox spacing="25.0" styleClass="modal-container" AnchorPane.bottomAnchor="0" AnchorPane.rightAnchor="0"
+          AnchorPane.leftAnchor="0" AnchorPane.topAnchor="0">
 
-        <VBox spacing="25.0" styleClass="modal-container" AnchorPane.bottomAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.topAnchor="0">
+        <padding>
+            <Insets top="30" right="30" left="30" bottom="30"/>
+        </padding>
 
-            <padding>
-                <Insets top="30" right="30" left="30" bottom="30"/>
-            </padding>
-
-            <VBox spacing="10">
-                <Label fx:id="lblTitulo" text="Nuevo Proveedor" styleClass="header-title"/>
-                <Label fx:id="lblSubtitulo" text="Completa la información del proveedor" styleClass="header-subtitle"/>
-            </VBox>
-
-            <VBox spacing="20">
-                <VBox spacing = "6">
-                    <Label text="Nombre Comercial"/>
-                    <TextField fx:id="txtNombreComercial" promptText="Ingrese nombre comercial" styleClass="search-field"/>
-                </VBox>
-                <VBox spacing="6">
-                    <Label text="Razón social"/>
-                    <TextField fx:id="txtRazonSocial" promptText="Ingrese el razón social" styleClass="search-field"/>
-                </VBox>
-                <VBox spacing="6">
-                    <Label text="RUC"/>
-                    <TextField fx:id="txtRuc" promptText="Ingrese el RUC" styleClass="search-field"/>
-                </VBox>
-                <VBox spacing="6">
-                    <Label text="Teléfono"/>
-                    <TextField fx:id="txtTelefono" promptText="Ingrese el teléfono" styleClass="search-field"/>
-                </VBox>
-            </VBox>
-
-            <HBox spacing="12">
-                <Button text="Cancelar" styleClass="btn-secondary" HBox.hgrow="ALWAYS" maxWidth="Infinity" fx:id="btnCancelar" onAction="#handleCancelar"/>
-                <Button text="Guardar" styleClass="btn-secondary" HBox.hgrow="ALWAYS" maxWidth="Infinity" fx:id="btnGuardar" onAction="#handleGuardar"/>
-            </HBox>
-
+        <VBox spacing="10">
+            <Label fx:id="lblTitulo" text="Nuevo Proveedor" styleClass="header-title"/>
+            <Label fx:id="lblSubtitulo" text="Completa la información del proveedor" styleClass="header-subtitle"/>
         </VBox>
 
-    </children>
+        <VBox spacing="20">
+            <VBox spacing="6">
+                <Label text="Nombre Comercial"/>
+                <TextField fx:id="txtNombreComercial" promptText="Ingrese nombre comercial" styleClass="search-field"/>
+            </VBox>
+            <VBox spacing="6">
+                <Label text="Razón social"/>
+                <TextField fx:id="txtRazonSocial" promptText="Ingrese el razón social" styleClass="search-field"/>
+            </VBox>
+            <VBox spacing="6">
+                <Label text="RUC"/>
+                <TextField fx:id="txtRuc" promptText="Ingrese el RUC" styleClass="search-field"/>
+            </VBox>
+            <VBox spacing="6">
+                <Label text="Teléfono"/>
+                <TextField fx:id="txtTelefono" promptText="Ingrese el teléfono" styleClass="search-field"/>
+            </VBox>
+        </VBox>
+
+        <HBox spacing="12">
+            <Button text="Cancelar" styleClass="btn-secondary" HBox.hgrow="ALWAYS" maxWidth="Infinity"
+                    fx:id="btnCancelar" onAction="#handleCancelar"/>
+            <Button text="Guardar" styleClass="btn-secondary" HBox.hgrow="ALWAYS" maxWidth="Infinity" fx:id="btnGuardar"
+                    onAction="#handleGuardar"/>
+        </HBox>
+
+    </VBox>
+
 </AnchorPane>

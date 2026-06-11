@@ -4,28 +4,29 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 
-<AnchorPane prefWidth="420" prefHeight="220" stylesheets="@../../styles/style.css" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.store.inventario.controller.empleados.">
+<AnchorPane prefWidth="420" prefHeight="220" stylesheets="@../../styles/style.css" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.store.inventario.controller.empleados.">
 
-    <children>
+    <VBox spacing="30" styleClass="modal-container" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0"
+          AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
 
-        <VBox spacing="30" styleClass="modal-container" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
+        <padding>
+            <Insets top="25" right="25" bottom="25" left="25"/>
+        </padding>
 
-            <padding>
-                <Insets top="25" right="25" bottom="25" left="25"/>
-            </padding>
-
-            <VBox spacing="15">
-                <Label text="Eliminar proveedor" styleClass="header-title"/>
-                <Label fx:id="lblMensaje" wrapText="true" styleClass="header-subtitle" text="¿Estás seguro de querer eliminar este empleado?"/>
-            </VBox>
-
-            <HBox spacing="12">
-                <Button fx:id="btnCancelar" text="Cancelar" onAction="#cerrarModal" styleClass="btn-secondary" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
-                <Button fx:id="btnEliminar" text="Eliminar" onAction="#eliminarEmpleado" styleClass="btn-danger" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
-            </HBox>
-
+        <VBox spacing="15">
+            <Label text="Eliminar proveedor" styleClass="header-title"/>
+            <Label fx:id="lblMensaje" wrapText="true" styleClass="header-subtitle"
+                   text="¿Estás seguro de querer eliminar este empleado?"/>
         </VBox>
 
-    </children>
+        <HBox spacing="12">
+            <Button fx:id="btnCancelar" text="Cancelar" styleClass="btn-secondary"
+                    HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+            <Button fx:id="btnEliminar" text="Eliminar" styleClass="btn-danger"
+                    HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+        </HBox>
+
+    </VBox>
 
 </AnchorPane>

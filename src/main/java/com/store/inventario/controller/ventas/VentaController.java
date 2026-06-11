@@ -7,28 +7,32 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 
 public class VentaController {
-    @FXML
-    private ComboBox<String> cbTipoComprobante;
-    @FXML
-    private ComboBox<String> cbVendedor;
-    @FXML
-    private ComboBox<String> cbRangoFecha;
-    @FXML
-    private TableView<VentasRow>  tblHistorialVentas;
-    @FXML
-    private TableColumn<VentasRow, String> colCodigo, colFecha, colCliente, colVendedor;
-    @FXML
-    private TableColumn<VentasRow, Integer>  colArticulos;
-    @FXML
-    private TableColumn<VentasRow, Double>  colTotal;
-    @FXML
-    private TableColumn<VentaController.VentasRow, Void> colAcciones;
+    @FXML private Button btnNuevaVenta;
+    @FXML private VBox containerContenido;
+    @FXML private Label lblVendidoHoy;
+    @FXML private Label lblTotalTransacciones;
+    @FXML private Label lblTicketPromedio;
+    @FXML private TextField txtBuscarVenta;
+    @FXML private Button btnLimpiarVenta;
+    @FXML private Button btnBuscarVenta;
+    @FXML private Label lblResumenPaginacion;
+    @FXML private Button btnAnterior;
+    @FXML private Button btnSiguiente;
+    @FXML private ComboBox<String> cbTipoComprobante;
+    @FXML private ComboBox<String> cbVendedor;
+    @FXML private ComboBox<String> cbRangoFecha;
+    @FXML private TableView<VentasRow>  tblHistorialVentas;
+    @FXML private TableColumn<VentasRow, String> colCodigo, colFecha, colCliente, colVendedor;
+    @FXML private TableColumn<VentasRow, Integer>  colArticulos;
+    @FXML private TableColumn<VentasRow, Double>  colTotal;
+    @FXML private TableColumn<VentaController.VentasRow, Void> colAcciones;
 
     @FXML
     public void initialize() {

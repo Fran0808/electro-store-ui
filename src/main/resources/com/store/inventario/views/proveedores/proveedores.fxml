@@ -10,71 +10,72 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="800.0" prefWidth="1040.0" styleClass="root" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.store.inventario.controller.proveedor.ProveedorController">
+<AnchorPane prefHeight="800.0" prefWidth="1040.0" styleClass="root" xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.store.inventario.controller.proveedor.ProveedorController">
 
    <stylesheets>
-      <URL value="@../../styles/style.css" />
+      <URL value="@../../styles/style.css"/>
    </stylesheets>
 
-   <children>
+   <VBox spacing="24.0" styleClass="view-container" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0"
+         AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
 
-      <VBox spacing="24.0" styleClass="view-container" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
-
-         <VBox spacing="5">
-            <Label styleClass="header-title" text="Gestión de Proveedores" />
-            <Label styleClass="header-subtitle" text="Administra los proveedores vinculados al sistema" />
-         </VBox>
-
-         <HBox spacing="16" styleClass="metrics-container">
-            <VBox spacing="8" styleClass="metric-card" HBox.hgrow="ALWAYS">
-               <Label styleClass="metric-label" text="Total de proveedores" />
-               <Label fx:id="lblTotalProveedor" styleClass="metric-value" text="---" />
-            </VBox>
-
-            <VBox spacing="8" styleClass="metric-card" HBox.hgrow="ALWAYS">
-               <Label styleClass="metric-label" text="Compras mensuales" />
-               <Label fx:id="lblCompraMensual" styleClass="metric-value" text="---" />
-            </VBox>
-
-            <VBox spacing="8" styleClass="metric-card" HBox.hgrow="ALWAYS">
-               <Label styleClass="metric-label" text="Último registrado" />
-               <Label fx:id="lblUltimoRegristrado" styleClass="metric-value" text="Empresa X S.A." />
-               <Label fx:id="lblTiempoRegistrado" styleClass="header-subtitle" text="Hace 2 horas" />
-            </VBox>
-         </HBox>
-
-         <HBox alignment="CENTER_LEFT" spacing="12" styleClass="search-container">
-            <TextField fx:id="txtBuscar" promptText="Buscar por nombre, RUC..." styleClass="search-field" HBox.hgrow="ALWAYS" />
-            <Button fx:id="btnLimpiar" styleClass="btn-secondary" text="Limpiar" />
-            <Button fx:id="btnBuscar" styleClass="btn-primary" text="Buscar" />
-            <Button styleClass="btn-primary" text="Nuevo Proveedor" onAction="#handleForm"/>
-         </HBox>
-
-         <VBox spacing="16" VBox.vgrow="ALWAYS">
-               <TableView fx:id="tblProveedores" styleClass="table-view" VBox.vgrow="ALWAYS">
-                  <columnResizePolicy>
-                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                  </columnResizePolicy>
-                  <columns>
-                     <TableColumn fx:id="colCodigo" prefWidth="200" text="Código" />
-                     <TableColumn fx:id="colNombreComercial" prefWidth="220" text="Nombre Comercial" />
-                     <TableColumn fx:id="colRazonSocial" prefWidth="180" text="Razón Social" />
-                     <TableColumn fx:id="colRuc" prefWidth="220" text="RUC" />
-                     <TableColumn fx:id="colTelefono" prefWidth="121.0" text="Teléfono" />
-                     <TableColumn fx:id="colAcciones" prefWidth="100.0" text="Acciones" />
-                  </columns>
-
-               </TableView>
-
-               <HBox alignment="CENTER_LEFT" spacing="20" styleClass="pagination-container">
-                  <Label fx:id="lblResumenPaginacion" maxWidth="Infinity" styleClass="pagination-summary" text="Mostrando 1-10 de ** proveedores" HBox.hgrow="ALWAYS" />
-                  <HBox alignment="CENTER_RIGHT" spacing="8">
-                     <Button fx:id="btnAnterior" styleClass="btn-secondary" text="Anterior" />
-                     <Button fx:id="btnSiguiente" styleClass="btn-secondary" text="Siguiente" />
-                  </HBox>
-               </HBox>
-         </VBox>
+      <VBox spacing="5">
+         <Label styleClass="header-title" text="Gestión de Proveedores"/>
+         <Label styleClass="header-subtitle" text="Administra los proveedores vinculados al sistema"/>
       </VBox>
-   </children>
 
+      <HBox spacing="16" styleClass="metrics-container">
+         <VBox spacing="8" styleClass="metric-card" HBox.hgrow="ALWAYS">
+            <Label styleClass="metric-label" text="Total de proveedores"/>
+            <Label fx:id="lblTotalProveedor" styleClass="metric-value" text="---"/>
+         </VBox>
+
+         <VBox spacing="8" styleClass="metric-card" HBox.hgrow="ALWAYS">
+            <Label styleClass="metric-label" text="Compras mensuales"/>
+            <Label fx:id="lblCompraMensual" styleClass="metric-value" text="---"/>
+         </VBox>
+
+         <VBox spacing="8" styleClass="metric-card" HBox.hgrow="ALWAYS">
+            <Label styleClass="metric-label" text="Último registrado"/>
+            <Label fx:id="lblUltimoRegristrado" styleClass="metric-value" text="Empresa X S.A."/>
+            <Label fx:id="lblTiempoRegistrado" styleClass="header-subtitle" text="Hace 2 horas"/>
+         </VBox>
+      </HBox>
+
+      <HBox alignment="CENTER_LEFT" spacing="12" styleClass="search-container">
+         <TextField fx:id="txtBuscar" promptText="Buscar por nombre, RUC..." styleClass="search-field"
+                    HBox.hgrow="ALWAYS"/>
+         <Button fx:id="btnLimpiar" styleClass="btn-secondary" text="Limpiar"/>
+         <Button fx:id="btnBuscar" styleClass="btn-primary" text="Buscar"/>
+         <Button styleClass="btn-primary" text="Nuevo Proveedor" onAction="#handleForm"/>
+      </HBox>
+
+      <VBox spacing="16" VBox.vgrow="ALWAYS">
+         <TableView fx:id="tblProveedores" styleClass="table-view" VBox.vgrow="ALWAYS">
+            <columnResizePolicy>
+               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+            </columnResizePolicy>
+            <columns>
+               <TableColumn fx:id="colCodigo" prefWidth="200" text="Código"/>
+               <TableColumn fx:id="colNombreComercial" prefWidth="220" text="Nombre Comercial"/>
+               <TableColumn fx:id="colRazonSocial" prefWidth="180" text="Razón Social"/>
+               <TableColumn fx:id="colRuc" prefWidth="220" text="RUC"/>
+               <TableColumn fx:id="colTelefono" prefWidth="121.0" text="Teléfono"/>
+               <TableColumn fx:id="colAcciones" prefWidth="100.0" text="Acciones"/>
+            </columns>
+
+         </TableView>
+
+         <HBox alignment="CENTER_LEFT" spacing="20" styleClass="pagination-container">
+            <Label fx:id="lblResumenPaginacion" maxWidth="Infinity" styleClass="pagination-summary"
+                   text="Mostrando 1-10 de ** proveedores" HBox.hgrow="ALWAYS"/>
+            <HBox alignment="CENTER_RIGHT" spacing="8">
+               <Button fx:id="btnAnterior" styleClass="btn-secondary" text="Anterior"/>
+               <Button fx:id="btnSiguiente" styleClass="btn-secondary" text="Siguiente"/>
+            </HBox>
+         </HBox>
+      </VBox>
+   </VBox>
 </AnchorPane>
