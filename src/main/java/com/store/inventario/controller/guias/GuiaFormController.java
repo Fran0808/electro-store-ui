@@ -1,4 +1,4 @@
-package com.store.inventario.controller.inventario.guias;
+package com.store.inventario.controller.guias;
 
 import com.store.inventario.model.PageResponse;
 import com.store.inventario.model.guia.CreateGuideDetailRequest;

@@ -1,4 +1,4 @@
-package com.store.inventario.controller.inventario.alertas;
+package com.store.inventario.controller.alertas;
 
 import com.store.inventario.model.PageResponse;
 import com.store.inventario.model.producto.Producto;
@@ -205,7 +205,7 @@ public class AlertaController implements Initializable {
             return;
         }
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/views/inventario/alertas/alertas-form.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/views/alertas/alertas-form.fxml"));
         Parent root = loader.load();
 
         AlertasFormController formController = loader.getController();

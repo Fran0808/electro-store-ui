@@ -11,8 +11,8 @@ module com.store.inventario {
     opens com.store.inventario.controller.login to javafx.fxml;
     opens com.store.inventario.controller.ventas to javafx.fxml;
     opens com.store.inventario.controller.productos to javafx.fxml;
-    opens com.store.inventario.controller.inventario.alertas to javafx.fxml;
-    opens com.store.inventario.controller.inventario.guias to javafx.fxml;
+    opens com.store.inventario.controller.alertas to javafx.fxml;
+    opens com.store.inventario.controller.guias to javafx.fxml;
     opens com.store.inventario.controller.compra to javafx.fxml;
     opens com.store.inventario.controller.empleados to javafx.fxml;
     opens com.store.inventario.controller.proveedor to javafx.fxml;

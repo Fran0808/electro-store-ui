@@ -1,4 +1,4 @@
-package com.store.inventario.controller.inventario.alertas;
+package com.store.inventario.controller.alertas;
 
 import com.store.inventario.model.producto.Producto;
 import com.store.inventario.model.producto.UpdateProductRequest;
