@@ -1,5 +1,6 @@
-package com.store.inventario;
+package com.store.inventario.controller;
 
+import com.store.inventario.model.NavigationManager;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

@@ -1,4 +1,4 @@
-package com.store.inventario;
+package com.store.inventario.model;
 
 import java.util.function.Consumer;
 

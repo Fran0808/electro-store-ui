@@ -1,6 +1,6 @@
 package com.store.inventario.controller;
 
-import com.store.inventario.NavigationManager;
+import com.store.inventario.model.NavigationManager;
 import com.store.inventario.security.SessionManager;
 import com.store.inventario.utils.DialogUtils;
 import javafx.animation.Animation;

@@ -704,3 +704,73 @@
     -fx-padding: 5px 0px 1px 12px;
 }
 
+
+.card, .panel {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #E2E8F0;
+    -fx-border-width: 1px;
+    -fx-background-radius: 8px;
+    -fx-border-radius: 8px;
+    -fx-padding: 20px;
+}
+
+.panel-title {
+    -fx-font-family: "Space Grotesk", "Inter", "Segoe UI", sans-serif;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #0F172A;
+}
+
+.panel-sub {
+    -fx-font-size: 12px;
+    -fx-text-fill: #64748B;
+}
+
+.panel-tag {
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-background-color: #F1F5F9;
+    -fx-background-radius: 6px;
+    -fx-border-radius: 6px;
+    -fx-text-fill: #475569;
+    -fx-padding: 3px 8px;
+}
+
+.kpi-trend {
+    -fx-font-family: "JetBrains Mono", "Segoe UI", monospace;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+
+.kpi-trend.up {
+    -fx-text-fill: #10B981;
+}
+
+.kpi-trend.down {
+    -fx-text-fill: #EF4444;
+}
+
+.kpi-period {
+    -fx-text-fill: #94A3B8;
+    -fx-font-size: 11px;
+}
+
+.badge-critical {
+    -fx-background-color: #FEF2F2;
+    -fx-text-fill: #EF4444;
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+    -fx-padding: 2px 8px;
+    -fx-background-radius: 6px;
+}
+
+.badge-low {
+    -fx-background-color: #FFFBEB;
+    -fx-text-fill: #D97706;
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+    -fx-padding: 2px 8px;
+    -fx-background-radius: 6px;
+}
+
+
