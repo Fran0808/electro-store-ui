@@ -505,7 +505,7 @@
 .sidebar-item {
     -fx-background-color: transparent;
     -fx-background-radius: 6px;
-    -fx-padding: 8px 12px;
+    -fx-padding: 4px 12px;
     -fx-spacing: 12px;
     -fx-alignment: center-left;
     -fx-cursor: hand;
@@ -659,4 +659,48 @@
 }
 
 
+.bar-chart {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+}
+
+.bar-chart .chart-plot-background {
+    -fx-background-color: #F8FAFC;
+}
+
+.bar-chart .chart-vertical-grid-lines {
+    -fx-stroke: transparent;
+}
+
+.bar-chart .chart-horizontal-grid-lines {
+    -fx-stroke: #E2E8F0;
+    -fx-stroke-dash-array: 4 4;
+}
+
+.bar-chart .axis {
+    -fx-tick-label-fill: #64748B;
+    -fx-font-size: 12px;
+}
+
+.bar-chart .axis-label {
+    -fx-text-fill: #94A3B8;
+    -fx-font-size: 11px;
+}
+
+.bar-chart .chart-content {
+    -fx-background-color: transparent;
+}
+
+/* Elimina el fondo gris por defecto del chart */
+.bar-chart > .chart-content > .plot-content {
+    -fx-background-color: transparent;
+}
+
+.sidebar-group-title {
+    -fx-text-fill: #475569;
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+    -fx-font-family: "Inter", "Segoe UI", sans-serif;
+    -fx-padding: 5px 0px 1px 12px;
+}
 
