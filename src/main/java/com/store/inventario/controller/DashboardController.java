@@ -2,61 +2,62 @@ package com.store.inventario.controller;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.List;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.chart.AreaChart;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.LineChart;
+import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
-import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
+import javafx.scene.shape.SVGPath;
 
 public class DashboardController implements Initializable {
 
     @FXML private Label lblValorInventario;
-    @FXML private Label lblTotalProductos;
+    @FXML private Label lblVentasMes;
+    @FXML private Label lblComprasMes;
     @FXML private Label lblStockCritico;
-    @FXML private Label lblRotacionPromedio;
-    
+    @FXML private Label lblFechaResumen;
 
     @FXML private LineChart<String, Number> chartVentasCompras;
     @FXML private BarChart<String, Number> chartTopProductos;
-        @FXML private BarChart<String, Number> chartStockCategoria;
-    @FXML private AreaChart<String, Number> chartRotacion;
+    @FXML private PieChart chartCategorias;
 
     @FXML private ComboBox<String> cbPeriodoVentas;
     @FXML private ComboBox<String> cbPeriodoProductos;
-    @FXML private ComboBox<String> cbPeriodoRotacion;
-    
 
-    @FXML private TableView<AlertaCritica> tblAlertasCriticas;
-    @FXML private TableColumn<AlertaCritica, String> colProducto;
-    @FXML private TableColumn<AlertaCritica, Integer> colStock;
-    @FXML private TableColumn<AlertaCritica, Integer> colLimite;
-    @FXML private TableColumn<AlertaCritica, String> colProveedor;
-    @FXML private TableColumn<AlertaCritica, String> colAccion;
+    @FXML private VBox vboxAlertasProgress;
 
-    
-
-    @FXML private Button btnVerTodasAlertas;
+    @FXML private TableView<MovimientoReciente> tblActividad;
+    @FXML private TableColumn<MovimientoReciente, MovimientoReciente> colMovimiento;
+    @FXML private TableColumn<MovimientoReciente, String> colContraparte;
+    @FXML private TableColumn<MovimientoReciente, String> colMonto;
+    @FXML private TableColumn<MovimientoReciente, String> colFecha;
+    @FXML private TableColumn<MovimientoReciente, String> colEstado;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         initializeCombos();
-                loadKPIs();
-                loadChartVentasCompras();
-                loadChartTopProductos();
-                loadChartStockCategoria();
-                loadChartRotacion();
-                loadAlertasCriticas();
+        loadFechaYKPIs();
+        loadChartVentasCompras();
+        loadChartTopProductos();
+        loadChartCategorias();
+        loadAlertasProgress();
+        loadActividadReciente();
     }
-    
 
     private void initializeCombos() {
         cbPeriodoVentas.setItems(FXCollections.observableArrayList(
@@ -68,154 +69,279 @@ public class DashboardController implements Initializable {
                 "Último mes", "Últimos 3 meses", "Último año"
         ));
         cbPeriodoProductos.setValue("Último mes");
-
-        cbPeriodoRotacion.setItems(FXCollections.observableArrayList(
-                "Últimas 2 semanas", "Últimos 30 días", "Últimos 90 días"
-        ));
-        cbPeriodoRotacion.setValue("Últimas 2 semanas");
-
     }
 
-    private void loadKPIs() {
-        // TODO: Conectar con base de datos real
-                if (lblValorInventario != null) lblValorInventario.setText("S/ 125,450.00");
-                if (lblTotalProductos != null) lblTotalProductos.setText("1,284");
-                if (lblStockCritico != null) lblStockCritico.setText("42");
-                if (lblRotacionPromedio != null) lblRotacionPromedio.setText("2.4x");
+    private void loadFechaYKPIs() {
+        java.time.LocalDate today = java.time.LocalDate.now();
+        java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern(
+                "d 'de' MMMM, yyyy", new java.util.Locale("es", "PE")
+        );
+        if (lblFechaResumen != null) {
+            lblFechaResumen.setText("Resumen de operaciones · " + today.format(formatter));
+        }
+
+        if (lblValorInventario != null) lblValorInventario.setText("S/ 487,250");
+        if (lblVentasMes != null) lblVentasMes.setText("S/ 86,420");
+        if (lblComprasMes != null) lblComprasMes.setText("S/ 52,180");
+        if (lblStockCritico != null) lblStockCritico.setText("8 productos");
     }
 
     private void loadChartVentasCompras() {
-        // TODO: Conectar con base de datos real
         chartVentasCompras.getData().clear();
 
         XYChart.Series<String, Number> seriesVentas = new XYChart.Series<>();
         seriesVentas.setName("Ventas");
         seriesVentas.getData().addAll(
-                new XYChart.Data<>("Día 1", 450),
-                new XYChart.Data<>("Día 2", 520),
-                new XYChart.Data<>("Día 3", 480),
-                new XYChart.Data<>("Día 4", 650),
-                new XYChart.Data<>("Día 5", 720),
-                new XYChart.Data<>("Día 6", 680),
-                new XYChart.Data<>("Día 7", 750)
+                new XYChart.Data<>("Ene", 62000),
+                new XYChart.Data<>("Feb", 71000),
+                new XYChart.Data<>("Mar", 68500),
+                new XYChart.Data<>("Abr", 79200),
+                new XYChart.Data<>("May", 91300),
+                new XYChart.Data<>("Jun", 86420)
         );
 
         XYChart.Series<String, Number> seriesCompras = new XYChart.Series<>();
         seriesCompras.setName("Compras");
         seriesCompras.getData().addAll(
-                new XYChart.Data<>("Día 1", 300),
-                new XYChart.Data<>("Día 2", 280),
-                new XYChart.Data<>("Día 3", 350),
-                new XYChart.Data<>("Día 4", 400),
-                new XYChart.Data<>("Día 5", 380),
-                new XYChart.Data<>("Día 6", 420),
-                new XYChart.Data<>("Día 7", 400)
+                new XYChart.Data<>("Ene", 45000),
+                new XYChart.Data<>("Feb", 50200),
+                new XYChart.Data<>("Mar", 48100),
+                new XYChart.Data<>("Abr", 55300),
+                new XYChart.Data<>("May", 60500),
+                new XYChart.Data<>("Jun", 52180)
         );
 
         chartVentasCompras.getData().addAll(seriesVentas, seriesCompras);
+
+        javafx.application.Platform.runLater(() -> {
+            if (seriesVentas.getNode() != null) {
+                seriesVentas.getNode().setStyle("-fx-stroke: #D97706;");
+            }
+            if (seriesCompras.getNode() != null) {
+                seriesCompras.getNode().setStyle("-fx-stroke: #0D9488;");
+            }
+        });
     }
 
     private void loadChartTopProductos() {
-        // TODO: Conectar con base de datos real
         chartTopProductos.getData().clear();
 
         XYChart.Series<String, Number> series = new XYChart.Series<>();
         series.setName("Unidades Vendidas");
         series.getData().addAll(
-                new XYChart.Data<>("Refrigerador", 350),
-                new XYChart.Data<>("Lavadora", 320),
-                new XYChart.Data<>("Microondas", 280),
-                new XYChart.Data<>("Televisor", 240),
-                new XYChart.Data<>("Secadora", 200)
+                new XYChart.Data<>("Refri Samsung", 42),
+                new XYChart.Data<>("Lava LG", 38),
+                new XYChart.Data<>("Microondas", 35),
+                new XYChart.Data<>("Aire Split", 29),
+                new XYChart.Data<>("Licuadora", 27)
         );
 
         chartTopProductos.getData().add(series);
+        
+        javafx.application.Platform.runLater(() -> {
+            for (XYChart.Data<String, Number> data : series.getData()) {
+                if (data.getNode() != null) {
+                    data.getNode().setStyle("-fx-bar-fill: #0D9488;");
+                }
+            }
+        });
     }
 
-    private void loadChartStockCategoria() {
-        if (chartStockCategoria == null) return;
-        chartStockCategoria.getData().clear();
-        XYChart.Series<String, Number> series = new XYChart.Series<>();
-        series.setName("Stock por categoría");
-        series.getData().addAll(
-                new XYChart.Data<>("Electrodomésticos Grandes", 280),
-                new XYChart.Data<>("Electrónica", 150),
-                new XYChart.Data<>("Pequeños Electrodomésticos", 420),
-                new XYChart.Data<>("Accesorios", 240),
-                new XYChart.Data<>("Otros", 194)
-        );
-        chartStockCategoria.getData().add(series);
-                javafx.application.Platform.runLater(() -> {
-                        String[] colors = new String[]{"#F97316", "#F59E0B", "#10B981", "#3B82F6", "#6366F1"};
-                        for (int i = 0; i < series.getData().size(); i++) {
-                                XYChart.Data<String, Number> d = series.getData().get(i);
-                                if (d.getNode() != null) {
-                                        d.getNode().setStyle("-fx-bar-fill: " + colors[i % colors.length] + ";");
-                                }
-                        }
-                });
-    }
+    private void loadChartCategorias() {
+        chartCategorias.getData().clear();
 
-    private void loadChartRotacion() {
-        chartRotacion.getData().clear();
-
-        XYChart.Series<String, Number> series = new XYChart.Series<>();
-        series.setName("Salidas (unidades)");
-        series.getData().addAll(
-                new XYChart.Data<>("Día 1", 120),
-                new XYChart.Data<>("Día 2", 150),
-                new XYChart.Data<>("Día 3", 180),
-                new XYChart.Data<>("Día 4", 165),
-                new XYChart.Data<>("Día 5", 220),
-                new XYChart.Data<>("Día 6", 200),
-                new XYChart.Data<>("Día 7", 250)
+        chartCategorias.getData().addAll(
+                new PieChart.Data("Refrigeración (28%)", 28),
+                new PieChart.Data("Lavado y secado (22%)", 22),
+                new PieChart.Data("Climatización (18%)", 18),
+                new PieChart.Data("Cocina (16%)", 16),
+                new PieChart.Data("TV y audio (10%)", 10),
+                new PieChart.Data("Pequeños electrod. (6%)", 6)
         );
 
-        chartRotacion.getData().add(series);
+        javafx.application.Platform.runLater(() -> {
+            String[] colors = new String[]{"#D97706", "#0D9488", "#3B82F6", "#8B5CF6", "#EF4444", "#64748B"};
+            int i = 0;
+            for (PieChart.Data data : chartCategorias.getData()) {
+                if (data.getNode() != null) {
+                    data.getNode().setStyle("-fx-pie-color: " + colors[i % colors.length] + ";");
+                }
+                i++;
+            }
+        });
     }
 
-    private void loadAlertasCriticas() {
-        ObservableList<AlertaCritica> data = FXCollections.observableArrayList();
+    private void loadAlertasProgress() {
+        vboxAlertasProgress.getChildren().clear();
 
-        data.add(new AlertaCritica("Refrigerador 28p Samsung", 5, 20, "Samsung Electronics", "Reordenar"));
-        data.add(new AlertaCritica("Lavadora 8kg LG", 3, 15, "LG Electronics", "Reordenar"));
-        data.add(new AlertaCritica("Microondas 25L Whirlpool", 2, 10, "Whirlpool", "Crítico"));
-        data.add(new AlertaCritica("TV 55\" LG Smart", 0, 5, "LG Electronics", "Agotado"));
-        data.add(new AlertaCritica("Secadora 6kg Electrolux", 4, 12, "Electrolux", "Reordenar"));
+        List<AlertaItem> list = List.of(
+                new AlertaItem("Plancha a vapor ProSteam", 3, 10, true),
+                new AlertaItem("Cafetera programable 1.5L", 4, 12, true),
+                new AlertaItem("Aspiradora ciclónica 1400W", 9, 20, true),
+                new AlertaItem("Horno eléctrico 45L", 5, 10, false),
+                new AlertaItem("Ventilador de torre 40\"", 8, 15, false)
+        );
 
-        colProducto.setCellValueFactory(cellData -> 
-                new javafx.beans.property.SimpleStringProperty(cellData.getValue().getProducto()));
-        colStock.setCellValueFactory(cellData -> 
-                new javafx.beans.property.SimpleIntegerProperty(cellData.getValue().getStock()).asObject());
-        colLimite.setCellValueFactory(cellData -> 
-                new javafx.beans.property.SimpleIntegerProperty(cellData.getValue().getLimite()).asObject());
-        colProveedor.setCellValueFactory(cellData -> 
-                new javafx.beans.property.SimpleStringProperty(cellData.getValue().getProveedor()));
-        colAccion.setCellValueFactory(cellData -> 
-                new javafx.beans.property.SimpleStringProperty(cellData.getValue().getAccion()));
+        for (AlertaItem item : list) {
+            VBox row = new VBox(6);
+            
+            HBox topRow = new HBox();
+            topRow.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
+            
+            Label lblName = new Label(item.nombre);
+            lblName.setStyle("-fx-font-weight: bold; -fx-font-size: 13px; -fx-text-fill: #0F172A;");
+            
+            Region spacer = new Region();
+            HBox.setHgrow(spacer, javafx.scene.layout.Priority.ALWAYS);
+            
+            Label lblBadge = new Label(item.isCritico ? "Crítico" : "Bajo");
+            lblBadge.getStyleClass().add(item.isCritico ? "badge-critical" : "badge-low");
+            
+            topRow.getChildren().addAll(lblName, spacer, lblBadge);
+            
+            ProgressBar bar = new ProgressBar((double) item.actual / item.limite);
+            bar.setMaxWidth(Double.MAX_VALUE);
+            bar.setPrefHeight(6);
+            
 
-        tblAlertasCriticas.setItems(data);
+            if (item.isCritico) {
+                bar.setStyle("-fx-accent: #EF4444; -fx-control-inner-background: #F1F5F9;");
+            } else {
+                bar.setStyle("-fx-accent: #D97706; -fx-control-inner-background: #F1F5F9;");
+            }
+            
+            Label lblMeta = new Label(item.actual + " / " + item.limite + " unidades");
+            lblMeta.setStyle("-fx-text-fill: #64748B; -fx-font-size: 11px;");
+            
+            row.getChildren().addAll(topRow, bar, lblMeta);
+            vboxAlertasProgress.getChildren().add(row);
+        }
     }
 
-    public static class AlertaCritica {
-        private String producto;
-        private int stock;
-        private int limite;
-        private String proveedor;
-        private String accion;
+    private void loadActividadReciente() {
+        ObservableList<MovimientoReciente> data = FXCollections.observableArrayList(
+                new MovimientoReciente("Venta #V-2456", "Refrigeradora Inverter 300L ×1", "J. Mendoza", "S/ 2,150.00", "Hoy, 10:24", "Completado"),
+                new MovimientoReciente("Compra #C-0892", "Microondas digital 23L ×20", "Electro Import S.A.C.", "S/ 8,400.00", "Hoy, 09:10", "En tránsito"),
+                new MovimientoReciente("Venta #V-2455", "Licuadora 3 velocidades ×2", "M. Torres", "S/ 240.00", "Hoy, 08:55", "Completado"),
+                new MovimientoReciente("Guía #G-1033", "Salida de almacén → Tienda Surco · 15 prod", "Tienda Surco", "—", "Ayer, 17:40", "Enviado"),
+                new MovimientoReciente("Compra #C-0891", "Aire acondicionado Split 12000 BTU ×10", "Hogar Tech Perú", "S/ 35,000.00", "Ayer, 14:20", "Pendiente")
+        );
 
-        public AlertaCritica(String producto, int stock, int limite, String proveedor, String accion) {
-            this.producto = producto;
-            this.stock = stock;
+        colMovimiento.setCellValueFactory(cellData -> new javafx.beans.property.SimpleObjectProperty<>(cellData.getValue()));
+        colContraparte.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getContraparte()));
+        colMonto.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getMonto()));
+        colFecha.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getFecha()));
+        colEstado.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getEstado()));
+
+        colMovimiento.setCellFactory(column -> new TableCell<>() {
+            @Override
+            protected void updateItem(MovimientoReciente item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setGraphic(null);
+                } else {
+                    HBox cellBox = new HBox(10);
+                    cellBox.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
+
+                    StackPane iconContainer = new StackPane();
+                    iconContainer.setPrefSize(30, 30);
+                    iconContainer.setMinSize(30, 30);
+                    iconContainer.setMaxSize(30, 30);
+                    
+                    SVGPath svg = new SVGPath();
+                    svg.setScaleX(1.1);
+                    svg.setScaleY(1.1);
+
+                    if (item.getTitulo().startsWith("Venta")) {
+                        svg.setContent("M3 17l6-6 4 4 8-8M15 7h6v6");
+                        svg.setStyle("-fx-fill: transparent; -fx-stroke: #0D9488; -fx-stroke-width: 2px;");
+                        iconContainer.setStyle("-fx-background-color: #F0FDFA; -fx-background-radius: 8px;");
+                    } else if (item.getTitulo().startsWith("Compra")) {
+                        svg.setContent("M19 6h-2c0-2.76-2.24-5-5-5S7 3.24 7 6H5c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-7-3c1.66 0 3 1.34 3 3H9c0-1.66 1.34-3 3-3zm7 17H5V8h14v12z");
+                        svg.setStyle("-fx-fill: #D97706;");
+                        iconContainer.setStyle("-fx-background-color: #FFFBEB; -fx-background-radius: 8px;");
+                    } else {
+                        svg.setContent("M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z");
+                        svg.setStyle("-fx-fill: #64748B;");
+                        iconContainer.setStyle("-fx-background-color: #F1F5F9; -fx-background-radius: 8px;");
+                    }
+                    iconContainer.getChildren().add(svg);
+
+                    VBox textBox = new VBox(2);
+                    Label lblTitle = new Label(item.getTitulo());
+                    lblTitle.setStyle("-fx-font-weight: bold; -fx-font-size: 13px; -fx-text-fill: #0F172A;");
+                    
+                    Label lblSub = new Label(item.getSubtitulo());
+                    lblSub.setStyle("-fx-text-fill: #64748B; -fx-font-size: 11px;");
+                    
+                    textBox.getChildren().addAll(lblTitle, lblSub);
+                    cellBox.getChildren().addAll(iconContainer, textBox);
+                    setGraphic(cellBox);
+                }
+            }
+        });
+
+        colEstado.setCellFactory(column -> new TableCell<>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setGraphic(null);
+                } else {
+                    Label lblStatus = new Label(item);
+                    if ("Completado".equalsIgnoreCase(item)) {
+                        lblStatus.setStyle("-fx-background-color: rgba(74,222,128,0.15); -fx-text-fill: #16A34A; -fx-font-weight: bold; -fx-padding: 3 10 3 10; -fx-background-radius: 7px;");
+                    } else if ("En tránsito".equalsIgnoreCase(item)) {
+                        lblStatus.setStyle("-fx-background-color: #F0FDFA; -fx-text-fill: #0D9488; -fx-font-weight: bold; -fx-padding: 3 10 3 10; -fx-background-radius: 7px;");
+                    } else if ("Pendiente".equalsIgnoreCase(item)) {
+                        lblStatus.setStyle("-fx-background-color: #FFFBEB; -fx-text-fill: #D97706; -fx-font-weight: bold; -fx-padding: 3 10 3 10; -fx-background-radius: 7px;");
+                    } else {
+                        lblStatus.setStyle("-fx-background-color: #F1F5F9; -fx-text-fill: #64748B; -fx-font-weight: bold; -fx-padding: 3 10 3 10; -fx-background-radius: 7px;");
+                    }
+                    setGraphic(lblStatus);
+                }
+            }
+        });
+
+        tblActividad.setItems(data);
+    }
+
+    private static class AlertaItem {
+        String nombre;
+        int actual;
+        int limite;
+        boolean isCritico;
+
+        AlertaItem(String nombre, int actual, int limite, boolean isCritico) {
+            this.nombre = nombre;
+            this.actual = actual;
             this.limite = limite;
-            this.proveedor = proveedor;
-            this.accion = accion;
+            this.isCritico = isCritico;
+        }
+    }
+
+    public static class MovimientoReciente {
+        private String titulo;
+        private String subtitulo;
+        private String contraparte;
+        private String monto;
+        private String fecha;
+        private String estado;
+
+        public MovimientoReciente(String titulo, String subtitulo, String contraparte, String monto, String fecha, String estado) {
+            this.titulo = titulo;
+            this.subtitulo = subtitulo;
+            this.contraparte = contraparte;
+            this.monto = monto;
+            this.fecha = fecha;
+            this.estado = estado;
         }
 
-        public String getProducto() { return producto; }
-        public int getStock() { return stock; }
-        public int getLimite() { return limite; }
-        public String getProveedor() { return proveedor; }
-        public String getAccion() { return accion; }
+        public String getTitulo() { return titulo; }
+        public String getSubtitulo() { return subtitulo; }
+        public String getContraparte() { return contraparte; }
+        public String getMonto() { return monto; }
+        public String getFecha() { return fecha; }
+        public String getEstado() { return estado; }
     }
 }
