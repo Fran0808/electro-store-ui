@@ -9,5 +9,6 @@ public record CreateProductRequest(
     String model,
     BigDecimal salePrice,
     String description,
-    Integer warrantyMonths
+    Integer warrantyMonths,
+    Integer lowStock
 ) {}

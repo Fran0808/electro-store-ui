@@ -13,6 +13,8 @@ public class Producto {
     private String description;
     private Integer warrantyMonths;
 
+    private Integer lowStock;
+
     public Producto() {
     }
 
@@ -26,6 +28,19 @@ public class Producto {
         this.stock = stock;
         this.description = description;
         this.warrantyMonths = warrantyMonths;
+    }
+
+    public Producto(String code, String categoryName, String name, String brand, String model, BigDecimal salePrice, Integer stock, String description, Integer warrantyMonths, Integer lowStock) {
+        this.code = code;
+        this.categoryName = categoryName;
+        this.name = name;
+        this.brand = brand;
+        this.model = model;
+        this.salePrice = salePrice;
+        this.stock = stock;
+        this.description = description;
+        this.warrantyMonths = warrantyMonths;
+        this.lowStock = lowStock;
     }
 
     public String getCode() {
@@ -98,5 +113,13 @@ public class Producto {
 
     public void setWarrantyMonths(Integer warrantyMonths) {
         this.warrantyMonths = warrantyMonths;
+    }
+
+    public Integer getLowStock() {
+        return lowStock;
+    }
+
+    public void setLowStock(Integer lowStock) {
+        this.lowStock = lowStock;
     }
 }

@@ -9,5 +9,6 @@ public record UpdateProductRequest(
     String model,
     BigDecimal salePrice,
     String description,
-    Integer warrantyMonths
+    Integer warrantyMonths,
+    Integer lowStock
 ) {}

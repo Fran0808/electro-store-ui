@@ -49,6 +49,9 @@ public class ProductoFormController {
     private TextField txtGarantia;
 
     @FXML
+    private TextField txtStockMinimo;
+
+    @FXML
     private TextArea txtDescripcion;
 
     @FXML
@@ -71,6 +74,7 @@ public class ProductoFormController {
         cargarCategorias();
         com.store.inventario.utils.ValidationUtils.hacerSoloDecimal(txtPrecio, 8, 2);
         com.store.inventario.utils.ValidationUtils.hacerSoloNumericoConLimite(txtGarantia, 3);
+        com.store.inventario.utils.ValidationUtils.hacerSoloNumericoConLimite(txtStockMinimo, 4);
         String roleActual = SessionManager.getInstance().getRole();
 
         if(!"ADMIN".equalsIgnoreCase(roleActual)){
@@ -92,6 +96,7 @@ public class ProductoFormController {
         txtModelo.setText(producto.getModel() != null ? producto.getModel() : "");
         txtPrecio.setText(producto.getSalePrice() != null ? producto.getSalePrice().toString() : "");
         txtGarantia.setText(producto.getWarrantyMonths() != null ? producto.getWarrantyMonths().toString() : "");
+        txtStockMinimo.setText(producto.getLowStock() != null ? producto.getLowStock().toString() : "5");
         txtDescripcion.setText(producto.getDescription() != null ? producto.getDescription() : "");
 
         for (Categoria cat : cbCategoria.getItems()) {
@@ -108,7 +113,8 @@ public class ProductoFormController {
         if (txtNombre.getText().trim().isEmpty() ||
             cbCategoria.getValue() == null ||
             txtPrecio.getText().trim().isEmpty() ||
-            txtGarantia.getText().trim().isEmpty()) {
+            txtGarantia.getText().trim().isEmpty() ||
+            txtStockMinimo.getText().trim().isEmpty()) {
 
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Advertencia");
@@ -162,6 +168,21 @@ public class ProductoFormController {
             }
             Integer garantia = garantiaLong.intValue();
 
+            Integer stockMinimo;
+            try {
+                stockMinimo = Integer.parseInt(txtStockMinimo.getText().trim());
+                if (stockMinimo < 0) {
+                    throw new NumberFormatException();
+                }
+            } catch (NumberFormatException e) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Advertencia");
+                alert.setHeaderText("Stock Mínimo Inválido");
+                alert.setContentText("El stock mínimo de alerta debe ser un número entero no negativo.");
+                alert.showAndWait();
+                return;
+            }
+
             if (modoEdicion) {
                 UpdateProductRequest updateRequest = new UpdateProductRequest(
                         cbCategoria.getValue().getCode(),
@@ -170,7 +191,8 @@ public class ProductoFormController {
                         txtModelo.getText().trim(),
                         precio,
                         txtDescripcion.getText() != null ? txtDescripcion.getText().trim() : "",
-                        garantia
+                        garantia,
+                        stockMinimo
                 );
 
                 productoService.actualizarProducto(productoEditar.getCode(), updateRequest);
@@ -188,7 +210,8 @@ public class ProductoFormController {
                         txtModelo.getText().trim(),
                         precio,
                         txtDescripcion.getText() != null ? txtDescripcion.getText().trim() : "",
-                        garantia
+                        garantia,
+                        stockMinimo
                 );
 
                 productoService.crearProducto(createRequest);
