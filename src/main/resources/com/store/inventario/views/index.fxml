@@ -22,142 +22,152 @@
       <padding>
          <Insets bottom="30.0" left="30.0" right="30.0" top="30.0"/>
       </padding>
-      <VBox alignment="CENTER" minWidth="-Infinity" prefHeight="200.0" prefWidth="100.0">
-         <Label fx:id="lblBienvenida" style="-fx-font-weight: bold;" text="¡Bienvenido, Administrador!"
-                textAlignment="CENTER">
-            <font>
-               <Font size="37.0"/>
-            </font>
-         </Label>
-         <Label fx:id="lblFechaHora" style="-fx-font-weight: bold; -fx-text-fill: #64748B;"
-                text="Fecha y Hora: 30/05/2026, 10:45 PM">
+      <children>
+         <VBox alignment="CENTER" minWidth="-Infinity" prefHeight="200.0" prefWidth="100.0">
+            <children>
+               <Label fx:id="lblBienvenida" style="-fx-font-weight: bold;" text="¡Bienvenido, Administrador!"
+                      textAlignment="CENTER">
+                  <font>
+                     <Font size="37.0"/>
+                  </font>
+               </Label>
+               <Label fx:id="lblFechaHora" style="-fx-font-weight: bold; -fx-text-fill: #64748B;"
+                      text="Fecha y Hora: 30/05/2026, 10:45 PM">
+                  <font>
+                     <Font size="16.0"/>
+                  </font>
+               </Label>
+            </children>
+         </VBox>
+         <Label prefHeight="20.0" prefWidth="978.0" style="-fx-font-weight: bold;" text="Acciones Rápidas">
             <font>
                <Font size="16.0"/>
             </font>
          </Label>
-      </VBox>
-      <Label prefHeight="20.0" prefWidth="978.0" style="-fx-font-weight: bold;" text="Acciones Rápidas">
-         <font>
-            <Font size="16.0"/>
-         </font>
-      </Label>
-      <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0" spacing="15.0">
-         <VBox.margin>
-            <Insets/>
-         </VBox.margin>
-         <Button fx:id="btnQuickVenta" graphicTextGap="10.0" mnemonicParsing="false" onAction="#handleVenta"
-                 prefWidth="180.0"
-                 style="-fx-background-color: white; -fx-border-color: #CBD5E1; -fx-border-radius: 6px; -fx-background-radius: 6px; -fx-padding: 8 20 8 20; -fx-cursor: hand; -fx-font-size: 14px; -fx-font-family: 'System'; -fx-text-fill: #475569;"
-                 text="Venta">
-            <graphic>
-               <SVGPath
-                       content="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"
-                       fill="#475569" scaleX="1.1" scaleY="1.1"/>
-            </graphic>
-         </Button>
-         <Button fx:id="btnQuickInventario" graphicTextGap="10.0" layoutX="451.0" layoutY="40.0"
-                 mnemonicParsing="false" onAction="#handleInventario" prefWidth="180.0"
-                 style="-fx-background-color: white; -fx-border-color: #CBD5E1; -fx-border-radius: 6px; -fx-background-radius: 6px; -fx-padding: 8 20 8 20; -fx-cursor: hand; -fx-font-size: 14px; -fx-font-family: 'System'; -fx-text-fill: #475569;"
-                 text="Inventario">
-            <graphic>
-               <SVGPath
-                       content="M21 16.5c0 .38-.21.73-.55.9l-8 4.5c-.28.16-.62.16-.9 0l-8-4.5A1.003 1.003 0 0 1 3 16.5v-9c0-.38.21-.73.55-.9l8-4.5c.28-.16.62-.16.9 0l8 4.5c.34.17.55.52.55.9v9zM12 4.15L5.7 7.7 12 11.25l6.3-3.55L12 4.15zm-1 8.7L5 9.3v6.5l6 3.38v-6.33zm2 6.33l6-3.38V9.3l-6 3.55v6.33z"
-                       fill="#475569" scaleX="1.1" scaleY="1.1"/>
-            </graphic>
-         </Button>
-         <Button fx:id="btnQuickCliente" graphicTextGap="10.0" layoutX="394.0" layoutY="40.0"
-                 mnemonicParsing="false" onAction="#handleCliente" prefWidth="180.0"
-                 style="-fx-background-color: white; -fx-border-color: #CBD5E1; -fx-border-radius: 6px; -fx-background-radius: 6px; -fx-padding: 8 20 8 20; -fx-cursor: hand; -fx-font-size: 14px; -fx-font-family: 'System'; -fx-text-fill: #475569;"
-                 text="Cliente">
-            <graphic>
-               <SVGPath
-                       content="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"
-                       fill="#475569" scaleX="1.1" scaleY="1.1"/>
-            </graphic>
-         </Button>
-         <Button fx:id="btnQuickGuia" graphicTextGap="10.0" layoutX="337.0" layoutY="40.0" mnemonicParsing="false"
-                 onAction="#handleGuia" prefWidth="180.0"
-                 style="-fx-background-color: white; -fx-border-color: #CBD5E1; -fx-border-radius: 6px; -fx-background-radius: 6px; -fx-padding: 8 20 8 20; -fx-cursor: hand; -fx-font-size: 14px; -fx-font-family: 'System'; -fx-text-fill: #475569;"
-                 text="Guia Rapida">
-            <graphic>
-               <SVGPath
-                       content="M12 3c-4.97 0-9 4.03-9 9 0 2.12.74 4.07 1.97 5.61L4.35 19.4c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0l1.9-1.9C9.22 19.58 10.57 20 12 20c4.97 0 9-4.03 9-9s-4.03-9-9-9zm1 14h-2v-2h2v2zm0-4h-2V7h2v6z"
-                       fill="#475569" scaleX="1.1" scaleY="1.1"/>
-            </graphic>
-         </Button>
-         <Button fx:id="btnQuickSoporte" graphicTextGap="10.0" layoutX="337.0" layoutY="40.0"
-                 mnemonicParsing="false" onAction="#handleSoporte" prefWidth="180.0"
-                 style="-fx-background-color: white; -fx-border-color: #CBD5E1; -fx-border-radius: 6px; -fx-background-radius: 6px; -fx-padding: 8 20 8 20; -fx-cursor: hand; -fx-font-size: 14px; -fx-font-family: 'System'; -fx-text-fill: #475569;"
-                 text="Soporte">
-            <graphic>
-               <SVGPath
-                       content="M12 2c-4.97 0-9 4.03-9 9v7c0 1.66 1.34 3 3 3h3v-8H5v-2c0-3.87 3.13-7 7-7s7 3.13 7 7v2h-4v8h3c1.66 0 3-1.34 3-3v-7c0-4.97-4.03-9-9-9z"
-                       fill="#475569" scaleX="1.1" scaleY="1.1"/>
-            </graphic>
-         </Button>
-      </HBox>
-      <HBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="200.0" spacing="20.0">
-         <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-               minWidth="-Infinity" prefHeight="500.0" prefWidth="532.0" style="-fx-background-color: white;"
-               HBox.hgrow="ALWAYS">
-            <Label maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-                   prefHeight="38.0" prefWidth="505.0" style="-fx-font-weight: bold;"
-                   text="Registro de Actividad Reciente">
-               <font>
-                  <Font size="16.0"/>
-               </font>
-            </Label>
-            <TableView fx:id="tablaActividad" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-                       minWidth="-Infinity" prefHeight="440.0" prefWidth="516.0">
-               <columns>
-                  <TableColumn fx:id="colHora" prefWidth="137.06666028499603" text="Hora"/>
-                  <TableColumn fx:id="colUsuario" prefWidth="171.46664428710938" text="Usuario"/>
-                  <TableColumn fx:id="colAccion" minWidth="0.0" prefWidth="220.5333251953125" text="Acción"/>
-               </columns>
-               <VBox.margin>
-                  <Insets/>
-               </VBox.margin>
-            </TableView>
-         </VBox>
-         <VBox fx:id="cardBackup" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-               minWidth="-Infinity" prefHeight="230.0" prefWidth="427.0" spacing="9.0"
-               style="-fx-background-color: white; -fx-border-color: #E2E8F0; -fx-border-radius: 10px; -fx-background-radius: 10px; -fx-padding: 20;"
-               HBox.hgrow="NEVER">
-            <Label fx:id="lblBackupTitle" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-                   minWidth="-Infinity" prefHeight="34.0" prefWidth="200.0"
-                   style="-fx-font-weight: bold; -fx-text-fill: #0F172A;" text="Copia de Seguridad">
-               <font>
-                  <Font size="16.0"/>
-               </font>
-            </Label>
-            <Label fx:id="lblUltimaCopia" layoutX="31.0" layoutY="31.0"
-                   style="-fx-font-weight: bold; -fx-text-fill: #475569;" text="Ultima copia: Hace 2 horas">
-               <font>
-                  <Font size="16.0"/>
-               </font>
-            </Label>
-            <Label fx:id="lblEstadoCopia" layoutX="31.0" layoutY="31.0" text="Estado: Guardado correctamente">
-               <font>
-                  <Font size="16.0"/>
-               </font>
-            </Label>
-            <Label fx:id="lblUbicacionCopia" layoutX="31.0" layoutY="31.0"
-                   style="-fx-font-weight: bold; -fx-text-fill: #475569;" text="Ubicacion: Servidor Local">
-               <font>
-                  <Font size="16.0"/>
-               </font>
-            </Label>
-            <Button fx:id="btnRealizarCopia" graphicTextGap="8.0" mnemonicParsing="false"
-                    onAction="#handleRealizarCopia" prefHeight="36.0" prefWidth="387.0"
-                    style="-fx-background-color: #0F172A; -fx-text-fill: white; -fx-background-radius: 6px; -fx-font-weight: bold; -fx-cursor: hand;"
-                    text="Realizar Copia Ahora">
-               <graphic>
-                  <SVGPath
-                          content="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM19 18H6c-2.21 0-4-1.79-4-4 0-2.05 1.53-3.76 3.56-3.97l1.07-.11.5-.95C8.08 7.14 9.94 6 12 6c2.62 0 4.88 1.86 5.39 4.43l.3 1.5 1.53.11c1.56.1 2.78 1.41 2.78 2.96 0 1.65-1.35 3-3 3zM9 13h2.55v3h2.9v-3H17l-4-4-4 4z"
-                          fill="white"/>
-               </graphic>
-            </Button>
-         </VBox>
-      </HBox>
+         <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0" spacing="15.0">
+            <children>
+               <Button fx:id="btnQuickVenta" graphicTextGap="10.0" mnemonicParsing="false"
+                       onAction="#handleVenta" prefWidth="180.0"
+                       style="-fx-background-color: white; -fx-border-color: #CBD5E1; -fx-border-radius: 6px; -fx-background-radius: 6px; -fx-padding: 8 20 8 20; -fx-cursor: hand; -fx-font-size: 14px; -fx-font-family: 'System'; -fx-text-fill: #475569;"
+                       text="Venta">
+                  <graphic>
+                     <SVGPath content="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"
+                             fill="#475569" scaleX="1.1" scaleY="1.1"/>
+                  </graphic>
+               </Button>
+               <Button fx:id="btnQuickInventario" graphicTextGap="10.0" layoutX="451.0" layoutY="40.0"
+                       mnemonicParsing="false" onAction="#handleInventario" prefWidth="180.0"
+                       style="-fx-background-color: white; -fx-border-color: #CBD5E1; -fx-border-radius: 6px; -fx-background-radius: 6px; -fx-padding: 8 20 8 20; -fx-cursor: hand; -fx-font-size: 14px; -fx-font-family: 'System'; -fx-text-fill: #475569;"
+                       text="Inventario">
+                  <graphic>
+                     <SVGPath content="M21 16.5c0 .38-.21.73-.55.9l-8 4.5c-.28.16-.62.16-.9 0l-8-4.5A1.003 1.003 0 0 1 3 16.5v-9c0-.38.21-.73.55-.9l8-4.5c.28-.16.62-.16.9 0l8 4.5c.34.17.55.52.55.9v9zM12 4.15L5.7 7.7 12 11.25l6.3-3.55L12 4.15zm-1 8.7L5 9.3v6.5l6 3.38v-6.33zm2 6.33l6-3.38V9.3l-6 3.55v6.33z"
+                             fill="#475569" scaleX="1.1" scaleY="1.1"/>
+                  </graphic>
+               </Button>
+               <Button fx:id="btnQuickCliente" graphicTextGap="10.0" layoutX="394.0" layoutY="40.0"
+                       mnemonicParsing="false" onAction="#handleCliente" prefWidth="180.0"
+                       style="-fx-background-color: white; -fx-border-color: #CBD5E1; -fx-border-radius: 6px; -fx-background-radius: 6px; -fx-padding: 8 20 8 20; -fx-cursor: hand; -fx-font-size: 14px; -fx-font-family: 'System'; -fx-text-fill: #475569;"
+                       text="Cliente">
+                  <graphic>
+                     <SVGPath content="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"
+                             fill="#475569" scaleX="1.1" scaleY="1.1"/>
+                  </graphic>
+               </Button>
+               <Button fx:id="btnQuickGuia" graphicTextGap="10.0" layoutX="337.0" layoutY="40.0"
+                       mnemonicParsing="false" onAction="#handleGuia" prefWidth="180.0"
+                       style="-fx-background-color: white; -fx-border-color: #CBD5E1; -fx-border-radius: 6px; -fx-background-radius: 6px; -fx-padding: 8 20 8 20; -fx-cursor: hand; -fx-font-size: 14px; -fx-font-family: 'System'; -fx-text-fill: #475569;"
+                       text="Guia Rapida">
+                  <graphic>
+                     <SVGPath content="M12 3c-4.97 0-9 4.03-9 9 0 2.12.74 4.07 1.97 5.61L4.35 19.4c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0l1.9-1.9C9.22 19.58 10.57 20 12 20c4.97 0 9-4.03 9-9s-4.03-9-9-9zm1 14h-2v-2h2v2zm0-4h-2V7h2v6z"
+                             fill="#475569" scaleX="1.1" scaleY="1.1"/>
+                  </graphic>
+               </Button>
+               <Button fx:id="btnQuickSoporte" graphicTextGap="10.0" layoutX="337.0" layoutY="40.0"
+                       mnemonicParsing="false" onAction="#handleSoporte" prefWidth="180.0"
+                       style="-fx-background-color: white; -fx-border-color: #CBD5E1; -fx-border-radius: 6px; -fx-background-radius: 6px; -fx-padding: 8 20 8 20; -fx-cursor: hand; -fx-font-size: 14px; -fx-font-family: 'System'; -fx-text-fill: #475569;"
+                       text="Soporte">
+                  <graphic>
+                     <SVGPath content="M12 2c-4.97 0-9 4.03-9 9v7c0 1.66 1.34 3 3 3h3v-8H5v-2c0-3.87 3.13-7 7-7s7 3.13 7 7v2h-4v8h3c1.66 0 3-1.34 3-3v-7c0-4.97-4.03-9-9-9z"
+                             fill="#475569" scaleX="1.1" scaleY="1.1"/>
+                  </graphic>
+               </Button>
+            </children>
+            <VBox.margin>
+               <Insets/>
+            </VBox.margin>
+         </HBox>
+         <HBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="200.0" spacing="20.0">
+            <children>
+               <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                     minWidth="-Infinity" prefHeight="500.0" prefWidth="532.0"
+                     style="-fx-background-color: white;" HBox.hgrow="ALWAYS">
+                  <children>
+                     <Label maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+                            prefHeight="38.0" prefWidth="505.0" style="-fx-font-weight: bold;"
+                            text="Registro de Actividad Reciente">
+                        <font>
+                           <Font size="16.0"/>
+                        </font>
+                     </Label>
+                     <TableView fx:id="tablaActividad" maxHeight="-Infinity" maxWidth="-Infinity"
+                                minHeight="-Infinity" minWidth="-Infinity" prefHeight="440.0" prefWidth="516.0">
+                        <columns>
+                           <TableColumn fx:id="colHora" prefWidth="137.06666028499603" text="Hora"/>
+                           <TableColumn fx:id="colUsuario" prefWidth="171.46664428710938" text="Usuario"/>
+                           <TableColumn fx:id="colAccion" minWidth="0.0" prefWidth="220.5333251953125"
+                                        text="Acción"/>
+                        </columns>
+                        <VBox.margin>
+                           <Insets/>
+                        </VBox.margin>
+                     </TableView>
+                  </children>
+               </VBox>
+               <VBox fx:id="cardBackup" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                     minWidth="-Infinity" prefHeight="230.0" prefWidth="427.0" spacing="9.0"
+                     style="-fx-background-color: white; -fx-border-color: #E2E8F0; -fx-border-radius: 10px; -fx-background-radius: 10px; -fx-padding: 20;"
+                     HBox.hgrow="NEVER">
+                  <children>
+                     <Label fx:id="lblBackupTitle" maxHeight="-Infinity" maxWidth="-Infinity"
+                            minHeight="-Infinity" minWidth="-Infinity" prefHeight="34.0" prefWidth="200.0"
+                            style="-fx-font-weight: bold; -fx-text-fill: #0F172A;" text="Copia de Seguridad">
+                        <font>
+                           <Font size="16.0"/>
+                        </font>
+                     </Label>
+                     <Label fx:id="lblUltimaCopia" layoutX="31.0" layoutY="31.0"
+                            style="-fx-font-weight: bold; -fx-text-fill: #475569;"
+                            text="Ultima copia: Hace 2 horas">
+                        <font>
+                           <Font size="16.0"/>
+                        </font>
+                     </Label>
+                     <Label fx:id="lblEstadoCopia" layoutX="31.0" layoutY="31.0"
+                            text="Estado: Guardado correctamente">
+                        <font>
+                           <Font size="16.0"/>
+                        </font>
+                     </Label>
+                     <Label fx:id="lblUbicacionCopia" layoutX="31.0" layoutY="31.0"
+                            style="-fx-font-weight: bold; -fx-text-fill: #475569;"
+                            text="Ubicacion: Servidor Local">
+                        <font>
+                           <Font size="16.0"/>
+                        </font>
+                     </Label>
+                     <Button fx:id="btnRealizarCopia" graphicTextGap="8.0" mnemonicParsing="false"
+                             onAction="#handleRealizarCopia" prefHeight="36.0" prefWidth="387.0"
+                             style="-fx-background-color: #0F172A; -fx-text-fill: white; -fx-background-radius: 6px; -fx-font-weight: bold; -fx-cursor: hand;"
+                             text="Realizar Copia Ahora">
+                        <graphic>
+                           <SVGPath content="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM19 18H6c-2.21 0-4-1.79-4-4 0-2.05 1.53-3.76 3.56-3.97l1.07-.11.5-.95C8.08 7.14 9.94 6 12 6c2.62 0 4.88 1.86 5.39 4.43l.3 1.5 1.53.11c1.56.1 2.78 1.41 2.78 2.96 0 1.65-1.35 3-3 3zM9 13h2.55v3h2.9v-3H17l-4-4-4 4z"
+                                   fill="white"/>
+                        </graphic>
+                     </Button>
+                  </children>
+               </VBox>
+            </children>
+         </HBox>
+      </children>
    </VBox>
 </AnchorPane>

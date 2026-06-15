@@ -100,11 +100,11 @@ public class IndexController implements Initializable {
     }
 
     private void initTablaActividad() {
-        colHora.setCellValueFactory(cellData -> 
+        colHora.setCellValueFactory(cellData ->
                 new javafx.beans.property.SimpleStringProperty(cellData.getValue().getHora()));
-        colUsuario.setCellValueFactory(cellData -> 
+        colUsuario.setCellValueFactory(cellData ->
                 new javafx.beans.property.SimpleStringProperty(cellData.getValue().getUsuario()));
-        colAccion.setCellValueFactory(cellData -> 
+        colAccion.setCellValueFactory(cellData ->
                 new javafx.beans.property.SimpleStringProperty(cellData.getValue().getAccion()));
 
         tablaActividad.setItems(FXCollections.observableArrayList());
@@ -128,7 +128,7 @@ public class IndexController implements Initializable {
         } else {
             lblBackupTitle.setText("Informacion de Sesion");
             lblUltimaCopia.setText("Usuario: " + SessionManager.getInstance().getUsername());
-            
+
             String roleDisplayName = role;
             if ("STOREKEEPER".equals(role)) {
                 roleDisplayName = "Encargado de Almacen";
@@ -137,7 +137,7 @@ public class IndexController implements Initializable {
             }
             lblEstadoCopia.setText("Rol: " + roleDisplayName);
             lblUbicacionCopia.setText("Servidor: Conectado (Online)");
-            
+
             btnRealizarCopia.setVisible(false);
             btnRealizarCopia.setManaged(false);
         }
