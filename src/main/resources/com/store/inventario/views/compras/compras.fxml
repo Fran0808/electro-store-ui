@@ -56,13 +56,13 @@
                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
                 </columnResizePolicy>
                 <columns>
-                    <TableColumn prefWidth="69.0" text="Código"/>
-                    <TableColumn prefWidth="193.0" text="Proveedor"/>
-                    <TableColumn prefWidth="194.0" text="Usuario"/>
-                    <TableColumn prefWidth="128.0" text="Fecha"/>
-                    <TableColumn prefWidth="86.0" text="Cantidad"/>
-                    <TableColumn prefWidth="113.0" text="Total"/>
-                    <TableColumn prefWidth="196.0" text="Acciones"/>
+                    <TableColumn prefWidth="69.0" text="Código" fx:id="colCodigo"/>
+                    <TableColumn prefWidth="193.0" text="Proveedor" fx:id="colProveedor"/>
+                    <TableColumn prefWidth="194.0" text="Usuario" fx:id="colUsuario"/>
+                    <TableColumn prefWidth="128.0" text="Fecha" fx:id="colFecha"/>
+                    <TableColumn prefWidth="86.0" text="Cantidad" fx:id="colCantidad"/>
+                    <TableColumn prefWidth="113.0" text="Total" fx:id="colTotal"/>
+                    <TableColumn prefWidth="196.0" text="Acciones" fx:id="colAcciones"/>
                 </columns>
             </TableView>
 
