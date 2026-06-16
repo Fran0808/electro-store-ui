@@ -26,13 +26,19 @@ public class ProductoService {
     }
 
     public PageResponse<Producto> obtenerProductos() {
-        return obtenerProductos(0, 1000);
+        return obtenerProductos("", 0, 1000);
     }
 
     public PageResponse<Producto> obtenerProductos(int page, int size) {
+        return obtenerProductos("", page, size);
+    }
 
+    public PageResponse<Producto> obtenerProductos(String search, int page, int size) {
         try {
             String paginatedUrl = URL + "?page=" + page + "&size=" + size;
+            if (search != null && !search.trim().isEmpty()) {
+                paginatedUrl += "&search=" + java.net.URLEncoder.encode(search.trim(), java.nio.charset.StandardCharsets.UTF_8);
+            }
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(paginatedUrl))
                     .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
