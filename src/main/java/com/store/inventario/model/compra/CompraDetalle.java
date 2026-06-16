@@ -35,4 +35,8 @@ public class CompraDetalle {
     public int getQuantity() {
         return quantity;
     }
+
+    public BigDecimal getSubtotal() {
+        return purchasePrice != null ? purchasePrice.multiply(BigDecimal.valueOf(quantity)) : BigDecimal.ZERO;
+    }
 }
