@@ -102,4 +102,42 @@ public class UsuarioService {
             throw new RuntimeException(e);
         }
     }
+
+    public Usuario activarUsuario(String code) {
+        try {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(URL + "/activate/" + code))
+                    .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
+                    .method("PATCH", HttpRequest.BodyPublishers.noBody())
+                    .build();
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() >= 400) {
+                throw new RuntimeException("Error al activar usuario: HTTP " + response.statusCode() + " - " + response.body());
+            }
+
+            return gson.fromJson(response.body(), Usuario.class);
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public Usuario desactivarUsuario(String code) {
+        try {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(URL + "/deactivate/" + code))
+                    .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
+                    .method("PATCH", HttpRequest.BodyPublishers.noBody())
+                    .build();
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() >= 400) {
+                throw new RuntimeException("Error al desactivar usuario: HTTP " + response.statusCode() + " - " + response.body());
+            }
+
+            return gson.fromJson(response.body(), Usuario.class);
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

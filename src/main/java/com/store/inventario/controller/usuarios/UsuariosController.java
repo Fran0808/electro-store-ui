@@ -32,6 +32,7 @@ public class UsuariosController {
     @FXML private TableColumn<Usuario, String> colNombre;
     @FXML private TableColumn<Usuario, String> colApellido;
     @FXML private TableColumn<Usuario, Void> colAcciones;
+    @FXML private TableColumn<Usuario, Boolean> colEstado;
     
     @FXML private Label lblTotalUsuarios;
     @FXML private Label lblTotalAdmins;
@@ -76,8 +77,41 @@ public class UsuariosController {
         colNombre.setCellValueFactory(new PropertyValueFactory<>("firstName"));
         colApellido.setCellValueFactory(new PropertyValueFactory<>("lastName"));
 
+        configurarColumnaEstado();
         configurarColumnaAcciones();
         obtenerUsuarios();
+    }
+
+    private void configurarColumnaEstado() {
+        colEstado.setCellValueFactory(cellData -> new javafx.beans.property.SimpleBooleanProperty(cellData.getValue().isStatus()));
+        colEstado.setCellFactory(new Callback<>() {
+            @Override
+            public TableCell<Usuario, Boolean> call(TableColumn<Usuario, Boolean> param) {
+                return new TableCell<>() {
+                    private final Label lblStatus = new Label();
+                    private final HBox contenedor = new HBox(lblStatus);
+                    {
+                        contenedor.setAlignment(Pos.CENTER);
+                    }
+
+                    @Override
+                    protected void updateItem(Boolean status, boolean empty) {
+                        super.updateItem(status, empty);
+                        if (empty || status == null) {
+                            setGraphic(null);
+                        } else {
+                            lblStatus.setText(status ? "Activo" : "Inactivo");
+                            if (status) {
+                                lblStatus.setStyle("-fx-background-color: rgba(74,222,128,0.15); -fx-text-fill: #16A34A; -fx-font-weight: bold; -fx-padding: 3 10 3 10; -fx-background-radius: 7px;");
+                            } else {
+                                lblStatus.setStyle("-fx-background-color: rgba(239,68,68,0.15); -fx-text-fill: #DC2626; -fx-font-weight: bold; -fx-padding: 3 10 3 10; -fx-background-radius: 7px;");
+                            }
+                            setGraphic(contenedor);
+                        }
+                    }
+                };
+            }
+        });
     }
 
     private void configurarColumnaAcciones() {
@@ -88,7 +122,6 @@ public class UsuariosController {
                     private final Button btnAcciones = new Button("⋮");
                     private final ContextMenu menuAcciones = new ContextMenu();
                     private final MenuItem itemEditar = new MenuItem("Editar");
-                    private final MenuItem itemEliminar = new MenuItem("Eliminar");
                     private final HBox contenedor = new HBox(btnAcciones);
 
                     {
@@ -96,8 +129,6 @@ public class UsuariosController {
                         btnAcciones.setTooltip(new Tooltip("Acciones de Usuario"));
 
                         itemEditar.getStyleClass().add("menu-item-editar");
-                        itemEliminar.getStyleClass().add("menu-item-eliminar");
-                        menuAcciones.getItems().addAll(itemEditar, itemEliminar);
 
                         contenedor.setAlignment(Pos.CENTER);
 
@@ -109,11 +140,6 @@ public class UsuariosController {
                             Usuario usuario = getTableView().getItems().get(getIndex());
                             handleEditar(usuario);
                         });
-
-                        itemEliminar.setOnAction(event -> {
-                            Usuario usuario = getTableView().getItems().get(getIndex());
-                            handleEliminar(usuario);
-                        });
                     }
 
                     @Override
@@ -122,6 +148,18 @@ public class UsuariosController {
                         if (empty) {
                             setGraphic(null);
                         } else {
+                            Usuario usuario = getTableView().getItems().get(getIndex());
+                            
+                            menuAcciones.getItems().clear();
+                            menuAcciones.getItems().add(itemEditar);
+                            
+                            MenuItem itemActivarDesactivar = new MenuItem(usuario.isStatus() ? "Desactivar" : "Activar");
+                            itemActivarDesactivar.getStyleClass().add(usuario.isStatus() ? "menu-item-eliminar" : "menu-item-editar");
+                            itemActivarDesactivar.setOnAction(event -> {
+                                handleActivarDesactivar(usuario);
+                            });
+                            menuAcciones.getItems().add(itemActivarDesactivar);
+                            
                             setGraphic(contenedor);
                         }
                     }
@@ -129,6 +167,45 @@ public class UsuariosController {
             }
         };
         colAcciones.setCellFactory(cellFactory);
+    }
+
+    private void handleActivarDesactivar(Usuario usuario) {
+        Platform.runLater(() -> {
+            boolean active = usuario.isStatus();
+            Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
+            confirmacion.setTitle(active ? "Confirmar Desactivación" : "Confirmar Activación");
+            confirmacion.setHeaderText(active ? "Desactivar usuario" : "Activar usuario");
+            confirmacion.setContentText(active 
+                ? "¿Está seguro de que desea desactivar al usuario " + usuario.getUsername() + "? No podrá iniciar sesión hasta ser reactivado."
+                : "¿Está seguro de que desea activar al usuario " + usuario.getUsername() + "?");
+
+            Optional<ButtonType> resultado = confirmacion.showAndWait();
+
+            if (resultado.isPresent() && resultado.get() == ButtonType.OK) {
+                try {
+                    if (active) {
+                        usuarioService.desactivarUsuario(usuario.getCode());
+                    } else {
+                        usuarioService.activarUsuario(usuario.getCode());
+                    }
+
+                    Alert exito = new Alert(Alert.AlertType.INFORMATION);
+                    exito.setTitle("Éxito");
+                    exito.setHeaderText(active ? "Usuario Desactivado" : "Usuario Activado");
+                    exito.setContentText("El usuario se ha " + (active ? "desactivado" : "activado") + " correctamente.");
+                    exito.showAndWait();
+
+                    obtenerUsuarios();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Alert error = new Alert(Alert.AlertType.ERROR);
+                    error.setTitle("Error");
+                    error.setHeaderText("No se pudo cambiar el estado");
+                    error.setContentText("Error al cambiar el estado del usuario: " + e.getMessage());
+                    error.showAndWait();
+                }
+            }
+        });
     }
 
     private void handleEditar(Usuario usuario) {
@@ -152,6 +229,7 @@ public class UsuariosController {
         }
     }
 
+    /* Por si se vuelva a necesitar este metodo
     private void handleEliminar(Usuario usuario) {
         Platform.runLater(() -> {
             Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
@@ -183,6 +261,7 @@ public class UsuariosController {
             }
         });
     }
+    */
 
     private void obtenerUsuarios() {
         try {
