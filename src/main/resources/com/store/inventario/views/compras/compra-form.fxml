@@ -35,7 +35,10 @@
             <VBox prefWidth="480.0" spacing="12.0" style="-fx-background-color: #FFFFFF; -fx-padding: 16; -fx-background-radius: 8; -fx-border-color: #E2E8F0; -fx-border-radius: 8;">
                 <Label styleClass="metric-label" text="1. CATÁLOGO DE PRODUCTOS" style="-fx-text-fill: #1E293B;"/>
                 
-                <TextField fx:id="txtBuscarProducto" promptText="Buscar producto por nombre, código o marca..." styleClass="search-field"/>
+                <HBox spacing="8.0" alignment="CENTER_LEFT">
+                    <TextField fx:id="txtBuscarProducto" promptText="Buscar por nombre, código o marca..." styleClass="search-field" HBox.hgrow="ALWAYS" onAction="#ejecutarBusquedaLocal"/>
+                    <Button onAction="#ejecutarBusquedaLocal" styleClass="btn-secondary" text="Buscar"/>
+                </HBox>
 
                 <TableView fx:id="tblProductos" prefHeight="300.0" styleClass="table-view" VBox.vgrow="ALWAYS">
                     <columnResizePolicy>
@@ -63,7 +66,7 @@
                             <TextField fx:id="txtCantidad" promptText="Cant." styleClass="search-field"/>
                         </VBox>
 
-                        <Button onAction="#agregarProductoALaLista" styleClass="btn-primary" text="Añadir Item" prefHeight="38.0"/>
+                        <Button onAction="#agregarProductoALaLista" styleClass="btn-primary" text="Añadir" prefHeight="38.0"/>
                     </HBox>
                 </VBox>
             </VBox>

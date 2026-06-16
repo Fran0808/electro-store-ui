@@ -25,24 +25,24 @@
         <HBox spacing="16" styleClass="metrics-container">
             <VBox spacing="8" styleClass="metric-card" HBox.hgrow="ALWAYS">
                 <Label styleClass="metric-label" text="Compras semanales"/>
-                <Label styleClass="metric-value" text="---"/>
+                <Label fx:id="lblComprasSemanales" styleClass="metric-value" text="---"/>
             </VBox>
 
             <VBox spacing="8" styleClass="metric-card" HBox.hgrow="ALWAYS">
                 <Label styleClass="metric-label" text="Productos ingresados mensuales"/>
-                <Label styleClass="metric-value" text="---"/>
+                <Label fx:id="lblProductosIngresados" styleClass="metric-value" text="---"/>
             </VBox>
 
             <VBox spacing="8" styleClass="metric-card" HBox.hgrow="ALWAYS">
                 <Label styleClass="metric-label" text="Proveedor frecuente"/>
-                <Label styleClass="metric-value" text="Empresa X S.A."/>
-                <Label styleClass="header-subtitle" text="x compras realizadas"/>
+                <Label fx:id="lblProveedorFrecuente" styleClass="metric-value" text="---"/>
+                <Label fx:id="lblProveedorFrecuenteCompras" styleClass="header-subtitle" text="---"/>
             </VBox>
         </HBox>
 
         <HBox alignment="CENTER_LEFT" spacing="12" styleClass="search-container">
             <TextField fx:id="txtBuscarCompra" promptText="Buscar por código de compra, proveedor..."
-                       styleClass="search-field" HBox.hgrow="ALWAYS"/>
+                       styleClass="search-field" HBox.hgrow="ALWAYS" onAction="#ejecutarBusqueda"/>
             <ComboBox fx:id="cbFecha" promptText="Fecha" styleClass="filter-combo"/>
             <ComboBox fx:id="cbProveedor" promptText="Proveedor" styleClass="filter-combo"/>
             <ComboBox fx:id="cbUsuario" promptText="Usuario" styleClass="filter-combo"/>
