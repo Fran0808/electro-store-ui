@@ -25,24 +25,24 @@
         <HBox spacing="16" styleClass="metrics-container">
             <VBox spacing="8" styleClass="metric-card" HBox.hgrow="ALWAYS">
                 <Label styleClass="metric-label" text="Compras semanales"/>
-                <Label styleClass="metric-value" text="---"/>
+                <Label fx:id="lblComprasSemanales" styleClass="metric-value" text="---"/>
             </VBox>
 
             <VBox spacing="8" styleClass="metric-card" HBox.hgrow="ALWAYS">
                 <Label styleClass="metric-label" text="Productos ingresados mensuales"/>
-                <Label styleClass="metric-value" text="---"/>
+                <Label fx:id="lblProductosIngresados" styleClass="metric-value" text="---"/>
             </VBox>
 
             <VBox spacing="8" styleClass="metric-card" HBox.hgrow="ALWAYS">
                 <Label styleClass="metric-label" text="Proveedor frecuente"/>
-                <Label styleClass="metric-value" text="Empresa X S.A."/>
-                <Label styleClass="header-subtitle" text="x compras realizadas"/>
+                <Label fx:id="lblProveedorFrecuente" styleClass="metric-value" text="---"/>
+                <Label fx:id="lblProveedorFrecuenteCompras" styleClass="header-subtitle" text="---"/>
             </VBox>
         </HBox>
 
         <HBox alignment="CENTER_LEFT" spacing="12" styleClass="search-container">
             <TextField fx:id="txtBuscarCompra" promptText="Buscar por código de compra, proveedor..."
-                       styleClass="search-field" HBox.hgrow="ALWAYS"/>
+                       styleClass="search-field" HBox.hgrow="ALWAYS" onAction="#ejecutarBusqueda"/>
             <ComboBox fx:id="cbFecha" promptText="Fecha" styleClass="filter-combo"/>
             <ComboBox fx:id="cbProveedor" promptText="Proveedor" styleClass="filter-combo"/>
             <ComboBox fx:id="cbUsuario" promptText="Usuario" styleClass="filter-combo"/>
@@ -56,13 +56,13 @@
                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
                 </columnResizePolicy>
                 <columns>
-                    <TableColumn prefWidth="69.0" text="Código"/>
-                    <TableColumn prefWidth="193.0" text="Proveedor"/>
-                    <TableColumn prefWidth="194.0" text="Usuario"/>
-                    <TableColumn prefWidth="128.0" text="Fecha"/>
-                    <TableColumn prefWidth="86.0" text="Cantidad"/>
-                    <TableColumn prefWidth="113.0" text="Total"/>
-                    <TableColumn prefWidth="196.0" text="Acciones"/>
+                    <TableColumn prefWidth="69.0" text="Código" fx:id="colCodigo"/>
+                    <TableColumn prefWidth="193.0" text="Proveedor" fx:id="colProveedor"/>
+                    <TableColumn prefWidth="194.0" text="Usuario" fx:id="colUsuario"/>
+                    <TableColumn prefWidth="128.0" text="Fecha" fx:id="colFecha"/>
+                    <TableColumn prefWidth="86.0" text="Cantidad" fx:id="colCantidad"/>
+                    <TableColumn prefWidth="113.0" text="Total" fx:id="colTotal"/>
+                    <TableColumn prefWidth="196.0" text="Acciones" fx:id="colAcciones"/>
                 </columns>
             </TableView>
 
