@@ -32,4 +32,5 @@ module com.store.inventario {
     opens com.store.inventario.model.guia;
     opens com.store.inventario.model.ventas;
     opens com.store.inventario.model.compra;
+    opens com.store.inventario.model.empleado;
 }
