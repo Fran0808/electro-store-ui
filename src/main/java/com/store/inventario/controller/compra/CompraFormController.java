@@ -125,31 +125,33 @@ public class CompraFormController {
     }
 
     private void cargarProveedores() {
-        Platform.runLater(() -> {
+        new Thread(() -> {
             try {
                 PageResponse<Proveedor> response = proveedorService.listar(0, 100);
                 if (response != null && response.getContent() != null) {
+                    List<String> items = new ArrayList<>();
                     for (Proveedor prov : response.getContent()) {
-                        cbProveedor.getItems().add(prov.getCode() + " - " + prov.getTradeName());
+                        items.add(prov.getCode() + " - " + prov.getTradeName());
                     }
+                    Platform.runLater(() -> cbProveedor.getItems().setAll(items));
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        });
+        }).start();
     }
 
     private void cargarProductos(String search) {
-        Platform.runLater(() -> {
+        new Thread(() -> {
             try {
                 PageResponse<Producto> response = productoService.obtenerProductos(search, 0, 100);
                 if (response != null && response.getContent() != null) {
-                    listaCatalogProductos.setAll(response.getContent());
+                    Platform.runLater(() -> listaCatalogProductos.setAll(response.getContent()));
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        });
+        }).start();
     }
 
     @FXML
