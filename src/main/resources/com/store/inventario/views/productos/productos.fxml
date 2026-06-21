@@ -76,12 +76,12 @@
                 </HBox>
 
                 <HBox alignment="CENTER_LEFT" spacing="12" styleClass="search-container">
-                    <TextField fx:id="txtBuscar" HBox.hgrow="ALWAYS" promptText="Buscar productos por nombre, SKU o marca..." styleClass="search-field" />
-                    <ComboBox fx:id="cbCategoria" promptText="Categoría" styleClass="filter-combo" />
-                    <ComboBox fx:id="cbMarca" promptText="Marca" styleClass="filter-combo" />
-                    <ComboBox fx:id="cbEstado" promptText="Estado" styleClass="filter-combo" />
-                    <Button fx:id="btnLimpiar" styleClass="btn-secondary" text="Limpiar" />
-                    <Button fx:id="btnBuscar" styleClass="btn-primary" text="Buscar" />
+                    <TextField fx:id="txtBuscar" onAction="#ejecutarBusqueda" HBox.hgrow="ALWAYS" promptText="Buscar productos por nombre, SKU o marca..." styleClass="search-field" />
+                    <ComboBox fx:id="cbCategoria" onAction="#ejecutarBusqueda" promptText="Categoría" styleClass="filter-combo" />
+                    <ComboBox fx:id="cbMarca" onAction="#ejecutarBusqueda" promptText="Marca" styleClass="filter-combo" />
+                    <ComboBox fx:id="cbEstado" onAction="#ejecutarBusqueda" promptText="Estado" styleClass="filter-combo" />
+                    <Button fx:id="btnLimpiar" onAction="#limpiarBusqueda" styleClass="btn-secondary" text="Limpiar" />
+                    <Button fx:id="btnBuscar" onAction="#ejecutarBusqueda" styleClass="btn-primary" text="Buscar" />
                 </HBox>
 
                 <TableView fx:id="tblProductos" VBox.vgrow="ALWAYS" minHeight="150.0" styleClass="products-table">

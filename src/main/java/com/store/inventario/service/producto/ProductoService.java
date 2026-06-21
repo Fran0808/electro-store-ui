@@ -35,10 +35,23 @@ public class ProductoService {
     }
 
     public PageResponse<Producto> obtenerProductos(String search, int page, int size) {
+        return obtenerProductos(search, null, null, null, page, size);
+    }
+
+    public PageResponse<Producto> obtenerProductos(String search, String categoryName, String brand, String stockStatus, int page, int size) {
         try {
             String paginatedUrl = URL + "?page=" + page + "&size=" + size;
             if (search != null && !search.trim().isEmpty()) {
                 paginatedUrl += "&search=" + java.net.URLEncoder.encode(search.trim(), java.nio.charset.StandardCharsets.UTF_8);
+            }
+            if (categoryName != null && !categoryName.trim().isEmpty() && !"Todas".equalsIgnoreCase(categoryName.trim()) && !"Categoría".equalsIgnoreCase(categoryName.trim())) {
+                paginatedUrl += "&categoryName=" + java.net.URLEncoder.encode(categoryName.trim(), java.nio.charset.StandardCharsets.UTF_8);
+            }
+            if (brand != null && !brand.trim().isEmpty() && !"Todas".equalsIgnoreCase(brand.trim()) && !"Marca".equalsIgnoreCase(brand.trim())) {
+                paginatedUrl += "&brand=" + java.net.URLEncoder.encode(brand.trim(), java.nio.charset.StandardCharsets.UTF_8);
+            }
+            if (stockStatus != null && !stockStatus.trim().isEmpty() && !"Todos".equalsIgnoreCase(stockStatus.trim())) {
+                paginatedUrl += "&stockStatus=" + java.net.URLEncoder.encode(stockStatus.trim(), java.nio.charset.StandardCharsets.UTF_8);
             }
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(paginatedUrl))

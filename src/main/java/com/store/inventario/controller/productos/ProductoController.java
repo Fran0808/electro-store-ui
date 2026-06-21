@@ -267,18 +267,43 @@ public class ProductoController implements Initializable {
 
     private void obtenerProductos() {
         try {
-            PageResponse<Producto> response = productoService.obtenerProductos(paginaActual, tamanoPagina);
-            List<Producto> productos = response.getContent();
+            String search = (txtBuscar != null) ? txtBuscar.getText().trim() : "";
+            String category = (cbCategoria != null) ? cbCategoria.getValue() : null;
+            String brand = (cbMarca != null) ? cbMarca.getValue() : null;
+            String status = (cbEstado != null) ? cbEstado.getValue() : null;
 
-            totalPaginas = response.getTotalPages();
+            PageResponse<Producto> response = productoService.obtenerProductos(search, category, brand, status, paginaActual, tamanoPagina);
+            List<Producto> productos = (response != null && response.getContent() != null)
+                    ? response.getContent()
+                    : Collections.emptyList();
+
+            totalPaginas = (response != null) ? response.getTotalPages() : 1;
             btnAnterior.setDisable(paginaActual == 0);
             btnSiguiente.setDisable(paginaActual >= totalPaginas - 1);
 
             tblProductos.setItems(FXCollections.observableArrayList(productos));
-            actualizarPaginacion(response);
+            if (response != null) {
+                actualizarPaginacion(response);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @FXML
+    private void ejecutarBusqueda() {
+        paginaActual = 0;
+        obtenerProductos();
+    }
+
+    @FXML
+    private void limpiarBusqueda() {
+        if (txtBuscar != null) txtBuscar.clear();
+        if (cbCategoria != null) cbCategoria.setValue("Todas");
+        if (cbMarca != null) cbMarca.setValue("Todas");
+        if (cbEstado != null) cbEstado.setValue("Todos");
+        paginaActual = 0;
+        obtenerProductos();
     }
 
     private void configurarFiltros() {
