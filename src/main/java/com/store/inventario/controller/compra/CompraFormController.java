@@ -248,7 +248,7 @@ public class CompraFormController {
             String supplierCode = provSeleccionado.split(" - ")[0];
             List<CreatePurchaseDetailRequest> details = new ArrayList<>();
             for (DetalleTemporal item : listaDetalle) {
-                details.add(new CreatePurchaseDetailRequest(item.getProducto().getCode(), item.getQuantity()));
+                details.add(new CreatePurchaseDetailRequest(item.getProducto().getCode(), item.getPrecioCompra(), item.getQuantity()));
             }
 
             CreatePurchaseRequest request = new CreatePurchaseRequest(supplierCode, details);

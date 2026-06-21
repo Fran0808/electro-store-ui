@@ -1,4 +1,6 @@
 package com.store.inventario.model.compra;
 
-public record CreatePurchaseDetailRequest(String productCode, int quantity) {
+import java.math.BigDecimal;
+
+public record CreatePurchaseDetailRequest(String productCode, BigDecimal purchasePrice, int quantity) {
 }
