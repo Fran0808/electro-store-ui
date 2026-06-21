@@ -1,6 +1,7 @@
 package com.store.inventario.controller.ventas;
 
 import com.store.inventario.model.producto.Producto;
+import com.store.inventario.model.ventas.Venta;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
@@ -36,5 +37,8 @@ public class VentaDetailController {
         alert.setHeaderText(null);
         alert.setContentText("Guía exportada correctamente");
         alert.showAndWait();
+    }
+
+    public void setVenta (Venta venta){
     }
 }

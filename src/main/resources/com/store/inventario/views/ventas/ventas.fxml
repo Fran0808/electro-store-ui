@@ -72,7 +72,7 @@
                 <Button fx:id="btnBuscarVenta" styleClass="btn-primary" text="Buscar" />
             </HBox>
 
-            <TableView fx:id="tblHistorialVentas" styleClass="sales-table" VBox.vgrow="ALWAYS">
+            <TableView fx:id="tblVentas" styleClass="sales-table" VBox.vgrow="ALWAYS">
                 <columns>
                     <TableColumn fx:id="colCodigo" prefWidth="120.0" text="Código" />
                     <TableColumn fx:id="colFecha" prefWidth="140.0" text="Fecha y Hora" />
