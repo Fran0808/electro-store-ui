@@ -299,8 +299,8 @@ public class ProductoController implements Initializable {
     @FXML
     private void limpiarBusqueda() {
         if (txtBuscar != null) txtBuscar.clear();
-        if (cbCategoria != null) cbCategoria.setValue("Todas");
-        if (cbMarca != null) cbMarca.setValue("Todas");
+        if (cbCategoria != null) cbCategoria.setValue("Categoría");
+        if (cbMarca != null) cbMarca.setValue("Marca");
         if (cbEstado != null) cbEstado.setValue("Todos");
         paginaActual = 0;
         obtenerProductos();
@@ -330,28 +330,34 @@ public class ProductoController implements Initializable {
                     categoriasSet.add("Todas");
                     if (categoriesResponse != null && categoriesResponse.getContent() != null) {
                         for (com.store.inventario.model.categoria.Categoria c : categoriesResponse.getContent()) {
-                            categoriasSet.add(c.getName());
+                            if (c != null && c.getName() != null) {
+                                categoriasSet.add(c.getName());
+                            }
                         }
                     }
 
                     Set<String> marcasSet = new TreeSet<>();
                     marcasSet.add("Todas");
                     if (marcas != null) {
-                        marcasSet.addAll(marcas);
+                        for (String m : marcas) {
+                            if (m != null) {
+                                marcasSet.add(m);
+                            }
+                        }
                     }
 
                     String selectedCat = cbCategoria.getValue();
                     String selectedMarca = cbMarca.getValue();
 
                     cbCategoria.setItems(FXCollections.observableArrayList(categoriasSet));
-                    if (categoriasSet.contains(selectedCat)) {
+                    if (selectedCat != null && categoriasSet.contains(selectedCat)) {
                         cbCategoria.setValue(selectedCat);
                     } else {
                         cbCategoria.setValue("Categoría");
                     }
 
                     cbMarca.setItems(FXCollections.observableArrayList(marcasSet));
-                    if (marcasSet.contains(selectedMarca)) {
+                    if (selectedMarca != null && marcasSet.contains(selectedMarca)) {
                         cbMarca.setValue(selectedMarca);
                     } else {
                         cbMarca.setValue("Marca");
