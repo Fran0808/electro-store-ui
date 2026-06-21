@@ -27,7 +27,7 @@
                 <Label styleClass="header-subtitle" text="Visualiza, analiza y gestiona las transacciones comerciales del sistema." />
             </VBox>
             <HBox alignment="CENTER_RIGHT" spacing="12">
-                <Button fx:id="btnNuevaVenta" styleClass="btn-primary" text="Nueva Venta" onAction="#handleForm" />
+                <Button fx:id="btnNuevaVenta" styleClass="btn-primary" text="Nueva Venta" onAction="#abrirModalNuevaVenta" />
             </HBox>
         </HBox>
 
