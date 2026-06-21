@@ -90,8 +90,6 @@ public class CompraController {
             return new SimpleObjectProperty<>(total);
         });
         configurarColumnaAcciones();
-        btnAnterior.setOnAction(event -> handlePaginaAnterior());
-        btnSiguiente.setOnAction(event -> handlePaginaSiguiente());
         obtenerCompras();
     }
 
@@ -153,6 +151,7 @@ public class CompraController {
         });
     }
 
+    @FXML
     private void handlePaginaAnterior() {
         if (paginaActual > 0) {
             paginaActual--;
@@ -160,6 +159,7 @@ public class CompraController {
         }
     }
 
+    @FXML
     private void handlePaginaSiguiente() {
         if (paginaActual < totalPaginas - 1) {
             paginaActual++;

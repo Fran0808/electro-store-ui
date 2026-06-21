@@ -75,8 +75,6 @@ public class ProductoController implements Initializable {
         colGarantia.setCellValueFactory(new PropertyValueFactory<>("warrantyMonths"));
         configurarColumnaAcciones();
         configurarFiltros();
-        btnAnterior.setOnAction(event -> handlePaginaAnterior());
-        btnSiguiente.setOnAction(event -> handlePaginaSiguiente());
         refreshData();
 
         if("RECEPTION".equalsIgnoreCase(rolActual)){
@@ -246,6 +244,7 @@ public class ProductoController implements Initializable {
         colAcciones.setCellFactory(cellFactory);
     }
 
+    @FXML
     private void handlePaginaAnterior() {
         if (paginaActual > 0) {
             paginaActual--;
@@ -253,6 +252,7 @@ public class ProductoController implements Initializable {
         }
     }
 
+    @FXML
     private void handlePaginaSiguiente() {
         if (paginaActual < totalPaginas - 1) {
             paginaActual++;
