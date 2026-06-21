@@ -57,6 +57,7 @@ public class ProductoController implements Initializable {
     @FXML private Button btnGestionarCategorias;
 
     private final ProductoService productoService = new ProductoService();
+    private final com.store.inventario.service.categoria.CategoriaService categoriaService = new com.store.inventario.service.categoria.CategoriaService();
     private final String rolActual = SessionManager.getInstance().getRole();
     private int paginaActual = 0;
     private final int tamanoPagina = 20;
@@ -76,7 +77,7 @@ public class ProductoController implements Initializable {
         configurarFiltros();
         btnAnterior.setOnAction(event -> handlePaginaAnterior());
         btnSiguiente.setOnAction(event -> handlePaginaSiguiente());
-        obtenerProductos();
+        refreshData();
 
         if("RECEPTION".equalsIgnoreCase(rolActual)){
             btnNuevoProducto.setVisible(false);
@@ -100,12 +101,12 @@ public class ProductoController implements Initializable {
         modal.setScene(new Scene(root));
         modal.showAndWait();
 
-        obtenerProductos();
+        refreshData();
     }
 
     @FXML
     private void handleActualizar() {
-        obtenerProductos();
+        refreshData();
     }
 
     @FXML
@@ -120,7 +121,7 @@ public class ProductoController implements Initializable {
             modal.setScene(new Scene(root));
             modal.showAndWait();
 
-            obtenerProductos();
+            refreshData();
         } catch (Exception e) {
             e.printStackTrace();
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -145,7 +146,7 @@ public class ProductoController implements Initializable {
             modal.setScene(new Scene(root));
             modal.showAndWait();
 
-            obtenerProductos();
+            refreshData();
         } catch (Exception e) {
             e.printStackTrace();
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -175,7 +176,7 @@ public class ProductoController implements Initializable {
                     exito.setContentText("El producto se ha eliminado correctamente.");
                     exito.showAndWait();
 
-                    obtenerProductos();
+                    refreshData();
                 } catch (Exception e) {
                     e.printStackTrace();
                     Alert error = new Alert(Alert.AlertType.ERROR);
@@ -259,6 +260,11 @@ public class ProductoController implements Initializable {
         }
     }
 
+    private void refreshData() {
+        obtenerProductos();
+        cargarMetricasYFiltrosGlobales();
+    }
+
     private void obtenerProductos() {
         try {
             PageResponse<Producto> response = productoService.obtenerProductos(paginaActual, tamanoPagina);
@@ -269,10 +275,6 @@ public class ProductoController implements Initializable {
             btnSiguiente.setDisable(paginaActual >= totalPaginas - 1);
 
             tblProductos.setItems(FXCollections.observableArrayList(productos));
-
-            actualizarFiltrosDinamicos(productos);
-
-            actualizarMetricas(response, productos);
             actualizarPaginacion(response);
         } catch (Exception e) {
             e.printStackTrace();
@@ -284,44 +286,56 @@ public class ProductoController implements Initializable {
         cbEstado.setValue("Todos");
     }
 
-    private void actualizarFiltrosDinamicos(List<Producto> productos) {
-        // Extraer categorías únicas
-        Set<String> categoriasSet = new TreeSet<>();
-        categoriasSet.add("Todas");
-        // Extraer marcas únicas
-        Set<String> marcasSet = new TreeSet<>();
-        marcasSet.add("Todas");
+    private void cargarMetricasYFiltrosGlobales() {
+        new Thread(() -> {
+            try {
+                com.store.inventario.model.producto.ProductMetrics metrics = productoService.obtenerMetricas();
+                PageResponse<com.store.inventario.model.categoria.Categoria> categoriesResponse = categoriaService.obtenerCategorias();
+                List<String> marcas = productoService.obtenerMarcas();
 
-        for (Producto p : productos) {
-            if (p.getCategoryName() != null) categoriasSet.add(p.getCategoryName());
-            if (p.getBrand() != null) marcasSet.add(p.getBrand());
-        }
+                javafx.application.Platform.runLater(() -> {
+                    if (metrics != null) {
+                        lblTotalProductos.setText(String.valueOf(metrics.getTotalProducts()));
+                        lblStockBajo.setText(String.valueOf(metrics.getLowStockCount()));
+                        lblAgotados.setText(String.valueOf(metrics.getOutOfStockCount()));
+                        lblCategorias.setText(String.valueOf(metrics.getTotalCategories()));
+                    }
 
-        cbCategoria.setItems(FXCollections.observableArrayList(categoriasSet));
-        cbCategoria.setValue("Categoría");
+                    Set<String> categoriasSet = new TreeSet<>();
+                    categoriasSet.add("Todas");
+                    if (categoriesResponse != null && categoriesResponse.getContent() != null) {
+                        for (com.store.inventario.model.categoria.Categoria c : categoriesResponse.getContent()) {
+                            categoriasSet.add(c.getName());
+                        }
+                    }
 
-        cbMarca.setItems(FXCollections.observableArrayList(marcasSet));
-        cbMarca.setValue("Marca");
-    }
+                    Set<String> marcasSet = new TreeSet<>();
+                    marcasSet.add("Todas");
+                    if (marcas != null) {
+                        marcasSet.addAll(marcas);
+                    }
 
-    private void actualizarMetricas(PageResponse<Producto> response, List<Producto> productos) {
-        lblTotalProductos.setText(String.valueOf(response.getTotalElements()));
+                    String selectedCat = cbCategoria.getValue();
+                    String selectedMarca = cbMarca.getValue();
 
-        long stockBajo = productos.stream()
-                .filter(p -> p.getStock() != null && p.getStock() > 0 && p.getStock() < 10)
-                .count();
-        lblStockBajo.setText(String.valueOf(stockBajo));
+                    cbCategoria.setItems(FXCollections.observableArrayList(categoriasSet));
+                    if (categoriasSet.contains(selectedCat)) {
+                        cbCategoria.setValue(selectedCat);
+                    } else {
+                        cbCategoria.setValue("Categoría");
+                    }
 
-        long agotados = productos.stream()
-                .filter(p -> p.getStock() != null && p.getStock() == 0)
-                .count();
-        lblAgotados.setText(String.valueOf(agotados));
-
-        long categorias = productos.stream()
-                .map(Producto::getCategoryName)
-                .distinct()
-                .count();
-        lblCategorias.setText(String.valueOf(categorias));
+                    cbMarca.setItems(FXCollections.observableArrayList(marcasSet));
+                    if (marcasSet.contains(selectedMarca)) {
+                        cbMarca.setValue(selectedMarca);
+                    } else {
+                        cbMarca.setValue("Marca");
+                    }
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }).start();
     }
 
     private void actualizarPaginacion(PageResponse<Producto> activeResponse) {

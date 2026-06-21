@@ -4,6 +4,7 @@ import com.store.inventario.model.PageResponse;
 import com.store.inventario.model.producto.CreateProductRequest;
 import com.store.inventario.model.producto.UpdateProductRequest;
 import com.store.inventario.model.producto.Producto;
+import com.store.inventario.model.producto.ProductMetrics;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.store.inventario.security.SessionManager;
@@ -112,6 +113,45 @@ public class ProductoService {
             if (response.statusCode() >= 400) {
                 throw new RuntimeException("Error al eliminar producto: HTTP " + response.statusCode());
             }
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public ProductMetrics obtenerMetricas() {
+        try {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(URL + "/metrics"))
+                    .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
+                    .GET()
+                    .build();
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() >= 400) {
+                throw new RuntimeException("Error al obtener métricas de productos: HTTP " + response.statusCode());
+            }
+
+            return gson.fromJson(response.body(), ProductMetrics.class);
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public java.util.List<String> obtenerMarcas() {
+        try {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(URL + "/brands"))
+                    .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
+                    .GET()
+                    .build();
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() >= 400) {
+                throw new RuntimeException("Error al obtener marcas: HTTP " + response.statusCode());
+            }
+
+            java.lang.reflect.Type type = new com.google.gson.reflect.TypeToken<java.util.List<String>>() {}.getType();
+            return gson.fromJson(response.body(), type);
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
