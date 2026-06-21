@@ -51,6 +51,9 @@ public class CompraController {
     @FXML private Label lblProveedorFrecuente;
     @FXML private Label lblProveedorFrecuenteCompras;
 
+    private int paginaActual = 0;
+    private final int tamanoPagina = 20;
+    private int totalPaginas = 1;
     private final CompraService compraService = new CompraService();
 
     @FXML
@@ -87,7 +90,8 @@ public class CompraController {
             return new SimpleObjectProperty<>(total);
         });
         configurarColumnaAcciones();
-
+        btnAnterior.setOnAction(event -> handlePaginaAnterior());
+        btnSiguiente.setOnAction(event -> handlePaginaSiguiente());
         obtenerCompras();
     }
 
@@ -149,6 +153,20 @@ public class CompraController {
         });
     }
 
+    private void handlePaginaAnterior() {
+        if (paginaActual > 0) {
+            paginaActual--;
+            obtenerCompras();
+        }
+    }
+
+    private void handlePaginaSiguiente() {
+        if (paginaActual < totalPaginas - 1) {
+            paginaActual++;
+            obtenerCompras();
+        }
+    }
+
     private void obtenerCompras() {
         String search = (txtBuscarCompra != null) ? txtBuscarCompra.getText().trim() : "";
         obtenerComprasConFiltro(search);
@@ -156,7 +174,7 @@ public class CompraController {
 
     private void obtenerComprasConFiltro(String search) {
         try {
-            PageResponse<Compra> response = compraService.obtenerCompra(search);
+            PageResponse<Compra> response = compraService.obtenerCompra(search, paginaActual, tamanoPagina);
             List<Compra> compras = (response != null && response.getContent() != null) 
                     ? response.getContent() 
                     : Collections.emptyList();
@@ -164,17 +182,21 @@ public class CompraController {
             tblCompras.setItems(FXCollections.observableArrayList(compras));
             actualizarCartillasGenerales(compras);
 
+            totalPaginas = response != null ? response.getTotalPages() : 1;
+            btnAnterior.setDisable(paginaActual == 0);
+            btnSiguiente.setDisable(paginaActual >= totalPaginas - 1);
+
             if (lblResumenPaginacion != null && response != null) {
                 long total = response.getTotalElements();
-                int paginaActual = response.getNumber();
+                int pageNum = response.getNumber();
                 int pageSize = response.getSize();
                 
                 if (total == 0) {
                     lblResumenPaginacion.setText("No hay compras para mostrar");
                 } else {
-                    long desde = (long) paginaActual * pageSize + 1;
+                    long desde = (long) pageNum * pageSize + 1;
                     long hasta = Math.min(desde + pageSize - 1, total);
-                    lblResumenPaginacion.setText("Mostrando " + desde + "-" + hasta + " de " + total + " compras");
+                    lblResumenPaginacion.setText("Mostrando " + desde + "-" + hasta + " de " + total + " compras (Página " + (pageNum + 1) + " de " + totalPaginas + ")");
                 }
             }
 
@@ -183,7 +205,7 @@ public class CompraController {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText("No se pudieron obtener las compras");
-            alert.setContentText("Ocurrió un error al cargar el listado de compras desde el servidor.");
+            alert.setContentText("Ocurrió un error al cargar el listado de compras desde el servidor: " + e.getMessage());
             alert.showAndWait();
         }
     }

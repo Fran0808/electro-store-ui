@@ -27,14 +27,18 @@ public class CompraService {
     }
 
     public PageResponse<Compra> obtenerCompra() {
-        return obtenerCompra("");
+        return obtenerCompra("", 0, 20);
     }
 
     public PageResponse<Compra> obtenerCompra(String search) {
+        return obtenerCompra(search, 0, 20);
+    }
+
+    public PageResponse<Compra> obtenerCompra(String search, int page, int size) {
         try {
-            String urlString = URL;
+            String urlString = URL + "?page=" + page + "&size=" + size;
             if (search != null && !search.trim().isEmpty()) {
-                urlString += "?search=" + java.net.URLEncoder.encode(search.trim(), java.nio.charset.StandardCharsets.UTF_8);
+                urlString += "&search=" + java.net.URLEncoder.encode(search.trim(), java.nio.charset.StandardCharsets.UTF_8);
             }
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(urlString))
