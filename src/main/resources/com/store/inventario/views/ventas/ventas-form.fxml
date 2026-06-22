@@ -64,7 +64,7 @@
                             <TextField fx:id="txtCantidad" promptText="Cant." styleClass="search-field"/>
                         </VBox>
 
-                        <Button fx:id="btnAgregarProducto" onAction="#handleAgregarProducto" styleClass="btn-primary" text="Añadir" prefHeight="38.0"/>
+                        <Button fx:id="btnAgregarProducto" onAction="#agregarProductoALaLista" styleClass="btn-primary" text="Añadir" prefHeight="38.0"/>
                     </HBox>
                 </VBox>
             </VBox>
@@ -98,7 +98,7 @@
                         <TableColumn prefWidth="110.0" text="Precio Unit." fx:id="colDetPrecio"/>
                         <TableColumn prefWidth="80.0" text="Cant." fx:id="colDetCantidad"/>
                         <TableColumn prefWidth="110.0" text="Subtotal" fx:id="colDetSubtotal"/>
-                        <TableColumn prefWidth="80.0" text="Acción" fx:id="colDetAcciones"/>
+                        <TableColumn prefWidth="80.0" text="Acción" fx:id="colEliminar"/>
                     </columns>
                 </TableView>
 
@@ -110,8 +110,8 @@
         </HBox>
 
         <HBox alignment="CENTER_RIGHT" spacing="12.0">
-            <Button fx:id="btnCancelar" onAction="#handleCancelar" styleClass="btn-secondary" text="Cancelar"/>
-            <Button fx:id="btnRegistrarVenta" onAction="#handleRegistrarVenta" styleClass="btn-primary" text="Registrar Venta"/>
+            <Button fx:id="btnCancelar" onAction="#cerrarModal" styleClass="btn-secondary" text="Cancelar"/>
+            <Button fx:id="btnRegistrarVenta" onAction="#registrarVenta" styleClass="btn-primary" text="Registrar Venta"/>
         </HBox>
 
     </VBox>

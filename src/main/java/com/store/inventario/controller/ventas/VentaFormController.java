@@ -1,198 +1,296 @@
 package com.store.inventario.controller.ventas;
 
+import com.store.inventario.model.PageResponse;
+import com.store.inventario.model.clientes.Cliente;
+import com.store.inventario.model.producto.Producto;
+import com.store.inventario.model.ventas.CreateSaleDetailRequest;
+import com.store.inventario.model.ventas.CreateSaleRequest;
+import com.store.inventario.security.SessionManager;
+import com.store.inventario.service.clientes.ClienteService;
+import com.store.inventario.service.producto.ProductoService;
+import com.store.inventario.service.venta.VentaService;
+import javafx.application.Platform;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.Spinner;
-import javafx.scene.control.SpinnerValueFactory;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.geometry.Pos;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+import javafx.util.Callback;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class VentaFormController {
-    @FXML private TextField txtClienteBuscar;
-    @FXML private Button btnBuscarCliente;
-    @FXML private Button btnAgregarProducto;
-    @FXML private Button btnRegistrarVenta;
-    @FXML private TextField txtCodigoVenta;
-    @FXML private TextField cbCliente;
+
+    @FXML private TextField txtFecha;
+    @FXML private ComboBox<String> cbCliente;
     @FXML private TextField txtVendedor;
-    @FXML private DatePicker dpFechaVenta;
-    @FXML private TextField cbProducto;
-    @FXML private Spinner<Integer> spnCantidad;
-    @FXML private TextField txtPrecioUnitario;
-    @FXML private TableView<DetalleVenta> tblDetalleVenta;
-    @FXML private TableColumn<DetalleVenta, String> colDetCodigo;
-    @FXML private TableColumn<DetalleVenta, String> colDetProducto;
-    @FXML private TableColumn<DetalleVenta, String> colDetPrecio;
-    @FXML private TableColumn<DetalleVenta, Integer> colDetCantidad;
-    @FXML private TableColumn<DetalleVenta, String> colDetSubtotal;
-    @FXML private TableColumn<DetalleVenta, Void> colDetAcciones;
+
+    // Controles para el catálogo de productos
+    @FXML private TableColumn<Producto, String> colCatCodigo;
+    @FXML private TableView<Producto> tblProductos;
+    @FXML private TableColumn<Producto, String> colCatNombre;
+    @FXML private TableColumn<Producto, Integer> colCatStock;
+    @FXML private TableColumn<Producto, BigDecimal> colCatPrecio;
+    @FXML private Label lblProductoSeleccionado;
+    @FXML private TextField txtCantidad;
+    @FXML private TextField txtPrecioVenta;
+    @FXML private TextField txtBuscarProducto;
+
+    // Controles para el detalle de la venta
+    @FXML private TableView<VentaFormController.DetalleTemporal> tblDetalleVenta;
+    @FXML private TableColumn<DetalleTemporal, String> colDetProducto;
+    @FXML private TableColumn<DetalleTemporal, BigDecimal> colDetPrecio;
+    @FXML private TableColumn<DetalleTemporal, Integer> colDetCantidad;
+    @FXML private TableColumn<DetalleTemporal, BigDecimal> colDetSubtotal;
+    @FXML private TableColumn<DetalleTemporal, Void> colEliminar;
     @FXML private Label lblTotalVenta;
     @FXML private Button btnCancelar;
 
-    private final ObservableList<DetalleVenta> detalleVentaList = FXCollections.observableArrayList();
+    private ClienteService clienteService = new ClienteService();
+    private ProductoService productoService = new ProductoService();
+    private VentaService ventaService = new VentaService();
+
+    private final ObservableList<Producto> listaCatalogProductos = FXCollections.observableArrayList();
+    private final ObservableList<VentaFormController.DetalleTemporal> listaDetalle = FXCollections.observableArrayList();
+
+    public static class DetalleTemporal {
+        private final Producto producto;
+        private final BigDecimal precioVenta;
+        private final int cantidad;
+
+        public DetalleTemporal(Producto producto, BigDecimal precioVenta, int cantidad) {
+            this.producto = producto;
+            this.precioVenta = precioVenta;
+            this.cantidad = cantidad;
+        }
+
+        public Producto getProducto() {
+            return producto;
+        }
+        public String getNombreProducto() {
+            return producto != null ? producto.getName() : "";
+        }
+        public BigDecimal getPrecioVenta() {
+            return precioVenta;
+        }
+        public int getQuantity() {
+            return cantidad;
+        }
+        public BigDecimal getSubtotal() {
+            return precioVenta != null ? precioVenta.multiply(BigDecimal.valueOf(cantidad)) : BigDecimal.ZERO;
+        }
+    }
 
     @FXML
     public void initialize() {
-        com.store.inventario.utils.ValidationUtils.hacerSoloDecimal(txtPrecioUnitario, 8, 2);
+        String user = SessionManager.getInstance().getUsername();
+        txtVendedor.setText(user != null && !user.isEmpty()
+                ? user.substring(0, 1).toUpperCase() + user.substring(1)
+                : "Sesión Activa");
+        txtFecha.setText(LocalDate.now().toString());
 
-        dpFechaVenta.setValue(java.time.LocalDate.now());
-        spnCantidad.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 100, 1));
+        colCatCodigo.setCellValueFactory(new PropertyValueFactory<>("code"));
+        colCatNombre.setCellValueFactory(new PropertyValueFactory<>("name"));
+        colCatStock.setCellValueFactory(new PropertyValueFactory<>("stock"));
+        colCatPrecio.setCellValueFactory(new PropertyValueFactory<>("salePrice"));
 
-        colDetCodigo.setCellValueFactory(new PropertyValueFactory<>("codigo"));
-        colDetProducto.setCellValueFactory(new PropertyValueFactory<>("producto"));
-        colDetPrecio.setCellValueFactory(new PropertyValueFactory<>("precio"));
-        colDetCantidad.setCellValueFactory(new PropertyValueFactory<>("cantidad"));
+        colDetProducto.setCellValueFactory(cellData ->
+                new SimpleStringProperty(cellData.getValue().getNombreProducto()));
+        colDetPrecio.setCellValueFactory(new PropertyValueFactory<>("precioVenta"));
+        colDetCantidad.setCellValueFactory(new PropertyValueFactory<>("quantity"));
         colDetSubtotal.setCellValueFactory(new PropertyValueFactory<>("subtotal"));
 
-        tblDetalleVenta.setItems(detalleVentaList);
-        colDetAcciones.setCellFactory(param -> new TableCell<>() {
-            private final Button btnEliminar = new Button("Eliminar");
+        configurarColumnaEliminar();
 
-            {
-                btnEliminar.getStyleClass().add("btn-secondary");
-                btnEliminar.setOnAction(event -> {
-                    DetalleVenta detalle = getTableView().getItems().get(getIndex());
-                    detalleVentaList.remove(detalle);
-                    actualizarTotal();
-                });
-            }
+        tblDetalleVenta.setItems(listaDetalle);
+        tblProductos.setItems(listaCatalogProductos);
 
-            @Override
-            protected void updateItem(Void item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty) {
-                    setGraphic(null);
+        tblProductos.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                lblProductoSeleccionado.setText("Producto: " + newSelection.getName() + " (" + newSelection.getCode() + ")");
+                txtCantidad.setText("1");
+                if (newSelection.getSalePrice() != null) {
+                    txtPrecioVenta.setText(newSelection.getSalePrice().setScale(2, RoundingMode.HALF_UP).toString());
                 } else {
-                    setGraphic(btnEliminar);
+                    txtPrecioVenta.clear();
                 }
+            } else {
+                lblProductoSeleccionado.setText("Seleccione un producto del catálogo...");
+                txtCantidad.clear();
+                txtPrecioVenta.clear();
             }
         });
 
-        actualizarTotal();
+        cargarClientes();
+        cargarProductos("");
+        txtPrecioVenta.setEditable(false);
     }
 
-    @FXML
-    private void handleAgregarProducto() {
-        if (cbProducto.getText().isEmpty() || txtPrecioUnitario.getText().isEmpty()) {
-            mostrarAlerta(Alert.AlertType.WARNING, "Campos incompletos", "Seleccione un producto y escriba un precio");
-            return;
-        }
-
-        String productoSeleccionado = cbProducto.getText();
-        String codigoProducto = extraerCodigo(productoSeleccionado);
-        int cantidad = spnCantidad.getValue();
-        double precio;
-
-        try {
-            precio = Double.parseDouble(txtPrecioUnitario.getText().trim());
-            if (precio <= 0) {
-                throw new NumberFormatException();
+    private void cargarClientes() {
+        Platform.runLater(() -> {
+            try {
+                PageResponse<Cliente> response = clienteService.listar(0, 100);
+                if (response != null && response.getContent() != null) {
+                    for (Cliente clie : response.getContent()) {
+                        cbCliente.getItems().add(clie.getCode() + " - " + clie.getPerson().getFullName());
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        } catch (NumberFormatException ex) {
-            mostrarAlerta(Alert.AlertType.WARNING, "Precio inválido", "Ingrese un precio válido mayor que cero");
+        });
+    }
+
+    private void cargarProductos(String search) {
+        Platform.runLater(() -> {
+            try {
+                PageResponse<Producto> response = productoService.obtenerProductos(search, 0, 100);
+                if (response != null && response.getContent() != null) {
+                    listaCatalogProductos.setAll(response.getContent());
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    @FXML
+    private void ejecutarBusquedaLocal() {
+        String query = txtBuscarProducto.getText();
+        cargarProductos(query != null ? query.trim() : "");
+    }
+
+    @FXML
+    private void agregarProductoALaLista() {
+        Producto selected = tblProductos.getSelectionModel().getSelectedItem();
+        if (selected == null) {
+            mostrarAlerta("Campos requeridos", "Debe seleccionar un producto del catálogo de la izquierda.");
             return;
         }
 
-        DetalleVenta detalle = new DetalleVenta(codigoProducto, productoSeleccionado, String.format("S/ %.2f", precio), cantidad, String.format("S/ %.2f", precio * cantidad));
-        detalleVentaList.add(detalle);
-        tblDetalleVenta.refresh();
+        String cantStr = txtCantidad.getText();
+        int cantidad;
+        try {
+            cantidad = Integer.parseInt(cantStr.trim());
+            if (cantidad <= 0) throw new NumberFormatException();
+        } catch (NumberFormatException e) {
+            mostrarAlerta("Error", "Cantidad inválida. Debe ser un número entero mayor a 0.");
+            return;
+        }
+
+        String precioStr = txtPrecioVenta.getText();
+        BigDecimal precio;
+        try {
+            precio = new BigDecimal(precioStr.trim());
+            if (precio.compareTo(BigDecimal.ZERO) <= 0) throw new NumberFormatException();
+        } catch (NumberFormatException e) {
+            mostrarAlerta("Error", "Precio unitario de venta inválido. Debe ser un número mayor a 0.");
+            return;
+        }
+
+        listaDetalle.removeIf(d -> d.getProducto().getCode().equals(selected.getCode()));
+        listaDetalle.add(new VentaFormController.DetalleTemporal(selected, precio, cantidad));
         actualizarTotal();
-
-        cbProducto.clear();
-        spnCantidad.getValueFactory().setValue(1);
-        txtPrecioUnitario.clear();
+        tblProductos.getSelectionModel().clearSelection();
     }
 
-    @FXML
-    private void handleRegistrarVenta() {
-        if (cbCliente.getText().isEmpty() || txtVendedor.getText().isEmpty() || dpFechaVenta.getValue() == null) {
-            mostrarAlerta(Alert.AlertType.WARNING, "Campos obligatorios", "Complete el cliente, el vendedor y todos los datos requeridos.");
-            return;
-        }
+    private void configurarColumnaEliminar() {
+        colEliminar.setCellFactory(new Callback<>() {
+            @Override
+            public TableCell<VentaFormController.DetalleTemporal, Void> call(TableColumn<VentaFormController.DetalleTemporal, Void> param) {
+                return new TableCell<>() {
+                    private final Button btnEliminar = new Button("Quitar");
+                    private final HBox contenedor = new HBox(btnEliminar);
 
-        if (detalleVentaList.isEmpty()) {
-            mostrarAlerta(Alert.AlertType.WARNING, "Detalle vacío", "Agregue al menos un producto para registrar la venta.");
-            return;
-        }
+                    {
+                        btnEliminar.getStyleClass().add("btn-acciones");
+                        contenedor.setAlignment(Pos.CENTER);
 
-        Stage stage = (Stage) btnCancelar.getScene().getWindow();
-        stage.close();
-    }
+                        btnEliminar.setOnAction(event -> {
+                            VentaFormController.DetalleTemporal selected = getTableView().getItems().get(getIndex());
+                            listaDetalle.remove(selected);
+                            actualizarTotal();
+                        });
+                    }
 
-    @FXML
-    private void handleCancelar() {
-        Stage stage = (Stage) btnCancelar.getScene().getWindow();
-        stage.close();
+                    @Override
+                    protected void updateItem(Void item, boolean empty) {
+                        super.updateItem(item, empty);
+                        setGraphic(empty ? null : contenedor);
+                    }
+                };
+            }
+        });
     }
 
     private void actualizarTotal() {
-        double total = detalleVentaList.stream()
-                .mapToDouble(detalle -> {
-                    String subtotalText = detalle.getSubtotal().replace("S/", "").trim();
-                    return Double.parseDouble(subtotalText);
-                })
-                .sum();
-        lblTotalVenta.setText(String.format("S/ %.2f", total));
-    }
-
-    private String extraerCodigo(String producto) {
-        if (producto != null && producto.contains(" - ")) {
-            return producto.split(" - ", 2)[0];
+        BigDecimal total = BigDecimal.ZERO;
+        for (VentaFormController.DetalleTemporal item : listaDetalle) {
+            total = total.add(item.getSubtotal());
         }
-        return "";
+        lblTotalVenta.setText("S/ " + total.setScale(2, RoundingMode.HALF_UP).toString());
     }
 
-    private void mostrarAlerta(Alert.AlertType tipo, String titulo, String mensaje) {
-        Alert alert = new Alert(tipo);
+    @FXML
+    private void registrarVenta() {
+        String clienteSeleccionado = cbCliente.getValue();
+        if (clienteSeleccionado == null || clienteSeleccionado.isEmpty()) {
+            mostrarAlerta("Campos requeridos", "Debe seleccionar un Cliente.");
+            return;
+        }
+
+        if (listaDetalle.isEmpty()) {
+            mostrarAlerta("Tabla vacía", "Debe agregar al menos un producto a la venta.");
+            return;
+        }
+
+        try {
+            String clientCode = clienteSeleccionado.split(" - ")[0];
+            List<CreateSaleDetailRequest> details = new ArrayList<>();
+            for (VentaFormController.DetalleTemporal item : listaDetalle) {
+                details.add(new CreateSaleDetailRequest(item.getProducto().getCode(), item.getQuantity()));
+            }
+
+            CreateSaleRequest request = new CreateSaleRequest(clientCode, details);
+            ventaService.crearVenta(request);
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Éxito");
+            alert.setHeaderText("Venta Registrada");
+            alert.setContentText("La venta se ha registrado y el stock de los productos ha disminuído.");
+            alert.showAndWait();
+            cerrarModal();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Alert error = new Alert(Alert.AlertType.ERROR);
+            error.setTitle("Error");
+            error.setHeaderText("No se pudo registrar la venta");
+            error.setContentText("Ocurrió un error al registrar la transacción: " + e.getMessage());
+            error.showAndWait();
+        }
+    }
+
+    @FXML
+    private void cerrarModal() {
+        Stage stage = (Stage) btnCancelar.getScene().getWindow();
+        stage.close();
+    }
+
+    private void mostrarAlerta(String titulo, String mensaje) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle(titulo);
         alert.setHeaderText(null);
         alert.setContentText(mensaje);
         alert.showAndWait();
     }
 
-    public static class DetalleVenta {
-        private final String codigo;
-        private final String producto;
-        private final String precio;
-        private final int cantidad;
-        private final String subtotal;
-
-        public DetalleVenta(String codigo, String producto, String precio, int cantidad, String subtotal) {
-            this.codigo = codigo;
-            this.producto = producto;
-            this.precio = precio;
-            this.cantidad = cantidad;
-            this.subtotal = subtotal;
-        }
-
-        public String getCodigo() {
-            return codigo;
-        }
-
-        public String getProducto() {
-            return producto;
-        }
-
-        public String getPrecio() {
-            return precio;
-        }
-
-        public int getCantidad() {
-            return cantidad;
-        }
-
-        public String getSubtotal() {
-            return subtotal;
-        }
-    }
 }

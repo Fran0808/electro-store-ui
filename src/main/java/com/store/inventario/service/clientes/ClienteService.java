@@ -25,6 +25,30 @@ public class ClienteService {
         gson = new Gson();
     }
 
+    public PageResponse<Cliente> listar(int page, int size) {
+        try {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(URL + "?page=" + page + "&size=" + size))
+                    .header("Authorization",
+                            "Bearer " + SessionManager.getInstance().getToken())
+                    .GET()
+                    .build();
+
+            HttpResponse<String> response =
+                    client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() >= 400) {
+                throw new RuntimeException("Error al obtener clientes: HTTP " + response.statusCode());
+            }
+
+            Type type = new TypeToken<PageResponse<Cliente>>() {}.getType();
+            return gson.fromJson(response.body(), type);
+
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public PageResponse<Cliente> obtenerClientes() {
         try{
             HttpRequest request = HttpRequest.newBuilder()

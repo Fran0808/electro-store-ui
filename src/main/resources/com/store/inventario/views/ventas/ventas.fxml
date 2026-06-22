@@ -27,7 +27,7 @@
                 <Label styleClass="header-subtitle" text="Visualiza, analiza y gestiona las transacciones comerciales del sistema." />
             </VBox>
             <HBox alignment="CENTER_RIGHT" spacing="12">
-                <Button fx:id="btnNuevaVenta" styleClass="btn-primary" text="Nueva Venta" onAction="#handleForm" />
+                <Button fx:id="btnNuevaVenta" styleClass="btn-primary" text="Nueva Venta" onAction="#abrirModalNuevaVenta" />
             </HBox>
         </HBox>
 
@@ -65,14 +65,13 @@
             </HBox>
 
             <HBox alignment="CENTER_LEFT" spacing="12" styleClass="search-container">
-                <TextField fx:id="txtBuscarVenta" HBox.hgrow="ALWAYS" promptText="Buscar ventas por cliente o código..." styleClass="search-field" />
-                <ComboBox fx:id="cbVendedor" promptText="Vendedor" styleClass="filter-combo" />
-                <ComboBox fx:id="cbRangoFecha" promptText="Fecha" styleClass="filter-combo" />
-                <Button fx:id="btnLimpiarVenta" styleClass="btn-secondary" text="Limpiar" />
-                <Button fx:id="btnBuscarVenta" styleClass="btn-primary" text="Buscar" />
+                <TextField fx:id="txtBuscarVenta" HBox.hgrow="ALWAYS" promptText="Buscar ventas por cliente o código..." styleClass="search-field" onAction="#ejecutarBusqueda"/>
+                <ComboBox fx:id="cbVendedor" promptText="Vendedor" styleClass="filter-combo" onAction="#filtrarVentas"/>
+                <ComboBox fx:id="cbRangoFecha" promptText="Fecha" styleClass="filter-combo" onAction="#filtrarVentas"/>
+                <Button fx:id="btnLimpiarVenta" styleClass="btn-secondary" text="Limpiar" onAction="#limpiarFiltros"/>
             </HBox>
 
-            <TableView fx:id="tblHistorialVentas" styleClass="sales-table" VBox.vgrow="ALWAYS">
+            <TableView fx:id="tblVentas" styleClass="sales-table" VBox.vgrow="ALWAYS">
                 <columns>
                     <TableColumn fx:id="colCodigo" prefWidth="120.0" text="Código" />
                     <TableColumn fx:id="colFecha" prefWidth="140.0" text="Fecha y Hora" />
