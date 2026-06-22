@@ -25,6 +25,7 @@ import javafx.util.Callback;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -52,6 +53,8 @@ public class VentaController {
     @FXML private TableColumn<Venta, Void> colAcciones;
 
     private final VentaService ventaService = new VentaService();
+    private List<Venta> ventasOriginales = Collections.emptyList();
+    private List<Venta> ventasFiltradas = Collections.emptyList();
 
     @FXML
     public void initialize() {
@@ -85,6 +88,8 @@ public class VentaController {
             return new SimpleObjectProperty<>(total);
         });
         configurarColumnaAcciones();
+        cbRangoFecha.setItems(FXCollections.observableArrayList("Todas","Hoy", "Esta semana", "Este mes"));
+        cbRangoFecha.getSelectionModel().selectFirst();
         obtenerVentas();
     }
 
@@ -150,6 +155,9 @@ public class VentaController {
         try {
             PageResponse<Venta> response = ventaService.obtenerVenta(search);
             List<Venta> ventas = (response != null && response.getContent() != null) ? response.getContent() : Collections.emptyList();
+            ventasOriginales = ventas;
+            ventasFiltradas = ventas;
+            cargarVendedores();
             tblVentas.setItems(FXCollections.observableArrayList(ventas));
             actualizarCartillasGenerales(ventas);
             if (lblResumenPaginacion != null && response != null) {
@@ -177,6 +185,11 @@ public class VentaController {
     @FXML
     private void ejecutarBusqueda() {
         obtenerVentas();
+    }
+
+    @FXML
+    private void filtrarVentas() {
+        aplicarFiltrosLocales();
     }
 
     private void actualizarCartillasGenerales(List<Venta> ventas) {
@@ -218,6 +231,44 @@ public class VentaController {
         if (lblVendidoHoy != null) {
             lblVendidoHoy.setText("S/ " + vendidoHoy);
         }
+    }
+
+    private void aplicarFiltrosLocales() {
+        String vendedor = cbVendedor.getValue();
+        String rangoFecha = cbRangoFecha.getValue();
+        LocalDate hoy = LocalDate.now();
+        List<Venta> resultado = ventasOriginales.stream().filter(v -> {
+            if(vendedor == null || vendedor.equals("Todos")) return true;
+            return v.getUser() != null && vendedor.equals(v.getUser().getUsername());
+        }).filter(v -> {
+            if(rangoFecha == null || rangoFecha.equals("Todas")) return true;
+            LocalDate fechaVenta = LocalDateTime.parse(v.getSaleDate()).toLocalDate();
+            switch (rangoFecha) {
+                case "Hoy": return fechaVenta.equals(hoy);
+                case "Esta semana": return !fechaVenta.isBefore(hoy.with(DayOfWeek.MONDAY));
+                case "Este mes": return fechaVenta.getMonth() == hoy.getMonth() && fechaVenta.getYear() == hoy.getYear();
+                default: return true;
+            }
+        }).toList();
+
+        ventasFiltradas = resultado;
+        tblVentas.setItems(FXCollections.observableArrayList(resultado));
+        actualizarCartillasGenerales(resultado);
+    }
+
+    private void cargarVendedores() {
+        cbVendedor.getItems().clear();
+        cbVendedor.getItems().add("Todos");
+        ventasOriginales.stream().map(v -> v.getUser().getUsername()).distinct().sorted().forEach(cbVendedor.getItems()::add);
+        cbVendedor.getSelectionModel().selectFirst();
+    }
+
+    @FXML
+    private void limpiarFiltros() {
+        txtBuscarVenta.clear();
+        cbVendedor.getSelectionModel().select("Todos");
+        cbRangoFecha.getSelectionModel().select("Todas");
+        obtenerVentas();
     }
 
     @FXML
