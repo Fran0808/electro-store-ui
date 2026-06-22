@@ -773,4 +773,17 @@
     -fx-background-radius: 6px;
 }
 
-
+.btn-icon-toggle {
+    -fx-background-color: transparent;
+    -fx-cursor: hand;
+    -fx-padding: 0;
+    -fx-background-insets: 0;
+}
+.btn-icon-toggle:hover {
+    -fx-opacity: 0.75;
+}
+.btn-icon-toggle:focused {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
+}
