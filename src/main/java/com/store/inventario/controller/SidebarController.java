@@ -92,14 +92,10 @@ public class SidebarController {
         new Thread(() -> {
             try {
                 com.store.inventario.service.producto.ProductoService service = new com.store.inventario.service.producto.ProductoService();
-                com.store.inventario.model.PageResponse<com.store.inventario.model.producto.Producto> response = service.obtenerProductos(0, 1000);
-                long count = response.getContent().stream()
-                        .filter(p -> {
-                            int stock = p.getStock() != null ? p.getStock() : 0;
-                            int limit = p.getLowStock() != null ? p.getLowStock() : 5;
-                            return stock <= limit;
-                        })
-                        .count();
+
+                com.store.inventario.model.producto.ProductMetrics metrics = service.obtenerMetricas();
+                long count = (metrics != null) ? metrics.getLowStockCount() : 0;
+
                 javafx.application.Platform.runLater(() -> {
                     if (count > 0) {
                         lblBadgeAlertas.setText(String.valueOf(count));
@@ -111,11 +107,7 @@ public class SidebarController {
                     }
                 });
             } catch (Exception e) {
-                System.err.println("No se pudo cargar el badge de alertas en el sidebar: " + e.getMessage());
-                javafx.application.Platform.runLater(() -> {
-                    lblBadgeAlertas.setVisible(false);
-                    lblBadgeAlertas.setManaged(false);
-                });
+                e.printStackTrace();
             }
         }).start();
     }
