@@ -20,6 +20,7 @@ import javafx.geometry.Pos;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import com.store.inventario.model.compra.PurchaseMetrics;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -180,7 +181,7 @@ public class CompraController {
                     : Collections.emptyList();
             
             tblCompras.setItems(FXCollections.observableArrayList(compras));
-            actualizarCartillasGenerales(compras);
+            cargarMetricas();
 
             totalPaginas = response != null ? response.getTotalPages() : 1;
             btnAnterior.setDisable(paginaActual == 0);
@@ -215,77 +216,31 @@ public class CompraController {
         obtenerCompras();
     }
 
-    private void actualizarCartillasGenerales(List<Compra> compras) {
-        if (compras == null || compras.isEmpty()) {
-            if (lblComprasSemanales != null) lblComprasSemanales.setText("0");
-            if (lblProductosIngresados != null) lblProductosIngresados.setText("0");
-            if (lblProveedorFrecuente != null) lblProveedorFrecuente.setText("Ninguno");
-            if (lblProveedorFrecuenteCompras != null) lblProveedorFrecuenteCompras.setText("0 compras");
-            return;
-        }
-
-        java.time.LocalDate today = java.time.LocalDate.now();
-        java.time.LocalDate sevenDaysAgo = today.minusDays(7);
-        java.time.LocalDate thirtyDaysAgo = today.minusDays(30);
-
-        int comprasSemanalesCount = 0;
-        int productosMensualesCount = 0;
-        java.util.Map<String, Integer> conteoProveedores = new java.util.HashMap<>();
-
-        for (Compra c : compras) {
-            if (c.getPurchaseDate() == null) continue;
+    private void cargarMetricas() {
+        new Thread(() -> {
             try {
-                String dateStr = c.getPurchaseDate();
-                java.time.LocalDateTime dateTime;
-                if (dateStr.contains("T")) {
-                    dateTime = java.time.LocalDateTime.parse(dateStr);
-                } else {
-                    dateTime = java.time.LocalDate.parse(dateStr).atStartOfDay();
-                }
-                java.time.LocalDate date = dateTime.toLocalDate();
-
-                if (!date.isBefore(sevenDaysAgo)) {
-                    comprasSemanalesCount++;
-                }
-
-                if (!date.isBefore(thirtyDaysAgo)) {
-                    if (c.getDetails() != null) {
-                        for (CompraDetalle d : c.getDetails()) {
-                            productosMensualesCount += d.getQuantity();
+                PurchaseMetrics metrics = compraService.obtenerMetricas();
+                Platform.runLater(() -> {
+                    if (metrics != null) {
+                        if (lblComprasSemanales != null) {
+                            lblComprasSemanales.setText(String.valueOf(metrics.getWeeklyPurchases()));
+                        }
+                        if (lblProductosIngresados != null) {
+                            lblProductosIngresados.setText(String.valueOf(metrics.getMonthlyProductsEntered()));
+                        }
+                        if (lblProveedorFrecuente != null) {
+                            lblProveedorFrecuente.setText(metrics.getFrequentSupplierName() != null ? metrics.getFrequentSupplierName() : "Ninguno");
+                        }
+                        if (lblProveedorFrecuenteCompras != null) {
+                            long count = metrics.getFrequentSupplierCount();
+                            lblProveedorFrecuenteCompras.setText(count + (count == 1 ? " compra realizada" : " compras realizadas"));
                         }
                     }
-                }
+                });
             } catch (Exception e) {
-
+                e.printStackTrace();
             }
-
-            if (c.getSupplier() != null && c.getSupplier().getTradeName() != null) {
-                String provName = c.getSupplier().getTradeName();
-                conteoProveedores.put(provName, conteoProveedores.getOrDefault(provName, 0) + 1);
-            }
-        }
-
-        String provFrecuente = "Ninguno";
-        int maxComprasProv = 0;
-        for (java.util.Map.Entry<String, Integer> entry : conteoProveedores.entrySet()) {
-            if (entry.getValue() > maxComprasProv) {
-                maxComprasProv = entry.getValue();
-                provFrecuente = entry.getKey();
-            }
-        }
-
-        if (lblComprasSemanales != null) {
-            lblComprasSemanales.setText(String.valueOf(comprasSemanalesCount));
-        }
-        if (lblProductosIngresados != null) {
-            lblProductosIngresados.setText(String.valueOf(productosMensualesCount));
-        }
-        if (lblProveedorFrecuente != null) {
-            lblProveedorFrecuente.setText(provFrecuente);
-        }
-        if (lblProveedorFrecuenteCompras != null) {
-            lblProveedorFrecuenteCompras.setText(maxComprasProv + (maxComprasProv == 1 ? " compra realizada" : " compras realizadas"));
-        }
+        }).start();
     }
 
     @FXML

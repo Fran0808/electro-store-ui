@@ -6,6 +6,7 @@ import com.store.inventario.model.PageResponse;
 import com.store.inventario.model.clientes.Cliente;
 import com.store.inventario.model.compra.Compra;
 import com.store.inventario.model.compra.CreatePurchaseRequest;
+import com.store.inventario.model.compra.PurchaseMetrics;
 import com.store.inventario.security.SessionManager;
 import com.store.inventario.service.clientes.ClienteService;
 
@@ -73,6 +74,25 @@ public class CompraService {
                 throw new RuntimeException("Error al crear una compra: HTTP " + response.statusCode());
             }
             return gson.fromJson(response.body(), Compra.class);
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public PurchaseMetrics obtenerMetricas() {
+        try {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(URL + "/metrics"))
+                    .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
+                    .GET()
+                    .build();
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() >= 400) {
+                throw new RuntimeException("Error al obtener métricas de compras: HTTP " + response.statusCode());
+            }
+
+            return gson.fromJson(response.body(), PurchaseMetrics.class);
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
