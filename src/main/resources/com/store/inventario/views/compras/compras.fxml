@@ -17,10 +17,15 @@
     <VBox spacing="24.0" styleClass="view-container" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0"
           AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
 
-        <VBox spacing="5">
-            <Label styleClass="header-title" text="Gestión de Compras"/>
-            <Label styleClass="header-subtitle" text="Administración de compras e ingreso de productos al inventario"/>
-        </VBox>
+        <HBox alignment="CENTER_LEFT" spacing="20">
+            <VBox spacing="5" HBox.hgrow="ALWAYS">
+                <Label styleClass="header-title" text="Gestión de Compras"/>
+                <Label styleClass="header-subtitle" text="Administración de compras e ingreso de productos al inventario"/>
+            </VBox>
+            <HBox alignment="CENTER_RIGHT" spacing="12">
+                <Button onAction="#abrirModalNuevaCompra" styleClass="btn-primary" text="Nueva Compra"/>
+            </HBox>
+        </HBox>
 
         <HBox spacing="16" styleClass="metrics-container">
             <VBox spacing="8" styleClass="metric-card" HBox.hgrow="ALWAYS">
@@ -43,10 +48,11 @@
         <HBox alignment="CENTER_LEFT" spacing="12" styleClass="search-container">
             <TextField fx:id="txtBuscarCompra" promptText="Buscar por código de compra, proveedor..."
                        styleClass="search-field" HBox.hgrow="ALWAYS" onAction="#ejecutarBusqueda"/>
-            <ComboBox fx:id="cbFecha" promptText="Fecha" styleClass="filter-combo"/>
-            <ComboBox fx:id="cbProveedor" promptText="Proveedor" styleClass="filter-combo"/>
-            <ComboBox fx:id="cbUsuario" promptText="Usuario" styleClass="filter-combo"/>
-            <Button onAction="#abrirModalNuevaCompra" styleClass="btn-primary" text="Nueva Compra"/>
+            <ComboBox fx:id="cbFecha" promptText="Fecha" styleClass="filter-combo" onAction="#filtrarCompras"/>
+            <ComboBox fx:id="cbProveedor" promptText="Proveedor" styleClass="filter-combo" onAction="#filtrarCompras"/>
+            <ComboBox fx:id="cbUsuario" promptText="Usuario" styleClass="filter-combo" onAction="#filtrarCompras"/>
+            <Button onAction="#limpiarFiltros" styleClass="btn-secondary" text="Limpiar"/>
+            <Button onAction="#ejecutarBusqueda" styleClass="btn-primary" text="Buscar"/>
         </HBox>
 
         <VBox spacing="16.0" VBox.vgrow="ALWAYS">
