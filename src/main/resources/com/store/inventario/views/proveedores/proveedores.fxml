@@ -33,14 +33,13 @@
          </VBox>
 
          <VBox spacing="8" styleClass="metric-card" HBox.hgrow="ALWAYS">
-            <Label styleClass="metric-label" text="Compras mensuales"/>
-            <Label fx:id="lblCompraMensual" styleClass="metric-value" text="---"/>
+            <Label styleClass="metric-label" text="Proveedor frecuente"/>
+            <Label fx:id="lblProveedorFrecuente" styleClass="metric-value" text="---"/>
          </VBox>
 
          <VBox spacing="8" styleClass="metric-card" HBox.hgrow="ALWAYS">
             <Label styleClass="metric-label" text="Último registrado"/>
-            <Label fx:id="lblUltimoRegristrado" styleClass="metric-value" text="Empresa X S.A."/>
-            <Label fx:id="lblTiempoRegistrado" styleClass="header-subtitle" text="Hace 2 horas"/>
+            <Label fx:id="lblUltimoRegristrado" styleClass="metric-value" text="---"/>
          </VBox>
       </HBox>
 
