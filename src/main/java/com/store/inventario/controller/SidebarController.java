@@ -94,7 +94,7 @@ public class SidebarController {
                 com.store.inventario.service.producto.ProductoService service = new com.store.inventario.service.producto.ProductoService();
 
                 com.store.inventario.model.producto.ProductMetrics metrics = service.obtenerMetricas();
-                long count = (metrics != null) ? metrics.getLowStockCount() : 0;
+                long count = (metrics != null) ? (metrics.getLowStockCount() + metrics.getOutOfStockCount()) : 0;
 
                 javafx.application.Platform.runLater(() -> {
                     if (count > 0) {
