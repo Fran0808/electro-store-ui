@@ -2,6 +2,7 @@ package com.store.inventario.service.venta;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.store.inventario.config.ApiConfig;
 import com.store.inventario.model.PageResponse;
 import com.store.inventario.model.ventas.CreateSaleRequest;
 import com.store.inventario.model.ventas.Venta;
@@ -17,7 +18,7 @@ import java.nio.charset.StandardCharsets;
 
 public class VentaService {
 
-    private static final String URL = "http://localhost:8080/api/sales";
+    private static final String URL = ApiConfig.BASE_URL + "/sales";
     private final HttpClient client;
     private final Gson gson;
 

@@ -2,6 +2,7 @@ package com.store.inventario.service.categoria;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.store.inventario.config.ApiConfig;
 import com.store.inventario.model.PageResponse;
 import com.store.inventario.model.categoria.Categoria;
 import com.store.inventario.security.SessionManager;
@@ -14,7 +15,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 public class CategoriaService {
-    private static final String URL = "http://localhost:8080/api/product-categories";
+    private static final String URL = ApiConfig.BASE_URL + "/product-categories";
 
     private final HttpClient client;
     private final Gson gson;

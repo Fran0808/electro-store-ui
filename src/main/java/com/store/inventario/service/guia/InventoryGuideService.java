@@ -2,6 +2,7 @@ package com.store.inventario.service.guia;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.store.inventario.config.ApiConfig;
 import com.store.inventario.model.PageResponse;
 import com.store.inventario.model.guia.CreateInventoryGuideRequest;
 import com.store.inventario.model.guia.InventoryGuide;
@@ -15,7 +16,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 public class InventoryGuideService {
-    private static final String URL = "http://localhost:8080/api/inventory-guides";
+    private static final String URL = ApiConfig.BASE_URL + "/inventory-guides";
     private final HttpClient client;
     private final Gson gson;
 

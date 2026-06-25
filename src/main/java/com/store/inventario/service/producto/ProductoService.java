@@ -1,5 +1,6 @@
 package com.store.inventario.service.producto;
 
+import com.store.inventario.config.ApiConfig;
 import com.store.inventario.model.PageResponse;
 import com.store.inventario.model.producto.CreateProductRequest;
 import com.store.inventario.model.producto.UpdateProductRequest;
@@ -17,7 +18,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 public class ProductoService {
-    private static final String URL = "http://localhost:8080/api/products";
+    private static final String URL = ApiConfig.BASE_URL + "/products";
     private final HttpClient client;
     private final Gson gson;
 

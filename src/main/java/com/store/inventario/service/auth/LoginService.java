@@ -1,6 +1,7 @@
 package com.store.inventario.service.auth;
 
 import com.google.gson.Gson;
+import com.store.inventario.config.ApiConfig;
 import com.store.inventario.model.auth.LoginRequest;
 import com.store.inventario.model.auth.LoginResponse;
 import com.store.inventario.security.SessionManager;
@@ -11,7 +12,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 public class LoginService {
-    private static final String URL_LOGIN = "http://localhost:8080/api/auth/login";
+    private static final String URL_LOGIN = ApiConfig.BASE_URL + "/auth/login";
     private final HttpClient client;
     private final Gson gson;
 

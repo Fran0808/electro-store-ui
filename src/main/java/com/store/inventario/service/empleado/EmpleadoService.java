@@ -2,6 +2,7 @@ package com.store.inventario.service.empleado;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.store.inventario.config.ApiConfig;
 import com.store.inventario.model.PageResponse;
 import com.store.inventario.model.empleado.CreateEmployeeRequest;
 import com.store.inventario.model.empleado.Empleado;
@@ -17,7 +18,7 @@ import java.net.http.HttpResponse;
 
 public class EmpleadoService {
 
-    private static final String URL = "http://localhost:8080/api/employees";
+    private static final String URL = ApiConfig.BASE_URL + "/employees";
     private final HttpClient client;
     private final Gson gson;
 

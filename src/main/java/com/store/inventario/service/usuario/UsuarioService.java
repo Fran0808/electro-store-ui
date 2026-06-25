@@ -2,6 +2,7 @@ package com.store.inventario.service.usuario;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.store.inventario.config.ApiConfig;
 import com.store.inventario.model.PageResponse;
 import com.store.inventario.model.usuario.Usuario;
 import com.store.inventario.security.SessionManager;
@@ -14,7 +15,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 public class UsuarioService {
-    private static final String URL = "http://localhost:8080/api/users";
+    private static final String URL = ApiConfig.BASE_URL + "/users";
     private final HttpClient client;
     private final Gson gson;
 
