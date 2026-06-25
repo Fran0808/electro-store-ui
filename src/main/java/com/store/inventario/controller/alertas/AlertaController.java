@@ -212,6 +212,7 @@ public class AlertaController implements Initializable {
         formController.setProducto(selectedProduct);
 
         Stage modal = new Stage();
+        com.store.inventario.utils.WindowUtils.applyIcon(modal);
         modal.initModality(Modality.APPLICATION_MODAL);
         modal.setTitle("Editar límite de alerta - " + selectedProduct.getName());
         modal.setScene(new Scene(root));

@@ -47,6 +47,7 @@ public class UsuariosController {
         Parent root = loader.load();
         
         Stage modal = new Stage();
+        com.store.inventario.utils.WindowUtils.applyIcon(modal);
         modal.initModality(Modality.APPLICATION_MODAL);
         modal.setTitle("Nuevo Usuario");
         modal.setResizable(false);
@@ -217,6 +218,7 @@ public class UsuariosController {
             controller.setUsuarioEditar(usuario);
 
             Stage modal = new Stage();
+            com.store.inventario.utils.WindowUtils.applyIcon(modal);
             modal.initModality(Modality.APPLICATION_MODAL);
             modal.setTitle("Editar Usuario");
             modal.setResizable(false);

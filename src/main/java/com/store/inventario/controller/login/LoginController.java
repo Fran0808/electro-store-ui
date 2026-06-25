@@ -73,6 +73,7 @@ public class LoginController {
                 Parent root = loader.load();
 
                 Stage layoutStage = new Stage();
+                com.store.inventario.utils.WindowUtils.applyIcon(layoutStage);
                 layoutStage.setTitle("ElectroStore System");
                 layoutStage.setScene(new Scene(root));
                 layoutStage.setMinWidth(1280);

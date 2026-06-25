@@ -131,6 +131,7 @@ public class VentaController {
                 VentaDetailController controller = loader.getController();
                 controller.setVenta(venta);
                 Stage modal = new Stage();
+                com.store.inventario.utils.WindowUtils.applyIcon(modal);
                 modal.initModality(Modality.APPLICATION_MODAL);
                 modal.setTitle("Detalle de Venta - " + venta.getCode());
                 modal.setScene(new Scene(root));
@@ -276,6 +277,7 @@ public class VentaController {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/views/ventas/ventas-form.fxml"));
         Parent root = loader.load();
         Stage modal = new Stage();
+        com.store.inventario.utils.WindowUtils.applyIcon(modal);
         modal.initModality(Modality.APPLICATION_MODAL);
         modal.setTitle("Nueva Venta");
         modal.setScene(new Scene(root));

@@ -248,6 +248,7 @@ public class ProductoFormController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/views/productos/categoria-form-modal.fxml"));
             Parent root = loader.load();
             Stage modal = new Stage();
+            com.store.inventario.utils.WindowUtils.applyIcon(modal);
 
             modal.initModality(Modality.APPLICATION_MODAL);
             modal.setTitle("Nueva Categoría");

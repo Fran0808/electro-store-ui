@@ -109,6 +109,7 @@ public class ClienteController implements Initializable {
         Parent root = loader.load();
 
         Stage modal = new Stage();
+        com.store.inventario.utils.WindowUtils.applyIcon(modal);
         modal.initModality(Modality.APPLICATION_MODAL);
         modal.setTitle("Nuevo Cliente");
         modal.setScene(new Scene(root));
@@ -194,6 +195,7 @@ public class ClienteController implements Initializable {
             controller.setClienteEditar(cliente);
 
             Stage modal = new Stage();
+            com.store.inventario.utils.WindowUtils.applyIcon(modal);
             modal.initModality(Modality.APPLICATION_MODAL);
             modal.setTitle("Editar Cliente");
             modal.setScene(new Scene(root));

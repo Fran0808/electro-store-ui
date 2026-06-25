@@ -94,6 +94,7 @@ public class ProductoController implements Initializable {
         Parent root = loader.load();
 
         Stage modal = new Stage();
+        com.store.inventario.utils.WindowUtils.applyIcon(modal);
         modal.initModality(Modality.APPLICATION_MODAL);
         modal.setTitle("Nuevo Producto");
         modal.setScene(new Scene(root));
@@ -114,6 +115,7 @@ public class ProductoController implements Initializable {
             Parent root = loader.load();
 
             Stage modal = new Stage();
+            com.store.inventario.utils.WindowUtils.applyIcon(modal);
             modal.initModality(Modality.APPLICATION_MODAL);
             modal.setTitle("Gestión de Categorías");
             modal.setScene(new Scene(root));
@@ -139,6 +141,7 @@ public class ProductoController implements Initializable {
             controller.setProductoEditar(producto);
 
             Stage modal = new Stage();
+            com.store.inventario.utils.WindowUtils.applyIcon(modal);
             modal.initModality(Modality.APPLICATION_MODAL);
             modal.setTitle("Editar Producto");
             modal.setScene(new Scene(root));

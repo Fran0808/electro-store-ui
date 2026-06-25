@@ -142,6 +142,7 @@ public class CompraController {
                 controller.setCompra(compra);
 
                 Stage modal = new Stage();
+                com.store.inventario.utils.WindowUtils.applyIcon(modal);
                 modal.initModality(Modality.APPLICATION_MODAL);
                 modal.setTitle("Detalle de Compra - " + compra.getCode());
                 modal.setScene(new Scene(root));
@@ -328,6 +329,7 @@ public class CompraController {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/views/compras/compra-form.fxml"));
         Parent root = loader.load();
         Stage modal = new Stage();
+        com.store.inventario.utils.WindowUtils.applyIcon(modal);
         modal.initModality(Modality.APPLICATION_MODAL);
         modal.setTitle("Nueva Compra");
         modal.setScene(new Scene(root));

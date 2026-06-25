@@ -118,6 +118,7 @@ public class EmpleadosController implements Initializable {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/views/empleados/empleado-form.fxml"));
         Parent root = loader.load();
         Stage modal = new Stage();
+        com.store.inventario.utils.WindowUtils.applyIcon(modal);
         modal.initModality(Modality.APPLICATION_MODAL);
         modal.setTitle("Nuevo Empleado");
         modal.setResizable(false);
@@ -133,6 +134,7 @@ public class EmpleadosController implements Initializable {
             EmpleadosFormController controller = loader.getController();
             controller.setEmpleadoEditar(empleado);
             Stage modal = new Stage();
+            com.store.inventario.utils.WindowUtils.applyIcon(modal);
             modal.initModality(Modality.APPLICATION_MODAL);
             modal.setTitle("Editar Empleado");
             modal.setResizable(false);
