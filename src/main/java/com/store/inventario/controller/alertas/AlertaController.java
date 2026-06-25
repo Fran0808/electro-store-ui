@@ -45,7 +45,7 @@ public class AlertaController implements Initializable {
     private final List<AlertaItem> todasLasAlertas = new ArrayList<>();
     private final List<Producto> listaProductosOriginales = new ArrayList<>();
     private int paginaActual = 0;
-    private final int tamanoPagina = 12;
+    private final int tamanoPagina = 30;
 
     public static int globalAlertLimit = 5;
 

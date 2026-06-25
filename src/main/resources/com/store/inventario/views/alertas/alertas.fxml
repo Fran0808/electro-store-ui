@@ -10,15 +10,13 @@
     </stylesheets>
     <VBox spacing="20" styleClass="view-container" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <HBox alignment="CENTER_LEFT" spacing="16">
-            <VBox prefHeight="32.0" prefWidth="580.0" spacing="4">
+            <VBox spacing="4" HBox.hgrow="ALWAYS">
                 <Label styleClass="header-title" text="Alertas de Inventario" />
                 <Label styleClass="header-subtitle" text="Productos con stock bajo el umbral configurado" />
             </VBox>
-           <HBox alignment="CENTER_RIGHT" prefHeight="41.0" prefWidth="798.0" spacing="12">
-            <children>
-                  <Button fx:id="btnConfigLimite" styleClass="btn-primary" text="Configurar Límite" onAction="#handleForm"/>
-            </children>
-           </HBox>
+            <HBox alignment="CENTER_RIGHT" spacing="12">
+                <Button fx:id="btnConfigLimite" onAction="#handleForm" styleClass="btn-primary" text="Configurar Límite" />
+            </HBox>
         </HBox>
         
 

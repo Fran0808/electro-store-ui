@@ -787,3 +787,9 @@
     -fx-background-insets: 0;
     -fx-background-radius: 0;
 }
+
+.table-view .column-header-background .filler {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-border-width: 0;
+}
