@@ -5,6 +5,7 @@ import com.store.inventario.model.usuario.Usuario;
 import com.store.inventario.service.usuario.UsuarioService;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -22,8 +23,17 @@ import java.util.List;
 import java.util.Optional;
 
 public class UsuariosController {
+    @FXML private TextField txtBuscar;
+    @FXML private Button btnLimpiar;
+    @FXML private Button btnBuscar;
     @FXML private Button btnAnterior;
     @FXML public Button btnSiguiente;
+    
+    private final ObservableList<Usuario> masterData = FXCollections.observableArrayList();
+    private javafx.collections.transformation.FilteredList<Usuario> filteredData;
+    private int paginaActual = 0;
+    private final int tamanoPagina = 30;
+    private int totalPaginas = 1;
     @FXML private TableView<Usuario> tblUsuarios;
     @FXML private TableColumn<Usuario, String> colCodigo;
     @FXML private TableColumn<Usuario, String> colUsuario;
@@ -80,6 +90,13 @@ public class UsuariosController {
 
         configurarColumnaEstado();
         configurarColumnaAcciones();
+
+        filteredData = new javafx.collections.transformation.FilteredList<>(masterData, p -> true);
+        tblUsuarios.setItems(filteredData);
+
+        btnAnterior.setOnAction(e -> handlePaginaAnterior());
+        btnSiguiente.setOnAction(e -> handlePaginaSiguiente());
+
         obtenerUsuarios();
     }
 
@@ -267,9 +284,13 @@ public class UsuariosController {
 
     private void obtenerUsuarios() {
         try {
-            PageResponse<Usuario> response = usuarioService.obtenerUsuarios();
+            PageResponse<Usuario> response = usuarioService.obtenerUsuarios(paginaActual, tamanoPagina);
             List<Usuario> usuarios = (response != null) ? response.getContent() : java.util.Collections.emptyList();
-            tblUsuarios.setItems(FXCollections.observableArrayList(usuarios));
+            masterData.setAll(usuarios);
+            
+            totalPaginas = response != null ? response.getTotalPages() : 1;
+            btnAnterior.setDisable(paginaActual == 0);
+            btnSiguiente.setDisable(paginaActual >= totalPaginas - 1);
             
             if (lblTotalUsuarios != null) {
                 lblTotalUsuarios.setText(String.valueOf(response != null ? response.getTotalElements() : usuarios.size()));
@@ -304,6 +325,62 @@ public class UsuariosController {
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void ejecutarBusqueda() {
+        String text = txtBuscar.getText();
+        if (text == null || text.trim().isEmpty()) {
+            filteredData.setPredicate(p -> true);
+        } else {
+            String lowerCaseFilter = text.toLowerCase().trim();
+            filteredData.setPredicate(usuario -> {
+                if (usuario.getUsername() != null && usuario.getUsername().toLowerCase().contains(lowerCaseFilter)) {
+                    return true;
+                }
+                if (usuario.getFirstName() != null && usuario.getFirstName().toLowerCase().contains(lowerCaseFilter)) {
+                    return true;
+                }
+                if (usuario.getLastName() != null && usuario.getLastName().toLowerCase().contains(lowerCaseFilter)) {
+                    return true;
+                }
+                if (usuario.getRole() != null && usuario.getRole().toLowerCase().contains(lowerCaseFilter)) {
+                    return true;
+                }
+                return false;
+            });
+        }
+        actualizarPaginacionConFiltrados();
+    }
+
+    @FXML
+    private void limpiarBusqueda() {
+        txtBuscar.clear();
+        filteredData.setPredicate(p -> true);
+        actualizarPaginacionConFiltrados();
+    }
+
+    private void actualizarPaginacionConFiltrados() {
+        int total = filteredData.size();
+        if (total == 0) {
+            lblResumenPaginacion.setText("No hay usuarios para mostrar");
+            return;
+        }
+        lblResumenPaginacion.setText("Mostrando 1-" + total + " de " + total + " usuarios");
+    }
+
+    private void handlePaginaAnterior() {
+        if (paginaActual > 0) {
+            paginaActual--;
+            obtenerUsuarios();
+        }
+    }
+
+    private void handlePaginaSiguiente() {
+        if (paginaActual < totalPaginas - 1) {
+            paginaActual++;
+            obtenerUsuarios();
         }
     }
 }

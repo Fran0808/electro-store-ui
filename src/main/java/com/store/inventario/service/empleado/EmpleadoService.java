@@ -28,9 +28,14 @@ public class EmpleadoService {
     }
 
     public PageResponse<Empleado> obtenerEmpleados() {
+        return obtenerEmpleados(0, 1000);
+    }
+
+    public PageResponse<Empleado> obtenerEmpleados(int page, int size) {
         try {
+            String url = URL + "?page=" + page + "&size=" + size;
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(URL))
+                    .uri(URI.create(url))
                     .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
                     .GET()
                     .build();

@@ -25,9 +25,14 @@ public class UsuarioService {
     }
 
     public PageResponse<Usuario> obtenerUsuarios() {
+        return obtenerUsuarios(0, 1000);
+    }
+
+    public PageResponse<Usuario> obtenerUsuarios(int page, int size) {
         try {
+            String url = URL + "?page=" + page + "&size=" + size;
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(URL))
+                    .uri(URI.create(url))
                     .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
                     .GET()
                     .build();
