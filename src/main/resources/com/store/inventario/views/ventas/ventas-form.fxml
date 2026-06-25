@@ -56,7 +56,7 @@
                     <HBox alignment="BOTTOM_LEFT" spacing="10.0">
                         <VBox spacing="4" HBox.hgrow="ALWAYS">
                             <Label styleClass="header-subtitle" text="Precio Unitario (S/)"/>
-                            <TextField fx:id="txtPrecioVenta" promptText="S/ 0.00" styleClass="search-field"/>
+                            <TextField fx:id="txtPrecioVenta" editable="false" promptText="S/ 0.00" styleClass="search-field"/>
                         </VBox>
 
                         <VBox spacing="4" prefWidth="110.0">
