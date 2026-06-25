@@ -40,7 +40,7 @@
                         </StackPane>
                         <VBox spacing="2">
                             <Label styleClass="metric-label" text="Total Productos" />
-                            <Label fx:id="lblTotalProductos" styleClass="metric-value" text="1,284" />
+                            <Label fx:id="lblTotalProductos" styleClass="metric-value" text="---" />
                         </VBox>
                     </HBox>
 
@@ -50,7 +50,7 @@
                         </StackPane>
                         <VBox spacing="2">
                             <Label styleClass="metric-label" text="Stock Bajo" />
-                            <Label fx:id="lblStockBajo" styleClass="metric-value" text="42" />
+                            <Label fx:id="lblStockBajo" styleClass="metric-value" text="---" />
                         </VBox>
                     </HBox>
 
@@ -60,7 +60,7 @@
                         </StackPane>
                         <VBox spacing="2">
                             <Label styleClass="metric-label" text="Agotados" />
-                            <Label fx:id="lblAgotados" styleClass="metric-value" text="15" />
+                            <Label fx:id="lblAgotados" styleClass="metric-value" text="---" />
                         </VBox>
                     </HBox>
 
@@ -70,7 +70,7 @@
                         </StackPane>
                         <VBox spacing="2">
                             <Label styleClass="metric-label" text="Categorías" />
-                            <Label fx:id="lblCategorias" styleClass="metric-value" text="18" />
+                            <Label fx:id="lblCategorias" styleClass="metric-value" text="---" />
                         </VBox>
                     </HBox>
                 </HBox>
@@ -102,7 +102,7 @@
                 </TableView>
 
                 <HBox alignment="CENTER_LEFT" spacing="20" styleClass="pagination-container">
-                    <Label fx:id="lblResumenPaginacion" maxWidth="Infinity" styleClass="pagination-summary" text="Mostrando 1-10 de 1,284 productos" HBox.hgrow="ALWAYS" />
+                    <Label fx:id="lblResumenPaginacion" maxWidth="Infinity" styleClass="pagination-summary" text="Cargando productos..." HBox.hgrow="ALWAYS" />
                     <HBox alignment="CENTER_RIGHT" spacing="8">
                         <Button fx:id="btnAnterior" onAction="#handlePaginaAnterior" styleClass="btn-secondary" text="Anterior" />
                         <Button fx:id="btnSiguiente" onAction="#handlePaginaSiguiente" styleClass="btn-secondary" text="Siguiente" />

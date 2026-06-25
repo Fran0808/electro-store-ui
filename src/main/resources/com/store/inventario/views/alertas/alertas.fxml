@@ -37,7 +37,7 @@
     </columnResizePolicy>
 </TableView>
         <HBox alignment="CENTER_LEFT" spacing="20" styleClass="pagination-container">
-    <Label fx:id="lblResumenPaginacion" maxWidth="Infinity" styleClass="pagination-summary" text="Mostrando 1-20 de 0 alertas" HBox.hgrow="ALWAYS" />
+    <Label fx:id="lblResumenPaginacion" maxWidth="Infinity" styleClass="pagination-summary" text="Cargando alertas..." HBox.hgrow="ALWAYS" />
     <HBox alignment="CENTER_RIGHT" spacing="8">
         <Button fx:id="btnAnterior" styleClass="btn-secondary" text="Anterior" />
         <Button fx:id="btnSiguiente" styleClass="btn-secondary" text="Siguiente" />
