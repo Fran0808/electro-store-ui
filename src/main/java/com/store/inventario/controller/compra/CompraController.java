@@ -298,30 +298,26 @@ public class CompraController {
     }
 
     private void cargarMetricas() {
-        new Thread(() -> {
-            try {
-                PurchaseMetrics metrics = compraService.obtenerMetricas();
-                Platform.runLater(() -> {
-                    if (metrics != null) {
-                        if (lblComprasSemanales != null) {
-                            lblComprasSemanales.setText(String.valueOf(metrics.getWeeklyPurchases()));
-                        }
-                        if (lblProductosIngresados != null) {
-                            lblProductosIngresados.setText(String.valueOf(metrics.getMonthlyProductsEntered()));
-                        }
-                        if (lblProveedorFrecuente != null) {
-                            lblProveedorFrecuente.setText(metrics.getFrequentSupplierName() != null ? metrics.getFrequentSupplierName() : "Ninguno");
-                        }
-                        if (lblProveedorFrecuenteCompras != null) {
-                            long count = metrics.getFrequentSupplierCount();
-                            lblProveedorFrecuenteCompras.setText(count + (count == 1 ? " compra realizada" : " compras realizadas"));
-                        }
-                    }
-                });
-            } catch (Exception e) {
-                e.printStackTrace();
+        try {
+            PurchaseMetrics metrics = compraService.obtenerMetricas();
+            if (metrics != null) {
+                if (lblComprasSemanales != null) {
+                    lblComprasSemanales.setText(String.valueOf(metrics.getWeeklyPurchases()));
+                }
+                if (lblProductosIngresados != null) {
+                    lblProductosIngresados.setText(String.valueOf(metrics.getMonthlyProductsEntered()));
+                }
+                if (lblProveedorFrecuente != null) {
+                    lblProveedorFrecuente.setText(metrics.getFrequentSupplierName() != null ? metrics.getFrequentSupplierName() : "Ninguno");
+                }
+                if (lblProveedorFrecuenteCompras != null) {
+                    long count = metrics.getFrequentSupplierCount();
+                    lblProveedorFrecuenteCompras.setText(count + (count == 1 ? " compra realizada" : " compras realizadas"));
+                }
             }
-        }).start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML

@@ -315,61 +315,57 @@ public class ProductoController implements Initializable {
     }
 
     private void cargarMetricasYFiltrosGlobales() {
-        new Thread(() -> {
-            try {
-                com.store.inventario.model.producto.ProductMetrics metrics = productoService.obtenerMetricas();
-                PageResponse<com.store.inventario.model.categoria.Categoria> categoriesResponse = categoriaService.obtenerCategorias();
-                List<String> marcas = productoService.obtenerMarcas();
+        try {
+            com.store.inventario.model.producto.ProductMetrics metrics = productoService.obtenerMetricas();
+            PageResponse<com.store.inventario.model.categoria.Categoria> categoriesResponse = categoriaService.obtenerCategorias();
+            List<String> marcas = productoService.obtenerMarcas();
 
-                javafx.application.Platform.runLater(() -> {
-                    if (metrics != null) {
-                        lblTotalProductos.setText(String.valueOf(metrics.getTotalProducts()));
-                        lblStockBajo.setText(String.valueOf(metrics.getLowStockCount()));
-                        lblAgotados.setText(String.valueOf(metrics.getOutOfStockCount()));
-                        lblCategorias.setText(String.valueOf(metrics.getTotalCategories()));
-                    }
-
-                    Set<String> categoriasSet = new TreeSet<>();
-                    categoriasSet.add("Todas");
-                    if (categoriesResponse != null && categoriesResponse.getContent() != null) {
-                        for (com.store.inventario.model.categoria.Categoria c : categoriesResponse.getContent()) {
-                            if (c != null && c.getName() != null) {
-                                categoriasSet.add(c.getName());
-                            }
-                        }
-                    }
-
-                    Set<String> marcasSet = new TreeSet<>();
-                    marcasSet.add("Todas");
-                    if (marcas != null) {
-                        for (String m : marcas) {
-                            if (m != null) {
-                                marcasSet.add(m);
-                            }
-                        }
-                    }
-
-                    String selectedCat = cbCategoria.getValue();
-                    String selectedMarca = cbMarca.getValue();
-
-                    cbCategoria.setItems(FXCollections.observableArrayList(categoriasSet));
-                    if (selectedCat != null && categoriasSet.contains(selectedCat)) {
-                        cbCategoria.setValue(selectedCat);
-                    } else {
-                        cbCategoria.setValue("Categoría");
-                    }
-
-                    cbMarca.setItems(FXCollections.observableArrayList(marcasSet));
-                    if (selectedMarca != null && marcasSet.contains(selectedMarca)) {
-                        cbMarca.setValue(selectedMarca);
-                    } else {
-                        cbMarca.setValue("Marca");
-                    }
-                });
-            } catch (Exception e) {
-                e.printStackTrace();
+            if (metrics != null) {
+                lblTotalProductos.setText(String.valueOf(metrics.getTotalProducts()));
+                lblStockBajo.setText(String.valueOf(metrics.getLowStockCount()));
+                lblAgotados.setText(String.valueOf(metrics.getOutOfStockCount()));
+                lblCategorias.setText(String.valueOf(metrics.getTotalCategories()));
             }
-        }).start();
+
+            Set<String> categoriasSet = new TreeSet<>();
+            categoriasSet.add("Todas");
+            if (categoriesResponse != null && categoriesResponse.getContent() != null) {
+                for (com.store.inventario.model.categoria.Categoria c : categoriesResponse.getContent()) {
+                    if (c != null && c.getName() != null) {
+                        categoriasSet.add(c.getName());
+                    }
+                }
+            }
+
+            Set<String> marcasSet = new TreeSet<>();
+            marcasSet.add("Todas");
+            if (marcas != null) {
+                for (String m : marcas) {
+                    if (m != null) {
+                        marcasSet.add(m);
+                    }
+                }
+            }
+
+            String selectedCat = cbCategoria.getValue();
+            String selectedMarca = cbMarca.getValue();
+
+            cbCategoria.setItems(FXCollections.observableArrayList(categoriasSet));
+            if (selectedCat != null && categoriasSet.contains(selectedCat)) {
+                cbCategoria.setValue(selectedCat);
+            } else {
+                cbCategoria.setValue("Categoría");
+            }
+
+            cbMarca.setItems(FXCollections.observableArrayList(marcasSet));
+            if (selectedMarca != null && marcasSet.contains(selectedMarca)) {
+                cbMarca.setValue(selectedMarca);
+            } else {
+                cbMarca.setValue("Marca");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void actualizarPaginacion(PageResponse<Producto> activeResponse) {
