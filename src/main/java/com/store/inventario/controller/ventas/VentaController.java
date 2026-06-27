@@ -3,6 +3,7 @@ package com.store.inventario.controller.ventas;
 import com.store.inventario.model.PageResponse;
 import com.store.inventario.model.ventas.Venta;
 import com.store.inventario.model.ventas.VentaDetalle;
+import com.store.inventario.model.ventas.VentaMetrics;
 import com.store.inventario.service.venta.VentaService;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -55,6 +56,9 @@ public class VentaController {
     private final VentaService ventaService = new VentaService();
     private List<Venta> ventasOriginales = Collections.emptyList();
     private List<Venta> ventasFiltradas = Collections.emptyList();
+    private int paginaActual = 0;
+    private final int tamanoPagina = 20;
+    private int totalPaginas = 1;
 
     @FXML
     public void initialize() {
@@ -147,6 +151,22 @@ public class VentaController {
         });
     }
 
+    @FXML
+    private void handlePaginaAnterior() {
+        if (paginaActual > 0) {
+            paginaActual--;
+            obtenerVentas();
+        }
+    }
+
+    @FXML
+    private void handlePaginaSiguiente() {
+        if (paginaActual < totalPaginas - 1) {
+            paginaActual++;
+            obtenerVentas();
+        }
+    }
+
     private void obtenerVentas(){
         String search = (txtBuscarVenta != null) ? txtBuscarVenta.getText().trim() : "";
         obtenerVentasConFiltro(search);
@@ -154,23 +174,28 @@ public class VentaController {
 
     private void obtenerVentasConFiltro(String search){
         try {
-            PageResponse<Venta> response = ventaService.obtenerVenta(search);
+            PageResponse<Venta> response = ventaService.obtenerVenta(search, paginaActual, tamanoPagina);
             List<Venta> ventas = (response != null && response.getContent() != null) ? response.getContent() : Collections.emptyList();
             ventasOriginales = ventas;
             ventasFiltradas = ventas;
             cargarVendedores();
             tblVentas.setItems(FXCollections.observableArrayList(ventas));
-            actualizarCartillasGenerales(ventas);
+            cargarMetricas();
+
+            totalPaginas = response != null ? response.getTotalPages() : 1;
+            btnAnterior.setDisable(paginaActual == 0);
+            btnSiguiente.setDisable(paginaActual >= totalPaginas - 1);
+
             if (lblResumenPaginacion != null && response != null) {
                 long total = response.getTotalElements();
-                int paginaActual = response.getNumber();
+                int pageNum = response.getNumber();
                 int pageSize = response.getSize();
                 if (total == 0) {
                     lblResumenPaginacion.setText("No hay ventas para mostrar");
                 } else {
-                    long desde = (long) paginaActual * pageSize + 1;
+                    long desde = (long) pageNum * pageSize + 1;
                     long hasta = Math.min(desde + pageSize - 1, total);
-                    lblResumenPaginacion.setText("Mostrando " + desde + "-" + hasta + " de " + total + " ventas");
+                    lblResumenPaginacion.setText("Mostrando " + desde + "-" + hasta + " de " + total + " ventas (Página " + (pageNum + 1) + " de " + totalPaginas + ")");
                 }
             }
         } catch (Exception e) {
@@ -193,44 +218,22 @@ public class VentaController {
         aplicarFiltrosLocales();
     }
 
-    private void actualizarCartillasGenerales(List<Venta> ventas) {
-        if (ventas == null || ventas.isEmpty()) {
-            if (lblVendidoHoy != null) lblVendidoHoy.setText("S/ 0.00");
-            if (lblTotalTransacciones != null) lblTotalTransacciones.setText("0");
-            if (lblTicketPromedio != null) lblTicketPromedio.setText("S/ 0.00");
-            return;
-        }
-        java.time.LocalDate today = java.time.LocalDate.now();
-        BigDecimal vendidoHoy = BigDecimal.ZERO;
-        int totalTransacciones = ventas.size();
-        BigDecimal totalGeneral = BigDecimal.ZERO;
-
-        for(Venta venta : ventas) {
-            BigDecimal totalVenta = BigDecimal.ZERO;
-            if(venta.getDetails() != null) {
-                for(VentaDetalle detalle : venta.getDetails()){
-                    BigDecimal precio = detalle.getSalePrice() != null ? detalle.getSalePrice() : BigDecimal.ZERO;
-                    totalVenta = totalVenta.add(precio.multiply(BigDecimal.valueOf(detalle.getQuantity())));
+    private void cargarMetricas() {
+        try {
+            VentaMetrics metrics = ventaService.obtenerMetricas();
+            if (metrics != null) {
+                if (lblVendidoHoy != null) {
+                    lblVendidoHoy.setText("S/ " + (metrics.getTodaySales() != null ? metrics.getTodaySales().setScale(2, RoundingMode.HALF_UP) : "0.00"));
+                }
+                if (lblTotalTransacciones != null) {
+                    lblTotalTransacciones.setText(String.valueOf(metrics.getTransactions()));
+                }
+                if (lblTicketPromedio != null) {
+                    lblTicketPromedio.setText("S/ " + (metrics.getAverageTicket() != null ? metrics.getAverageTicket().setScale(2, RoundingMode.HALF_UP) : "0.00"));
                 }
             }
-            totalGeneral = totalGeneral.add(totalVenta);
-            try {
-                LocalDate fechaVenta = LocalDateTime.parse(venta.getSaleDate()).toLocalDate();
-                if (fechaVenta.equals(today)){
-                    vendidoHoy = vendidoHoy.add(totalVenta);
-                }
-            } catch (Exception ignored){
-            }
-        }
-        BigDecimal ticketPromedio = totalTransacciones > 0 ? totalGeneral.divide(BigDecimal.valueOf(totalTransacciones), 2, RoundingMode.HALF_UP) : BigDecimal.ZERO;
-        if (lblTicketPromedio != null) {
-            lblTicketPromedio.setText("S/ " + ticketPromedio);
-        }
-        if (lblTotalTransacciones != null) {
-            lblTotalTransacciones.setText(String.valueOf(totalTransacciones));
-        }
-        if (lblVendidoHoy != null) {
-            lblVendidoHoy.setText("S/ " + vendidoHoy);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -243,18 +246,28 @@ public class VentaController {
             return v.getUser() != null && vendedor.equals(v.getUser().getUsername());
         }).filter(v -> {
             if(rangoFecha == null || rangoFecha.equals("Todas")) return true;
-            LocalDate fechaVenta = LocalDateTime.parse(v.getSaleDate()).toLocalDate();
-            switch (rangoFecha) {
-                case "Hoy": return fechaVenta.equals(hoy);
-                case "Esta semana": return !fechaVenta.isBefore(hoy.with(DayOfWeek.MONDAY));
-                case "Este mes": return fechaVenta.getMonth() == hoy.getMonth() && fechaVenta.getYear() == hoy.getYear();
-                default: return true;
+            if(v.getSaleDate() == null) return false;
+            try {
+                String dateStr = v.getSaleDate();
+                LocalDate fechaVenta;
+                if (dateStr.contains("T")) {
+                    fechaVenta = LocalDateTime.parse(dateStr).toLocalDate();
+                } else {
+                    fechaVenta = LocalDate.parse(dateStr);
+                }
+                switch (rangoFecha) {
+                    case "Hoy": return fechaVenta.equals(hoy);
+                    case "Esta semana": return !fechaVenta.isBefore(hoy.with(DayOfWeek.MONDAY));
+                    case "Este mes": return fechaVenta.getMonth() == hoy.getMonth() && fechaVenta.getYear() == hoy.getYear();
+                    default: return true;
+                }
+            } catch (Exception e) {
+                return false;
             }
         }).toList();
 
         ventasFiltradas = resultado;
         tblVentas.setItems(FXCollections.observableArrayList(resultado));
-        actualizarCartillasGenerales(resultado);
     }
 
     private void cargarVendedores() {

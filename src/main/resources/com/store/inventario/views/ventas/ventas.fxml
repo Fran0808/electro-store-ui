@@ -89,8 +89,8 @@
             <HBox alignment="CENTER_LEFT" spacing="20" styleClass="pagination-container">
                 <Label fx:id="lblResumenPaginacion" maxWidth="Infinity" styleClass="pagination-summary" text="Cargando ventas..." HBox.hgrow="ALWAYS" />
                 <HBox alignment="CENTER_RIGHT" spacing="8">
-                    <Button fx:id="btnAnterior" styleClass="btn-secondary" text="Anterior" />
-                    <Button fx:id="btnSiguiente" styleClass="btn-secondary" text="Siguiente" />
+                    <Button fx:id="btnAnterior" styleClass="btn-secondary" text="Anterior" onAction="#handlePaginaAnterior" />
+                    <Button fx:id="btnSiguiente" styleClass="btn-secondary" text="Siguiente" onAction="#handlePaginaSiguiente" />
                 </HBox>
             </HBox>
         </VBox>

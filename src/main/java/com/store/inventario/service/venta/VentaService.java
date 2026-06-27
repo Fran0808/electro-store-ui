@@ -6,6 +6,7 @@ import com.store.inventario.config.ApiConfig;
 import com.store.inventario.model.PageResponse;
 import com.store.inventario.model.ventas.CreateSaleRequest;
 import com.store.inventario.model.ventas.Venta;
+import com.store.inventario.model.ventas.VentaMetrics;
 import com.store.inventario.security.SessionManager;
 
 import java.io.IOException;
@@ -27,30 +28,32 @@ public class VentaService {
         gson = new Gson();
     }
 
-    public PageResponse<Venta> obtenerVenta(){
-        return obtenerVenta("");
+    public PageResponse<Venta> obtenerVenta() {
+        return obtenerVenta("", 0, 20);
     }
 
-    public PageResponse<Venta> obtenerVenta(String search){
-        try {
+    public PageResponse<Venta> obtenerVenta(String search) {
+        return obtenerVenta(search, 0, 20);
+    }
 
-            String urlString = URL;
-            if(search != null && !search.trim().isEmpty()){
-                urlString += "?search=" + java.net.URLEncoder.encode(search.trim(), StandardCharsets.UTF_8);
+    public PageResponse<Venta> obtenerVenta(String search, int page, int size) {
+        try {
+            String urlString = URL + "?page=" + page + "&size=" + size;
+            if (search != null && !search.trim().isEmpty()) {
+                urlString += "&search=" + java.net.URLEncoder.encode(search.trim(), StandardCharsets.UTF_8);
             }
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(urlString))
                     .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
                     .GET().build();
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            if (response.statusCode() >= 400){
+            if (response.statusCode() >= 400) {
                 throw new RuntimeException("Error al obtener ventas: HTTP " + response.statusCode());
             }
-            Type type = new TypeToken <PageResponse<Venta>>() {}.getType();
+            Type type = new TypeToken<PageResponse<Venta>>() {}.getType();
             return gson.fromJson(response.body(), type);
-
-        } catch (IOException | InterruptedException e){
-            throw new RuntimeException();
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -73,4 +76,22 @@ public class VentaService {
         }
     }
 
+    public VentaMetrics obtenerMetricas() {
+        try {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(URL + "/dashboard"))
+                    .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
+                    .GET()
+                    .build();
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() >= 400) {
+                throw new RuntimeException("Error al obtener métricas de ventas: HTTP " + response.statusCode());
+            }
+
+            return gson.fromJson(response.body(), VentaMetrics.class);
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
