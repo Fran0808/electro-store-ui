@@ -1,134 +1,118 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Separator?>
-<?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="680.0" prefWidth="820.0" style="-fx-background-color: #F8FAFC;" xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml/1"
+<AnchorPane prefHeight="750.0" prefWidth="1150.0" styleClass="root" stylesheets="@../../styles/style.css"
+            xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.store.inventario.controller.ventas.VentaFormController">
-    <stylesheets>
-        <URL value="@../../styles/style.css"/>
-        <URL value="@ventas.css"/>
-    </stylesheets>
-    <VBox spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-          AnchorPane.topAnchor="0.0">
+
+    <VBox spacing="16.0" styleClass="modal-container" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0"
+          AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
+
         <padding>
-            <Insets bottom="24.0" left="24.0" right="24.0" top="24.0"/>
+            <Insets bottom="20" left="20" right="20" top="20"/>
         </padding>
-        <VBox spacing="4.0">
+
+        <VBox spacing="4">
             <Label styleClass="header-title" text="Registrar Nueva Venta"/>
-            <Label styleClass="header-subtitle"
-                   text="Complete los datos de la transacción y agregue los productos vendidos"/>
+            <Label styleClass="header-subtitle" text="Gestione la venta agregando productos desde el catálogo e ingresando los datos del cliente"/>
         </VBox>
 
-        <HBox spacing="30.0">
-            <VBox spacing="14.0" HBox.hgrow="ALWAYS">
-                <VBox spacing="6.0">
-                    <Label style="-fx-font-weight: bold; -fx-text-fill: #334155; -fx-font-size: 13px;"
-                           text="Código de Venta"/>
-                    <TextField fx:id="txtCodigoVenta" editable="false" prefHeight="40.0"
-                               styleClass="search-field"
-                               style="-fx-background-color: #F1F5F9; -fx-text-fill: #64748B; -fx-border-color: #E2E8F0; -fx-border-width: 1px; -fx-border-radius: 6px; -fx-background-radius: 6px;"
-                               VBox.vgrow="NEVER"/>
-                </VBox>
-                <VBox spacing="6.0">
-                    <Label style="-fx-font-weight: bold; -fx-text-fill: #334155; -fx-font-size: 13px;"
-                           text="Cliente"/>
-                    <TextField fx:id="cbCliente" editable="false" prefHeight="40.0" prefWidth="320.0"
-                               styleClass="search-field"
-                               style="-fx-background-color: #F1F5F9; -fx-text-fill: #64748B; -fx-border-color: #E2E8F0; -fx-border-width: 1px; -fx-border-radius: 6px; -fx-background-radius: 6px;"
-                               VBox.vgrow="NEVER"/>
-                </VBox>
-            </VBox>
-            <VBox spacing="14.0" HBox.hgrow="ALWAYS">
-                <VBox spacing="6.0">
-                    <Label style="-fx-font-weight: bold; -fx-text-fill: #334155; -fx-font-size: 13px;"
-                           text="Vendedor"/>
-                    <TextField fx:id="txtVendedor" editable="false" prefHeight="40.0"
-                               styleClass="search-field"
-                               style="-fx-background-color: #F1F5F9; -fx-text-fill: #64748B; -fx-border-color: #E2E8F0; -fx-border-width: 1px; -fx-border-radius: 6px; -fx-background-radius: 6px;"
-                               VBox.vgrow="NEVER"/>
-                </VBox>
-                <VBox spacing="6.0">
-                    <Label style="-fx-font-weight: bold; -fx-text-fill: #334155; -fx-font-size: 13px;"
-                           text="Buscar cliente"/>
-                    <HBox spacing="10.0" alignment="CENTER_LEFT">
-                        <TextField fx:id="txtClienteBuscar" editable="false" prefHeight="40.0"
-                                   HBox.hgrow="ALWAYS" styleClass="search-field"
-                                   style="-fx-background-color: #F1F5F9; -fx-text-fill: #64748B; -fx-border-color: #E2E8F0; -fx-border-width: 1px; -fx-border-radius: 6px; -fx-background-radius: 6px;"/>
-                        <Button fx:id="btnBuscarCliente" prefHeight="40.0" text="Buscar"
-                                styleClass="btn-primary"/>
+
+        <HBox spacing="20.0" VBox.vgrow="ALWAYS">
+
+            <VBox prefWidth="480.0" spacing="12.0" style="-fx-background-color: #FFFFFF; -fx-padding: 16; -fx-background-radius: 8; -fx-border-color: #E2E8F0; -fx-border-radius: 8;">
+                <Label styleClass="metric-label" text="1. CATÁLOGO DE PRODUCTOS" style="-fx-text-fill: #1E293B;"/>
+                
+                <HBox spacing="8.0" alignment="CENTER_LEFT">
+                    <TextField fx:id="txtBuscarProducto" promptText="Buscar por nombre, código o marca..." styleClass="search-field" HBox.hgrow="ALWAYS" onAction="#ejecutarBusquedaLocal"/>
+                    <Button onAction="#ejecutarBusquedaLocal" styleClass="btn-secondary" text="Buscar"/>
+                </HBox>
+
+                <TableView fx:id="tblProductos" prefHeight="300.0" styleClass="table-view" VBox.vgrow="ALWAYS">
+                    <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                    </columnResizePolicy>
+                    <columns>
+                        <TableColumn prefWidth="100.0" text="Código" fx:id="colCatCodigo"/>
+                        <TableColumn prefWidth="210.0" text="Producto" fx:id="colCatNombre"/>
+                        <TableColumn prefWidth="80.0" text="Stock" fx:id="colCatStock"/>
+                        <TableColumn prefWidth="90.0" text="Precio" fx:id="colCatPrecio"/>
+                    </columns>
+                </TableView>
+
+                <VBox spacing="10.0" style="-fx-background-color: #F8FAFC; -fx-padding: 12; -fx-background-radius: 6; -fx-border-color: #E2E8F0; -fx-border-radius: 6;">
+                    <Label fx:id="lblProductoSeleccionado" text="Seleccione un producto del catálogo..." style="-fx-font-weight: bold; -fx-text-fill: #475569;"/>
+                    
+                    <HBox alignment="BOTTOM_LEFT" spacing="10.0">
+                        <VBox spacing="4" HBox.hgrow="ALWAYS">
+                            <Label styleClass="header-subtitle" text="Precio Unitario (S/)"/>
+                            <TextField fx:id="txtPrecioVenta" editable="false" promptText="S/ 0.00" styleClass="search-field"/>
+                        </VBox>
+
+                        <VBox spacing="4" prefWidth="110.0">
+                            <Label styleClass="header-subtitle" text="Cantidad"/>
+                            <TextField fx:id="txtCantidad" promptText="Cant." styleClass="search-field"/>
+                        </VBox>
+
+                        <Button fx:id="btnAgregarProducto" onAction="#agregarProductoALaLista" styleClass="btn-primary" text="Añadir" prefHeight="38.0"/>
                     </HBox>
                 </VBox>
-                <DatePicker fx:id="dpFechaVenta" visible="false" managed="false"/>
+            </VBox>
+
+            <VBox spacing="12.0" HBox.hgrow="ALWAYS" style="-fx-background-color: #FFFFFF; -fx-padding: 16; -fx-background-radius: 8; -fx-border-color: #E2E8F0; -fx-border-radius: 8;">
+                <Label styleClass="metric-label" text="2. INFORMACIÓN Y DETALLE DE VENTA" style="-fx-text-fill: #1E293B;"/>
+
+                <HBox spacing="12.0">
+                    <VBox spacing="4" HBox.hgrow="ALWAYS">
+                        <Label styleClass="header-subtitle" text="Cliente *"/>
+                        <ComboBox fx:id="cbCliente" maxWidth="Infinity" promptText="Seleccione un cliente" styleClass="filter-combo"/>
+                    </VBox>
+
+                    <VBox spacing="4" prefWidth="160.0">
+                        <Label styleClass="header-subtitle" text="Vendedor"/>
+                        <TextField fx:id="txtVendedor" editable="false" styleClass="search-field" text="Cargando..."/>
+                    </VBox>
+
+                    <VBox spacing="4" prefWidth="130.0">
+                        <Label styleClass="header-subtitle" text="Fecha de venta"/>
+                        <TextField fx:id="txtFecha" editable="false" styleClass="search-field" text="Cargando..."/>
+                    </VBox>
+                </HBox>
+
+                <TableView fx:id="tblDetalleVenta" prefHeight="300.0" styleClass="table-view" VBox.vgrow="ALWAYS">
+                    <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                    </columnResizePolicy>
+                    <columns>
+                        <TableColumn prefWidth="220.0" text="Producto" fx:id="colDetProducto"/>
+                        <TableColumn prefWidth="110.0" text="Precio Unit." fx:id="colDetPrecio"/>
+                        <TableColumn prefWidth="80.0" text="Cant." fx:id="colDetCantidad"/>
+                        <TableColumn prefWidth="110.0" text="Subtotal" fx:id="colDetSubtotal"/>
+                        <TableColumn prefWidth="80.0" text="Acción" fx:id="colEliminar"/>
+                    </columns>
+                </TableView>
+
+                <HBox alignment="CENTER_RIGHT" spacing="12.0" style="-fx-padding: 8 0 0 0;">
+                    <Label styleClass="metric-label" text="TOTAL VENTA:"/>
+                    <Label fx:id="lblTotalVenta" styleClass="metric-value" text="S/ 0.00" style="-fx-font-size: 20px;"/>
+                </HBox>
             </VBox>
         </HBox>
 
-        <Separator style="-fx-padding: 4 0 4 0;"/>
-
-        <VBox spacing="10.0">
-            <Label style="-fx-font-weight: bold; -fx-text-fill: #0F172A; -fx-font-size: 15px;"
-                   text="Detalle de Productos"/>
-            <HBox alignment="BOTTOM_LEFT" spacing="12.0">
-                <VBox spacing="2.0" HBox.hgrow="ALWAYS">
-                    <Label style="-fx-text-fill: #64748B; -fx-font-size: 11px;" text="Buscar Producto"/>
-                    <TextField fx:id="cbProducto" editable="false" prefHeight="40.0"
-                               styleClass="search-field"
-                               style="-fx-background-color: #F1F5F9; -fx-text-fill: #64748B; -fx-border-color: #E2E8F0; -fx-border-width: 1px; -fx-border-radius: 6px; -fx-background-radius: 6px;"/>
-                </VBox>
-                <VBox spacing="2.0">
-                    <Label style="-fx-text-fill: #64748B; -fx-font-size: 11px;" text="Cantidad"/>
-                    <Spinner fx:id="spnCantidad" prefHeight="40.0" prefWidth="100.0"/>
-                </VBox>
-                <VBox spacing="2.0">
-                    <Label style="-fx-text-fill: #64748B; -fx-font-size: 11px;" text="Precio Unitario"/>
-                    <TextField fx:id="txtPrecioUnitario" prefHeight="40.0" prefWidth="130.0"
-                               promptText="0.00" styleClass="search-field"/>
-                </VBox>
-                <Button fx:id="btnAgregarProducto" onAction="#handleAgregarProducto" prefHeight="40.0"
-                        styleClass="btn-primary" text="Agregar"/>
-            </HBox>
-        </VBox>
-
-        <TableView fx:id="tblDetalleVenta" prefHeight="200.0" styleClass="sales-table" VBox.vgrow="ALWAYS">
-            <columns>
-                <TableColumn fx:id="colDetCodigo" prefWidth="100.0" text="Código"/>
-                <TableColumn fx:id="colDetProducto" prefWidth="240.0" text="Producto"/>
-                <TableColumn fx:id="colDetPrecio" prefWidth="120.0" text="Precio Unit."/>
-                <TableColumn fx:id="colDetCantidad" prefWidth="100.0" text="Cantidad"/>
-                <TableColumn fx:id="colDetSubtotal" prefWidth="120.0" text="Subtotal"/>
-                <TableColumn fx:id="colDetAcciones" style="-fx-alignment: CENTER;" text="Quitar"/>
-            </columns>
-            <columnResizePolicy>
-                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
-            </columnResizePolicy>
-        </TableView>
-
-        <HBox alignment="CENTER_LEFT" spacing="14.0" style="-fx-padding: 6 0 0 0;">
-            <HBox alignment="CENTER_LEFT" spacing="8.0" HBox.hgrow="ALWAYS">
-                <Label style="-fx-font-weight: bold; -fx-text-fill: #334155; -fx-font-size: 15px;"
-                       text="Total:"/>
-                <Label fx:id="lblTotalVenta"
-                       style="-fx-font-weight: bold; -fx-text-fill: #0F172A; -fx-font-size: 20px;"
-                       text="S/"/>
-            </HBox>
-            <Region HBox.hgrow="ALWAYS"/>
-            <Button fx:id="btnCancelar" onAction="#handleCancelar" prefWidth="120.0" styleClass="btn-secondary"
-                    text="Cancelar"/>
-            <Button fx:id="btnRegistrarVenta" onAction="#handleRegistrarVenta" prefWidth="160.0"
-                    styleClass="btn-primary" text="Registrar Venta"/>
+        <HBox alignment="CENTER_RIGHT" spacing="12.0">
+            <Button fx:id="btnCancelar" onAction="#cerrarModal" styleClass="btn-secondary" text="Cancelar"/>
+            <Button fx:id="btnRegistrarVenta" onAction="#registrarVenta" styleClass="btn-primary" text="Registrar Venta"/>
         </HBox>
+
     </VBox>
 </AnchorPane>

@@ -17,10 +17,15 @@
     <VBox spacing="24.0" styleClass="view-container" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0"
           AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
 
-        <VBox spacing="5">
-            <Label styleClass="header-title" text="Control de Usuarios"/>
-            <Label styleClass="header-subtitle" text="Seguimiento y control de usuarios registrados"/>
-        </VBox>
+        <HBox alignment="CENTER_LEFT" spacing="20">
+            <VBox spacing="5" HBox.hgrow="ALWAYS">
+                <Label styleClass="header-title" text="Control de Usuarios"/>
+                <Label styleClass="header-subtitle" text="Seguimiento y control de usuarios registrados"/>
+            </VBox>
+            <HBox alignment="CENTER_RIGHT" spacing="12">
+                <Button onAction="#abrirModalNuevoUsuario" styleClass="btn-primary" text="Nuevo Usuario"/>
+            </HBox>
+        </HBox>
 
         <HBox spacing="16" styleClass="metrics-container">
             <VBox spacing="8" styleClass="metric-card" HBox.hgrow="ALWAYS">
@@ -40,8 +45,9 @@
         </HBox>
 
         <HBox alignment="CENTER_LEFT" spacing="12" styleClass="search-container">
-            <TextField promptText="Buscar por usuario, nombre..." styleClass="search-field" HBox.hgrow="ALWAYS"/>
-            <Button styleClass="btn-primary" text="Nuevo Usuario" onAction="#abrirModalNuevoUsuario"/>
+            <TextField fx:id="txtBuscar" onAction="#ejecutarBusqueda" promptText="Buscar por usuario, nombre..." styleClass="search-field" HBox.hgrow="ALWAYS"/>
+            <Button fx:id="btnLimpiar" onAction="#limpiarBusqueda" styleClass="btn-secondary" text="Limpiar"/>
+            <Button fx:id="btnBuscar" onAction="#ejecutarBusqueda" styleClass="btn-primary" text="Buscar"/>
         </HBox>
 
         <VBox spacing="16" VBox.vgrow="ALWAYS">
@@ -50,20 +56,21 @@
                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
                 </columnResizePolicy>
                 <columns>
-                    <TableColumn prefWidth="220.0" minWidth="180.0" text="Código" fx:id="colCodigo"/>
-                    <TableColumn prefWidth="130" text="Usuario" fx:id="colUsuario"/>
+                    <TableColumn prefWidth="180.0" minWidth="150.0" text="Código" fx:id="colCodigo"/>
+                    <TableColumn prefWidth="120" text="Usuario" fx:id="colUsuario"/>
                     <TableColumn prefWidth="100" text="Rol" fx:id="colRol"/>
-                    <TableColumn prefWidth="150" text="Código Empleado" fx:id="colCodigoEmpleado"/>
-                    <TableColumn prefWidth="170" text="Primer nombre" fx:id="colNombre"/>
-                    <TableColumn prefWidth="170" text="Segundo nombre" fx:id="colApellido"/>
-                    <TableColumn prefWidth="150" text="Acciones" fx:id="colAcciones"/>
+                    <TableColumn prefWidth="130" text="Código Empleado" fx:id="colCodigoEmpleado"/>
+                    <TableColumn prefWidth="130" text="Primer nombre" fx:id="colNombre"/>
+                    <TableColumn prefWidth="130" text="Segundo nombre" fx:id="colApellido"/>
+                    <TableColumn prefWidth="100" text="Estado" fx:id="colEstado"/>
+                    <TableColumn prefWidth="120" text="Acciones" fx:id="colAcciones"/>
                 </columns>
 
             </TableView>
 
             <HBox alignment="CENTER_LEFT" spacing="20" styleClass="pagination-container">
                 <Label fx:id="lblResumenPaginacion" maxWidth="Infinity" styleClass="pagination-summary"
-                       text="Mostrando 1-10 de ** usuarios" HBox.hgrow="ALWAYS"/>
+                       text="Cargando usuarios..." HBox.hgrow="ALWAYS"/>
                 <HBox alignment="CENTER_RIGHT" spacing="8">
                     <Button fx:id="btnAnterior" styleClass="btn-secondary" text="Anterior"/>
                     <Button fx:id="btnSiguiente" styleClass="btn-secondary" text="Siguiente"/>

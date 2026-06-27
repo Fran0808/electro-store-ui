@@ -33,14 +33,13 @@
          </VBox>
 
          <VBox spacing="8" styleClass="metric-card" HBox.hgrow="ALWAYS">
-            <Label styleClass="metric-label" text="Compras mensuales"/>
-            <Label fx:id="lblCompraMensual" styleClass="metric-value" text="---"/>
+            <Label styleClass="metric-label" text="Proveedor frecuente"/>
+            <Label fx:id="lblProveedorFrecuente" styleClass="metric-value" text="---"/>
          </VBox>
 
          <VBox spacing="8" styleClass="metric-card" HBox.hgrow="ALWAYS">
             <Label styleClass="metric-label" text="Último registrado"/>
-            <Label fx:id="lblUltimoRegristrado" styleClass="metric-value" text="Empresa X S.A."/>
-            <Label fx:id="lblTiempoRegistrado" styleClass="header-subtitle" text="Hace 2 horas"/>
+            <Label fx:id="lblUltimoRegristrado" styleClass="metric-value" text="---"/>
          </VBox>
       </HBox>
 
@@ -70,7 +69,7 @@
 
          <HBox alignment="CENTER_LEFT" spacing="20" styleClass="pagination-container">
             <Label fx:id="lblResumenPaginacion" maxWidth="Infinity" styleClass="pagination-summary"
-                   text="Mostrando 1-10 de ** proveedores" HBox.hgrow="ALWAYS"/>
+                   text="Cargando proveedores..." HBox.hgrow="ALWAYS"/>
             <HBox alignment="CENTER_RIGHT" spacing="8">
                <Button fx:id="btnAnterior" styleClass="btn-secondary" text="Anterior"/>
                <Button fx:id="btnSiguiente" styleClass="btn-secondary" text="Siguiente"/>

@@ -175,6 +175,7 @@ public class GuiasController {
         Parent root = loader.load();
 
         Stage modal = new Stage();
+        com.store.inventario.utils.WindowUtils.applyIcon(modal);
         modal.initModality(Modality.APPLICATION_MODAL);
         modal.setTitle("Agregar nueva guía");
         modal.setScene(new Scene(root));
@@ -191,6 +192,7 @@ public class GuiasController {
         controller.setGuideCode(guide.getCode());
 
         Stage modal = new Stage();
+        com.store.inventario.utils.WindowUtils.applyIcon(modal);
         modal.initModality(Modality.APPLICATION_MODAL);
         modal.setTitle("Detalle de Guía - " + guide.getCode());
         modal.setScene(new Scene(root));

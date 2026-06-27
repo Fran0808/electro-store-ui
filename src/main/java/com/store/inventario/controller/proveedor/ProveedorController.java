@@ -50,6 +50,12 @@ public class ProveedorController implements Initializable {
     private Label lblTotalProveedor;
 
     @FXML
+    private Label lblProveedorFrecuente;
+
+    @FXML
+    private Label lblUltimoRegristrado;
+
+    @FXML
     private Label lblResumenPaginacion;
 
     @FXML
@@ -92,6 +98,7 @@ public class ProveedorController implements Initializable {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/views/proveedores/proveedor-form.fxml"));
         Parent root = loader.load();
         Stage modal = new Stage();
+        com.store.inventario.utils.WindowUtils.applyIcon(modal);
         modal.initModality(Modality.APPLICATION_MODAL);
         modal.setTitle("Nuevo Proveedor");
         modal.setResizable(false);
@@ -107,6 +114,7 @@ public class ProveedorController implements Initializable {
             ProveedorFormController controller = loader.getController();
             controller.setProveedorEditar(proveedor);
             Stage modal = new Stage();
+            com.store.inventario.utils.WindowUtils.applyIcon(modal);
             modal.initModality(Modality.APPLICATION_MODAL);
             modal.setTitle("Editar Proveedor");
             modal.setResizable(false);
@@ -229,6 +237,27 @@ public class ProveedorController implements Initializable {
 
     private void actualizarMetricas(PageResponse<Proveedor> response) {
         lblTotalProveedor.setText(String.valueOf(response.getTotalElements()));
+
+        List<Proveedor> proveedores = response.getContent();
+        if (proveedores != null && !proveedores.isEmpty()) {
+            Proveedor ultimo = proveedores.get(proveedores.size() - 1);
+            lblUltimoRegristrado.setText(ultimo.getTradeName());
+        } else {
+            lblUltimoRegristrado.setText("Ninguno");
+        }
+
+        try {
+            com.store.inventario.service.compra.CompraService compraService = new com.store.inventario.service.compra.CompraService();
+            com.store.inventario.model.compra.PurchaseMetrics purchaseMetrics = compraService.obtenerMetricas();
+            if (purchaseMetrics != null && purchaseMetrics.getFrequentSupplierName() != null && !purchaseMetrics.getFrequentSupplierName().trim().isEmpty()) {
+                lblProveedorFrecuente.setText(purchaseMetrics.getFrequentSupplierName());
+            } else {
+                lblProveedorFrecuente.setText("Ninguno");
+            }
+        } catch (Exception e) {
+            lblProveedorFrecuente.setText("Ninguno");
+            e.printStackTrace();
+        }
     }
 
     private void actualizarPaginacion(PageResponse<Proveedor> response) {

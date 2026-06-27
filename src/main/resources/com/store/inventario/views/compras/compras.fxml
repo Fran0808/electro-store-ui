@@ -17,36 +17,42 @@
     <VBox spacing="24.0" styleClass="view-container" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0"
           AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
 
-        <VBox spacing="5">
-            <Label styleClass="header-title" text="Gestión de Compras"/>
-            <Label styleClass="header-subtitle" text="Administración de compras e ingreso de productos al inventario"/>
-        </VBox>
+        <HBox alignment="CENTER_LEFT" spacing="20">
+            <VBox spacing="5" HBox.hgrow="ALWAYS">
+                <Label styleClass="header-title" text="Gestión de Compras"/>
+                <Label styleClass="header-subtitle" text="Administración de compras e ingreso de productos al inventario"/>
+            </VBox>
+            <HBox alignment="CENTER_RIGHT" spacing="12">
+                <Button onAction="#abrirModalNuevaCompra" styleClass="btn-primary" text="Nueva Compra"/>
+            </HBox>
+        </HBox>
 
         <HBox spacing="16" styleClass="metrics-container">
             <VBox spacing="8" styleClass="metric-card" HBox.hgrow="ALWAYS">
                 <Label styleClass="metric-label" text="Compras semanales"/>
-                <Label styleClass="metric-value" text="---"/>
+                <Label fx:id="lblComprasSemanales" styleClass="metric-value" text="---"/>
             </VBox>
 
             <VBox spacing="8" styleClass="metric-card" HBox.hgrow="ALWAYS">
                 <Label styleClass="metric-label" text="Productos ingresados mensuales"/>
-                <Label styleClass="metric-value" text="---"/>
+                <Label fx:id="lblProductosIngresados" styleClass="metric-value" text="---"/>
             </VBox>
 
             <VBox spacing="8" styleClass="metric-card" HBox.hgrow="ALWAYS">
                 <Label styleClass="metric-label" text="Proveedor frecuente"/>
-                <Label styleClass="metric-value" text="Empresa X S.A."/>
-                <Label styleClass="header-subtitle" text="x compras realizadas"/>
+                <Label fx:id="lblProveedorFrecuente" styleClass="metric-value" text="---"/>
+                <Label fx:id="lblProveedorFrecuenteCompras" styleClass="header-subtitle" text="---"/>
             </VBox>
         </HBox>
 
         <HBox alignment="CENTER_LEFT" spacing="12" styleClass="search-container">
             <TextField fx:id="txtBuscarCompra" promptText="Buscar por código de compra, proveedor..."
-                       styleClass="search-field" HBox.hgrow="ALWAYS"/>
-            <ComboBox fx:id="cbFecha" promptText="Fecha" styleClass="filter-combo"/>
-            <ComboBox fx:id="cbProveedor" promptText="Proveedor" styleClass="filter-combo"/>
-            <ComboBox fx:id="cbUsuario" promptText="Usuario" styleClass="filter-combo"/>
-            <Button onAction="#abrirModalNuevaCompra" styleClass="btn-primary" text="Nueva Compra"/>
+                       styleClass="search-field" HBox.hgrow="ALWAYS" onAction="#ejecutarBusqueda"/>
+            <ComboBox fx:id="cbFecha" promptText="Fecha" styleClass="filter-combo" onAction="#filtrarCompras"/>
+            <ComboBox fx:id="cbProveedor" promptText="Proveedor" styleClass="filter-combo" onAction="#filtrarCompras"/>
+            <ComboBox fx:id="cbUsuario" promptText="Usuario" styleClass="filter-combo" onAction="#filtrarCompras"/>
+            <Button onAction="#limpiarFiltros" styleClass="btn-secondary" text="Limpiar"/>
+            <Button onAction="#ejecutarBusqueda" styleClass="btn-primary" text="Buscar"/>
         </HBox>
 
         <VBox spacing="16.0" VBox.vgrow="ALWAYS">
@@ -56,22 +62,22 @@
                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
                 </columnResizePolicy>
                 <columns>
-                    <TableColumn prefWidth="69.0" text="Código"/>
-                    <TableColumn prefWidth="193.0" text="Proveedor"/>
-                    <TableColumn prefWidth="194.0" text="Usuario"/>
-                    <TableColumn prefWidth="128.0" text="Fecha"/>
-                    <TableColumn prefWidth="86.0" text="Cantidad"/>
-                    <TableColumn prefWidth="113.0" text="Total"/>
-                    <TableColumn prefWidth="196.0" text="Acciones"/>
+                    <TableColumn prefWidth="69.0" text="Código" fx:id="colCodigo"/>
+                    <TableColumn prefWidth="193.0" text="Proveedor" fx:id="colProveedor"/>
+                    <TableColumn prefWidth="194.0" text="Usuario" fx:id="colUsuario"/>
+                    <TableColumn prefWidth="128.0" text="Fecha" fx:id="colFecha"/>
+                    <TableColumn prefWidth="86.0" text="Cantidad" fx:id="colCantidad"/>
+                    <TableColumn prefWidth="113.0" text="Total" fx:id="colTotal"/>
+                    <TableColumn prefWidth="196.0" text="Acciones" fx:id="colAcciones"/>
                 </columns>
             </TableView>
 
             <HBox alignment="CENTER_LEFT" spacing="20" styleClass="pagination-container">
                 <Label fx:id="lblResumenPaginacion" maxWidth="Infinity" styleClass="pagination-summary"
-                       text="Mostrando 1-10 de ** compras" HBox.hgrow="ALWAYS"/>
+                       text="Cargando compras..." HBox.hgrow="ALWAYS"/>
                 <HBox alignment="CENTER_RIGHT" spacing="8">
-                    <Button fx:id="btnAnterior" styleClass="btn-secondary" text="Anterior"/>
-                    <Button fx:id="btnSiguiente" styleClass="btn-secondary" text="Siguiente"/>
+                    <Button fx:id="btnAnterior" styleClass="btn-secondary" text="Anterior" onAction="#handlePaginaAnterior"/>
+                    <Button fx:id="btnSiguiente" styleClass="btn-secondary" text="Siguiente" onAction="#handlePaginaSiguiente"/>
                 </HBox>
             </HBox>
         </VBox>

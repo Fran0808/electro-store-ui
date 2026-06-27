@@ -1,5 +1,6 @@
 package com.store.inventario;
 
+import com.store.inventario.utils.WindowUtils;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -18,12 +19,7 @@ public class MainApplication extends Application {
         Scene scene = new Scene(loader.load());
         stage.setTitle("Sistema de Inventario");
 
-        try {
-            Image icon = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/logo.png")));
-            stage.getIcons().add(icon);
-        } catch (Exception e) {
-            System.err.println("No se pudo cargar el logo de la aplicación: " + e.getMessage());
-        }
+        WindowUtils.applyIcon(stage);
 
         stage.setScene(scene);
         stage.setMinWidth(1280);

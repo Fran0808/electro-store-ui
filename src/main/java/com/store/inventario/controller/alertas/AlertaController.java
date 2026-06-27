@@ -45,7 +45,7 @@ public class AlertaController implements Initializable {
     private final List<AlertaItem> todasLasAlertas = new ArrayList<>();
     private final List<Producto> listaProductosOriginales = new ArrayList<>();
     private int paginaActual = 0;
-    private final int tamanoPagina = 12;
+    private final int tamanoPagina = 30;
 
     public static int globalAlertLimit = 5;
 
@@ -212,6 +212,7 @@ public class AlertaController implements Initializable {
         formController.setProducto(selectedProduct);
 
         Stage modal = new Stage();
+        com.store.inventario.utils.WindowUtils.applyIcon(modal);
         modal.initModality(Modality.APPLICATION_MODAL);
         modal.setTitle("Editar límite de alerta - " + selectedProduct.getName());
         modal.setScene(new Scene(root));

@@ -40,7 +40,7 @@
                         </StackPane>
                         <VBox spacing="2">
                             <Label styleClass="metric-label" text="Total Productos" />
-                            <Label fx:id="lblTotalProductos" styleClass="metric-value" text="1,284" />
+                            <Label fx:id="lblTotalProductos" styleClass="metric-value" text="---" />
                         </VBox>
                     </HBox>
 
@@ -50,7 +50,7 @@
                         </StackPane>
                         <VBox spacing="2">
                             <Label styleClass="metric-label" text="Stock Bajo" />
-                            <Label fx:id="lblStockBajo" styleClass="metric-value" text="42" />
+                            <Label fx:id="lblStockBajo" styleClass="metric-value" text="---" />
                         </VBox>
                     </HBox>
 
@@ -60,7 +60,7 @@
                         </StackPane>
                         <VBox spacing="2">
                             <Label styleClass="metric-label" text="Agotados" />
-                            <Label fx:id="lblAgotados" styleClass="metric-value" text="15" />
+                            <Label fx:id="lblAgotados" styleClass="metric-value" text="---" />
                         </VBox>
                     </HBox>
 
@@ -70,18 +70,18 @@
                         </StackPane>
                         <VBox spacing="2">
                             <Label styleClass="metric-label" text="Categorías" />
-                            <Label fx:id="lblCategorias" styleClass="metric-value" text="18" />
+                            <Label fx:id="lblCategorias" styleClass="metric-value" text="---" />
                         </VBox>
                     </HBox>
                 </HBox>
 
                 <HBox alignment="CENTER_LEFT" spacing="12" styleClass="search-container">
-                    <TextField fx:id="txtBuscar" HBox.hgrow="ALWAYS" promptText="Buscar productos por nombre, SKU o marca..." styleClass="search-field" />
-                    <ComboBox fx:id="cbCategoria" promptText="Categoría" styleClass="filter-combo" />
-                    <ComboBox fx:id="cbMarca" promptText="Marca" styleClass="filter-combo" />
-                    <ComboBox fx:id="cbEstado" promptText="Estado" styleClass="filter-combo" />
-                    <Button fx:id="btnLimpiar" styleClass="btn-secondary" text="Limpiar" />
-                    <Button fx:id="btnBuscar" styleClass="btn-primary" text="Buscar" />
+                    <TextField fx:id="txtBuscar" onAction="#ejecutarBusqueda" HBox.hgrow="ALWAYS" promptText="Buscar productos por nombre, SKU o marca..." styleClass="search-field" />
+                    <ComboBox fx:id="cbCategoria" onAction="#ejecutarBusqueda" promptText="Categoría" styleClass="filter-combo" />
+                    <ComboBox fx:id="cbMarca" onAction="#ejecutarBusqueda" promptText="Marca" styleClass="filter-combo" />
+                    <ComboBox fx:id="cbEstado" onAction="#ejecutarBusqueda" promptText="Estado" styleClass="filter-combo" />
+                    <Button fx:id="btnLimpiar" onAction="#limpiarBusqueda" styleClass="btn-secondary" text="Limpiar" />
+                    <Button fx:id="btnBuscar" onAction="#ejecutarBusqueda" styleClass="btn-primary" text="Buscar" />
                 </HBox>
 
                 <TableView fx:id="tblProductos" VBox.vgrow="ALWAYS" minHeight="150.0" styleClass="products-table">
@@ -102,10 +102,10 @@
                 </TableView>
 
                 <HBox alignment="CENTER_LEFT" spacing="20" styleClass="pagination-container">
-                    <Label fx:id="lblResumenPaginacion" maxWidth="Infinity" styleClass="pagination-summary" text="Mostrando 1-10 de 1,284 productos" HBox.hgrow="ALWAYS" />
+                    <Label fx:id="lblResumenPaginacion" maxWidth="Infinity" styleClass="pagination-summary" text="Cargando productos..." HBox.hgrow="ALWAYS" />
                     <HBox alignment="CENTER_RIGHT" spacing="8">
-                        <Button fx:id="btnAnterior" styleClass="btn-secondary" text="Anterior" />
-                        <Button fx:id="btnSiguiente" styleClass="btn-secondary" text="Siguiente" />
+                        <Button fx:id="btnAnterior" onAction="#handlePaginaAnterior" styleClass="btn-secondary" text="Anterior" />
+                        <Button fx:id="btnSiguiente" onAction="#handlePaginaSiguiente" styleClass="btn-secondary" text="Siguiente" />
                     </HBox>
                 </HBox>
             </VBox>

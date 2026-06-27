@@ -2,6 +2,7 @@ package com.store.inventario.controller;
 
 import com.store.inventario.model.NavigationManager;
 import com.store.inventario.security.SessionManager;
+import com.store.inventario.utils.WindowUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -91,14 +92,10 @@ public class SidebarController {
         new Thread(() -> {
             try {
                 com.store.inventario.service.producto.ProductoService service = new com.store.inventario.service.producto.ProductoService();
-                com.store.inventario.model.PageResponse<com.store.inventario.model.producto.Producto> response = service.obtenerProductos(0, 1000);
-                long count = response.getContent().stream()
-                        .filter(p -> {
-                            int stock = p.getStock() != null ? p.getStock() : 0;
-                            int limit = p.getLowStock() != null ? p.getLowStock() : 5;
-                            return stock <= limit;
-                        })
-                        .count();
+
+                com.store.inventario.model.producto.ProductMetrics metrics = service.obtenerMetricas();
+                long count = (metrics != null) ? (metrics.getLowStockCount() + metrics.getOutOfStockCount()) : 0;
+
                 javafx.application.Platform.runLater(() -> {
                     if (count > 0) {
                         lblBadgeAlertas.setText(String.valueOf(count));
@@ -110,11 +107,7 @@ public class SidebarController {
                     }
                 });
             } catch (Exception e) {
-                System.err.println("No se pudo cargar el badge de alertas en el sidebar: " + e.getMessage());
-                javafx.application.Platform.runLater(() -> {
-                    lblBadgeAlertas.setVisible(false);
-                    lblBadgeAlertas.setManaged(false);
-                });
+                e.printStackTrace();
             }
         }).start();
     }
@@ -185,17 +178,11 @@ public class SidebarController {
             Parent root = loader.load();
 
             Stage loginStage = new Stage();
+            WindowUtils.applyIcon(loginStage);
             loginStage.setTitle("Sistema de Inventario");
             loginStage.setScene(new Scene(root));
             loginStage.setMinWidth(1280);
             loginStage.setMinHeight(800);
-
-            try {
-                Image icon = new Image(getClass().getResourceAsStream("/logo.png"));
-                loginStage.getIcons().add(icon);
-            } catch (Exception e) {
-                System.err.println("No se pudo cargar el logo de la aplicación: " + e.getMessage());
-            }
 
             loginStage.show();
 

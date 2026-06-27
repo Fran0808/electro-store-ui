@@ -29,6 +29,7 @@ public class DialogUtils {
             controller.mostrarBotonConfirmar(mostrarConfirmar);
 
             Stage dialogStage = new Stage();
+            WindowUtils.applyIcon(dialogStage);
             dialogStage.initModality(Modality.WINDOW_MODAL);
             dialogStage.initOwner(ownerStage);
             dialogStage.setTitle(titulo);

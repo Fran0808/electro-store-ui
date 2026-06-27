@@ -6,6 +6,8 @@ import com.store.inventario.service.empleado.EmpleadoService;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -60,6 +62,11 @@ public class EmpleadosController implements Initializable {
     private Button btnSiguiente;
 
     private final EmpleadoService empleadoService = new EmpleadoService();
+    private final ObservableList<Empleado> masterData = FXCollections.observableArrayList();
+    private FilteredList<Empleado> filteredData;
+    private int paginaActual = 0;
+    private final int tamanoPagina = 30;
+    private int totalPaginas = 1;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle){
@@ -95,13 +102,23 @@ public class EmpleadosController implements Initializable {
         });
         colSueldo.setCellValueFactory(new PropertyValueFactory<>("salary"));
         configurarColumnaAcciones();
+        
+        filteredData = new FilteredList<>(masterData, p -> true);
+        tblView.setItems(filteredData);
+        
+        btnAnterior.setOnAction(e -> handlePaginaAnterior());
+        btnSiguiente.setOnAction(e -> handlePaginaSiguiente());
+
         obtenerEmpleados();
     }
 
     private void obtenerEmpleados() {
         try {
-            PageResponse<Empleado> response = empleadoService.obtenerEmpleados();
-            tblView.setItems(FXCollections.observableArrayList(response.getContent()));
+            PageResponse<Empleado> response = empleadoService.obtenerEmpleados(paginaActual, tamanoPagina);
+            masterData.setAll(response.getContent());
+            totalPaginas = response != null ? response.getTotalPages() : 1;
+            btnAnterior.setDisable(paginaActual == 0);
+            btnSiguiente.setDisable(paginaActual >= totalPaginas - 1);
             actualizarPaginacion(response);
         } catch (Exception e) {
             e.printStackTrace();
@@ -118,6 +135,7 @@ public class EmpleadosController implements Initializable {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/views/empleados/empleado-form.fxml"));
         Parent root = loader.load();
         Stage modal = new Stage();
+        com.store.inventario.utils.WindowUtils.applyIcon(modal);
         modal.initModality(Modality.APPLICATION_MODAL);
         modal.setTitle("Nuevo Empleado");
         modal.setResizable(false);
@@ -133,6 +151,7 @@ public class EmpleadosController implements Initializable {
             EmpleadosFormController controller = loader.getController();
             controller.setEmpleadoEditar(empleado);
             Stage modal = new Stage();
+            com.store.inventario.utils.WindowUtils.applyIcon(modal);
             modal.initModality(Modality.APPLICATION_MODAL);
             modal.setTitle("Editar Empleado");
             modal.setResizable(false);
@@ -249,5 +268,67 @@ public class EmpleadosController implements Initializable {
                         + totalPaginas
                         + ")"
         );
+    }
+
+    @FXML
+    private void ejecutarBusqueda() {
+        String text = txtBuscar.getText();
+        if (text == null || text.trim().isEmpty()) {
+            filteredData.setPredicate(p -> true);
+        } else {
+            String lowerCaseFilter = text.toLowerCase().trim();
+            filteredData.setPredicate(empleado -> {
+                if (empleado.getCode() != null && empleado.getCode().toLowerCase().contains(lowerCaseFilter)) {
+                    return true;
+                }
+                if (empleado.getPerson() != null) {
+                    var person = empleado.getPerson();
+                    if (person.getFirstName() != null && person.getFirstName().toLowerCase().contains(lowerCaseFilter)) {
+                        return true;
+                    }
+                    if (person.getLastName() != null && person.getLastName().toLowerCase().contains(lowerCaseFilter)) {
+                        return true;
+                    }
+                    if (person.getNationalId() != null && person.getNationalId().toLowerCase().contains(lowerCaseFilter)) {
+                        return true;
+                    }
+                }
+                if (empleado.getPosition() != null && empleado.getPosition().name().toLowerCase().contains(lowerCaseFilter)) {
+                    return true;
+                }
+                return false;
+            });
+        }
+        actualizarPaginacionConFiltrados();
+    }
+
+    @FXML
+    private void limpiarBusqueda() {
+        txtBuscar.clear();
+        filteredData.setPredicate(p -> true);
+        actualizarPaginacionConFiltrados();
+    }
+
+    private void actualizarPaginacionConFiltrados() {
+        int total = filteredData.size();
+        if (total == 0) {
+            lblResumenPaginacion.setText("No hay empleados para mostrar");
+            return;
+        }
+        lblResumenPaginacion.setText("Mostrando 1-" + total + " de " + total + " empleados");
+    }
+
+    private void handlePaginaAnterior() {
+        if (paginaActual > 0) {
+            paginaActual--;
+            obtenerEmpleados();
+        }
+    }
+
+    private void handlePaginaSiguiente() {
+        if (paginaActual < totalPaginas - 1) {
+            paginaActual++;
+            obtenerEmpleados();
+        }
     }
 }

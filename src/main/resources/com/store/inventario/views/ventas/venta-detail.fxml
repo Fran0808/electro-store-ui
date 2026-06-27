@@ -69,15 +69,31 @@
                 </columnResizePolicy>
             </TableView>
 
-            <HBox alignment="CENTER_RIGHT" spacing="40.0"
-                  style="-fx-padding: 12; -fx-border-width: 1 0 0 0; -fx-border-color: #ddd;">
+            <HBox alignment="CENTER_RIGHT" spacing="40.0" style="-fx-background-color: #FFFFFF; -fx-border-color: #E2E8F0; -fx-border-width: 1px; -fx-background-radius: 8px; -fx-border-radius: 8px; -fx-padding: 16px 24px;">
                 <VBox spacing="4.0" alignment="CENTER_RIGHT">
-                    <Label style="-fx-font-size:11px; -fx-text-fill:#666;" text="Total artículos:"/>
-                    <Label fx:id="lblTotalArticulos" style="-fx-font-size:14px; -fx-font-weight:bold;" text="0"/>
+                    <Label style="-fx-text-fill: #64748B; -fx-font-size: 11px; -fx-font-weight: bold;" text="TOTAL ARTÍCULOS"/>
+                    <Label fx:id="lblTotalArticulos" style="-fx-text-fill: #0F172A; -fx-font-size: 15px; -fx-font-weight: bold;" text="0"/>
                 </VBox>
+                
+                <Separator orientation="VERTICAL" style="-fx-opacity: 0.5;"/>
+                
                 <VBox spacing="4.0" alignment="CENTER_RIGHT">
-                    <Label style="-fx-font-size:11px; -fx-text-fill:#666;" text="Total venta:"/>
-                    <Label fx:id="lblTotalVenta" style="-fx-font-size:14px; -fx-font-weight:bold;" text="S/ 0.00"/>
+                    <Label style="-fx-text-fill: #64748B; -fx-font-size: 11px; -fx-font-weight: bold;" text="SUBTOTAL VENTA"/>
+                    <Label fx:id="lblSubtotal" style="-fx-text-fill: #0F172A; -fx-font-size: 15px; -fx-font-weight: bold;" text="S/ 0.00"/>
+                </VBox>
+                
+                <Separator orientation="VERTICAL" style="-fx-opacity: 0.5;"/>
+                
+                <VBox spacing="4.0" alignment="CENTER_RIGHT">
+                    <Label style="-fx-text-fill: #64748B; -fx-font-size: 11px; -fx-font-weight: bold;" text="IMPUESTOS (IGV 18%)"/>
+                    <Label fx:id="lblImpuesto" style="-fx-text-fill: #0F172A; -fx-font-size: 15px; -fx-font-weight: bold;" text="S/ 0.00"/>
+                </VBox>
+                
+                <Separator orientation="VERTICAL" style="-fx-opacity: 0.5;"/>
+                
+                <VBox spacing="4.0" alignment="CENTER_RIGHT">
+                    <Label style="-fx-text-fill: #64748B; -fx-font-size: 11px; -fx-font-weight: bold;" text="TOTAL VENTA"/>
+                    <Label fx:id="lblTotalVenta" style="-fx-text-fill: #2563EB; -fx-font-size: 24px; -fx-font-weight: bold;" text="S/ 0.00"/>
                 </VBox>
             </HBox>
         </VBox>

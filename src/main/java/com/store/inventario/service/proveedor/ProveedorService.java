@@ -2,6 +2,7 @@ package com.store.inventario.service.proveedor;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.store.inventario.config.ApiConfig;
 import com.store.inventario.model.PageResponse;
 import com.store.inventario.model.proveedor.CreateProveedorRequest;
 import com.store.inventario.model.proveedor.Proveedor;
@@ -17,7 +18,7 @@ import java.net.http.HttpResponse;
 
 public class ProveedorService {
 
-    private static final String URL = "http://localhost:8080/api/suppliers";
+    private static final String URL = ApiConfig.BASE_URL + "/suppliers";
 
     private final HttpClient client = HttpClient.newHttpClient();
     private final Gson gson = new Gson();

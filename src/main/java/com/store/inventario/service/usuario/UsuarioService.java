@@ -2,6 +2,7 @@ package com.store.inventario.service.usuario;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.store.inventario.config.ApiConfig;
 import com.store.inventario.model.PageResponse;
 import com.store.inventario.model.usuario.Usuario;
 import com.store.inventario.security.SessionManager;
@@ -14,7 +15,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 public class UsuarioService {
-    private static final String URL = "http://localhost:8080/api/users";
+    private static final String URL = ApiConfig.BASE_URL + "/users";
     private final HttpClient client;
     private final Gson gson;
 
@@ -24,9 +25,14 @@ public class UsuarioService {
     }
 
     public PageResponse<Usuario> obtenerUsuarios() {
+        return obtenerUsuarios(0, 1000);
+    }
+
+    public PageResponse<Usuario> obtenerUsuarios(int page, int size) {
         try {
+            String url = URL + "?page=" + page + "&size=" + size;
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(URL))
+                    .uri(URI.create(url))
                     .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
                     .GET()
                     .build();
@@ -98,6 +104,44 @@ public class UsuarioService {
             if (response.statusCode() >= 400) {
                 throw new RuntimeException("Error al eliminar usuario: HTTP " + response.statusCode());
             }
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public Usuario activarUsuario(String code) {
+        try {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(URL + "/activate/" + code))
+                    .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
+                    .method("PATCH", HttpRequest.BodyPublishers.noBody())
+                    .build();
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() >= 400) {
+                throw new RuntimeException("Error al activar usuario: HTTP " + response.statusCode() + " - " + response.body());
+            }
+
+            return gson.fromJson(response.body(), Usuario.class);
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public Usuario desactivarUsuario(String code) {
+        try {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(URL + "/deactivate/" + code))
+                    .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
+                    .method("PATCH", HttpRequest.BodyPublishers.noBody())
+                    .build();
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() >= 400) {
+                throw new RuntimeException("Error al desactivar usuario: HTTP " + response.statusCode() + " - " + response.body());
+            }
+
+            return gson.fromJson(response.body(), Usuario.class);
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }

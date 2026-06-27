@@ -5,6 +5,7 @@ import com.store.inventario.model.usuario.Usuario;
 import com.store.inventario.service.usuario.UsuarioService;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -22,8 +23,17 @@ import java.util.List;
 import java.util.Optional;
 
 public class UsuariosController {
+    @FXML private TextField txtBuscar;
+    @FXML private Button btnLimpiar;
+    @FXML private Button btnBuscar;
     @FXML private Button btnAnterior;
     @FXML public Button btnSiguiente;
+    
+    private final ObservableList<Usuario> masterData = FXCollections.observableArrayList();
+    private javafx.collections.transformation.FilteredList<Usuario> filteredData;
+    private int paginaActual = 0;
+    private final int tamanoPagina = 30;
+    private int totalPaginas = 1;
     @FXML private TableView<Usuario> tblUsuarios;
     @FXML private TableColumn<Usuario, String> colCodigo;
     @FXML private TableColumn<Usuario, String> colUsuario;
@@ -32,6 +42,7 @@ public class UsuariosController {
     @FXML private TableColumn<Usuario, String> colNombre;
     @FXML private TableColumn<Usuario, String> colApellido;
     @FXML private TableColumn<Usuario, Void> colAcciones;
+    @FXML private TableColumn<Usuario, Boolean> colEstado;
     
     @FXML private Label lblTotalUsuarios;
     @FXML private Label lblTotalAdmins;
@@ -46,6 +57,7 @@ public class UsuariosController {
         Parent root = loader.load();
         
         Stage modal = new Stage();
+        com.store.inventario.utils.WindowUtils.applyIcon(modal);
         modal.initModality(Modality.APPLICATION_MODAL);
         modal.setTitle("Nuevo Usuario");
         modal.setResizable(false);
@@ -76,8 +88,48 @@ public class UsuariosController {
         colNombre.setCellValueFactory(new PropertyValueFactory<>("firstName"));
         colApellido.setCellValueFactory(new PropertyValueFactory<>("lastName"));
 
+        configurarColumnaEstado();
         configurarColumnaAcciones();
+
+        filteredData = new javafx.collections.transformation.FilteredList<>(masterData, p -> true);
+        tblUsuarios.setItems(filteredData);
+
+        btnAnterior.setOnAction(e -> handlePaginaAnterior());
+        btnSiguiente.setOnAction(e -> handlePaginaSiguiente());
+
         obtenerUsuarios();
+    }
+
+    private void configurarColumnaEstado() {
+        colEstado.setCellValueFactory(cellData -> new javafx.beans.property.SimpleBooleanProperty(cellData.getValue().isStatus()));
+        colEstado.setCellFactory(new Callback<>() {
+            @Override
+            public TableCell<Usuario, Boolean> call(TableColumn<Usuario, Boolean> param) {
+                return new TableCell<>() {
+                    private final Label lblStatus = new Label();
+                    private final HBox contenedor = new HBox(lblStatus);
+                    {
+                        contenedor.setAlignment(Pos.CENTER);
+                    }
+
+                    @Override
+                    protected void updateItem(Boolean status, boolean empty) {
+                        super.updateItem(status, empty);
+                        if (empty || status == null) {
+                            setGraphic(null);
+                        } else {
+                            lblStatus.setText(status ? "Activo" : "Inactivo");
+                            if (status) {
+                                lblStatus.setStyle("-fx-background-color: rgba(74,222,128,0.15); -fx-text-fill: #16A34A; -fx-font-weight: bold; -fx-padding: 3 10 3 10; -fx-background-radius: 7px;");
+                            } else {
+                                lblStatus.setStyle("-fx-background-color: rgba(239,68,68,0.15); -fx-text-fill: #DC2626; -fx-font-weight: bold; -fx-padding: 3 10 3 10; -fx-background-radius: 7px;");
+                            }
+                            setGraphic(contenedor);
+                        }
+                    }
+                };
+            }
+        });
     }
 
     private void configurarColumnaAcciones() {
@@ -88,7 +140,6 @@ public class UsuariosController {
                     private final Button btnAcciones = new Button("⋮");
                     private final ContextMenu menuAcciones = new ContextMenu();
                     private final MenuItem itemEditar = new MenuItem("Editar");
-                    private final MenuItem itemEliminar = new MenuItem("Eliminar");
                     private final HBox contenedor = new HBox(btnAcciones);
 
                     {
@@ -96,8 +147,6 @@ public class UsuariosController {
                         btnAcciones.setTooltip(new Tooltip("Acciones de Usuario"));
 
                         itemEditar.getStyleClass().add("menu-item-editar");
-                        itemEliminar.getStyleClass().add("menu-item-eliminar");
-                        menuAcciones.getItems().addAll(itemEditar, itemEliminar);
 
                         contenedor.setAlignment(Pos.CENTER);
 
@@ -109,11 +158,6 @@ public class UsuariosController {
                             Usuario usuario = getTableView().getItems().get(getIndex());
                             handleEditar(usuario);
                         });
-
-                        itemEliminar.setOnAction(event -> {
-                            Usuario usuario = getTableView().getItems().get(getIndex());
-                            handleEliminar(usuario);
-                        });
                     }
 
                     @Override
@@ -122,6 +166,18 @@ public class UsuariosController {
                         if (empty) {
                             setGraphic(null);
                         } else {
+                            Usuario usuario = getTableView().getItems().get(getIndex());
+                            
+                            menuAcciones.getItems().clear();
+                            menuAcciones.getItems().add(itemEditar);
+                            
+                            MenuItem itemActivarDesactivar = new MenuItem(usuario.isStatus() ? "Desactivar" : "Activar");
+                            itemActivarDesactivar.getStyleClass().add(usuario.isStatus() ? "menu-item-eliminar" : "menu-item-editar");
+                            itemActivarDesactivar.setOnAction(event -> {
+                                handleActivarDesactivar(usuario);
+                            });
+                            menuAcciones.getItems().add(itemActivarDesactivar);
+                            
                             setGraphic(contenedor);
                         }
                     }
@@ -129,6 +185,45 @@ public class UsuariosController {
             }
         };
         colAcciones.setCellFactory(cellFactory);
+    }
+
+    private void handleActivarDesactivar(Usuario usuario) {
+        Platform.runLater(() -> {
+            boolean active = usuario.isStatus();
+            Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
+            confirmacion.setTitle(active ? "Confirmar Desactivación" : "Confirmar Activación");
+            confirmacion.setHeaderText(active ? "Desactivar usuario" : "Activar usuario");
+            confirmacion.setContentText(active 
+                ? "¿Está seguro de que desea desactivar al usuario " + usuario.getUsername() + "? No podrá iniciar sesión hasta ser reactivado."
+                : "¿Está seguro de que desea activar al usuario " + usuario.getUsername() + "?");
+
+            Optional<ButtonType> resultado = confirmacion.showAndWait();
+
+            if (resultado.isPresent() && resultado.get() == ButtonType.OK) {
+                try {
+                    if (active) {
+                        usuarioService.desactivarUsuario(usuario.getCode());
+                    } else {
+                        usuarioService.activarUsuario(usuario.getCode());
+                    }
+
+                    Alert exito = new Alert(Alert.AlertType.INFORMATION);
+                    exito.setTitle("Éxito");
+                    exito.setHeaderText(active ? "Usuario Desactivado" : "Usuario Activado");
+                    exito.setContentText("El usuario se ha " + (active ? "desactivado" : "activado") + " correctamente.");
+                    exito.showAndWait();
+
+                    obtenerUsuarios();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Alert error = new Alert(Alert.AlertType.ERROR);
+                    error.setTitle("Error");
+                    error.setHeaderText("No se pudo cambiar el estado");
+                    error.setContentText("Error al cambiar el estado del usuario: " + e.getMessage());
+                    error.showAndWait();
+                }
+            }
+        });
     }
 
     private void handleEditar(Usuario usuario) {
@@ -140,6 +235,7 @@ public class UsuariosController {
             controller.setUsuarioEditar(usuario);
 
             Stage modal = new Stage();
+            com.store.inventario.utils.WindowUtils.applyIcon(modal);
             modal.initModality(Modality.APPLICATION_MODAL);
             modal.setTitle("Editar Usuario");
             modal.setResizable(false);
@@ -152,6 +248,7 @@ public class UsuariosController {
         }
     }
 
+    /* Por si se vuelva a necesitar este metodo
     private void handleEliminar(Usuario usuario) {
         Platform.runLater(() -> {
             Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
@@ -183,12 +280,17 @@ public class UsuariosController {
             }
         });
     }
+    */
 
     private void obtenerUsuarios() {
         try {
-            PageResponse<Usuario> response = usuarioService.obtenerUsuarios();
+            PageResponse<Usuario> response = usuarioService.obtenerUsuarios(paginaActual, tamanoPagina);
             List<Usuario> usuarios = (response != null) ? response.getContent() : java.util.Collections.emptyList();
-            tblUsuarios.setItems(FXCollections.observableArrayList(usuarios));
+            masterData.setAll(usuarios);
+            
+            totalPaginas = response != null ? response.getTotalPages() : 1;
+            btnAnterior.setDisable(paginaActual == 0);
+            btnSiguiente.setDisable(paginaActual >= totalPaginas - 1);
             
             if (lblTotalUsuarios != null) {
                 lblTotalUsuarios.setText(String.valueOf(response != null ? response.getTotalElements() : usuarios.size()));
@@ -223,6 +325,62 @@ public class UsuariosController {
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void ejecutarBusqueda() {
+        String text = txtBuscar.getText();
+        if (text == null || text.trim().isEmpty()) {
+            filteredData.setPredicate(p -> true);
+        } else {
+            String lowerCaseFilter = text.toLowerCase().trim();
+            filteredData.setPredicate(usuario -> {
+                if (usuario.getUsername() != null && usuario.getUsername().toLowerCase().contains(lowerCaseFilter)) {
+                    return true;
+                }
+                if (usuario.getFirstName() != null && usuario.getFirstName().toLowerCase().contains(lowerCaseFilter)) {
+                    return true;
+                }
+                if (usuario.getLastName() != null && usuario.getLastName().toLowerCase().contains(lowerCaseFilter)) {
+                    return true;
+                }
+                if (usuario.getRole() != null && usuario.getRole().toLowerCase().contains(lowerCaseFilter)) {
+                    return true;
+                }
+                return false;
+            });
+        }
+        actualizarPaginacionConFiltrados();
+    }
+
+    @FXML
+    private void limpiarBusqueda() {
+        txtBuscar.clear();
+        filteredData.setPredicate(p -> true);
+        actualizarPaginacionConFiltrados();
+    }
+
+    private void actualizarPaginacionConFiltrados() {
+        int total = filteredData.size();
+        if (total == 0) {
+            lblResumenPaginacion.setText("No hay usuarios para mostrar");
+            return;
+        }
+        lblResumenPaginacion.setText("Mostrando 1-" + total + " de " + total + " usuarios");
+    }
+
+    private void handlePaginaAnterior() {
+        if (paginaActual > 0) {
+            paginaActual--;
+            obtenerUsuarios();
+        }
+    }
+
+    private void handlePaginaSiguiente() {
+        if (paginaActual < totalPaginas - 1) {
+            paginaActual++;
+            obtenerUsuarios();
         }
     }
 }
