@@ -69,6 +69,7 @@
                 <ComboBox fx:id="cbVendedor" promptText="Vendedor" styleClass="filter-combo" onAction="#filtrarVentas"/>
                 <ComboBox fx:id="cbRangoFecha" promptText="Fecha" styleClass="filter-combo" onAction="#filtrarVentas"/>
                 <Button fx:id="btnLimpiarVenta" styleClass="btn-secondary" text="Limpiar" onAction="#limpiarFiltros"/>
+                <Button onAction="#ejecutarBusqueda" styleClass="btn-primary" text="Buscar"/>
             </HBox>
 
             <TableView fx:id="tblVentas" styleClass="sales-table" VBox.vgrow="ALWAYS">

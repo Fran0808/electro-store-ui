@@ -50,10 +50,14 @@ public class ClienteService {
         }
     }
 
-    public PageResponse<Cliente> obtenerClientes() {
+    public PageResponse<Cliente> obtenerClientes(String search, int page, int size) {
         try{
+            String urlStr = URL + "?page=" + page + "&size=" + size;
+            if (search != null && !search.trim().isEmpty()) {
+                urlStr += "&search=" + java.net.URLEncoder.encode(search.trim(), java.nio.charset.StandardCharsets.UTF_8);
+            }
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(URL))
+                    .uri(URI.create(urlStr))
                     .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
                     .GET()
                     .build();

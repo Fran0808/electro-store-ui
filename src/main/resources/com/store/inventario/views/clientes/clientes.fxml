@@ -3,75 +3,66 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="800.0" prefWidth="1040.0" styleClass="root" stylesheets="@../../styles/style.css"
-            xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.store.inventario.controller.clientes.ClienteController">
+<AnchorPane prefHeight="800.0" prefWidth="1040.0" styleClass="root" stylesheets="@../../styles/style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.store.inventario.controller.clientes.ClienteController">
 
-    <VBox spacing="24.0" styleClass="view-container" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0"
-          AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
+    <VBox spacing="24.0" styleClass="view-container" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
 
         <HBox alignment="CENTER_LEFT" spacing="20">
             <VBox spacing="5" HBox.hgrow="ALWAYS">
-                <Label styleClass="header-title" text="Control de Clientes"/>
-                <Label styleClass="header-subtitle"
-                       text="Supervisión, seguimiento y control detallado de clientes registrados en el sistema"/>
+                <Label styleClass="header-title" text="Control de Clientes" />
+                <Label styleClass="header-subtitle" text="Supervisión, seguimiento y control detallado de clientes registrados en el sistema" />
             </VBox>
 
             <HBox alignment="CENTER_RIGHT" spacing="12">
-                <Button fx:id="btnActualizar" onAction="#handleActualizar" styleClass="btn-secondary"
-                        text="Actualizar"/>
-                <Button fx:id="btnNuevoCliente" onAction="#handleNuevoCliente" styleClass="btn-primary"
-                        text="Nuevo Cliente"/>
+                <Button fx:id="btnActualizar" onAction="#handleActualizar" styleClass="btn-secondary" text="Actualizar" />
+                <Button fx:id="btnNuevoCliente" onAction="#handleNuevoCliente" styleClass="btn-primary" text="Nuevo Cliente" />
             </HBox>
         </HBox>
 
         <HBox spacing="16" styleClass="metrics-container">
             <VBox spacing="8" styleClass="metric-card" HBox.hgrow="ALWAYS">
-                <Label styleClass="metric-label" text="Total Clientes"/>
-                <Label fx:id="lblTotalClientes" styleClass="metric-value" text="---"/>
+                <Label styleClass="metric-label" text="Total Clientes" />
+                <Label fx:id="lblTotalClientes" styleClass="metric-value" text="---" />
             </VBox>
 
             <VBox spacing="8" styleClass="metric-card" HBox.hgrow="ALWAYS">
-                <Label styleClass="metric-label" text="Clientes con RUC (Empresas)"/>
-                <Label fx:id="lblClientesRuc" styleClass="metric-value" text="---"/>
+                <Label styleClass="metric-label" text="Clientes con RUC (Empresas)" />
+                <Label fx:id="lblClientesRuc" styleClass="metric-value" text="---" />
             </VBox>
 
             <VBox spacing="8" styleClass="metric-card" HBox.hgrow="ALWAYS">
-                <Label styleClass="metric-label" text="Clientes con DNI (Personas)"/>
-                <Label fx:id="lblClientesDni" styleClass="metric-value" text="---"/>
+                <Label styleClass="metric-label" text="Clientes con DNI (Personas)" />
+                <Label fx:id="lblClientesDni" styleClass="metric-value" text="---" />
             </VBox>
         </HBox>
 
         <HBox alignment="CENTER_LEFT" spacing="12" styleClass="search-container">
-            <TextField fx:id="txtBuscar" prefHeight="38.0" prefWidth="605.0"
-                       promptText="Buscar por DNI, RUC o Nombre..." styleClass="search-field" HBox.hgrow="ALWAYS"/>
-            <ComboBox fx:id="cbTipoCliente" prefWidth="217.0" promptText="Cliente" styleClass="filter-combo"/>
-            <Button fx:id="btnBuscar" onAction="#handleBuscar" styleClass="btn-primary" text="Buscar"/>
+            <TextField fx:id="txtBuscar" onAction="#handleBuscar" prefHeight="38.0" prefWidth="605.0" promptText="Buscar por DNI, RUC o Nombre..." styleClass="search-field" HBox.hgrow="ALWAYS" />
+            <Button onAction="#handleLimpiar" styleClass="btn-secondary" text="Limpiar" />
+            <Button fx:id="btnBuscar" onAction="#handleBuscar" styleClass="btn-primary" text="Buscar" />
         </HBox>
 
         <VBox spacing="16.0" VBox.vgrow="ALWAYS">
 
             <TableView fx:id="tblClientes" styleClass="table-view" VBox.vgrow="ALWAYS">
                 <columnResizePolicy>
-                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                 </columnResizePolicy>
                 <columns>
-                    <TableColumn fx:id="colCodigo" prefWidth="170.0" minWidth="110.0" text="Código"/>
-                    <TableColumn fx:id="colNombre" prefWidth="200.0" minWidth="180.0" text="Nombre"/>
-                    <TableColumn fx:id="colDni" prefWidth="100.0" minWidth="90.0" text="DNI"/>
-                    <TableColumn fx:id="colRuc" prefWidth="110.0" minWidth="100.0" text="RUC"/>
-                    <TableColumn fx:id="colTelefono" prefWidth="110.0" minWidth="90.0" text="Teléfono"/>
-                    <TableColumn fx:id="colAcciones" prefWidth="95.0" minWidth="95.0" maxWidth="110.0"
-                                 style="-fx-alignment: CENTER;" text="Acciones"/>
+                    <TableColumn fx:id="colCodigo" minWidth="110.0" prefWidth="170.0" text="Código" />
+                    <TableColumn fx:id="colNombre" minWidth="180.0" prefWidth="200.0" text="Nombre" />
+                    <TableColumn fx:id="colDni" minWidth="90.0" prefWidth="100.0" text="DNI" />
+                    <TableColumn fx:id="colRuc" minWidth="100.0" prefWidth="110.0" text="RUC" />
+                    <TableColumn fx:id="colTelefono" minWidth="90.0" prefWidth="110.0" text="Teléfono" />
+                    <TableColumn fx:id="colAcciones" maxWidth="110.0" minWidth="95.0" prefWidth="95.0" style="-fx-alignment: CENTER;" text="Acciones" />
                 </columns>
             </TableView>
 
             <HBox alignment="CENTER_LEFT" spacing="20" styleClass="pagination-container">
-                <Label fx:id="lblResumenPaginacion" maxWidth="Infinity" styleClass="pagination-summary"
-                       text="Cargando clientes..." HBox.hgrow="ALWAYS"/>
+                <Label fx:id="lblResumenPaginacion" maxWidth="Infinity" styleClass="pagination-summary" text="Cargando clientes..." HBox.hgrow="ALWAYS" />
                 <HBox alignment="CENTER_RIGHT" spacing="8">
-                    <Button fx:id="btnAnterior" styleClass="btn-secondary" text="Anterior"/>
-                    <Button fx:id="btnSiguiente" styleClass="btn-secondary" text="Siguiente"/>
+                    <Button fx:id="btnAnterior" onAction="#handlePaginaAnterior" styleClass="btn-secondary" text="Anterior" />
+                    <Button fx:id="btnSiguiente" onAction="#handlePaginaSiguiente" styleClass="btn-secondary" text="Siguiente" />
                 </HBox>
             </HBox>
         </VBox>
