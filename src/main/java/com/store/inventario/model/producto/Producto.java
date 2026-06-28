@@ -122,4 +122,9 @@ public class Producto {
     public void setLowStock(Integer lowStock) {
         this.lowStock = lowStock;
     }
+
+    @Override
+    public String toString() {
+        return name + " (" + code + ") - Stock: " + stock;
+    }
 }

@@ -32,6 +32,12 @@ public class GuiaFormController {
     @FXML private TextField txtStockActual;
     @FXML private TextField txtCantidad;
 
+    @FXML private TableView<Producto> tblCatalogo;
+    @FXML private TableColumn<Producto, String> colCatCod;
+    @FXML private TableColumn<Producto, String> colCatProducto;
+    @FXML private TableColumn<Producto, Integer> colCatStock;
+    @FXML private Label lblProductoSeleccionado;
+
     @FXML private TableView<DetalleFila> tblDetalle;
     @FXML private TableColumn<DetalleFila, String> colCod;
     @FXML private TableColumn<DetalleFila, String> colProducto;
@@ -59,6 +65,25 @@ public class GuiaFormController {
 
         rbEntry.setSelected(true);
 
+        colCatCod.setCellValueFactory(new PropertyValueFactory<>("code"));
+        colCatProducto.setCellValueFactory(new PropertyValueFactory<>("name"));
+        colCatStock.setCellValueFactory(new PropertyValueFactory<>("stock"));
+
+        tblCatalogo.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal != null) {
+                productoSeleccionado = newVal;
+                if (lblProductoSeleccionado != null) {
+                    lblProductoSeleccionado.setText("Producto: " + newVal.getName() + " (" + newVal.getCode() + ")");
+                }
+                txtStockActual.setText(String.valueOf(newVal.getStock()));
+            } else {
+                if (lblProductoSeleccionado != null) {
+                    lblProductoSeleccionado.setText("Seleccione un producto del catálogo...");
+                }
+                txtStockActual.setText("");
+            }
+        });
+
         colCod.setCellValueFactory(new PropertyValueFactory<>("codigo"));
         colProducto.setCellValueFactory(new PropertyValueFactory<>("nombre"));
         colStockActual.setCellValueFactory(new PropertyValueFactory<>("stockActual"));
@@ -74,6 +99,7 @@ public class GuiaFormController {
             PageResponse<Producto> response = productoService.obtenerProductos();
             if (response != null && response.getContent() != null) {
                 listaProductos = response.getContent();
+                tblCatalogo.setItems(FXCollections.observableArrayList(listaProductos));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -103,31 +129,18 @@ public class GuiaFormController {
 
     @FXML
     private void handleBuscarProducto() {
-        String busqueda = txtBuscarProducto.getText() != null ? txtBuscarProducto.getText().trim() : "";
-        if (busqueda.isEmpty()) {
-            mostrarAlerta(Alert.AlertType.WARNING, "Advertencia", "Ingrese el nombre del producto a buscar.");
-            return;
-        }
-
-        productoSeleccionado = listaProductos.stream()
-                .filter(p -> p.getName().toLowerCase().contains(busqueda.toLowerCase()))
-                .findFirst()
-                .orElse(null);
-
-        if (productoSeleccionado != null) {
-            txtBuscarProducto.setText(productoSeleccionado.getName());
-            txtStockActual.setText(String.valueOf(productoSeleccionado.getStock()));
-        } else {
-            txtStockActual.setText("");
-            mostrarAlerta(Alert.AlertType.WARNING, "No encontrado",
-                    "No se encontró un producto que coincida con: \"" + busqueda + "\"");
-        }
+        String busqueda = txtBuscarProducto.getText() != null ? txtBuscarProducto.getText().trim().toLowerCase() : "";
+        List<Producto> filtrados = listaProductos.stream()
+                .filter(p -> (p.getName() != null && p.getName().toLowerCase().contains(busqueda)) ||
+                             (p.getCode() != null && p.getCode().toLowerCase().contains(busqueda)))
+                .toList();
+        tblCatalogo.setItems(FXCollections.observableArrayList(filtrados));
     }
 
     @FXML
     private void handleAgregarProducto() {
         if (productoSeleccionado == null) {
-            mostrarAlerta(Alert.AlertType.WARNING, "Advertencia", "Primero busque un producto válido.");
+            mostrarAlerta(Alert.AlertType.WARNING, "Advertencia", "Primero seleccione un producto del catálogo.");
             return;
         }
 
@@ -153,8 +166,8 @@ public class GuiaFormController {
             ));
         }
 
+        tblCatalogo.getSelectionModel().clearSelection();
         productoSeleccionado = null;
-        txtBuscarProducto.clear();
         txtStockActual.clear();
         txtCantidad.clear();
         actualizarResumen();
