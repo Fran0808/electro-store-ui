@@ -24,9 +24,17 @@ public class ProveedorService {
     private final Gson gson = new Gson();
 
     public PageResponse<Proveedor> listar(int page, int size) {
+        return listar(null, page, size);
+    }
+
+    public PageResponse<Proveedor> listar(String search, int page, int size) {
         try {
+            String urlStr = URL + "?page=" + page + "&size=" + size;
+            if (search != null && !search.trim().isEmpty()) {
+                urlStr += "&search=" + java.net.URLEncoder.encode(search.trim(), java.nio.charset.StandardCharsets.UTF_8);
+            }
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(URL + "?page=" + page + "&size=" + size))
+                    .uri(URI.create(urlStr))
                     .header("Authorization",
                             "Bearer " + SessionManager.getInstance().getToken())
                     .GET()

@@ -69,6 +69,9 @@ public class ProveedorController implements Initializable {
 
     private final ProveedorService proveedorService =
             new ProveedorService();
+    private int paginaActual = 0;
+    private final int tamanoPagina = 10;
+    private int totalPaginas = 1;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -87,6 +90,13 @@ public class ProveedorController implements Initializable {
 
         colTelefono.setCellValueFactory(data ->
                 new SimpleStringProperty(data.getValue().getPhone()));
+
+        if (btnAnterior != null) {
+            btnAnterior.setOnAction(e -> handlePaginaAnterior());
+        }
+        if (btnSiguiente != null) {
+            btnSiguiente.setOnAction(e -> handlePaginaSiguiente());
+        }
 
         configurarColumnaAcciones();
 
@@ -220,9 +230,17 @@ public class ProveedorController implements Initializable {
 
     private void obtenerProveedores() {
         try {
-            PageResponse<Proveedor> response = proveedorService.listar(0, 10);
-            List<Proveedor> proveedores = response.getContent();
+            String search = (txtBuscar != null) ? txtBuscar.getText().trim() : "";
+            PageResponse<Proveedor> response = proveedorService.listar(search, paginaActual, tamanoPagina);
+            List<Proveedor> proveedores = (response != null && response.getContent() != null)
+                    ? response.getContent()
+                    : java.util.Collections.emptyList();
             tblProveedores.setItems(FXCollections.observableArrayList(proveedores));
+
+            if (response != null) {
+                totalPaginas = response.getTotalPages();
+            }
+
             actualizarMetricas(response);
             actualizarPaginacion(response);
         } catch (Exception e) {
@@ -261,17 +279,58 @@ public class ProveedorController implements Initializable {
     }
 
     private void actualizarPaginacion(PageResponse<Proveedor> response) {
+        if (response == null) return;
         long total = response.getTotalElements();
-        int paginaActual = response.getNumber();
-        int totalPaginas = response.getTotalPages();
+        int pageNum = response.getNumber();
+        int totalPages = response.getTotalPages();
         int size = response.getSize();
-        long desde = (long) paginaActual * size + 1;
-        long hasta = Math.min(desde + size - 1, total);
+        int contentSize = (response.getContent() != null) ? response.getContent().size() : 0;
 
-        lblResumenPaginacion.setText("Mostrando " + desde + "-" + hasta + " de " + total + " proveedores");
-        btnAnterior.setDisable(paginaActual == 0);
-        btnSiguiente.setDisable(
-                paginaActual >= totalPaginas - 1
-        );
+        if (total == 0) {
+            lblResumenPaginacion.setText("No hay proveedores para mostrar");
+        } else {
+            long desde = (long) pageNum * size + 1;
+            long hasta = Math.min(desde + contentSize - 1, total);
+            lblResumenPaginacion.setText("Mostrando " + desde + "-" + hasta + " de " + total + " proveedores (Página " + (pageNum + 1) + " de " + totalPages + ")");
+        }
+
+        btnAnterior.setDisable(pageNum == 0);
+        btnSiguiente.setDisable(pageNum >= totalPages - 1);
+    }
+
+    @FXML
+    private void ejecutarBusqueda() {
+        paginaActual = 0;
+        obtenerProveedores();
+    }
+
+    @FXML
+    private void limpiarFiltros() {
+        if (txtBuscar != null) {
+            txtBuscar.clear();
+        }
+        paginaActual = 0;
+        obtenerProveedores();
+    }
+
+    @FXML
+    private void handlePaginaAnterior() {
+        if (paginaActual > 0) {
+            paginaActual--;
+            obtenerProveedores();
+        }
+    }
+
+    @FXML
+    private void handlePaginaSiguiente() {
+        if (paginaActual < totalPaginas - 1) {
+            paginaActual++;
+            obtenerProveedores();
+        }
+    }
+
+    @FXML
+    private void handleActualizar() {
+        obtenerProveedores();
     }
 }
