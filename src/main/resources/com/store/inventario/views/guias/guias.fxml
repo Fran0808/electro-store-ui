@@ -45,7 +45,7 @@
 
         <TableView fx:id="tblGuias" VBox.vgrow="ALWAYS" styleClass="products-table">
             <columns>
-                <TableColumn fx:id="colCodigo" text="Código" prefWidth="100" />
+                <TableColumn fx:id="colCodigo" text="Código" prefWidth="160" />
                 <TableColumn fx:id="colFecha" text="Fecha" prefWidth="130" />
                 <TableColumn fx:id="colTipo" text="Tipo" prefWidth="80" />
                 <TableColumn fx:id="colMotivo" text="Motivo" prefWidth="180" />

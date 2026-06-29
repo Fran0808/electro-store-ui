@@ -180,6 +180,7 @@ public class VentaController {
             ventasFiltradas = ventas;
             cargarVendedores();
             tblVentas.setItems(FXCollections.observableArrayList(ventas));
+            aplicarFiltrosLocales();
             cargarMetricas();
 
             totalPaginas = response != null ? response.getTotalPages() : 1;
@@ -271,10 +272,20 @@ public class VentaController {
     }
 
     private void cargarVendedores() {
+        String vendSelected = cbVendedor.getValue();
         cbVendedor.getItems().clear();
         cbVendedor.getItems().add("Todos");
-        ventasOriginales.stream().map(v -> v.getUser().getUsername()).distinct().sorted().forEach(cbVendedor.getItems()::add);
-        cbVendedor.getSelectionModel().selectFirst();
+        ventasOriginales.stream()
+                .filter(v -> v.getUser() != null && v.getUser().getUsername() != null)
+                .map(v -> v.getUser().getUsername())
+                .distinct().sorted()
+                .forEach(cbVendedor.getItems()::add);
+        
+        if (vendSelected != null && cbVendedor.getItems().contains(vendSelected)) {
+            cbVendedor.setValue(vendSelected);
+        } else {
+            cbVendedor.getSelectionModel().selectFirst();
+        }
     }
 
     @FXML

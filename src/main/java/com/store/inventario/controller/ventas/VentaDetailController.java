@@ -64,7 +64,16 @@ public class VentaDetailController {
     public void setVenta(Venta venta) {
         if (venta == null) return;
         lblCodigo.setText(venta.getCode());
-        lblFechaHora.setText(venta.getSaleDate());
+        
+        String dateStr = venta.getSaleDate();
+        if (dateStr != null && dateStr.contains("T")) {
+            dateStr = dateStr.replace("T", " ");
+            if (dateStr.contains(".")) {
+                dateStr = dateStr.substring(0, dateStr.lastIndexOf("."));
+            }
+        }
+        lblFechaHora.setText(dateStr != null ? dateStr : "");
+        
         lblVendedor.setText(venta.getUser() != null ? venta.getUser().getUsername() : "N/A");
         lblCliente.setText(venta.getCustomer() != null ? venta.getCustomer().getPerson().getFullName() : "N/A");
         lblClienteId.setText(venta.getCustomer() != null ? venta.getCustomer().getCode() : "N/A");

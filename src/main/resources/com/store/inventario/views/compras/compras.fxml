@@ -48,9 +48,9 @@
         <HBox alignment="CENTER_LEFT" spacing="12" styleClass="search-container">
             <TextField fx:id="txtBuscarCompra" promptText="Buscar por código de compra, proveedor..."
                        styleClass="search-field" HBox.hgrow="ALWAYS" onAction="#ejecutarBusqueda"/>
-            <ComboBox fx:id="cbFecha" promptText="Fecha" styleClass="filter-combo" onAction="#filtrarCompras"/>
-            <ComboBox fx:id="cbProveedor" promptText="Proveedor" styleClass="filter-combo" onAction="#filtrarCompras"/>
-            <ComboBox fx:id="cbUsuario" promptText="Usuario" styleClass="filter-combo" onAction="#filtrarCompras"/>
+            <ComboBox fx:id="cbFecha" promptText="Fecha" styleClass="filter-combo"/>
+            <ComboBox fx:id="cbProveedor" promptText="Proveedor" styleClass="filter-combo"/>
+            <ComboBox fx:id="cbUsuario" promptText="Usuario" styleClass="filter-combo"/>
             <Button onAction="#limpiarFiltros" styleClass="btn-secondary" text="Limpiar"/>
             <Button onAction="#ejecutarBusqueda" styleClass="btn-primary" text="Buscar"/>
         </HBox>
@@ -62,7 +62,7 @@
                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
                 </columnResizePolicy>
                 <columns>
-                    <TableColumn prefWidth="69.0" text="Código" fx:id="colCodigo"/>
+                    <TableColumn prefWidth="160.0" text="Código" fx:id="colCodigo"/>
                     <TableColumn prefWidth="193.0" text="Proveedor" fx:id="colProveedor"/>
                     <TableColumn prefWidth="194.0" text="Usuario" fx:id="colUsuario"/>
                     <TableColumn prefWidth="128.0" text="Fecha" fx:id="colFecha"/>
