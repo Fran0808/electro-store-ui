@@ -46,7 +46,7 @@
 
          <VBox spacing="8" styleClass="metric-card" HBox.hgrow="ALWAYS">
             <Label styleClass="metric-label" text="Último registrado"/>
-            <Label fx:id="lblUltimoRegristrado" styleClass="metric-value" text="---"/>
+            <Label fx:id="lblUltimoRegistrado" styleClass="metric-value" text="---"/>
          </VBox>
       </HBox>
 

@@ -53,7 +53,7 @@ public class ProveedorController implements Initializable {
     private Label lblProveedorFrecuente;
 
     @FXML
-    private Label lblUltimoRegristrado;
+    private Label lblUltimoRegistrado;
 
     @FXML
     private Label lblResumenPaginacion;
@@ -254,14 +254,19 @@ public class ProveedorController implements Initializable {
     }
 
     private void actualizarMetricas(PageResponse<Proveedor> response) {
-        lblTotalProveedor.setText(String.valueOf(response.getTotalElements()));
-
-        List<Proveedor> proveedores = response.getContent();
-        if (proveedores != null && !proveedores.isEmpty()) {
-            Proveedor ultimo = proveedores.get(proveedores.size() - 1);
-            lblUltimoRegristrado.setText(ultimo.getTradeName());
-        } else {
-            lblUltimoRegristrado.setText("Ninguno");
+        try {
+            com.store.inventario.model.proveedor.SupplierMetrics metrics = proveedorService.obtenerMetricas();
+            if (metrics != null) {
+                lblTotalProveedor.setText(String.valueOf(metrics.getTotalSuppliers()));
+                lblUltimoRegistrado.setText(metrics.getLastSupplierName() != null ? metrics.getLastSupplierName() : "Ninguno");
+            } else {
+                lblTotalProveedor.setText(String.valueOf(response.getTotalElements()));
+                lblUltimoRegistrado.setText("Ninguno");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            lblTotalProveedor.setText(String.valueOf(response.getTotalElements()));
+            lblUltimoRegistrado.setText("Ninguno");
         }
 
         try {

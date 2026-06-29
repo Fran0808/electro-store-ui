@@ -274,20 +274,20 @@ public class ClienteController implements Initializable {
                 if (btnSiguiente != null) btnSiguiente.setDisable(paginaActual >= totalPaginas - 1);
             }
 
-            if (lblTotalClientes != null && response != null) {
-                lblTotalClientes.setText(String.valueOf(response.getTotalElements()));
-            }
-            if (lblClientesDni != null) {
-                long totalDni = clientes.stream()
-                        .filter(c -> c.getPerson() != null && c.getPerson().getNationalId() != null && !c.getPerson().getNationalId().isEmpty())
-                        .count();
-                lblClientesDni.setText(String.valueOf(totalDni));
-            }
-            if (lblClientesRuc != null) {
-                long totalRuc = clientes.stream()
-                        .filter(c -> c.getTaxId() != null && !c.getTaxId().isEmpty())
-                        .count();
-                lblClientesRuc.setText(String.valueOf(totalRuc));
+            try {
+                com.store.inventario.model.clientes.CustomerMetrics metrics = clienteService.obtenerMetricas();
+                if (metrics != null) {
+                    if (lblTotalClientes != null) lblTotalClientes.setText(String.valueOf(metrics.getTotalCustomers()));
+                    if (lblClientesDni != null) lblClientesDni.setText(String.valueOf(metrics.getTotalWithDni()));
+                    if (lblClientesRuc != null) lblClientesRuc.setText(String.valueOf(metrics.getTotalWithRuc()));
+                } else if (response != null) {
+                    if (lblTotalClientes != null) lblTotalClientes.setText(String.valueOf(response.getTotalElements()));
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                if (lblTotalClientes != null && response != null) {
+                    lblTotalClientes.setText(String.valueOf(response.getTotalElements()));
+                }
             }
 
             if (lblResumenPaginacion != null && response != null) {

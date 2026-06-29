@@ -16,12 +16,31 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
+import com.store.inventario.model.proveedor.SupplierMetrics;
+
 public class ProveedorService {
 
     private static final String URL = ApiConfig.BASE_URL + "/suppliers";
 
     private final HttpClient client = HttpClient.newHttpClient();
     private final Gson gson = new Gson();
+
+    public SupplierMetrics obtenerMetricas() {
+        try {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(URL + "/metrics"))
+                    .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
+                    .GET()
+                    .build();
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() >= 400) {
+                throw new RuntimeException("Error al obtener métricas de proveedores: HTTP " + response.statusCode());
+            }
+            return gson.fromJson(response.body(), SupplierMetrics.class);
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public PageResponse<Proveedor> listar(int page, int size) {
         return listar(null, page, size);

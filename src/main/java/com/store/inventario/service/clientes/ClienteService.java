@@ -16,10 +16,29 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
+import com.store.inventario.model.clientes.CustomerMetrics;
+
 public class ClienteService {
     private static final String URL = ApiConfig.BASE_URL + "/customers";
     private final HttpClient client;
     private final Gson gson;
+
+    public CustomerMetrics obtenerMetricas() {
+        try {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(URL + "/metrics"))
+                    .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
+                    .GET()
+                    .build();
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() >= 400) {
+                throw new RuntimeException("Error al obtener métricas de clientes: HTTP " + response.statusCode());
+            }
+            return gson.fromJson(response.body(), CustomerMetrics.class);
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public ClienteService() {
         client = HttpClient.newHttpClient();
