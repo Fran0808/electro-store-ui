@@ -132,8 +132,8 @@ public class IndexController implements Initializable {
             String roleDisplayName = role;
             if ("STOREKEEPER".equals(role)) {
                 roleDisplayName = "Encargado de Almacen";
-            } else if ("RECEPTION".equals(role)) {
-                roleDisplayName = "Recepcionista";
+            } else if ("SELLER".equals(role)) {
+                roleDisplayName = "Vendedor";
             }
             lblEstadoCopia.setText("Rol: " + roleDisplayName);
             lblUbicacionCopia.setText("Servidor: Conectado (Online)");
@@ -145,7 +145,7 @@ public class IndexController implements Initializable {
         if ("STOREKEEPER".equals(role)) {
             ocultarComponente(btnQuickVenta);
             ocultarComponente(btnQuickCliente);
-        } else if ("RECEPTION".equals(role)) {
+        } else if ("SELLER".equals(role)) {
             ocultarComponente(btnQuickInventario);
         }
     }

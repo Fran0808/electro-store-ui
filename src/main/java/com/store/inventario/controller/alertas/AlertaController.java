@@ -25,6 +25,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import com.store.inventario.security.SessionManager;
+
 public class AlertaController implements Initializable {
 
     @FXML private TableView<AlertaItem> tblAlertas;
@@ -56,6 +58,12 @@ public class AlertaController implements Initializable {
 
         btnAnterior.setOnAction(e -> handleAnterior());
         btnSiguiente.setOnAction(e -> handleSiguiente());
+
+        String rolActual = SessionManager.getInstance().getRole();
+        if ("SELLER".equalsIgnoreCase(rolActual)) {
+            btnConfigLimite.setVisible(false);
+            btnConfigLimite.setManaged(false);
+        }
     }
 
     private void configurarColumnas() {

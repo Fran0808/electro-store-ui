@@ -77,7 +77,7 @@ public class ProductoController implements Initializable {
         configurarFiltros();
         refreshData();
 
-        if("RECEPTION".equalsIgnoreCase(rolActual)){
+        if("SELLER".equalsIgnoreCase(rolActual)){
             btnNuevoProducto.setVisible(false);
             btnNuevoProducto.setManaged(false);
             btnGestionarCategorias.setVisible(false);

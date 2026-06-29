@@ -92,8 +92,8 @@ public class EmpleadosController implements Initializable {
             String cargoEspanol = "";
             if (position != null) {
                 switch (position) {
-                    case MANAGER: cargoEspanol = "MANAGER"; break;
-                    case SELLER: cargoEspanol = "RECEPCIONISTA"; break;
+                    case MANAGER: cargoEspanol = "ADMINISTRADOR"; break;
+                    case SELLER: cargoEspanol = "VENDEDOR"; break;
                     case STOREKEEPER: cargoEspanol = "ALMACENERO"; break;
                     default: cargoEspanol = position.name();
                 }

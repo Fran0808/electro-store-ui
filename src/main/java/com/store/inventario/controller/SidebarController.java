@@ -52,7 +52,7 @@ public class SidebarController {
             ocultarComponente(itemVentas);
         }
 
-        if ("RECEPTION".equalsIgnoreCase(role)) {
+        if ("SELLER".equalsIgnoreCase(role)) {
             ocultarComponente(itemGuias);
             ocultarComponente(itemProveedores);
             ocultarComponente(itemCompras);
