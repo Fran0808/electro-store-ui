@@ -44,7 +44,7 @@
         <HBox spacing="12">
             <Button text="Cancelar" styleClass="btn-secondary" HBox.hgrow="ALWAYS" maxWidth="Infinity"
                     fx:id="btnCancelar" onAction="#handleCancelar"/>
-            <Button text="Guardar" styleClass="btn-secondary" HBox.hgrow="ALWAYS" maxWidth="Infinity" fx:id="btnGuardar"
+            <Button text="Guardar" styleClass="btn-primary" HBox.hgrow="ALWAYS" maxWidth="Infinity" fx:id="btnGuardar"
                     onAction="#handleGuardar"/>
         </HBox>
 
