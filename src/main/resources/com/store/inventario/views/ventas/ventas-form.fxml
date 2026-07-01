@@ -51,12 +51,18 @@
                 </TableView>
 
                 <VBox spacing="10.0" style="-fx-background-color: #F8FAFC; -fx-padding: 12; -fx-background-radius: 6; -fx-border-color: #E2E8F0; -fx-border-radius: 6;">
-                    <Label fx:id="lblProductoSeleccionado" text="Seleccione un producto del catálogo..." style="-fx-font-weight: bold; -fx-text-fill: #475569;"/>
+                    <HBox spacing="10" alignment="CENTER_LEFT">
+                        <Label fx:id="lblProductoSeleccionado" text="Seleccione un producto del catálogo..." style="-fx-font-weight: bold; -fx-text-fill: #475569;" HBox.hgrow="ALWAYS"/>
+                    </HBox>
+                    <HBox spacing="15" alignment="CENTER_LEFT" style="-fx-padding: 2 0;">
+                        <Label fx:id="lblPrecioListaRef" text="" style="-fx-text-fill: #64748B; -fx-font-size: 11px;"/>
+                        <Label fx:id="lblDescuentoRef" text="" style="-fx-text-fill: #0D9488; -fx-font-size: 11px; -fx-font-weight: bold;"/>
+                    </HBox>
                     
                     <HBox alignment="BOTTOM_LEFT" spacing="10.0">
                         <VBox spacing="4" HBox.hgrow="ALWAYS">
                             <Label styleClass="header-subtitle" text="Precio Unitario (S/)"/>
-                            <TextField fx:id="txtPrecioVenta" editable="false" promptText="S/ 0.00" styleClass="search-field"/>
+                            <TextField fx:id="txtPrecioVenta" promptText="S/ 0.00" styleClass="search-field"/>
                         </VBox>
 
                         <VBox spacing="4" prefWidth="110.0">
@@ -75,7 +81,10 @@
                 <HBox spacing="12.0">
                     <VBox spacing="4" HBox.hgrow="ALWAYS">
                         <Label styleClass="header-subtitle" text="Cliente *"/>
-                        <ComboBox fx:id="cbCliente" maxWidth="Infinity" promptText="Seleccione un cliente" styleClass="filter-combo"/>
+                        <HBox spacing="8.0" alignment="CENTER_LEFT">
+                            <TextField fx:id="txtCliente" editable="false" promptText="Seleccione un cliente..." styleClass="search-field" HBox.hgrow="ALWAYS"/>
+                            <Button fx:id="btnBuscarCliente" onAction="#abrirBuscadorCliente" styleClass="btn-primary" text="Buscar"/>
+                        </HBox>
                     </VBox>
 
                     <VBox spacing="4" prefWidth="160.0">

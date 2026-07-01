@@ -52,7 +52,16 @@ public class CompraDetailController {
         if (compra == null) return;
 
         lblCodigoCompra.setText(compra.getCode() != null ? compra.getCode() : "N/A");
-        lblFecha.setText(compra.getPurchaseDate() != null ? compra.getPurchaseDate() : "N/A");
+        
+        String dateStr = compra.getPurchaseDate();
+        if (dateStr != null && dateStr.contains("T")) {
+            dateStr = dateStr.replace("T", " ");
+            if (dateStr.contains(".")) {
+                dateStr = dateStr.substring(0, dateStr.lastIndexOf("."));
+            }
+        }
+        lblFecha.setText(dateStr != null ? dateStr : "N/A");
+        
         lblProveedor.setText(compra.getSupplier() != null ? compra.getSupplier().getTradeName() : "N/A");
         lblResponsable.setText(compra.getUser() != null ? compra.getUser().getUsername() : "N/A");
 

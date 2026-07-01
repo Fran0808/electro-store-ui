@@ -68,7 +68,7 @@ public class VentaService {
                     .build();
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() >= 400) {
-                throw new RuntimeException("Error al crear una venta: HTTP " + response.statusCode());
+                throw new RuntimeException("Error al crear una venta: HTTP " + response.statusCode() + " - " + response.body());
             }
             return gson.fromJson(response.body(), Venta.class);
         } catch (IOException | InterruptedException e) {

@@ -28,7 +28,6 @@
         <HBox alignment="CENTER" spacing="12" styleClass="search-container">
             <TextField fx:id="txtBuscar" promptText="Código o motivo..." styleClass="search-field" HBox.hgrow="ALWAYS" />
             <ComboBox fx:id="cbTipo" promptText="Tipo" styleClass="filter-combo" />
-            <ComboBox fx:id="cbUsuario" promptText="Usuario" styleClass="filter-combo" />
             <ComboBox fx:id="cbFecha" promptText="Fecha" styleClass="filter-combo">
                 <items>
                     <FXCollections fx:factory="observableArrayList">
@@ -46,7 +45,7 @@
 
         <TableView fx:id="tblGuias" VBox.vgrow="ALWAYS" styleClass="products-table">
             <columns>
-                <TableColumn fx:id="colCodigo" text="Código" prefWidth="100" />
+                <TableColumn fx:id="colCodigo" text="Código" prefWidth="160" />
                 <TableColumn fx:id="colFecha" text="Fecha" prefWidth="130" />
                 <TableColumn fx:id="colTipo" text="Tipo" prefWidth="80" />
                 <TableColumn fx:id="colMotivo" text="Motivo" prefWidth="180" />

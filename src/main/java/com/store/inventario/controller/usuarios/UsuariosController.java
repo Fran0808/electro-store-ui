@@ -77,7 +77,7 @@ public class UsuariosController {
             if (rolIngles != null) {
                 switch (rolIngles.toUpperCase().trim()) {
                     case "ADMIN": rolEspanol = "ADMIN"; break;
-                    case "RECEPTION": rolEspanol = "RECEPCIONISTA"; break;
+                    case "SELLER": rolEspanol = "VENDEDOR"; break;
                     case "STOREKEEPER": rolEspanol = "ALMACENERO"; break;
                     default: rolEspanol = rolIngles.toUpperCase().trim();
                 }

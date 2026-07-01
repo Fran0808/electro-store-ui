@@ -41,6 +41,8 @@ public class CompraFormController {
     @FXML private TableColumn<Producto, String> colCatNombre;
     @FXML private TableColumn<Producto, Integer> colCatStock;
     @FXML private Label lblProductoSeleccionado;
+    @FXML private Label lblPrecioVentaRef;
+    @FXML private Label lblMargenRef;
     @FXML private TextField txtPrecioCompra;
     @FXML private TextField txtCantidad;
 
@@ -108,15 +110,35 @@ public class CompraFormController {
                 lblProductoSeleccionado.setText("Producto: " + newSelection.getName() + " (" + newSelection.getCode() + ")");
                 txtCantidad.setText("1");
                 if (newSelection.getSalePrice() != null) {
-                    BigDecimal suggestedPrice = newSelection.getSalePrice().multiply(BigDecimal.valueOf(0.7));
+                    BigDecimal salePrice = newSelection.getSalePrice();
+                    lblPrecioVentaRef.setText("Precio Venta Ref: S/ " + salePrice.setScale(2, RoundingMode.HALF_UP));
+                    
+                    BigDecimal suggestedPrice = salePrice.multiply(BigDecimal.valueOf(0.7));
                     txtPrecioCompra.setText(suggestedPrice.setScale(2, RoundingMode.HALF_UP).toString());
+                    actualizarMargen(suggestedPrice, salePrice);
                 } else {
+                    lblPrecioVentaRef.setText("Precio Venta Ref: S/ 0.00");
                     txtPrecioCompra.setText("10.00");
+                    lblMargenRef.setText("Margen: N/A");
                 }
             } else {
                 lblProductoSeleccionado.setText("Seleccione un producto del catálogo...");
+                lblPrecioVentaRef.setText("");
+                lblMargenRef.setText("");
                 txtCantidad.clear();
                 txtPrecioCompra.clear();
+            }
+        });
+
+        txtPrecioCompra.textProperty().addListener((obs, oldText, newText) -> {
+            Producto selected = tblProductos.getSelectionModel().getSelectedItem();
+            if (selected != null && selected.getSalePrice() != null && newText != null && !newText.trim().isEmpty()) {
+                try {
+                    BigDecimal purchasePrice = new BigDecimal(newText.trim());
+                    actualizarMargen(purchasePrice, selected.getSalePrice());
+                } catch (Exception e) {
+                    lblMargenRef.setText("Margen: Inválido");
+                }
             }
         });
 
@@ -286,5 +308,20 @@ public class CompraFormController {
         alert.setHeaderText(null);
         alert.setContentText(mensaje);
         alert.showAndWait();
+    }
+
+    private void actualizarMargen(BigDecimal purchasePrice, BigDecimal salePrice) {
+        if (salePrice == null || salePrice.compareTo(BigDecimal.ZERO) == 0) {
+            lblMargenRef.setText("Margen: N/A");
+            return;
+        }
+        BigDecimal diff = salePrice.subtract(purchasePrice);
+        BigDecimal margin = diff.divide(salePrice, 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100));
+        lblMargenRef.setText("Margen: " + margin.setScale(1, RoundingMode.HALF_UP) + "%");
+        if (margin.compareTo(BigDecimal.ZERO) < 0) {
+            lblMargenRef.setStyle("-fx-text-fill: #EF4444; -fx-font-size: 11px; -fx-font-weight: bold;");
+        } else {
+            lblMargenRef.setStyle("-fx-text-fill: #0D9488; -fx-font-size: 11px; -fx-font-weight: bold;");
+        }
     }
 }

@@ -36,8 +36,7 @@ public class ClienteController implements Initializable {
     private Button btnBuscar;
     @FXML
     private TextField txtBuscar;
-    @FXML
-    private ComboBox<String> cbTipoCliente;
+
     
     @FXML
     private Label lblTotalClientes;
@@ -69,6 +68,9 @@ public class ClienteController implements Initializable {
     private TableColumn<Cliente, Void> colAcciones;
 
     private final ClienteService clienteService = new ClienteService();
+    private int paginaActual = 0;
+    private final int tamanoPagina = 10;
+    private int totalPaginas = 1;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -94,9 +96,13 @@ public class ClienteController implements Initializable {
             return new SimpleStringProperty(person != null ? person.getPhone() : "");
         });
 
-        if (cbTipoCliente != null) {
-            cbTipoCliente.setItems(FXCollections.observableArrayList("Todos", "Personas (DNI)", "Empresas (RUC)"));
-            cbTipoCliente.setValue("Todos");
+
+
+        if (btnAnterior != null) {
+            btnAnterior.setOnAction(e -> handlePaginaAnterior());
+        }
+        if (btnSiguiente != null) {
+            btnSiguiente.setOnAction(e -> handlePaginaSiguiente());
         }
 
         configurarColumnaAcciones();
@@ -124,7 +130,18 @@ public class ClienteController implements Initializable {
     }
 
     @FXML
-    private void handleBuscar() throws IOException {
+    private void handleBuscar() {
+        paginaActual = 0;
+        obtenerClientes();
+    }
+
+    @FXML
+    private void handleLimpiar() {
+        if (txtBuscar != null) {
+            txtBuscar.clear();
+        }
+
+        paginaActual = 0;
         obtenerClientes();
     }
 
@@ -243,44 +260,69 @@ public class ClienteController implements Initializable {
 
     private void obtenerClientes() {
         try {
-            PageResponse<Cliente> response = clienteService.obtenerClientes();
-            List<Cliente> clientes = response.getContent();
+            String search = (txtBuscar != null) ? txtBuscar.getText().trim() : "";
+            PageResponse<Cliente> response = clienteService.obtenerClientes(search, paginaActual, tamanoPagina);
+            List<Cliente> clientes = (response != null && response.getContent() != null) 
+                    ? response.getContent() 
+                    : java.util.Collections.emptyList();
             
             tblClientes.setItems(FXCollections.observableArrayList(clientes));
 
-            if (lblTotalClientes != null) {
-                lblTotalClientes.setText(String.valueOf(response.getTotalElements()));
-            }
-            if (lblClientesDni != null) {
-                long totalDni = clientes.stream()
-                        .filter(c -> c.getPerson() != null && c.getPerson().getNationalId() != null && !c.getPerson().getNationalId().isEmpty())
-                        .count();
-                lblClientesDni.setText(String.valueOf(totalDni));
-            }
-            if (lblClientesRuc != null) {
-                long totalRuc = clientes.stream()
-                        .filter(c -> c.getTaxId() != null && !c.getTaxId().isEmpty())
-                        .count();
-                lblClientesRuc.setText(String.valueOf(totalRuc));
+            if (response != null) {
+                totalPaginas = response.getTotalPages();
+                if (btnAnterior != null) btnAnterior.setDisable(paginaActual == 0);
+                if (btnSiguiente != null) btnSiguiente.setDisable(paginaActual >= totalPaginas - 1);
             }
 
-            if (lblResumenPaginacion != null) {
+            try {
+                com.store.inventario.model.clientes.CustomerMetrics metrics = clienteService.obtenerMetricas();
+                if (metrics != null) {
+                    if (lblTotalClientes != null) lblTotalClientes.setText(String.valueOf(metrics.getTotalCustomers()));
+                    if (lblClientesDni != null) lblClientesDni.setText(String.valueOf(metrics.getTotalWithDni()));
+                    if (lblClientesRuc != null) lblClientesRuc.setText(String.valueOf(metrics.getTotalWithRuc()));
+                } else if (response != null) {
+                    if (lblTotalClientes != null) lblTotalClientes.setText(String.valueOf(response.getTotalElements()));
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                if (lblTotalClientes != null && response != null) {
+                    lblTotalClientes.setText(String.valueOf(response.getTotalElements()));
+                }
+            }
+
+            if (lblResumenPaginacion != null && response != null) {
                 long total = response.getTotalElements();
                 int paginas = response.getTotalPages();
-                int paginaActual = response.getNumber();
+                int pageNum = response.getNumber();
                 int pageSize = response.getSize();
                 
                 if (total == 0) {
                     lblResumenPaginacion.setText("No hay clientes para mostrar");
                 } else {
-                    long desde = (long) paginaActual * pageSize + 1;
-                    long hasta = Math.min(desde + pageSize - 1, total);
-                    lblResumenPaginacion.setText("Mostrando " + desde + "-" + hasta + " de " + total + " clientes");
+                    long desde = (long) pageNum * pageSize + 1;
+                    long hasta = Math.min(desde + clientes.size() - 1, total);
+                    lblResumenPaginacion.setText("Mostrando " + desde + "-" + hasta + " de " + total + " clientes (Página " + (pageNum + 1) + " de " + paginas + ")");
                 }
             }
 
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void handlePaginaAnterior() {
+        if (paginaActual > 0) {
+            paginaActual--;
+            obtenerClientes();
+        }
+    }
+
+    @FXML
+    private void handlePaginaSiguiente() {
+        if (paginaActual < totalPaginas - 1) {
+            paginaActual++;
+            obtenerClientes();
         }
     }
 }

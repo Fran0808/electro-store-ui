@@ -21,10 +21,17 @@
    <VBox spacing="24.0" styleClass="view-container" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0"
          AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
 
-      <VBox spacing="5">
-         <Label styleClass="header-title" text="Gestión de Proveedores"/>
-         <Label styleClass="header-subtitle" text="Administra los proveedores vinculados al sistema"/>
-      </VBox>
+      <HBox alignment="CENTER_LEFT" spacing="20">
+         <VBox spacing="5" HBox.hgrow="ALWAYS">
+            <Label styleClass="header-title" text="Gestión de Proveedores"/>
+            <Label styleClass="header-subtitle" text="Administra los proveedores vinculados al sistema"/>
+         </VBox>
+
+         <HBox alignment="CENTER_RIGHT" spacing="12">
+            <Button onAction="#handleActualizar" styleClass="btn-secondary" text="Actualizar"/>
+            <Button styleClass="btn-primary" text="Nuevo Proveedor" onAction="#handleForm"/>
+         </HBox>
+      </HBox>
 
       <HBox spacing="16" styleClass="metrics-container">
          <VBox spacing="8" styleClass="metric-card" HBox.hgrow="ALWAYS">
@@ -39,16 +46,15 @@
 
          <VBox spacing="8" styleClass="metric-card" HBox.hgrow="ALWAYS">
             <Label styleClass="metric-label" text="Último registrado"/>
-            <Label fx:id="lblUltimoRegristrado" styleClass="metric-value" text="---"/>
+            <Label fx:id="lblUltimoRegistrado" styleClass="metric-value" text="---"/>
          </VBox>
       </HBox>
 
       <HBox alignment="CENTER_LEFT" spacing="12" styleClass="search-container">
-         <TextField fx:id="txtBuscar" promptText="Buscar por nombre, RUC..." styleClass="search-field"
+         <TextField fx:id="txtBuscar" onAction="#ejecutarBusqueda" promptText="Buscar por nombre, RUC..." styleClass="search-field"
                     HBox.hgrow="ALWAYS"/>
-         <Button fx:id="btnLimpiar" styleClass="btn-secondary" text="Limpiar"/>
-         <Button fx:id="btnBuscar" styleClass="btn-primary" text="Buscar"/>
-         <Button styleClass="btn-primary" text="Nuevo Proveedor" onAction="#handleForm"/>
+         <Button fx:id="btnLimpiar" onAction="#limpiarFiltros" styleClass="btn-secondary" text="Limpiar"/>
+         <Button fx:id="btnBuscar" onAction="#ejecutarBusqueda" styleClass="btn-primary" text="Buscar"/>
       </HBox>
 
       <VBox spacing="16" VBox.vgrow="ALWAYS">
@@ -71,8 +77,8 @@
             <Label fx:id="lblResumenPaginacion" maxWidth="Infinity" styleClass="pagination-summary"
                    text="Cargando proveedores..." HBox.hgrow="ALWAYS"/>
             <HBox alignment="CENTER_RIGHT" spacing="8">
-               <Button fx:id="btnAnterior" styleClass="btn-secondary" text="Anterior"/>
-               <Button fx:id="btnSiguiente" styleClass="btn-secondary" text="Siguiente"/>
+                <Button fx:id="btnAnterior" onAction="#handlePaginaAnterior" styleClass="btn-secondary" text="Anterior"/>
+                <Button fx:id="btnSiguiente" onAction="#handlePaginaSiguiente" styleClass="btn-secondary" text="Siguiente"/>
             </HBox>
          </HBox>
       </VBox>

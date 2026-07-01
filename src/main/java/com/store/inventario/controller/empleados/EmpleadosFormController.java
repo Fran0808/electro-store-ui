@@ -50,8 +50,8 @@ public class EmpleadosFormController {
             public String toString(EmployeePosition position) {
                 if (position == null) return "";
                 switch (position) {
-                    case MANAGER: return "MANAGER";
-                    case SELLER: return "RECEPCIONISTA";
+                    case MANAGER: return "ADMINISTRADOR";
+                    case SELLER: return "VENDEDOR";
                     case STOREKEEPER: return "ALMACENERO";
                     default: return position.name();
                 }

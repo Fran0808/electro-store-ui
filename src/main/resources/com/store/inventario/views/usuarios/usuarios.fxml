@@ -61,7 +61,7 @@
                     <TableColumn prefWidth="100" text="Rol" fx:id="colRol"/>
                     <TableColumn prefWidth="130" text="Código Empleado" fx:id="colCodigoEmpleado"/>
                     <TableColumn prefWidth="130" text="Primer nombre" fx:id="colNombre"/>
-                    <TableColumn prefWidth="130" text="Segundo nombre" fx:id="colApellido"/>
+                    <TableColumn prefWidth="130" text="Apellidos" fx:id="colApellido"/>
                     <TableColumn prefWidth="100" text="Estado" fx:id="colEstado"/>
                     <TableColumn prefWidth="120" text="Acciones" fx:id="colAcciones"/>
                 </columns>

@@ -222,6 +222,9 @@ public class CompraController {
     }
 
     private void cargarProveedoresYUsuarios() {
+        String provSelected = cbProveedor.getValue();
+        String userSelected = cbUsuario.getValue();
+
         cbProveedor.getItems().clear();
         cbProveedor.getItems().add("Todos");
         comprasOriginales.stream()
@@ -229,7 +232,12 @@ public class CompraController {
                 .map(c -> c.getSupplier().getTradeName())
                 .distinct().sorted()
                 .forEach(cbProveedor.getItems()::add);
-        cbProveedor.getSelectionModel().selectFirst();
+        
+        if (provSelected != null && cbProveedor.getItems().contains(provSelected)) {
+            cbProveedor.setValue(provSelected);
+        } else {
+            cbProveedor.getSelectionModel().selectFirst();
+        }
 
         cbUsuario.getItems().clear();
         cbUsuario.getItems().add("Todos");
@@ -238,7 +246,12 @@ public class CompraController {
                 .map(c -> c.getUser().getUsername())
                 .distinct().sorted()
                 .forEach(cbUsuario.getItems()::add);
-        cbUsuario.getSelectionModel().selectFirst();
+
+        if (userSelected != null && cbUsuario.getItems().contains(userSelected)) {
+            cbUsuario.setValue(userSelected);
+        } else {
+            cbUsuario.getSelectionModel().selectFirst();
+        }
     }
 
     @FXML

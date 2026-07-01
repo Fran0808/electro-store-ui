@@ -26,13 +26,32 @@ public class InventoryGuideService {
     }
 
     public PageResponse<InventoryGuide> obtenerGuias() {
-        return obtenerGuias(0, 10);
+        return obtenerGuias(null, null, null, null, 0, 10);
     }
 
     public PageResponse<InventoryGuide> obtenerGuias(int page, int size) {
+        return obtenerGuias(null, null, null, null, page, size);
+    }
+
+    public PageResponse<InventoryGuide> obtenerGuias(String search, String type, String startDate, String endDate, int page, int size) {
         try {
+            StringBuilder urlBuilder = new StringBuilder(URL);
+            urlBuilder.append("?page=").append(page).append("&size=").append(size).append("&sort=guideDate,desc");
+            if (search != null && !search.trim().isEmpty()) {
+                urlBuilder.append("&search=").append(java.net.URLEncoder.encode(search.trim(), java.nio.charset.StandardCharsets.UTF_8));
+            }
+            if (type != null && !type.trim().isEmpty() && !type.equalsIgnoreCase("Todos")) {
+                urlBuilder.append("&type=").append(java.net.URLEncoder.encode(type.trim(), java.nio.charset.StandardCharsets.UTF_8));
+            }
+            if (startDate != null && !startDate.trim().isEmpty()) {
+                urlBuilder.append("&startDate=").append(java.net.URLEncoder.encode(startDate.trim(), java.nio.charset.StandardCharsets.UTF_8));
+            }
+            if (endDate != null && !endDate.trim().isEmpty()) {
+                urlBuilder.append("&endDate=").append(java.net.URLEncoder.encode(endDate.trim(), java.nio.charset.StandardCharsets.UTF_8));
+            }
+
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(URL + "?page=" + page + "&size=" + size + "&sort=guideDate,desc"))
+                    .uri(URI.create(urlBuilder.toString()))
                     .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
                     .GET()
                     .build();
@@ -42,8 +61,8 @@ public class InventoryGuideService {
                 throw new RuntimeException("Error al obtener guías de inventario: HTTP " + response.statusCode());
             }
 
-            Type type = new TypeToken<PageResponse<InventoryGuide>>() {}.getType();
-            return gson.fromJson(response.body(), type);
+            Type typeToken = new TypeToken<PageResponse<InventoryGuide>>() {}.getType();
+            return gson.fromJson(response.body(), typeToken);
 
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);

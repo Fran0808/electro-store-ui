@@ -22,7 +22,7 @@
 
 <TableView fx:id="tblAlertas" styleClass="products-table" VBox.vgrow="ALWAYS">
     <columns>
-        <TableColumn fx:id="colCodigo" prefWidth="100" text="Código" />
+        <TableColumn fx:id="colCodigo" prefWidth="160" text="Código" />
         <TableColumn fx:id="colProveedor" prefWidth="150" text="Proveedor" />
         <TableColumn fx:id="colProducto" prefWidth="200" text="Producto" />
         <TableColumn fx:id="colStock" prefWidth="100" text="Stock" />

@@ -17,9 +17,11 @@ import java.util.List;
 
 public class GuiasController {
     @FXML
+    private TextField txtBuscar;
+    @FXML
     private ComboBox<String> cbTipo;
     @FXML
-    private ComboBox<String> cbUsuario;
+    private ComboBox<String> cbFecha;
     @FXML
     private TableView<InventoryGuide> tblGuias;
     @FXML
@@ -45,6 +47,10 @@ public class GuiasController {
     private Button btnAnterior;
     @FXML
     private Button btnSiguiente;
+    @FXML
+    private Button btnLimpiar;
+    @FXML
+    private Button btnBuscar;
 
     private final InventoryGuideService guideService = new InventoryGuideService();
     private int paginaActual = 0;
@@ -53,11 +59,32 @@ public class GuiasController {
 
     @FXML
     private void initialize() {
-        cbTipo.getItems().addAll("ENTRY", "EXIT", "Todos");
-        cbUsuario.getItems().addAll("Todos");
+        if (cbTipo != null) {
+            cbTipo.getItems().clear();
+            cbTipo.getItems().addAll("Todos", "ENTRY", "EXIT");
+            cbTipo.setValue("Todos");
+        }
 
-        btnAnterior.setOnAction(e -> handlePaginaAnterior());
-        btnSiguiente.setOnAction(e -> handlePaginaSiguiente());
+        if (cbFecha != null) {
+            cbFecha.setValue("Todos");
+        }
+
+        if (btnAnterior != null) {
+            btnAnterior.setOnAction(e -> handlePaginaAnterior());
+        }
+        if (btnSiguiente != null) {
+            btnSiguiente.setOnAction(e -> handlePaginaSiguiente());
+        }
+        if (btnBuscar != null) {
+            btnBuscar.setOnAction(e -> handleBuscar());
+        }
+        if (btnLimpiar != null) {
+            btnLimpiar.setOnAction(e -> handleLimpiar());
+        }
+
+        if (txtBuscar != null) {
+            txtBuscar.setOnAction(e -> handleBuscar());
+        }
 
         colCodigo.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getCode()));
         
@@ -125,7 +152,14 @@ public class GuiasController {
 
     private void cargarGuias() {
         try {
-            PageResponse<InventoryGuide> response = guideService.obtenerGuias(paginaActual, tamanoPagina);
+            String search = (txtBuscar != null) ? txtBuscar.getText().trim() : "";
+            String tipo = (cbTipo != null) ? cbTipo.getValue() : "Todos";
+
+            String[] fechas = calcularRangoFechas();
+            String startDate = fechas[0];
+            String endDate = fechas[1];
+
+            PageResponse<InventoryGuide> response = guideService.obtenerGuias(search, tipo, startDate, endDate, paginaActual, tamanoPagina);
             List<InventoryGuide> guias = (response != null) ? response.getContent() : java.util.Collections.emptyList();
             tblGuias.setItems(FXCollections.observableArrayList(guias));
             
@@ -153,6 +187,54 @@ public class GuiasController {
             e.printStackTrace();
             lblResumenPaginacion.setText("Error al cargar guías desde el servidor");
         }
+    }
+
+    private String[] calcularRangoFechas() {
+        if (cbFecha == null || cbFecha.getValue() == null) return new String[]{null, null};
+
+        String opcion = cbFecha.getValue();
+        java.time.LocalDateTime now = java.time.LocalDateTime.now();
+        java.time.LocalDateTime start = null;
+        java.time.LocalDateTime end = null;
+
+        switch (opcion) {
+            case "Hoy":
+                start = now.with(java.time.LocalTime.MIN);
+                end = now.with(java.time.LocalTime.MAX);
+                break;
+            case "Últimos 7 días":
+                start = now.minusDays(7).with(java.time.LocalTime.MIN);
+                end = now.with(java.time.LocalTime.MAX);
+                break;
+            case "Últimos 30 días":
+                start = now.minusDays(30).with(java.time.LocalTime.MIN);
+                end = now.with(java.time.LocalTime.MAX);
+                break;
+            case "Este mes":
+                start = now.with(java.time.temporal.TemporalAdjusters.firstDayOfMonth()).with(java.time.LocalTime.MIN);
+                end = now.with(java.time.LocalTime.MAX);
+                break;
+            default: // "Todos"
+                return new String[]{null, null};
+        }
+
+        java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+        return new String[]{start.format(formatter), end.format(formatter)};
+    }
+
+    @FXML
+    private void handleBuscar() {
+        paginaActual = 0;
+        cargarGuias();
+    }
+
+    @FXML
+    private void handleLimpiar() {
+        if (txtBuscar != null) txtBuscar.clear();
+        if (cbTipo != null) cbTipo.setValue("Todos");
+        if (cbFecha != null) cbFecha.setValue("Todos");
+        paginaActual = 0;
+        cargarGuias();
     }
 
     private void handlePaginaAnterior() {

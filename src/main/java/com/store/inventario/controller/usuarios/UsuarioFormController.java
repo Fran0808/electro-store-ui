@@ -62,7 +62,7 @@ public class UsuarioFormController implements Initializable {
         if (position == null) return "";
         switch (position) {
             case MANAGER: return "ADMIN";
-            case SELLER: return "RECEPCIONISTA";
+            case SELLER: return "VENDEDOR";
             case STOREKEEPER: return "ALMACENERO";
             default: return "";
         }
@@ -122,7 +122,7 @@ public class UsuarioFormController implements Initializable {
         txtUsername.setEditable(false);
         
         String rolEspanol = usuario.getRole();
-        if ("RECEPTION".equalsIgnoreCase(rolEspanol)) rolEspanol = "RECEPCIONISTA";
+        if ("SELLER".equalsIgnoreCase(rolEspanol)) rolEspanol = "VENDEDOR";
         else if ("STOREKEEPER".equalsIgnoreCase(rolEspanol)) rolEspanol = "ALMACENERO";
         else if (rolEspanol != null) rolEspanol = rolEspanol.toUpperCase().trim();
         txtRol.setText(rolEspanol);
@@ -180,7 +180,7 @@ public class UsuarioFormController implements Initializable {
             String employeeCode = empleadoSeleccionado.split(" - ")[0];
             
             String rolBackend = rol;
-            if ("RECEPCIONISTA".equals(rol)) rolBackend = "RECEPTION";
+            if ("VENDEDOR".equals(rol)) rolBackend = "SELLER";
             else if ("ALMACENERO".equals(rol)) rolBackend = "STOREKEEPER";
  
             Usuario nuevoUsuario = new Usuario(

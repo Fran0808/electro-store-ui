@@ -2,6 +2,8 @@ package com.store.inventario.controller.ventas;
 
 import com.store.inventario.model.PageResponse;
 import com.store.inventario.model.clientes.Cliente;
+import com.store.inventario.model.clientes.CreateClienteRequest;
+import com.store.inventario.model.persona.CreatePersonaRequest;
 import com.store.inventario.model.producto.Producto;
 import com.store.inventario.model.ventas.CreateSaleDetailRequest;
 import com.store.inventario.model.ventas.CreateSaleRequest;
@@ -14,7 +16,10 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
@@ -30,8 +35,10 @@ import java.util.List;
 public class VentaFormController {
 
     @FXML private TextField txtFecha;
-    @FXML private ComboBox<String> cbCliente;
+    @FXML private TextField txtCliente;
     @FXML private TextField txtVendedor;
+
+    private Cliente clienteSeleccionado = null;
 
     // Controles para el catálogo de productos
     @FXML private TableColumn<Producto, String> colCatCodigo;
@@ -40,6 +47,8 @@ public class VentaFormController {
     @FXML private TableColumn<Producto, Integer> colCatStock;
     @FXML private TableColumn<Producto, BigDecimal> colCatPrecio;
     @FXML private Label lblProductoSeleccionado;
+    @FXML private Label lblPrecioListaRef;
+    @FXML private Label lblDescuentoRef;
     @FXML private TextField txtCantidad;
     @FXML private TextField txtPrecioVenta;
     @FXML private TextField txtBuscarProducto;
@@ -118,35 +127,105 @@ public class VentaFormController {
                 lblProductoSeleccionado.setText("Producto: " + newSelection.getName() + " (" + newSelection.getCode() + ")");
                 txtCantidad.setText("1");
                 if (newSelection.getSalePrice() != null) {
-                    txtPrecioVenta.setText(newSelection.getSalePrice().setScale(2, RoundingMode.HALF_UP).toString());
+                    BigDecimal listPrice = newSelection.getSalePrice();
+                    lblPrecioListaRef.setText("Precio Lista Ref: S/ " + listPrice.setScale(2, RoundingMode.HALF_UP));
+                    txtPrecioVenta.setText(listPrice.setScale(2, RoundingMode.HALF_UP).toString());
+                    actualizarDescuento(listPrice, listPrice);
                 } else {
+                    lblPrecioListaRef.setText("Precio Lista Ref: S/ 0.00");
                     txtPrecioVenta.clear();
+                    lblDescuentoRef.setText("Descuento: 0.0%");
                 }
             } else {
                 lblProductoSeleccionado.setText("Seleccione un producto del catálogo...");
+                lblPrecioListaRef.setText("");
+                lblDescuentoRef.setText("");
                 txtCantidad.clear();
                 txtPrecioVenta.clear();
             }
         });
 
-        cargarClientes();
+        txtPrecioVenta.textProperty().addListener((obs, oldText, newText) -> {
+            Producto selected = tblProductos.getSelectionModel().getSelectedItem();
+            if (selected != null && selected.getSalePrice() != null && newText != null && !newText.trim().isEmpty()) {
+                try {
+                    BigDecimal currentPrice = new BigDecimal(newText.trim());
+                    actualizarDescuento(selected.getSalePrice(), currentPrice);
+                } catch (Exception e) {
+                    lblDescuentoRef.setText("Descuento: Inválido");
+                }
+            }
+        });
+
+        seleccionarClientePorDefecto();
         cargarProductos("");
-        txtPrecioVenta.setEditable(false);
     }
 
-    private void cargarClientes() {
+    private void seleccionarClientePorDefecto() {
         Platform.runLater(() -> {
             try {
-                PageResponse<Cliente> response = clienteService.listar(0, 100);
+                PageResponse<Cliente> response = clienteService.obtenerClientes("Consumidor", 0, 10);
+                Cliente consumidorFinal = null;
+
                 if (response != null && response.getContent() != null) {
-                    for (Cliente clie : response.getContent()) {
-                        cbCliente.getItems().add(clie.getCode() + " - " + clie.getPerson().getFullName());
+                    for (Cliente c : response.getContent()) {
+                        if (c.getPerson() != null &&
+                            "Consumidor".equalsIgnoreCase(c.getPerson().getFirstName()) &&
+                            "Final".equalsIgnoreCase(c.getPerson().getLastName())) {
+                            consumidorFinal = c;
+                            break;
+                        }
+                    }
+                }
+
+                if (consumidorFinal != null) {
+                    setClienteSeleccionado(consumidorFinal);
+                } else {
+                    CreatePersonaRequest personRequest = new CreatePersonaRequest("Consumidor", "Final", null, null);
+                    CreateClienteRequest createRequest = new CreateClienteRequest(personRequest, null);
+                    Cliente nuevoCliente = clienteService.crearCliente(createRequest);
+                    if (nuevoCliente != null) {
+                        setClienteSeleccionado(nuevoCliente);
                     }
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                System.err.println("Error al configurar el cliente por defecto: " + e.getMessage());
             }
         });
+    }
+
+    private void setClienteSeleccionado(Cliente cliente) {
+        this.clienteSeleccionado = cliente;
+        if (cliente != null && cliente.getPerson() != null) {
+            txtCliente.setText(cliente.getCode() + " - " + cliente.getPerson().getFullName());
+        } else {
+            txtCliente.setText("Seleccione un cliente...");
+        }
+    }
+
+    @FXML
+    private void abrirBuscadorCliente() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/views/clientes/cliente-search-modal.fxml"));
+            Parent root = loader.load();
+
+            com.store.inventario.controller.clientes.ClienteSearchModalController controller = loader.getController();
+
+            Stage modal = new Stage();
+            com.store.inventario.utils.WindowUtils.applyIcon(modal);
+            modal.initModality(javafx.stage.Modality.APPLICATION_MODAL);
+            modal.setTitle("Buscar Cliente");
+            modal.setScene(new Scene(root));
+            modal.showAndWait();
+
+            Cliente seleccionado = controller.getClienteSeleccionado();
+            if (seleccionado != null) {
+                setClienteSeleccionado(seleccionado);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            mostrarAlerta("Error", "No se pudo abrir el buscador de clientes: " + e.getMessage());
+        }
     }
 
     private void cargarProductos(String search) {
@@ -241,8 +320,7 @@ public class VentaFormController {
 
     @FXML
     private void registrarVenta() {
-        String clienteSeleccionado = cbCliente.getValue();
-        if (clienteSeleccionado == null || clienteSeleccionado.isEmpty()) {
+        if (this.clienteSeleccionado == null) {
             mostrarAlerta("Campos requeridos", "Debe seleccionar un Cliente.");
             return;
         }
@@ -253,7 +331,7 @@ public class VentaFormController {
         }
 
         try {
-            String clientCode = clienteSeleccionado.split(" - ")[0];
+            String clientCode = this.clienteSeleccionado.getCode();
             List<CreateSaleDetailRequest> details = new ArrayList<>();
             for (VentaFormController.DetalleTemporal item : listaDetalle) {
                 details.add(new CreateSaleDetailRequest(item.getProducto().getCode(), item.getQuantity()));
@@ -291,6 +369,22 @@ public class VentaFormController {
         alert.setHeaderText(null);
         alert.setContentText(mensaje);
         alert.showAndWait();
+    }
+
+    private void actualizarDescuento(BigDecimal listPrice, BigDecimal currentPrice) {
+        if (listPrice == null || listPrice.compareTo(BigDecimal.ZERO) == 0) {
+            lblDescuentoRef.setText("Descuento: 0.0%");
+            return;
+        }
+        BigDecimal diff = listPrice.subtract(currentPrice);
+        BigDecimal discount = diff.divide(listPrice, 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100));
+        if (discount.compareTo(BigDecimal.ZERO) < 0) {
+            lblDescuentoRef.setText("Recargo: " + discount.negate().setScale(1, RoundingMode.HALF_UP) + "%");
+            lblDescuentoRef.setStyle("-fx-text-fill: #3B82F6; -fx-font-size: 11px; -fx-font-weight: bold;");
+        } else {
+            lblDescuentoRef.setText("Descuento: " + discount.setScale(1, RoundingMode.HALF_UP) + "%");
+            lblDescuentoRef.setStyle("-fx-text-fill: #0D9488; -fx-font-size: 11px; -fx-font-weight: bold;");
+        }
     }
 
 }
