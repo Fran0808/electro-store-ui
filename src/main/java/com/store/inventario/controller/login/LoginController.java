@@ -78,6 +78,7 @@ public class LoginController {
                 layoutStage.setScene(new Scene(root));
                 layoutStage.setMinWidth(1280);
                 layoutStage.setMinHeight(800);
+                layoutStage.setMaximized(true);
                 layoutStage.show();
 
                 Stage loginStage = (Stage) btnLogin.getScene().getWindow();

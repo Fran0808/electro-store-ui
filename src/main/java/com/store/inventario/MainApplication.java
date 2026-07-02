@@ -24,6 +24,7 @@ public class MainApplication extends Application {
         stage.setScene(scene);
         stage.setMinWidth(1280);
         stage.setMinHeight(800);
+        stage.setMaximized(true);
         stage.show();
     }
 
