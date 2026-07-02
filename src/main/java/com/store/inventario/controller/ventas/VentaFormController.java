@@ -47,8 +47,6 @@ public class VentaFormController {
     @FXML private TableColumn<Producto, Integer> colCatStock;
     @FXML private TableColumn<Producto, BigDecimal> colCatPrecio;
     @FXML private Label lblProductoSeleccionado;
-    @FXML private Label lblPrecioListaRef;
-    @FXML private Label lblDescuentoRef;
     @FXML private TextField txtCantidad;
     @FXML private TextField txtPrecioVenta;
     @FXML private TextField txtBuscarProducto;
@@ -128,32 +126,14 @@ public class VentaFormController {
                 txtCantidad.setText("1");
                 if (newSelection.getSalePrice() != null) {
                     BigDecimal listPrice = newSelection.getSalePrice();
-                    lblPrecioListaRef.setText("Precio Lista Ref: S/ " + listPrice.setScale(2, RoundingMode.HALF_UP));
                     txtPrecioVenta.setText(listPrice.setScale(2, RoundingMode.HALF_UP).toString());
-                    actualizarDescuento(listPrice, listPrice);
                 } else {
-                    lblPrecioListaRef.setText("Precio Lista Ref: S/ 0.00");
                     txtPrecioVenta.clear();
-                    lblDescuentoRef.setText("Descuento: 0.0%");
                 }
             } else {
                 lblProductoSeleccionado.setText("Seleccione un producto del catálogo...");
-                lblPrecioListaRef.setText("");
-                lblDescuentoRef.setText("");
                 txtCantidad.clear();
                 txtPrecioVenta.clear();
-            }
-        });
-
-        txtPrecioVenta.textProperty().addListener((obs, oldText, newText) -> {
-            Producto selected = tblProductos.getSelectionModel().getSelectedItem();
-            if (selected != null && selected.getSalePrice() != null && newText != null && !newText.trim().isEmpty()) {
-                try {
-                    BigDecimal currentPrice = new BigDecimal(newText.trim());
-                    actualizarDescuento(selected.getSalePrice(), currentPrice);
-                } catch (Exception e) {
-                    lblDescuentoRef.setText("Descuento: Inválido");
-                }
             }
         });
 
@@ -371,20 +351,6 @@ public class VentaFormController {
         alert.showAndWait();
     }
 
-    private void actualizarDescuento(BigDecimal listPrice, BigDecimal currentPrice) {
-        if (listPrice == null || listPrice.compareTo(BigDecimal.ZERO) == 0) {
-            lblDescuentoRef.setText("Descuento: 0.0%");
-            return;
-        }
-        BigDecimal diff = listPrice.subtract(currentPrice);
-        BigDecimal discount = diff.divide(listPrice, 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100));
-        if (discount.compareTo(BigDecimal.ZERO) < 0) {
-            lblDescuentoRef.setText("Recargo: " + discount.negate().setScale(1, RoundingMode.HALF_UP) + "%");
-            lblDescuentoRef.setStyle("-fx-text-fill: #3B82F6; -fx-font-size: 11px; -fx-font-weight: bold;");
-        } else {
-            lblDescuentoRef.setText("Descuento: " + discount.setScale(1, RoundingMode.HALF_UP) + "%");
-            lblDescuentoRef.setStyle("-fx-text-fill: #0D9488; -fx-font-size: 11px; -fx-font-weight: bold;");
-        }
-    }
+
 
 }

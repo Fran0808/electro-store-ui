@@ -54,15 +54,11 @@
                     <HBox spacing="10" alignment="CENTER_LEFT">
                         <Label fx:id="lblProductoSeleccionado" text="Seleccione un producto del catálogo..." style="-fx-font-weight: bold; -fx-text-fill: #475569;" HBox.hgrow="ALWAYS"/>
                     </HBox>
-                    <HBox spacing="15" alignment="CENTER_LEFT" style="-fx-padding: 2 0;">
-                        <Label fx:id="lblPrecioListaRef" text="" style="-fx-text-fill: #64748B; -fx-font-size: 11px;"/>
-                        <Label fx:id="lblDescuentoRef" text="" style="-fx-text-fill: #0D9488; -fx-font-size: 11px; -fx-font-weight: bold;"/>
-                    </HBox>
                     
                     <HBox alignment="BOTTOM_LEFT" spacing="10.0">
                         <VBox spacing="4" HBox.hgrow="ALWAYS">
                             <Label styleClass="header-subtitle" text="Precio Unitario (S/)"/>
-                            <TextField fx:id="txtPrecioVenta" promptText="S/ 0.00" styleClass="search-field"/>
+                            <TextField fx:id="txtPrecioVenta" editable="false" promptText="S/ 0.00" styleClass="search-field"/>
                         </VBox>
 
                         <VBox spacing="4" prefWidth="110.0">
