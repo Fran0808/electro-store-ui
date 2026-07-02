@@ -35,7 +35,7 @@
                </children>
             </VBox>
 
-            <VBox spacing="5.0" VBox.vgrow="ALWAYS">
+            <VBox spacing="8.0" VBox.vgrow="ALWAYS">
                <children>
                   <!-- PRINCIPAL -->
                   <VBox fx:id="groupPrincipal" spacing="2.0">

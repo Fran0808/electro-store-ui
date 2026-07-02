@@ -17,8 +17,8 @@
    <stylesheets>
       <URL value="@../styles/style.css"/>
    </stylesheets>
-   <VBox alignment="TOP_CENTER" prefHeight="800.0" prefWidth="1040.0" spacing="25.0"
-         style="-fx-background-color: #F8FAFC;">
+   <VBox alignment="TOP_CENTER" spacing="25.0" style="-fx-background-color: #F8FAFC;"
+         AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <padding>
          <Insets bottom="30.0" left="30.0" right="30.0" top="30.0"/>
       </padding>
@@ -39,15 +39,15 @@
                </Label>
             </children>
          </VBox>
-         <Label prefHeight="20.0" prefWidth="978.0" style="-fx-font-weight: bold;" text="Acciones Rápidas">
+         <Label maxWidth="1.7976931348623157E308" prefHeight="20.0" style="-fx-font-weight: bold;" text="Acciones Rápidas">
             <font>
                <Font size="16.0"/>
             </font>
          </Label>
-         <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0" spacing="15.0">
+         <HBox alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="80.0" spacing="16.0">
             <children>
                <Button fx:id="btnQuickVenta" graphicTextGap="10.0" mnemonicParsing="false"
-                       onAction="#handleVenta" prefWidth="180.0"
+                       onAction="#handleVenta" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS"
                        style="-fx-background-color: white; -fx-border-color: #CBD5E1; -fx-border-radius: 6px; -fx-background-radius: 6px; -fx-padding: 8 20 8 20; -fx-cursor: hand; -fx-font-size: 14px; -fx-font-family: 'System'; -fx-text-fill: #475569;"
                        text="Venta">
                   <graphic>
@@ -56,7 +56,7 @@
                   </graphic>
                </Button>
                <Button fx:id="btnQuickInventario" graphicTextGap="10.0" layoutX="451.0" layoutY="40.0"
-                       mnemonicParsing="false" onAction="#handleInventario" prefWidth="180.0"
+                       mnemonicParsing="false" onAction="#handleInventario" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS"
                        style="-fx-background-color: white; -fx-border-color: #CBD5E1; -fx-border-radius: 6px; -fx-background-radius: 6px; -fx-padding: 8 20 8 20; -fx-cursor: hand; -fx-font-size: 14px; -fx-font-family: 'System'; -fx-text-fill: #475569;"
                        text="Inventario">
                   <graphic>
@@ -65,7 +65,7 @@
                   </graphic>
                </Button>
                <Button fx:id="btnQuickCliente" graphicTextGap="10.0" layoutX="394.0" layoutY="40.0"
-                       mnemonicParsing="false" onAction="#handleCliente" prefWidth="180.0"
+                       mnemonicParsing="false" onAction="#handleCliente" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS"
                        style="-fx-background-color: white; -fx-border-color: #CBD5E1; -fx-border-radius: 6px; -fx-background-radius: 6px; -fx-padding: 8 20 8 20; -fx-cursor: hand; -fx-font-size: 14px; -fx-font-family: 'System'; -fx-text-fill: #475569;"
                        text="Cliente">
                   <graphic>
@@ -74,7 +74,7 @@
                   </graphic>
                </Button>
                <Button fx:id="btnQuickGuia" graphicTextGap="10.0" layoutX="337.0" layoutY="40.0"
-                       mnemonicParsing="false" onAction="#handleGuia" prefWidth="180.0"
+                       mnemonicParsing="false" onAction="#handleGuia" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS"
                        style="-fx-background-color: white; -fx-border-color: #CBD5E1; -fx-border-radius: 6px; -fx-background-radius: 6px; -fx-padding: 8 20 8 20; -fx-cursor: hand; -fx-font-size: 14px; -fx-font-family: 'System'; -fx-text-fill: #475569;"
                        text="Guia Rapida">
                   <graphic>
@@ -83,7 +83,7 @@
                   </graphic>
                </Button>
                <Button fx:id="btnQuickSoporte" graphicTextGap="10.0" layoutX="337.0" layoutY="40.0"
-                       mnemonicParsing="false" onAction="#handleSoporte" prefWidth="180.0"
+                       mnemonicParsing="false" onAction="#handleSoporte" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS"
                        style="-fx-background-color: white; -fx-border-color: #CBD5E1; -fx-border-radius: 6px; -fx-background-radius: 6px; -fx-padding: 8 20 8 20; -fx-cursor: hand; -fx-font-size: 14px; -fx-font-family: 'System'; -fx-text-fill: #475569;"
                        text="Soporte">
                   <graphic>
@@ -96,30 +96,27 @@
                <Insets/>
             </VBox.margin>
          </HBox>
-         <HBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="200.0" spacing="20.0">
+         <HBox maxWidth="1.7976931348623157E308" spacing="20.0" VBox.vgrow="ALWAYS">
             <children>
-               <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-                     minWidth="-Infinity" prefHeight="500.0" prefWidth="532.0"
-                     style="-fx-background-color: white;" HBox.hgrow="ALWAYS">
+               <VBox alignment="TOP_LEFT" style="-fx-background-color: white; -fx-padding: 16; -fx-background-radius: 8; -fx-border-color: #E2E8F0; -fx-border-radius: 8;" HBox.hgrow="ALWAYS">
                   <children>
-                     <Label maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-                            prefHeight="38.0" prefWidth="505.0" style="-fx-font-weight: bold;"
-                            text="Registro de Actividad Reciente">
+                     <Label style="-fx-font-weight: bold; -fx-text-fill: #1E293B;" text="Registro de Actividad Reciente">
                         <font>
                            <Font size="16.0"/>
                         </font>
-                     </Label>
-                     <TableView fx:id="tablaActividad" maxHeight="-Infinity" maxWidth="-Infinity"
-                                minHeight="-Infinity" minWidth="-Infinity" prefHeight="440.0" prefWidth="516.0">
-                        <columns>
-                           <TableColumn fx:id="colHora" prefWidth="137.06666028499603" text="Hora"/>
-                           <TableColumn fx:id="colUsuario" prefWidth="171.46664428710938" text="Usuario"/>
-                           <TableColumn fx:id="colAccion" minWidth="0.0" prefWidth="220.5333251953125"
-                                        text="Acción"/>
-                        </columns>
                         <VBox.margin>
-                           <Insets/>
+                           <Insets bottom="12.0"/>
                         </VBox.margin>
+                     </Label>
+                     <TableView fx:id="tablaActividad" VBox.vgrow="ALWAYS">
+                        <columnResizePolicy>
+                           <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                        </columnResizePolicy>
+                        <columns>
+                           <TableColumn fx:id="colHora" prefWidth="130.0" text="Hora"/>
+                           <TableColumn fx:id="colUsuario" prefWidth="150.0" text="Usuario"/>
+                           <TableColumn fx:id="colAccion" prefWidth="240.0" text="Acción"/>
+                        </columns>
                      </TableView>
                   </children>
                </VBox>
