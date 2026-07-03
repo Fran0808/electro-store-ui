@@ -98,6 +98,11 @@ public class ClienteFormController implements Initializable {
             return;
         }
 
+        if ("Consumidor".equalsIgnoreCase(nombres) && "Final".equalsIgnoreCase(apellidos)) {
+            mostrarAlerta("Nombre Reservado", "No se permite registrar manualmente un cliente con el nombre 'Consumidor Final'.");
+            return;
+        }
+
         if (!dni.isEmpty() && dni.length() != 8) {
             mostrarAlerta("Formato Inválido", "El DNI debe tener exactamente 8 dígitos.");
             return;
