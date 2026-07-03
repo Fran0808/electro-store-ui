@@ -65,6 +65,7 @@ public class SidebarController {
         actualizarVisibilidadGrupo(groupAnalisis, itemAlertas);
 
         cargarBadgeAlertas();
+        NavigationManager.getInstance().setOnRefreshAlerts(this::cargarBadgeAlertas);
     }
 
     private void ocultarComponente(HBox item) {

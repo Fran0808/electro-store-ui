@@ -178,6 +178,7 @@ public class ProductoController implements Initializable {
                     exito.showAndWait();
 
                     refreshData();
+                    com.store.inventario.model.NavigationManager.getInstance().refreshAlerts();
                 } catch (Exception e) {
                     e.printStackTrace();
                     Alert error = new Alert(Alert.AlertType.ERROR);

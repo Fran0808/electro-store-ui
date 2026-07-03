@@ -289,6 +289,7 @@ public class CompraFormController {
 
             CreatePurchaseRequest request = new CreatePurchaseRequest(supplierCode, details);
             compraService.crearCompra(request);
+            com.store.inventario.model.NavigationManager.getInstance().refreshAlerts();
 
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Éxito");

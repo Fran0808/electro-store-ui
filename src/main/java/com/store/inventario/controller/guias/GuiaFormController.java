@@ -197,6 +197,7 @@ public class GuiaFormController {
             InventoryGuide guide = guideService.crearGuia(
                     new CreateInventoryGuideRequest(tipo, motivo, desc, details)
             );
+            com.store.inventario.model.NavigationManager.getInstance().refreshAlerts();
             mostrarAlerta(Alert.AlertType.INFORMATION, "Éxito",
                     "Guía " + guide.getCode() + " registrada correctamente.");
             cerrarVentana(btnGuardar);
