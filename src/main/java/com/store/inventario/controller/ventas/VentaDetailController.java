@@ -88,7 +88,7 @@ public class VentaDetailController {
         BigDecimal subtotal = total.divide(BigDecimal.valueOf(1.18), 2, RoundingMode.HALF_UP);
         BigDecimal igv = total.subtract(subtotal);
         lblSubtotal.setText("S/ " + subtotal);
-        lblImpuesto.setText("S/ " + igv);
+        lblImpuesto.setText("S/ " + igv.setScale(2, RoundingMode.HALF_UP).toString());
         lblTotalVenta.setText("S/ " + total);
     }
 

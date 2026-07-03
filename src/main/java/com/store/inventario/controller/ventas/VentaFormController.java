@@ -255,8 +255,21 @@ public class VentaFormController {
             return;
         }
 
-        listaDetalle.removeIf(d -> d.getProducto().getCode().equals(selected.getCode()));
-        listaDetalle.add(new VentaFormController.DetalleTemporal(selected, precio, cantidad));
+        int index = -1;
+        for (int i = 0; i < listaDetalle.size(); i++) {
+            if (listaDetalle.get(i).getProducto().getCode().equals(selected.getCode())) {
+                index = i;
+                break;
+            }
+        }
+
+        if (index >= 0) {
+            int nuevaCantidad = listaDetalle.get(index).getQuantity() + cantidad;
+            listaDetalle.set(index, new VentaFormController.DetalleTemporal(selected, precio, nuevaCantidad));
+        } else {
+            listaDetalle.add(new VentaFormController.DetalleTemporal(selected, precio, cantidad));
+        }
+        
         actualizarTotal();
         tblProductos.getSelectionModel().clearSelection();
     }

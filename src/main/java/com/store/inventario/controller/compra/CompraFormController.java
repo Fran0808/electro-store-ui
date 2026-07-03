@@ -211,10 +211,22 @@ public class CompraFormController {
         }
 
 
-        listaDetalle.removeIf(d -> d.getProducto().getCode().equals(selected.getCode()));
-        listaDetalle.add(new DetalleTemporal(selected, precio, cantidad));
-        actualizarTotal();
+        int index = -1;
+        for (int i = 0; i < listaDetalle.size(); i++) {
+            if (listaDetalle.get(i).getProducto().getCode().equals(selected.getCode())) {
+                index = i;
+                break;
+            }
+        }
 
+        if (index >= 0) {
+            int nuevaCantidad = listaDetalle.get(index).getQuantity() + cantidad;
+            listaDetalle.set(index, new DetalleTemporal(selected, precio, nuevaCantidad));
+        } else {
+            listaDetalle.add(new DetalleTemporal(selected, precio, cantidad));
+        }
+
+        actualizarTotal();
         tblProductos.getSelectionModel().clearSelection();
     }
 
