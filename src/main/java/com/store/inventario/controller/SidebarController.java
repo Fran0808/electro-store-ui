@@ -183,7 +183,7 @@ public class SidebarController {
             loginStage.setScene(new Scene(root));
             loginStage.setMinWidth(1280);
             loginStage.setMinHeight(800);
-
+            loginStage.setMaximized(true);
             loginStage.show();
 
             Stage currentStage = (Stage) itemDashboard.getScene().getWindow();
