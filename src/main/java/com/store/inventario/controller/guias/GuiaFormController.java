@@ -5,10 +5,10 @@ import com.store.inventario.model.guia.CreateGuideDetailRequest;
 import com.store.inventario.model.guia.CreateInventoryGuideRequest;
 import com.store.inventario.model.guia.DetalleFila;
 import com.store.inventario.model.guia.InventoryGuide;
-import com.store.inventario.model.producto.Producto;
+import com.store.inventario.module.product.model.entity.Product;
 import com.store.inventario.security.SessionManager;
 import com.store.inventario.service.guia.InventoryGuideService;
-import com.store.inventario.service.producto.ProductoService;
+import com.store.inventario.module.product.service.ProductService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -32,10 +32,10 @@ public class GuiaFormController {
     @FXML private TextField txtStockActual;
     @FXML private TextField txtCantidad;
 
-    @FXML private TableView<Producto> tblCatalogo;
-    @FXML private TableColumn<Producto, String> colCatCod;
-    @FXML private TableColumn<Producto, String> colCatProducto;
-    @FXML private TableColumn<Producto, Integer> colCatStock;
+    @FXML private TableView<Product> tblCatalogo;
+    @FXML private TableColumn<Product, String> colCatCod;
+    @FXML private TableColumn<Product, String> colCatProducto;
+    @FXML private TableColumn<Product, Integer> colCatStock;
     @FXML private Label lblProductoSeleccionado;
 
     @FXML private TableView<DetalleFila> tblDetalle;
@@ -51,10 +51,10 @@ public class GuiaFormController {
     @FXML private Button btnGuardar;
 
     private final InventoryGuideService guideService = new InventoryGuideService();
-    private final ProductoService productoService = new ProductoService();
+    private final ProductService productService = new ProductService();
     private final ObservableList<DetalleFila> filas = FXCollections.observableArrayList();
-    private List<Producto> listaProductos = new ArrayList<>();
-    private Producto productoSeleccionado;
+    private List<Product> listaProducts = new ArrayList<>();
+    private Product productSeleccionado;
 
     @FXML
     public void initialize() {
@@ -71,7 +71,7 @@ public class GuiaFormController {
 
         tblCatalogo.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal != null) {
-                productoSeleccionado = newVal;
+                productSeleccionado = newVal;
                 if (lblProductoSeleccionado != null) {
                     lblProductoSeleccionado.setText("Producto: " + newVal.getName() + " (" + newVal.getCode() + ")");
                 }
@@ -96,10 +96,10 @@ public class GuiaFormController {
 
     private void cargarProductos() {
         try {
-            PageResponse<Producto> response = productoService.obtenerProductos();
+            PageResponse<Product> response = productService.obtenerProductos();
             if (response != null && response.getContent() != null) {
-                listaProductos = response.getContent();
-                tblCatalogo.setItems(FXCollections.observableArrayList(listaProductos));
+                listaProducts = response.getContent();
+                tblCatalogo.setItems(FXCollections.observableArrayList(listaProducts));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -130,7 +130,7 @@ public class GuiaFormController {
     @FXML
     private void handleBuscarProducto() {
         String busqueda = txtBuscarProducto.getText() != null ? txtBuscarProducto.getText().trim().toLowerCase() : "";
-        List<Producto> filtrados = listaProductos.stream()
+        List<Product> filtrados = listaProducts.stream()
                 .filter(p -> (p.getName() != null && p.getName().toLowerCase().contains(busqueda)) ||
                              (p.getCode() != null && p.getCode().toLowerCase().contains(busqueda)))
                 .toList();
@@ -139,7 +139,7 @@ public class GuiaFormController {
 
     @FXML
     private void handleAgregarProducto() {
-        if (productoSeleccionado == null) {
+        if (productSeleccionado == null) {
             mostrarAlerta(Alert.AlertType.WARNING, "Advertencia", "Primero seleccione un producto del catálogo.");
             return;
         }
@@ -147,7 +147,7 @@ public class GuiaFormController {
         int cantidad = parseCantidad();
         if (cantidad <= 0) return;
 
-        String code = productoSeleccionado.getCode();
+        String code = productSeleccionado.getCode();
 
         DetalleFila existente = filas.stream()
                 .filter(f -> f.getCodigo().equals(code))
@@ -160,14 +160,14 @@ public class GuiaFormController {
         } else {
             filas.add(new DetalleFila(
                     code,
-                    productoSeleccionado.getName(),
-                    productoSeleccionado.getStock(),
+                    productSeleccionado.getName(),
+                    productSeleccionado.getStock(),
                     cantidad
             ));
         }
 
         tblCatalogo.getSelectionModel().clearSelection();
-        productoSeleccionado = null;
+        productSeleccionado = null;
         txtStockActual.clear();
         txtCantidad.clear();
         actualizarResumen();

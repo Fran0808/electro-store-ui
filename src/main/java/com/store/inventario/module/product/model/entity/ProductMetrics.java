@@ -1,4 +1,4 @@
-package com.store.inventario.model.producto;
+package com.store.inventario.module.product.model.entity;
 
 public class ProductMetrics {
     private long totalProducts;

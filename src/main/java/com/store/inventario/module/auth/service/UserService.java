@@ -1,4 +1,4 @@
-package com.store.inventario.service.usuario;
+package com.store.inventario.module.auth.service;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -14,12 +14,12 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
-public class UsuarioService {
+public class UserService {
     private static final String URL = ApiConfig.BASE_URL + "/users";
     private final HttpClient client;
     private final Gson gson;
 
-    public UsuarioService() {
+    public UserService() {
         client = HttpClient.newHttpClient();
         gson = new Gson();
     }

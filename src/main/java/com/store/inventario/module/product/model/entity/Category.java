@@ -1,13 +1,13 @@
-package com.store.inventario.model.categoria;
+package com.store.inventario.module.product.model.entity;
 
-public class Categoria {
+public class Category {
     private String code;
     private String name;
 
-    public Categoria() {
+    public Category() {
     }
 
-    public Categoria(String code, String name) {
+    public Category(String code, String name) {
         this.code = code;
         this.name = name;
     }
@@ -30,7 +30,7 @@ public class Categoria {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass())
             return false;
-        Categoria that = (Categoria) o;
+        Category that = (Category) o;
         return name.equals(that.name);
     }
     @Override

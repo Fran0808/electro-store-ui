@@ -1,12 +1,11 @@
 package com.store.inventario.controller.alertas;
 
 import com.store.inventario.model.PageResponse;
-import com.store.inventario.model.producto.Producto;
-import com.store.inventario.service.producto.ProductoService;
+import com.store.inventario.module.product.model.entity.Product;
+import com.store.inventario.module.product.service.ProductService;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -43,9 +42,9 @@ public class AlertaController implements Initializable {
     @FXML private Button btnAnterior;
     @FXML private Button btnSiguiente;
 
-    private final ProductoService productoService = new ProductoService();
+    private final ProductService productService = new ProductService();
     private final List<AlertaItem> todasLasAlertas = new ArrayList<>();
-    private final List<Producto> listaProductosOriginales = new ArrayList<>();
+    private final List<Product> listaProductosOriginales = new ArrayList<>();
     private int paginaActual = 0;
     private final int tamanoPagina = 30;
 
@@ -78,13 +77,13 @@ public class AlertaController implements Initializable {
 
     private void cargarAlertas() {
         try {
-            PageResponse<Producto> response = productoService.obtenerProductos(0, 1000);
-            List<Producto> productos = response.getContent();
+            PageResponse<Product> response = productService.obtenerProductos(0, 1000);
+            List<Product> products = response.getContent();
             listaProductosOriginales.clear();
-            listaProductosOriginales.addAll(productos);
+            listaProductosOriginales.addAll(products);
             todasLasAlertas.clear();
 
-            for (Producto p : productos) {
+            for (Product p : products) {
                 int stock = p.getStock() != null ? p.getStock() : 0;
                 int lowStockLimit = p.getLowStock() != null ? p.getLowStock() : globalAlertLimit;
 
@@ -204,7 +203,7 @@ public class AlertaController implements Initializable {
             return;
         }
 
-        Producto selectedProduct = listaProductosOriginales.stream()
+        Product selectedProduct = listaProductosOriginales.stream()
                 .filter(p -> p.getCode().equals(selectedItem.getCodigo()))
                 .findFirst()
                 .orElse(null);

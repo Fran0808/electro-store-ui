@@ -216,12 +216,12 @@ public class IndexController implements Initializable {
 
     @FXML
     private void handleInventario(ActionEvent event) {
-        NavigationManager.getInstance().navegar("/com/store/inventario/views/productos/productos.fxml");
+        NavigationManager.getInstance().navegar("/com/store/inventario/views/product/product.fxml");
     }
 
     @FXML
     private void handleCliente(ActionEvent event) {
-        NavigationManager.getInstance().navegar("/com/store/inventario/views/person/clientes.fxml");
+        NavigationManager.getInstance().navegar("/com/store/inventario/views/person/customer.fxml");
     }
 
     @FXML

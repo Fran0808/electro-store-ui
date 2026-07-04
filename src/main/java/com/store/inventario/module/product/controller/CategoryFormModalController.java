@@ -1,14 +1,14 @@
-package com.store.inventario.controller.categorias;
+package com.store.inventario.module.product.controller;
 
-import com.store.inventario.model.categoria.Categoria;
-import com.store.inventario.service.categoria.CategoriaService;
+import com.store.inventario.module.product.model.entity.Category;
+import com.store.inventario.module.product.service.CategoryService;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-public class CategoriaFormModalController {
+public class CategoryFormModalController {
 
     @FXML
     private TextField txtNombre;
@@ -19,8 +19,8 @@ public class CategoriaFormModalController {
     @FXML
     private Button btnCancelar;
 
-    private final CategoriaService categoriaService = new CategoriaService();
-    private Categoria categoriaCreada = null;
+    private final CategoryService categoryService = new CategoryService();
+    private Category categoryCreada = null;
     private boolean guardado = false;
 
     @FXML
@@ -37,8 +37,8 @@ public class CategoriaFormModalController {
         }
 
         try {
-            Categoria nueva = new Categoria(null, nombre);
-            categoriaCreada = categoriaService.crearCategoria(nueva);
+            Category nueva = new Category(null, nombre);
+            categoryCreada = categoryService.crearCategoria(nueva);
             guardado = true;
 
             Stage stage = (Stage) btnGuardar.getScene().getWindow();
@@ -60,12 +60,12 @@ public class CategoriaFormModalController {
         stage.close();
     }
 
-    public Categoria getCategoriaCreada() {
-        return categoriaCreada;
+    public Category getCategoriaCreada() {
+        return categoryCreada;
     }
 
     public String getCategoriaNombre() {
-        return categoriaCreada != null ? categoriaCreada.getName() : "";
+        return categoryCreada != null ? categoryCreada.getName() : "";
     }
 
     public boolean isGuardado() {

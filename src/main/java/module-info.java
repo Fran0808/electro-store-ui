@@ -11,17 +11,13 @@ module com.store.inventario {
     opens com.store.inventario;
     opens com.store.inventario.controller;
     opens com.store.inventario.controller.ventas;
-    opens com.store.inventario.controller.productos;
     opens com.store.inventario.controller.alertas;
     opens com.store.inventario.controller.guias;
     opens com.store.inventario.controller.compra;
     opens com.store.inventario.controller.proveedor;
 
-    opens com.store.inventario.controller.categorias;
 
     opens com.store.inventario.model;
-    opens com.store.inventario.model.producto;
-    opens com.store.inventario.model.categoria;
     opens com.store.inventario.model.proveedor;
     opens com.store.inventario.model.guia;
     opens com.store.inventario.model.ventas;
@@ -37,5 +33,9 @@ module com.store.inventario {
     opens com.store.inventario.module.person.model.entity;
     opens com.store.inventario.module.person.request;
     opens com.store.inventario.module.person.model.enums;
+    //PRODUCT
+    opens com.store.inventario.module.product.controller;
+    opens com.store.inventario.module.product.model.entity;
+    opens com.store.inventario.module.product.request;
 
 }

@@ -2,7 +2,7 @@ package com.store.inventario.module.auth.controller;
 
 import com.store.inventario.model.PageResponse;
 import com.store.inventario.module.auth.model.entity.User;
-import com.store.inventario.service.usuario.UsuarioService;
+import com.store.inventario.module.auth.service.UserService;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -49,7 +49,7 @@ public class UserController {
     @FXML private Label lblTotalOperativos;
     @FXML private Label lblResumenPaginacion;
 
-    private final UsuarioService usuarioService = new UsuarioService();
+    private final UserService userService = new UserService();
 
     @FXML
     public void abrirModalNuevoUsuario() throws IOException {
@@ -202,9 +202,9 @@ public class UserController {
             if (resultado.isPresent() && resultado.get() == ButtonType.OK) {
                 try {
                     if (active) {
-                        usuarioService.desactivarUsuario(user.getCode());
+                        userService.desactivarUsuario(user.getCode());
                     } else {
-                        usuarioService.activarUsuario(user.getCode());
+                        userService.activarUsuario(user.getCode());
                     }
 
                     Alert exito = new Alert(Alert.AlertType.INFORMATION);
@@ -284,7 +284,7 @@ public class UserController {
 
     private void obtenerUsuarios() {
         try {
-            PageResponse<User> response = usuarioService.obtenerUsuarios(paginaActual, tamanoPagina);
+            PageResponse<User> response = userService.obtenerUsuarios(paginaActual, tamanoPagina);
             List<User> users = (response != null) ? response.getContent() : java.util.Collections.emptyList();
             masterData.setAll(users);
             

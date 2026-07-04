@@ -1,9 +1,10 @@
 package com.store.inventario.controller.alertas;
 
-import com.store.inventario.model.producto.Producto;
-import com.store.inventario.model.producto.UpdateProductRequest;
-import com.store.inventario.service.categoria.CategoriaService;
-import com.store.inventario.service.producto.ProductoService;
+import com.store.inventario.module.product.model.entity.Category;
+import com.store.inventario.module.product.model.entity.Product;
+import com.store.inventario.module.product.request.UpdateProductRequest;
+import com.store.inventario.module.product.service.CategoryService;
+import com.store.inventario.module.product.service.ProductService;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -17,26 +18,26 @@ public class AlertasFormController {
     @FXML
     private Button btnCancelar;
 
-    private Producto producto;
-    private final CategoriaService categoriaService = new CategoriaService();
-    private final ProductoService productoService = new ProductoService();
+    private Product product;
+    private final CategoryService categoryService = new CategoryService();
+    private final ProductService productService = new ProductService();
 
     @FXML
     public void initialize() {
         spnLimite.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, Integer.MAX_VALUE, AlertaController.globalAlertLimit));
     }
 
-    public void setProducto(Producto producto) {
-        this.producto = producto;
-        if (producto != null) {
-            int currentLimit = producto.getLowStock() != null ? producto.getLowStock() : AlertaController.globalAlertLimit;
+    public void setProducto(Product product) {
+        this.product = product;
+        if (product != null) {
+            int currentLimit = product.getLowStock() != null ? product.getLowStock() : AlertaController.globalAlertLimit;
             spnLimite.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, Integer.MAX_VALUE, currentLimit));
         }
     }
 
     @FXML
     private void handleGuardar() {
-        if (producto == null) {
+        if (product == null) {
             return;
         }
 
@@ -49,9 +50,9 @@ public class AlertasFormController {
         try {
             String categoryCode = "";
             try {
-                categoryCode = categoriaService.obtenerCategorias().getContent().stream()
-                        .filter(c -> c.getName().equals(producto.getCategoryName()))
-                        .map(com.store.inventario.model.categoria.Categoria::getCode)
+                categoryCode = categoryService.obtenerCategorias().getContent().stream()
+                        .filter(c -> c.getName().equals(product.getCategoryName()))
+                        .map(Category::getCode)
                         .findFirst()
                         .orElse("");
             } catch (Exception ex) {
@@ -60,17 +61,17 @@ public class AlertasFormController {
 
             UpdateProductRequest updateRequest = new UpdateProductRequest(
                     categoryCode,
-                    producto.getName(),
-                    producto.getBrand() != null ? producto.getBrand() : "",
-                    producto.getModel() != null ? producto.getModel() : "",
-                    producto.getSalePrice(),
-                    producto.getDescription() != null ? producto.getDescription() : "",
-                    producto.getWarrantyMonths() != null ? producto.getWarrantyMonths() : 0,
+                    product.getName(),
+                    product.getBrand() != null ? product.getBrand() : "",
+                    product.getModel() != null ? product.getModel() : "",
+                    product.getSalePrice(),
+                    product.getDescription() != null ? product.getDescription() : "",
+                    product.getWarrantyMonths() != null ? product.getWarrantyMonths() : 0,
                     limite
             );
 
-            productoService.actualizarProducto(producto.getCode(), updateRequest);
-            mostrarAlerta(Alert.AlertType.INFORMATION, "Guardado", "Límite para " + producto.getName() + " actualizado a: " + limite);
+            productService.actualizarProducto(product.getCode(), updateRequest);
+            mostrarAlerta(Alert.AlertType.INFORMATION, "Guardado", "Límite para " + product.getName() + " actualizado a: " + limite);
 
             Stage stage = (Stage) btnCancelar.getScene().getWindow();
             stage.close();

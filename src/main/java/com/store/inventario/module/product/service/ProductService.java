@@ -1,11 +1,11 @@
-package com.store.inventario.service.producto;
+package com.store.inventario.module.product.service;
 
 import com.store.inventario.config.ApiConfig;
 import com.store.inventario.model.PageResponse;
-import com.store.inventario.model.producto.CreateProductRequest;
-import com.store.inventario.model.producto.UpdateProductRequest;
-import com.store.inventario.model.producto.Producto;
-import com.store.inventario.model.producto.ProductMetrics;
+import com.store.inventario.module.product.request.CreateProductRequest;
+import com.store.inventario.module.product.request.UpdateProductRequest;
+import com.store.inventario.module.product.model.entity.Product;
+import com.store.inventario.module.product.model.entity.ProductMetrics;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.store.inventario.security.SessionManager;
@@ -17,29 +17,29 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
-public class ProductoService {
+public class ProductService {
     private static final String URL = ApiConfig.BASE_URL + "/products";
     private final HttpClient client;
     private final Gson gson;
 
-    public ProductoService() {
+    public ProductService() {
         client = HttpClient.newHttpClient();
         gson = new Gson();
     }
 
-    public PageResponse<Producto> obtenerProductos() {
+    public PageResponse<Product> obtenerProductos() {
         return obtenerProductos("", 0, 1000);
     }
 
-    public PageResponse<Producto> obtenerProductos(int page, int size) {
+    public PageResponse<Product> obtenerProductos(int page, int size) {
         return obtenerProductos("", page, size);
     }
 
-    public PageResponse<Producto> obtenerProductos(String search, int page, int size) {
+    public PageResponse<Product> obtenerProductos(String search, int page, int size) {
         return obtenerProductos(search, null, null, null, page, size);
     }
 
-    public PageResponse<Producto> obtenerProductos(String search, String categoryName, String brand, String stockStatus, int page, int size) {
+    public PageResponse<Product> obtenerProductos(String search, String categoryName, String brand, String stockStatus, int page, int size) {
         try {
             String paginatedUrl = URL + "?page=" + page + "&size=" + size;
             if (search != null && !search.trim().isEmpty()) {
@@ -65,7 +65,7 @@ public class ProductoService {
                 throw new RuntimeException("Error al obtener productos: HTTP " + response.statusCode());
             }
 
-            Type type = new TypeToken<PageResponse<Producto>>() {}.getType();
+            Type type = new TypeToken<PageResponse<Product>>() {}.getType();
             return gson.fromJson(response.body(), type);
 
         } catch (IOException | InterruptedException e) {
@@ -73,7 +73,7 @@ public class ProductoService {
         }
     }
 
-    public Producto crearProducto(CreateProductRequest createRequest) {
+    public Product crearProducto(CreateProductRequest createRequest) {
         try {
             String json = gson.toJson(createRequest);
             HttpRequest request = HttpRequest.newBuilder()
@@ -88,13 +88,13 @@ public class ProductoService {
                 throw new RuntimeException("Error al crear producto: HTTP " + response.statusCode());
             }
 
-            return gson.fromJson(response.body(), Producto.class);
+            return gson.fromJson(response.body(), Product.class);
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public Producto actualizarProducto(String code, UpdateProductRequest updateRequest) {
+    public Product actualizarProducto(String code, UpdateProductRequest updateRequest) {
         try {
             String json = gson.toJson(updateRequest);
             HttpRequest request = HttpRequest.newBuilder()
@@ -109,7 +109,7 @@ public class ProductoService {
                 throw new RuntimeException("Error al actualizar producto: HTTP " + response.statusCode());
             }
 
-            return gson.fromJson(response.body(), Producto.class);
+            return gson.fromJson(response.body(), Product.class);
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }

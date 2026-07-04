@@ -1,16 +1,16 @@
 package com.store.inventario.model.guia;
 
-import com.store.inventario.model.producto.Producto;
+import com.store.inventario.module.product.model.entity.Product;
 
 public class GuideDetail {
     private String code;
-    private Producto product;
+    private Product product;
     private Integer quantity;
 
     public GuideDetail() {
     }
 
-    public GuideDetail(String code, Producto product, Integer quantity) {
+    public GuideDetail(String code, Product product, Integer quantity) {
         this.code = code;
         this.product = product;
         this.quantity = quantity;
@@ -24,11 +24,11 @@ public class GuideDetail {
         this.code = code;
     }
 
-    public Producto getProduct() {
+    public Product getProduct() {
         return product;
     }
 
-    public void setProduct(Producto product) {
+    public void setProduct(Product product) {
         this.product = product;
     }
 

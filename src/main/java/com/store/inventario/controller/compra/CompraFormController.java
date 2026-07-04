@@ -3,17 +3,16 @@ package com.store.inventario.controller.compra;
 import com.store.inventario.model.PageResponse;
 import com.store.inventario.model.compra.CreatePurchaseDetailRequest;
 import com.store.inventario.model.compra.CreatePurchaseRequest;
-import com.store.inventario.model.producto.Producto;
+import com.store.inventario.module.product.model.entity.Product;
 import com.store.inventario.model.proveedor.Proveedor;
 import com.store.inventario.security.SessionManager;
 import com.store.inventario.service.compra.CompraService;
 import com.store.inventario.service.proveedor.ProveedorService;
-import com.store.inventario.service.producto.ProductoService;
+import com.store.inventario.module.product.service.ProductService;
 import com.store.inventario.controller.proveedor.ProveedorSearchModalController;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -42,10 +41,10 @@ public class CompraFormController {
     
     // Controles para el catálogo de productos
     @FXML private TextField txtBuscarProducto;
-    @FXML private TableView<Producto> tblProductos;
-    @FXML private TableColumn<Producto, String> colCatCodigo;
-    @FXML private TableColumn<Producto, String> colCatNombre;
-    @FXML private TableColumn<Producto, Integer> colCatStock;
+    @FXML private TableView<Product> tblProductos;
+    @FXML private TableColumn<Product, String> colCatCodigo;
+    @FXML private TableColumn<Product, String> colCatNombre;
+    @FXML private TableColumn<Product, Integer> colCatStock;
     @FXML private Label lblProductoSeleccionado;
     @FXML private Label lblPrecioVentaRef;
     @FXML private Label lblMargenRef;
@@ -63,25 +62,25 @@ public class CompraFormController {
     @FXML private Button btnCancelar;
 
     private final ProveedorService proveedorService = new ProveedorService();
-    private final ProductoService productoService = new ProductoService();
+    private final ProductService productService = new ProductService();
     private final CompraService compraService = new CompraService();
     
-    private final ObservableList<Producto> listaCatalogProductos = FXCollections.observableArrayList();
+    private final ObservableList<Product> listaCatalogProducts = FXCollections.observableArrayList();
     private final ObservableList<DetalleTemporal> listaDetalle = FXCollections.observableArrayList();
 
     public static class DetalleTemporal {
-        private final Producto producto;
+        private final Product product;
         private final BigDecimal precioCompra;
         private final int cantidad;
 
-        public DetalleTemporal(Producto producto, BigDecimal precioCompra, int cantidad) {
-            this.producto = producto;
+        public DetalleTemporal(Product product, BigDecimal precioCompra, int cantidad) {
+            this.product = product;
             this.precioCompra = precioCompra;
             this.cantidad = cantidad;
         }
 
-        public Producto getProducto() { return producto; }
-        public String getNombreProducto() { return producto != null ? producto.getName() : ""; }
+        public Product getProducto() { return product; }
+        public String getNombreProducto() { return product != null ? product.getName() : ""; }
         public BigDecimal getPrecioCompra() { return precioCompra; }
         public int getQuantity() { return cantidad; }
         public BigDecimal getSubtotal() {
@@ -109,7 +108,7 @@ public class CompraFormController {
         configurarColumnaEliminar();
         
         tblDetalleCompra.setItems(listaDetalle);
-        tblProductos.setItems(listaCatalogProductos);
+        tblProductos.setItems(listaCatalogProducts);
 
         tblProductos.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
@@ -137,7 +136,7 @@ public class CompraFormController {
         });
 
         txtPrecioCompra.textProperty().addListener((obs, oldText, newText) -> {
-            Producto selected = tblProductos.getSelectionModel().getSelectedItem();
+            Product selected = tblProductos.getSelectionModel().getSelectedItem();
             if (selected != null && selected.getSalePrice() != null && newText != null && !newText.trim().isEmpty()) {
                 try {
                     BigDecimal purchasePrice = new BigDecimal(newText.trim());
@@ -189,9 +188,9 @@ public class CompraFormController {
     private void cargarProductos(String search) {
         new Thread(() -> {
             try {
-                PageResponse<Producto> response = productoService.obtenerProductos(search, 0, 100);
+                PageResponse<Product> response = productService.obtenerProductos(search, 0, 100);
                 if (response != null && response.getContent() != null) {
-                    Platform.runLater(() -> listaCatalogProductos.setAll(response.getContent()));
+                    Platform.runLater(() -> listaCatalogProducts.setAll(response.getContent()));
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -207,7 +206,7 @@ public class CompraFormController {
 
     @FXML
     private void agregarProductoALaLista() {
-        Producto selected = tblProductos.getSelectionModel().getSelectedItem();
+        Product selected = tblProductos.getSelectionModel().getSelectedItem();
         if (selected == null) {
             mostrarAlerta("Campos requeridos", "Debe seleccionar un producto del catálogo de la izquierda.");
             return;

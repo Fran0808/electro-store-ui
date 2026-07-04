@@ -4,13 +4,13 @@ import com.store.inventario.model.PageResponse;
 import com.store.inventario.module.person.model.entity.Customer;
 import com.store.inventario.module.person.request.CreateCustomerRequest;
 import com.store.inventario.module.person.request.CreatePersonRequest;
-import com.store.inventario.model.producto.Producto;
+import com.store.inventario.module.product.model.entity.Product;
 import com.store.inventario.model.ventas.CreateSaleDetailRequest;
 import com.store.inventario.model.ventas.CreateSaleRequest;
 import com.store.inventario.module.person.controller.CustomerSearchModalController;
 import com.store.inventario.security.SessionManager;
 import com.store.inventario.module.person.service.CustomerService;
-import com.store.inventario.service.producto.ProductoService;
+import com.store.inventario.module.product.service.ProductService;
 import com.store.inventario.service.venta.VentaService;
 import com.store.inventario.utils.WindowUtils;
 import javafx.application.Platform;
@@ -43,11 +43,11 @@ public class VentaFormController {
     private Customer customerSeleccionado = null;
 
     // Controles para el catálogo de productos
-    @FXML private TableColumn<Producto, String> colCatCodigo;
-    @FXML private TableView<Producto> tblProductos;
-    @FXML private TableColumn<Producto, String> colCatNombre;
-    @FXML private TableColumn<Producto, Integer> colCatStock;
-    @FXML private TableColumn<Producto, BigDecimal> colCatPrecio;
+    @FXML private TableColumn<Product, String> colCatCodigo;
+    @FXML private TableView<Product> tblProductos;
+    @FXML private TableColumn<Product, String> colCatNombre;
+    @FXML private TableColumn<Product, Integer> colCatStock;
+    @FXML private TableColumn<Product, BigDecimal> colCatPrecio;
     @FXML private Label lblProductoSeleccionado;
     @FXML private TextField txtCantidad;
     @FXML private TextField txtPrecioVenta;
@@ -64,28 +64,28 @@ public class VentaFormController {
     @FXML private Button btnCancelar;
 
     private CustomerService customerService = new CustomerService();
-    private ProductoService productoService = new ProductoService();
+    private ProductService productService = new ProductService();
     private VentaService ventaService = new VentaService();
 
-    private final ObservableList<Producto> listaCatalogProductos = FXCollections.observableArrayList();
+    private final ObservableList<Product> listaCatalogProducts = FXCollections.observableArrayList();
     private final ObservableList<VentaFormController.DetalleTemporal> listaDetalle = FXCollections.observableArrayList();
 
     public static class DetalleTemporal {
-        private final Producto producto;
+        private final Product product;
         private final BigDecimal precioVenta;
         private final int cantidad;
 
-        public DetalleTemporal(Producto producto, BigDecimal precioVenta, int cantidad) {
-            this.producto = producto;
+        public DetalleTemporal(Product product, BigDecimal precioVenta, int cantidad) {
+            this.product = product;
             this.precioVenta = precioVenta;
             this.cantidad = cantidad;
         }
 
-        public Producto getProducto() {
-            return producto;
+        public Product getProducto() {
+            return product;
         }
         public String getNombreProducto() {
-            return producto != null ? producto.getName() : "";
+            return product != null ? product.getName() : "";
         }
         public BigDecimal getPrecioVenta() {
             return precioVenta;
@@ -120,7 +120,7 @@ public class VentaFormController {
         configurarColumnaEliminar();
 
         tblDetalleVenta.setItems(listaDetalle);
-        tblProductos.setItems(listaCatalogProductos);
+        tblProductos.setItems(listaCatalogProducts);
 
         tblProductos.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
@@ -188,7 +188,7 @@ public class VentaFormController {
     @FXML
     private void abrirBuscadorCliente() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/views/person/cliente-search-modal.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/views/person/customer-search-modal.fxml"));
             Parent root = loader.load();
 
             CustomerSearchModalController controller = loader.getController();
@@ -213,9 +213,9 @@ public class VentaFormController {
     private void cargarProductos(String search) {
         Platform.runLater(() -> {
             try {
-                PageResponse<Producto> response = productoService.obtenerProductos(search, 0, 100);
+                PageResponse<Product> response = productService.obtenerProductos(search, 0, 100);
                 if (response != null && response.getContent() != null) {
-                    listaCatalogProductos.setAll(response.getContent());
+                    listaCatalogProducts.setAll(response.getContent());
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -231,7 +231,7 @@ public class VentaFormController {
 
     @FXML
     private void agregarProductoALaLista() {
-        Producto selected = tblProductos.getSelectionModel().getSelectedItem();
+        Product selected = tblProductos.getSelectionModel().getSelectedItem();
         if (selected == null) {
             mostrarAlerta("Campos requeridos", "Debe seleccionar un producto del catálogo de la izquierda.");
             return;

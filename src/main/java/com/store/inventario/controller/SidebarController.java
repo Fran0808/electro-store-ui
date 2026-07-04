@@ -1,6 +1,8 @@
 package com.store.inventario.controller;
 
 import com.store.inventario.model.NavigationManager;
+import com.store.inventario.module.product.model.entity.ProductMetrics;
+import com.store.inventario.module.product.service.ProductService;
 import com.store.inventario.security.SessionManager;
 import com.store.inventario.utils.WindowUtils;
 import javafx.fxml.FXML;
@@ -92,9 +94,9 @@ public class SidebarController {
     private void cargarBadgeAlertas() {
         new Thread(() -> {
             try {
-                com.store.inventario.service.producto.ProductoService service = new com.store.inventario.service.producto.ProductoService();
+                ProductService service = new ProductService();
 
-                com.store.inventario.model.producto.ProductMetrics metrics = service.obtenerMetricas();
+                ProductMetrics metrics = service.obtenerMetricas();
                 long count = (metrics != null) ? (metrics.getLowStockCount() + metrics.getOutOfStockCount()) : 0;
 
                 javafx.application.Platform.runLater(() -> {
@@ -120,17 +122,17 @@ public class SidebarController {
 
     @FXML
     private void handleProductos() {
-        NavigationManager.getInstance().navegar("/com/store/inventario/views/productos/productos.fxml");
+        NavigationManager.getInstance().navegar("/com/store/inventario/views/product/product.fxml");
     }
 
     @FXML
     private void handleCategorias() {
-        NavigationManager.getInstance().navegar("/com/store/inventario/views/productos/gestion-categorias.fxml");
+        NavigationManager.getInstance().navegar("/com/store/inventario/views/product/category-management.fxml");
     }
 
     @FXML
     private void handleClientes() {
-        NavigationManager.getInstance().navegar("/com/store/inventario/views/person/clientes.fxml");
+        NavigationManager.getInstance().navegar("/com/store/inventario/views/person/customer.fxml");
     }
 
     @FXML
@@ -155,7 +157,7 @@ public class SidebarController {
 
     @FXML
     private void handleEmpleados() {
-        NavigationManager.getInstance().navegar("/com/store/inventario/views/person/empleados.fxml");
+        NavigationManager.getInstance().navegar("/com/store/inventario/views/person/employee.fxml");
     }
 
     @FXML

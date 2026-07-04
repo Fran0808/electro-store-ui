@@ -2,7 +2,7 @@ package com.store.inventario.module.auth.controller;
  
 import com.store.inventario.module.auth.model.entity.User;
 import com.store.inventario.module.person.model.enums.EmployeePosition;
-import com.store.inventario.service.usuario.UsuarioService;
+import com.store.inventario.module.auth.service.UserService;
 import com.store.inventario.module.person.service.EmployeeService;
 import com.store.inventario.module.person.model.entity.Employee;
 import com.store.inventario.model.PageResponse;
@@ -32,7 +32,7 @@ public class UserFormController implements Initializable {
     @FXML
     private Button btnGuardar;
  
-    private final UsuarioService usuarioService = new UsuarioService();
+    private final UserService userService = new UserService();
     private User userEditar;
     private java.util.List<Employee> listaEmployees = new java.util.ArrayList<>();
     private java.util.Set<String> empleadosConUsuario = new java.util.HashSet<>();
@@ -71,7 +71,7 @@ public class UserFormController implements Initializable {
  
     private void cargarEmpleados() {
         try {
-            PageResponse<User> usuariosResponse = usuarioService.obtenerUsuarios();
+            PageResponse<User> usuariosResponse = userService.obtenerUsuarios();
             empleadosConUsuario.clear();
             if (usuariosResponse != null && usuariosResponse.getContent() != null) {
                 for (User u : usuariosResponse.getContent()) {
@@ -195,9 +195,9 @@ public class UserFormController implements Initializable {
             );
 
             if (esNuevo) {
-                usuarioService.crearUsuario(nuevoUser);
+                userService.crearUsuario(nuevoUser);
             } else {
-                usuarioService.actualizarUsuario(userEditar.getCode(), nuevoUser);
+                userService.actualizarUsuario(userEditar.getCode(), nuevoUser);
             }
 
             cerrarModal();

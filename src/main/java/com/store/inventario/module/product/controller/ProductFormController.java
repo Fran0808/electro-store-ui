@@ -1,14 +1,13 @@
-package com.store.inventario.controller.productos;
+package com.store.inventario.module.product.controller;
 
 import com.store.inventario.model.PageResponse;
-import com.store.inventario.model.categoria.Categoria;
-import com.store.inventario.controller.categorias.CategoriaFormModalController;
-import com.store.inventario.model.producto.CreateProductRequest;
-import com.store.inventario.model.producto.Producto;
-import com.store.inventario.model.producto.UpdateProductRequest;
+import com.store.inventario.module.product.model.entity.Category;
+import com.store.inventario.module.product.request.CreateProductRequest;
+import com.store.inventario.module.product.model.entity.Product;
+import com.store.inventario.module.product.request.UpdateProductRequest;
 import com.store.inventario.security.SessionManager;
-import com.store.inventario.service.categoria.CategoriaService;
-import com.store.inventario.service.producto.ProductoService;
+import com.store.inventario.module.product.service.CategoryService;
+import com.store.inventario.module.product.service.ProductService;
 
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -16,13 +15,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.math.BigDecimal;
 
-public class ProductoFormController {
+public class ProductFormController {
 
     @FXML
     private Label lblTitulo;
@@ -34,7 +32,7 @@ public class ProductoFormController {
     private TextField txtNombre;
 
     @FXML
-    private ComboBox<Categoria> cbCategoria;
+    private ComboBox<Category> cbCategoria;
 
     @FXML
     private TextField txtMarca;
@@ -63,10 +61,10 @@ public class ProductoFormController {
     @FXML
     private Button btnNuevaCategoria;
 
-    private final CategoriaService categoriaService = new CategoriaService();
-    private final ProductoService productoService = new ProductoService();
+    private final CategoryService categoryService = new CategoryService();
+    private final ProductService productService = new ProductService();
 
-    private Producto productoEditar;
+    private Product productEditar;
     private boolean modoEdicion = false;
 
     @FXML
@@ -83,24 +81,24 @@ public class ProductoFormController {
         }
     }
 
-    public void setProductoEditar(Producto producto) {
-        this.productoEditar = producto;
+    public void setProductoEditar(Product product) {
+        this.productEditar = product;
         this.modoEdicion = true;
 
         lblTitulo.setText("Editar Producto");
         lblSubtitulo.setText("Modifique la información del producto");
         btnGuardar.setText("Actualizar Producto");
 
-        txtNombre.setText(producto.getName());
-        txtMarca.setText(producto.getBrand() != null ? producto.getBrand() : "");
-        txtModelo.setText(producto.getModel() != null ? producto.getModel() : "");
-        txtPrecio.setText(producto.getSalePrice() != null ? producto.getSalePrice().toString() : "");
-        txtGarantia.setText(producto.getWarrantyMonths() != null ? producto.getWarrantyMonths().toString() : "");
-        txtStockMinimo.setText(producto.getLowStock() != null ? producto.getLowStock().toString() : "5");
-        txtDescripcion.setText(producto.getDescription() != null ? producto.getDescription() : "");
+        txtNombre.setText(product.getName());
+        txtMarca.setText(product.getBrand() != null ? product.getBrand() : "");
+        txtModelo.setText(product.getModel() != null ? product.getModel() : "");
+        txtPrecio.setText(product.getSalePrice() != null ? product.getSalePrice().toString() : "");
+        txtGarantia.setText(product.getWarrantyMonths() != null ? product.getWarrantyMonths().toString() : "");
+        txtStockMinimo.setText(product.getLowStock() != null ? product.getLowStock().toString() : "5");
+        txtDescripcion.setText(product.getDescription() != null ? product.getDescription() : "");
 
-        for (Categoria cat : cbCategoria.getItems()) {
-            if (cat.getName().equals(producto.getCategoryName())) {
+        for (Category cat : cbCategoria.getItems()) {
+            if (cat.getName().equals(product.getCategoryName())) {
                 cbCategoria.setValue(cat);
                 break;
             }
@@ -195,7 +193,7 @@ public class ProductoFormController {
                         stockMinimo
                 );
 
-                productoService.actualizarProducto(productoEditar.getCode(), updateRequest);
+                productService.actualizarProducto(productEditar.getCode(), updateRequest);
 
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Éxito");
@@ -214,7 +212,7 @@ public class ProductoFormController {
                         stockMinimo
                 );
 
-                productoService.crearProducto(createRequest);
+                productService.crearProducto(createRequest);
 
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Éxito");
@@ -246,7 +244,7 @@ public class ProductoFormController {
     @FXML
     private void handleNuevaCategoria() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/views/productos/categoria-form-modal.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/views/product/category-form-modal.fxml"));
             Parent root = loader.load();
             Stage modal = new Stage();
             com.store.inventario.utils.WindowUtils.applyIcon(modal);
@@ -255,19 +253,19 @@ public class ProductoFormController {
             modal.setTitle("Nueva Categoría");
             modal.setScene(new Scene(root));
 
-            CategoriaFormModalController controller = loader.getController();
+            CategoryFormModalController controller = loader.getController();
 
             modal.showAndWait();
 
             if (controller.isGuardado()) {
-                Categoria categoria = controller.getCategoriaCreada();
+                Category category = controller.getCategoriaCreada();
 
-                if (categoria != null) {
-                    if (!cbCategoria.getItems().contains(categoria)) {
-                        cbCategoria.getItems().add(categoria);
+                if (category != null) {
+                    if (!cbCategoria.getItems().contains(category)) {
+                        cbCategoria.getItems().add(category);
                     }
 
-                    cbCategoria.setValue(categoria);
+                    cbCategoria.setValue(category);
                 }
             }
 
@@ -284,7 +282,7 @@ public class ProductoFormController {
 
     private void cargarCategorias() {
         try {
-            PageResponse<Categoria> response = categoriaService.obtenerCategorias();
+            PageResponse<Category> response = categoryService.obtenerCategorias();
             cbCategoria.setItems(FXCollections.observableArrayList(response.getContent()));
         } catch (Exception e) {
             e.printStackTrace();

@@ -1,9 +1,12 @@
-package com.store.inventario.controller.productos;
+package com.store.inventario.module.product.controller;
 
 import com.store.inventario.model.PageResponse;
-import com.store.inventario.model.producto.Producto;
+import com.store.inventario.module.product.model.entity.Category;
+import com.store.inventario.module.product.model.entity.ProductMetrics;
+import com.store.inventario.module.product.model.entity.Product;
+import com.store.inventario.module.product.service.CategoryService;
 import com.store.inventario.security.SessionManager;
-import com.store.inventario.service.producto.ProductoService;
+import com.store.inventario.module.product.service.ProductService;
 
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -23,23 +26,21 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.*;
-import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
 
-public class ProductoController implements Initializable {
+public class ProductController implements Initializable {
 
     @FXML private Button btnNuevoProducto;
     @FXML private Button btnActualizar;
-    @FXML private TableView<Producto> tblProductos;
-    @FXML private TableColumn<Producto, String> colCodigo;
-    @FXML private TableColumn<Producto, String> colNombre;
-    @FXML private TableColumn<Producto, String> colCategoria;
-    @FXML private TableColumn<Producto, String> colMarca;
-    @FXML private TableColumn<Producto, String> colModelo;
-    @FXML private TableColumn<Producto, BigDecimal> colPrecio;
-    @FXML private TableColumn<Producto, Integer> colStock;
-    @FXML private TableColumn<Producto, Integer> colGarantia;
-    @FXML private TableColumn<Producto, Void> colAcciones;
+    @FXML private TableView<Product> tblProductos;
+    @FXML private TableColumn<Product, String> colCodigo;
+    @FXML private TableColumn<Product, String> colNombre;
+    @FXML private TableColumn<Product, String> colCategoria;
+    @FXML private TableColumn<Product, String> colMarca;
+    @FXML private TableColumn<Product, String> colModelo;
+    @FXML private TableColumn<Product, BigDecimal> colPrecio;
+    @FXML private TableColumn<Product, Integer> colStock;
+    @FXML private TableColumn<Product, Integer> colGarantia;
+    @FXML private TableColumn<Product, Void> colAcciones;
 
     @FXML private Label lblTotalProductos;
     @FXML private Label lblStockBajo;
@@ -56,8 +57,8 @@ public class ProductoController implements Initializable {
     @FXML private Button btnBuscar;
     @FXML private Button btnGestionarCategorias;
 
-    private final ProductoService productoService = new ProductoService();
-    private final com.store.inventario.service.categoria.CategoriaService categoriaService = new com.store.inventario.service.categoria.CategoriaService();
+    private final ProductService productService = new ProductService();
+    private final CategoryService categoryService = new CategoryService();
     private final String rolActual = SessionManager.getInstance().getRole();
     private int paginaActual = 0;
     private final int tamanoPagina = 20;
@@ -90,7 +91,7 @@ public class ProductoController implements Initializable {
 
     @FXML
     private void handleForm() throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/views/productos/producto-form.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/views/product/product-form.fxml"));
         Parent root = loader.load();
 
         Stage modal = new Stage();
@@ -111,7 +112,7 @@ public class ProductoController implements Initializable {
     @FXML
     private void handleGestionarCategorias() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/views/productos/gestion-categorias.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/views/product/category-management.fxml"));
             Parent root = loader.load();
 
             Stage modal = new Stage();
@@ -132,13 +133,13 @@ public class ProductoController implements Initializable {
         }
     }
 
-    private void handleEditar(Producto producto) {
+    private void handleEditar(Product product) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/views/productos/producto-form.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/views/product/product-form.fxml"));
             Parent root = loader.load();
 
-            ProductoFormController controller = loader.getController();
-            controller.setProductoEditar(producto);
+            ProductFormController controller = loader.getController();
+            controller.setProductoEditar(product);
 
             Stage modal = new Stage();
             com.store.inventario.utils.WindowUtils.applyIcon(modal);
@@ -158,18 +159,18 @@ public class ProductoController implements Initializable {
         }
     }
 
-    private void handleEliminar(Producto producto) {
+    private void handleEliminar(Product product) {
         javafx.application.Platform.runLater(() -> {
             Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
             confirmacion.setTitle("Confirmar Eliminación");
             confirmacion.setHeaderText("¿Eliminar producto?");
-            confirmacion.setContentText("Se eliminará \"" + producto.getName() + "\" (Código: " + producto.getCode() + "). Esta acción no se puede deshacer.");
+            confirmacion.setContentText("Se eliminará \"" + product.getName() + "\" (Código: " + product.getCode() + "). Esta acción no se puede deshacer.");
 
             Optional<ButtonType> resultado = confirmacion.showAndWait();
 
             if (resultado.isPresent() && resultado.get() == ButtonType.OK) {
                 try {
-                    productoService.eliminarProducto(producto.getCode());
+                    productService.eliminarProducto(product.getCode());
 
                     Alert exito = new Alert(Alert.AlertType.INFORMATION);
                     exito.setTitle("Éxito");
@@ -192,9 +193,9 @@ public class ProductoController implements Initializable {
     }
 
     private void configurarColumnaAcciones() {
-        Callback<TableColumn<Producto, Void>, TableCell<Producto, Void>> cellFactory = new Callback<>() {
+        Callback<TableColumn<Product, Void>, TableCell<Product, Void>> cellFactory = new Callback<>() {
             @Override
-            public TableCell<Producto, Void> call(final TableColumn<Producto, Void> param) {
+            public TableCell<Product, Void> call(final TableColumn<Product, Void> param) {
                 return new TableCell<>() {
                     private final Button btnAcciones = new Button("⋮");
                     private final ContextMenu menuAcciones = new ContextMenu();
@@ -223,13 +224,13 @@ public class ProductoController implements Initializable {
                         });
 
                         itemEditar.setOnAction(event -> {
-                            Producto producto = getTableView().getItems().get(getIndex());
-                            handleEditar(producto);
+                            Product product = getTableView().getItems().get(getIndex());
+                            handleEditar(product);
                         });
 
                         itemEliminar.setOnAction(event -> {
-                            Producto producto = getTableView().getItems().get(getIndex());
-                            handleEliminar(producto);
+                            Product product = getTableView().getItems().get(getIndex());
+                            handleEliminar(product);
                         });
                     }
 
@@ -276,8 +277,8 @@ public class ProductoController implements Initializable {
             String brand = (cbMarca != null) ? cbMarca.getValue() : null;
             String status = (cbEstado != null) ? cbEstado.getValue() : null;
 
-            PageResponse<Producto> response = productoService.obtenerProductos(search, category, brand, status, paginaActual, tamanoPagina);
-            List<Producto> productos = (response != null && response.getContent() != null)
+            PageResponse<Product> response = productService.obtenerProductos(search, category, brand, status, paginaActual, tamanoPagina);
+            List<Product> products = (response != null && response.getContent() != null)
                     ? response.getContent()
                     : Collections.emptyList();
 
@@ -285,7 +286,7 @@ public class ProductoController implements Initializable {
             btnAnterior.setDisable(paginaActual == 0);
             btnSiguiente.setDisable(paginaActual >= totalPaginas - 1);
 
-            tblProductos.setItems(FXCollections.observableArrayList(productos));
+            tblProductos.setItems(FXCollections.observableArrayList(products));
             if (response != null) {
                 actualizarPaginacion(response);
             }
@@ -317,9 +318,9 @@ public class ProductoController implements Initializable {
 
     private void cargarMetricasYFiltrosGlobales() {
         try {
-            com.store.inventario.model.producto.ProductMetrics metrics = productoService.obtenerMetricas();
-            PageResponse<com.store.inventario.model.categoria.Categoria> categoriesResponse = categoriaService.obtenerCategorias();
-            List<String> marcas = productoService.obtenerMarcas();
+            ProductMetrics metrics = productService.obtenerMetricas();
+            PageResponse<Category> categoriesResponse = categoryService.obtenerCategorias();
+            List<String> marcas = productService.obtenerMarcas();
 
             if (metrics != null) {
                 lblTotalProductos.setText(String.valueOf(metrics.getTotalProducts()));
@@ -331,7 +332,7 @@ public class ProductoController implements Initializable {
             Set<String> categoriasSet = new TreeSet<>();
             categoriasSet.add("Todas");
             if (categoriesResponse != null && categoriesResponse.getContent() != null) {
-                for (com.store.inventario.model.categoria.Categoria c : categoriesResponse.getContent()) {
+                for (Category c : categoriesResponse.getContent()) {
                     if (c != null && c.getName() != null) {
                         categoriasSet.add(c.getName());
                     }
@@ -369,7 +370,7 @@ public class ProductoController implements Initializable {
         }
     }
 
-    private void actualizarPaginacion(PageResponse<Producto> activeResponse) {
+    private void actualizarPaginacion(PageResponse<Product> activeResponse) {
         long total = activeResponse.getTotalElements();
         int paginas = activeResponse.getTotalPages();
         int paginaActual = activeResponse.getNumber();

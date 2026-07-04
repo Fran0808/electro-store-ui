@@ -7,7 +7,7 @@
 
 <AnchorPane prefWidth="420.0" prefHeight="240.0" style="-fx-background-color: #F8FAFC;" xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.store.inventario.controller.categorias.CategoriaFormModalController">
+            fx:controller="com.store.inventario.module.product.controller.CategoryFormModalController">
     <stylesheets>
         <URL value="@../../styles/style.css"/>
     </stylesheets>

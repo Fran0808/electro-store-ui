@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.SVGPath?>
 
-<AnchorPane prefHeight="600.0" prefWidth="1040.0" styleClass="root" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.store.inventario.controller.productos.ProductoController">
+<AnchorPane prefHeight="600.0" prefWidth="1040.0" styleClass="root" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.store.inventario.module.product.controller.ProductController">
 
     <stylesheets>
         <URL value="@../../styles/style.css" />

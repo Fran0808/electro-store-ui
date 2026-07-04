@@ -1,9 +1,9 @@
-package com.store.inventario.controller.categorias;
+package com.store.inventario.module.product.controller;
 
 import com.store.inventario.model.PageResponse;
-import com.store.inventario.model.categoria.Categoria;
+import com.store.inventario.module.product.model.entity.Category;
 import com.store.inventario.security.SessionManager;
-import com.store.inventario.service.categoria.CategoriaService;
+import com.store.inventario.module.product.service.CategoryService;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -16,16 +16,16 @@ import javafx.util.Callback;
 import java.util.List;
 import java.util.Optional;
 
-public class GestionCategoriasController {
+public class CategoryManagementController {
 
     @FXML
-    private TableView<Categoria> tblCategorias;
+    private TableView<Category> tblCategorias;
     @FXML
-    private TableColumn<Categoria, String> colCodigo;
+    private TableColumn<Category, String> colCodigo;
     @FXML
-    private TableColumn<Categoria, String> colNombre;
+    private TableColumn<Category, String> colNombre;
     @FXML
-    private TableColumn<Categoria, Void> colAcciones;
+    private TableColumn<Category, Void> colAcciones;
 
     @FXML
     private TextField txtNombre;
@@ -40,8 +40,8 @@ public class GestionCategoriasController {
     private HBox contenedorCrearCategoria;
 
 
-    private final CategoriaService categoriaService = new CategoriaService();
-    private Categoria categoriaEditar = null;
+    private final CategoryService categoryService = new CategoryService();
+    private Category categoryEditar = null;
 
     @FXML
     public void initialize() {
@@ -61,9 +61,9 @@ public class GestionCategoriasController {
     }
 
     private void configurarColumnaAcciones() {
-        Callback<TableColumn<Categoria, Void>, TableCell<Categoria, Void>> cellFactory = new Callback<>() {
+        Callback<TableColumn<Category, Void>, TableCell<Category, Void>> cellFactory = new Callback<>() {
             @Override
-            public TableCell<Categoria, Void> call(final TableColumn<Categoria, Void> param) {
+            public TableCell<Category, Void> call(final TableColumn<Category, Void> param) {
                 return new TableCell<>() {
                     private final Button btnAcciones = new Button("⋮");
                     private final ContextMenu menuAcciones = new ContextMenu();
@@ -86,12 +86,12 @@ public class GestionCategoriasController {
                         });
 
                         itemEditar.setOnAction(event -> {
-                            Categoria cat = getTableView().getItems().get(getIndex());
+                            Category cat = getTableView().getItems().get(getIndex());
                             handleEditar(cat);
                         });
 
                         itemEliminar.setOnAction(event -> {
-                            Categoria cat = getTableView().getItems().get(getIndex());
+                            Category cat = getTableView().getItems().get(getIndex());
                             handleEliminar(cat);
                         });
                     }
@@ -113,8 +113,8 @@ public class GestionCategoriasController {
 
     private void cargarCategorias() {
         try {
-            PageResponse<Categoria> response = categoriaService.obtenerCategorias();
-            List<Categoria> lista = (response != null) ? response.getContent() : java.util.Collections.emptyList();
+            PageResponse<Category> response = categoryService.obtenerCategorias();
+            List<Category> lista = (response != null) ? response.getContent() : java.util.Collections.emptyList();
             tblCategorias.setItems(FXCollections.observableArrayList(lista));
         } catch (Exception e) {
             e.printStackTrace();
@@ -130,22 +130,22 @@ public class GestionCategoriasController {
             return;
         }
 
-        String codigoExcluir = (categoriaEditar != null) ? categoriaEditar.getCode() : null;
+        String codigoExcluir = (categoryEditar != null) ? categoryEditar.getCode() : null;
         if (existeCategoriaConNombre(nombre, codigoExcluir)) {
             mostrarAlerta(Alert.AlertType.WARNING, "Advertencia", "Ya existe una categoría con el nombre '" + nombre + "'.");
             return;
         }
 
         try {
-            if (categoriaEditar == null) {
+            if (categoryEditar == null) {
                 // Crear Categoría
-                Categoria nueva = new Categoria(null, nombre);
-                categoriaService.crearCategoria(nueva);
+                Category nueva = new Category(null, nombre);
+                categoryService.crearCategoria(nueva);
                 mostrarAlerta(Alert.AlertType.INFORMATION, "Éxito", "Categoría creada correctamente.");
             } else {
                 // Editar Categoría
-                Categoria actualizada = new Categoria(categoriaEditar.getCode(), nombre);
-                categoriaService.actualizarCategoria(categoriaEditar.getCode(), actualizada);
+                Category actualizada = new Category(categoryEditar.getCode(), nombre);
+                categoryService.actualizarCategoria(categoryEditar.getCode(), actualizada);
                 mostrarAlerta(Alert.AlertType.INFORMATION, "Éxito", "Categoría actualizada correctamente.");
             }
 
@@ -167,15 +167,15 @@ public class GestionCategoriasController {
                                (codigoExcluir == null || !c.getCode().equals(codigoExcluir)));
     }
 
-    private void handleEditar(Categoria cat) {
-        categoriaEditar = cat;
+    private void handleEditar(Category cat) {
+        categoryEditar = cat;
         txtNombre.setText(cat.getName());
         btnGuardar.setText("Actualizar");
         btnCancelarEdicion.setVisible(true);
         btnCancelarEdicion.setManaged(true);
     }
 
-    private void handleEliminar(Categoria cat) {
+    private void handleEliminar(Category cat) {
         javafx.application.Platform.runLater(() -> {
             Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
             confirmacion.setTitle("Confirmar Eliminación");
@@ -185,10 +185,10 @@ public class GestionCategoriasController {
             Optional<ButtonType> resultado = confirmacion.showAndWait();
             if (resultado.isPresent() && resultado.get() == ButtonType.OK) {
                 try {
-                    categoriaService.eliminarCategoria(cat.getCode());
+                    categoryService.eliminarCategoria(cat.getCode());
                     mostrarAlerta(Alert.AlertType.INFORMATION, "Éxito", "La categoría se ha eliminado correctamente.");
                     cargarCategorias();
-                    if (categoriaEditar != null && categoriaEditar.getCode().equals(cat.getCode())) {
+                    if (categoryEditar != null && categoryEditar.getCode().equals(cat.getCode())) {
                         handleCancelarEdicion();
                     }
                 } catch (Exception e) {
@@ -201,7 +201,7 @@ public class GestionCategoriasController {
 
     @FXML
     private void handleCancelarEdicion() {
-        categoriaEditar = null;
+        categoryEditar = null;
         txtNombre.clear();
         btnGuardar.setText("Guardar");
         btnCancelarEdicion.setVisible(false);

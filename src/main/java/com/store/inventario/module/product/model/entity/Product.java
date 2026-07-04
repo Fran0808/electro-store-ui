@@ -1,8 +1,8 @@
-package com.store.inventario.model.producto;
+package com.store.inventario.module.product.model.entity;
 
 import java.math.BigDecimal;
 
-public class Producto {
+public class Product {
     private String code;
     private String categoryName;
     private String name;
@@ -15,10 +15,10 @@ public class Producto {
 
     private Integer lowStock;
 
-    public Producto() {
+    public Product() {
     }
 
-    public Producto(String code, String categoryName, String name, String brand, String model, BigDecimal salePrice, Integer stock, String description, Integer warrantyMonths) {
+    public Product(String code, String categoryName, String name, String brand, String model, BigDecimal salePrice, Integer stock, String description, Integer warrantyMonths) {
         this.code = code;
         this.categoryName = categoryName;
         this.name = name;
@@ -30,7 +30,7 @@ public class Producto {
         this.warrantyMonths = warrantyMonths;
     }
 
-    public Producto(String code, String categoryName, String name, String brand, String model, BigDecimal salePrice, Integer stock, String description, Integer warrantyMonths, Integer lowStock) {
+    public Product(String code, String categoryName, String name, String brand, String model, BigDecimal salePrice, Integer stock, String description, Integer warrantyMonths, Integer lowStock) {
         this.code = code;
         this.categoryName = categoryName;
         this.name = name;

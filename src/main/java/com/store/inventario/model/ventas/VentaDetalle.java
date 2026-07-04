@@ -1,17 +1,17 @@
 package com.store.inventario.model.ventas;
 
-import com.store.inventario.model.producto.Producto;
+import com.store.inventario.module.product.model.entity.Product;
 import java.math.BigDecimal;
 
 public class VentaDetalle {
     private String code;
-    private Producto product;
+    private Product product;
     private BigDecimal salePrice;
     private int quantity;
 
     public VentaDetalle() {}
 
-    public VentaDetalle(String code, Producto product, BigDecimal salePrice, int quantity) {
+    public VentaDetalle(String code, Product product, BigDecimal salePrice, int quantity) {
         this.code = code;
         this.product = product;
         this.salePrice = salePrice;
@@ -26,11 +26,11 @@ public class VentaDetalle {
         this.code = code;
     }
 
-    public Producto getProduct() {
+    public Product getProduct() {
         return product;
     }
 
-    public void setProduct(Producto product) {
+    public void setProduct(Product product) {
         this.product = product;
     }
 

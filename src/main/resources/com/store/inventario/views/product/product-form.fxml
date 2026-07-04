@@ -13,7 +13,7 @@
 
 <AnchorPane prefHeight="600.0" prefWidth="740.0" style="-fx-background-color: #F8FAFC;" xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.store.inventario.controller.productos.ProductoFormController">
+            fx:controller="com.store.inventario.module.product.controller.ProductFormController">
     <stylesheets>
         <URL value="@../../styles/style.css"/>
     </stylesheets>
