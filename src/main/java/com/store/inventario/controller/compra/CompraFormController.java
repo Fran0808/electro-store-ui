@@ -9,11 +9,15 @@ import com.store.inventario.security.SessionManager;
 import com.store.inventario.service.compra.CompraService;
 import com.store.inventario.service.proveedor.ProveedorService;
 import com.store.inventario.service.producto.ProductoService;
+import com.store.inventario.controller.proveedor.ProveedorSearchModalController;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
@@ -30,9 +34,11 @@ import java.util.List;
 public class CompraFormController {
 
     @FXML private Label lblTitulo;
-    @FXML private ComboBox<String> cbProveedor;
+    @FXML private TextField txtProveedor;
     @FXML private TextField txtUsuario;
     @FXML private TextField txtFecha;
+
+    private Proveedor proveedorSeleccionado = null;
     
     // Controles para el catálogo de productos
     @FXML private TextField txtBuscarProducto;
@@ -142,25 +148,42 @@ public class CompraFormController {
             }
         });
 
-        cargarProveedores();
+        setProveedorSeleccionado(null);
         cargarProductos("");
     }
 
-    private void cargarProveedores() {
-        new Thread(() -> {
-            try {
-                PageResponse<Proveedor> response = proveedorService.listar(0, 100);
-                if (response != null && response.getContent() != null) {
-                    List<String> items = new ArrayList<>();
-                    for (Proveedor prov : response.getContent()) {
-                        items.add(prov.getCode() + " - " + prov.getTradeName());
-                    }
-                    Platform.runLater(() -> cbProveedor.getItems().setAll(items));
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
+    private void setProveedorSeleccionado(Proveedor proveedor) {
+        this.proveedorSeleccionado = proveedor;
+        if (proveedor != null) {
+            txtProveedor.setText(proveedor.getCode() + " - " + proveedor.getTradeName());
+        } else {
+            txtProveedor.setText("Seleccione un proveedor...");
+        }
+    }
+
+    @FXML
+    private void abrirBuscadorProveedor() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/views/proveedores/proveedor-search-modal.fxml"));
+            Parent root = loader.load();
+
+            ProveedorSearchModalController controller = loader.getController();
+
+            Stage modal = new Stage();
+            com.store.inventario.utils.WindowUtils.applyIcon(modal);
+            modal.initModality(javafx.stage.Modality.APPLICATION_MODAL);
+            modal.setTitle("Buscar Proveedor");
+            modal.setScene(new Scene(root));
+            modal.showAndWait();
+
+            Proveedor seleccionado = controller.getProveedorSeleccionado();
+            if (seleccionado != null) {
+                setProveedorSeleccionado(seleccionado);
             }
-        }).start();
+        } catch (Exception e) {
+            e.printStackTrace();
+            mostrarAlerta("Error", "No se pudo abrir el buscador de proveedores: " + e.getMessage());
+        }
     }
 
     private void cargarProductos(String search) {
@@ -269,8 +292,7 @@ public class CompraFormController {
 
     @FXML
     private void registrarCompra() {
-        String provSeleccionado = cbProveedor.getValue();
-        if (provSeleccionado == null || provSeleccionado.isEmpty()) {
+        if (this.proveedorSeleccionado == null) {
             mostrarAlerta("Campos requeridos", "Debe seleccionar un proveedor.");
             return;
         }
@@ -281,7 +303,7 @@ public class CompraFormController {
         }
 
         try {
-            String supplierCode = provSeleccionado.split(" - ")[0];
+            String supplierCode = this.proveedorSeleccionado.getCode();
             List<CreatePurchaseDetailRequest> details = new ArrayList<>();
             for (DetalleTemporal item : listaDetalle) {
                 details.add(new CreatePurchaseDetailRequest(item.getProducto().getCode(), item.getPrecioCompra(), item.getQuantity()));

@@ -85,7 +85,10 @@
                 <HBox spacing="12.0">
                     <VBox spacing="4" HBox.hgrow="ALWAYS">
                         <Label styleClass="header-subtitle" text="Proveedor *"/>
-                        <ComboBox fx:id="cbProveedor" maxWidth="Infinity" promptText="Seleccione un proveedor" styleClass="filter-combo"/>
+                        <HBox spacing="8.0" alignment="CENTER_LEFT">
+                            <TextField fx:id="txtProveedor" editable="false" promptText="Seleccione un proveedor..." styleClass="search-field" HBox.hgrow="ALWAYS"/>
+                            <Button fx:id="btnBuscarProveedor" onAction="#abrirBuscadorProveedor" styleClass="btn-primary" text="Buscar"/>
+                        </HBox>
                     </VBox>
 
                     <VBox spacing="4" prefWidth="160.0">
