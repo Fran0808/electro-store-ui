@@ -130,7 +130,7 @@ public class SidebarController {
 
     @FXML
     private void handleClientes() {
-        NavigationManager.getInstance().navegar("/com/store/inventario/views/clientes/clientes.fxml");
+        NavigationManager.getInstance().navegar("/com/store/inventario/views/person/clientes.fxml");
     }
 
     @FXML
@@ -155,7 +155,7 @@ public class SidebarController {
 
     @FXML
     private void handleEmpleados() {
-        NavigationManager.getInstance().navegar("/com/store/inventario/views/empleados/empleados.fxml");
+        NavigationManager.getInstance().navegar("/com/store/inventario/views/person/empleados.fxml");
     }
 
     @FXML

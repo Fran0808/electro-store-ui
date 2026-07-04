@@ -15,27 +15,27 @@ module com.store.inventario {
     opens com.store.inventario.controller.alertas;
     opens com.store.inventario.controller.guias;
     opens com.store.inventario.controller.compra;
-    opens com.store.inventario.controller.empleados;
     opens com.store.inventario.controller.proveedor;
-    opens com.store.inventario.controller.clientes;
 
     opens com.store.inventario.controller.categorias;
 
     opens com.store.inventario.model;
     opens com.store.inventario.model.producto;
     opens com.store.inventario.model.categoria;
-    opens com.store.inventario.model.persona;
-    opens com.store.inventario.model.clientes;
     opens com.store.inventario.model.proveedor;
     opens com.store.inventario.model.guia;
     opens com.store.inventario.model.ventas;
     opens com.store.inventario.model.compra;
-    opens com.store.inventario.model.empleado;
 
     //AUTH
     opens com.store.inventario.module.auth.controller;
     opens com.store.inventario.module.auth.response;
     opens com.store.inventario.module.auth.request;
     opens com.store.inventario.module.auth.model.entity;
+    //PERSON
+    opens com.store.inventario.module.person.controller;
+    opens com.store.inventario.module.person.model.entity;
+    opens com.store.inventario.module.person.request;
+    opens com.store.inventario.module.person.model.enums;
 
 }

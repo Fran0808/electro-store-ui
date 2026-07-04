@@ -1,9 +1,10 @@
 package com.store.inventario.module.auth.controller;
  
 import com.store.inventario.module.auth.model.entity.User;
+import com.store.inventario.module.person.model.enums.EmployeePosition;
 import com.store.inventario.service.usuario.UsuarioService;
-import com.store.inventario.service.empleado.EmpleadoService;
-import com.store.inventario.model.empleado.Empleado;
+import com.store.inventario.module.person.service.EmployeeService;
+import com.store.inventario.module.person.model.entity.Employee;
 import com.store.inventario.model.PageResponse;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -33,7 +34,7 @@ public class UserFormController implements Initializable {
  
     private final UsuarioService usuarioService = new UsuarioService();
     private User userEditar;
-    private java.util.List<Empleado> listaEmpleados = new java.util.ArrayList<>();
+    private java.util.List<Employee> listaEmployees = new java.util.ArrayList<>();
     private java.util.Set<String> empleadosConUsuario = new java.util.HashSet<>();
  
     @Override
@@ -45,7 +46,7 @@ public class UserFormController implements Initializable {
         cbEmpleado.valueProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 String employeeCode = newValue.split(" - ")[0];
-                Empleado seleccionado = listaEmpleados.stream()
+                Employee seleccionado = listaEmployees.stream()
                         .filter(e -> e.getCode().equals(employeeCode))
                         .findFirst()
                         .orElse(null);
@@ -58,7 +59,7 @@ public class UserFormController implements Initializable {
         });
     }
 
-    private String getSystemRoleFromPosition(com.store.inventario.model.empleado.EmployeePosition position) {
+    private String getSystemRoleFromPosition(EmployeePosition position) {
         if (position == null) return "";
         switch (position) {
             case MANAGER: return "ADMIN";
@@ -80,16 +81,16 @@ public class UserFormController implements Initializable {
                 }
             }
 
-            EmpleadoService empleadoService = new EmpleadoService();
-            PageResponse<Empleado> response = empleadoService.obtenerEmpleados();
+            EmployeeService employeeService = new EmployeeService();
+            PageResponse<Employee> response = employeeService.obtenerEmpleados();
             if (response != null && response.getContent() != null) {
-                this.listaEmpleados = response.getContent();
+                this.listaEmployees = response.getContent();
             } else {
-                this.listaEmpleados = new java.util.ArrayList<>();
+                this.listaEmployees = new java.util.ArrayList<>();
             }
         } catch (Exception e) {
             e.printStackTrace();
-            this.listaEmpleados = new java.util.ArrayList<>();
+            this.listaEmployees = new java.util.ArrayList<>();
             this.empleadosConUsuario.clear();
             mostrarAlerta("Error al cargar empleados", "No se pudieron obtener los empleados registrados desde el servidor: " + e.getMessage());
         }
@@ -97,7 +98,7 @@ public class UserFormController implements Initializable {
 
     private void filtrarYMostrarEmpleados(boolean soloSinUsuario) {
         javafx.collections.ObservableList<String> items = FXCollections.observableArrayList();
-        for (Empleado emp : this.listaEmpleados) {
+        for (Employee emp : this.listaEmployees) {
             if (soloSinUsuario && empleadosConUsuario.contains(emp.getCode())) {
                 continue;
             }
@@ -128,9 +129,9 @@ public class UserFormController implements Initializable {
         txtRol.setText(rolEspanol);
         
         filtrarYMostrarEmpleados(false);
-        Empleado matchingEmp = null;
+        Employee matchingEmp = null;
         if (user.getEmployeeCode() != null) {
-            matchingEmp = listaEmpleados.stream()
+            matchingEmp = listaEmployees.stream()
                     .filter(e -> user.getEmployeeCode().equals(e.getCode()))
                     .findFirst()
                     .orElse(null);

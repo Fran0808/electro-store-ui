@@ -1,16 +1,16 @@
-package com.store.inventario.model.persona;
+package com.store.inventario.module.person.model.entity;
 
-public class Persona {
+public class Person {
     private String code;
     private String firstName;
     private String lastName;
     private String nationalId;
     private String phone;
 
-    public Persona() {
+    public Person() {
     }
 
-    public Persona(String code, String firstName, String lastName, String nationalId, String phone) {
+    public Person(String code, String firstName, String lastName, String nationalId, String phone) {
         this.code = code;
         this.firstName = firstName;
         this.lastName = lastName;

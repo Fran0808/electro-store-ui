@@ -1,11 +1,11 @@
-package com.store.inventario.controller.clientes;
+package com.store.inventario.module.person.controller;
 
-import com.store.inventario.model.clientes.Cliente;
-import com.store.inventario.model.clientes.CreateClienteRequest;
-import com.store.inventario.model.clientes.UpdateClienteRequest;
-import com.store.inventario.model.persona.CreatePersonaRequest;
-import com.store.inventario.model.persona.UpdatePersonaRequest;
-import com.store.inventario.service.clientes.ClienteService;
+import com.store.inventario.module.person.model.entity.Customer;
+import com.store.inventario.module.person.request.CreateCustomerRequest;
+import com.store.inventario.module.person.request.UpdateCustomerRequest;
+import com.store.inventario.module.person.request.CreatePersonRequest;
+import com.store.inventario.module.person.request.UpdatePersonRequest;
+import com.store.inventario.module.person.service.CustomerService;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -14,7 +14,7 @@ import javafx.stage.Stage;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class ClienteFormController implements Initializable {
+public class CustomerFormController implements Initializable {
 
     @FXML
     private Label lblTitulo;
@@ -35,8 +35,8 @@ public class ClienteFormController implements Initializable {
     @FXML
     private Button btnGuardar;
 
-    private final ClienteService clienteService = new ClienteService();
-    private Cliente clienteEditar;
+    private final CustomerService customerService = new CustomerService();
+    private Customer customerEditar;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -66,16 +66,16 @@ public class ClienteFormController implements Initializable {
         });
     }
 
-    public void setClienteEditar(Cliente cliente) {
-        this.clienteEditar = cliente;
+    public void setClienteEditar(Customer customer) {
+        this.customerEditar = customer;
         lblTitulo.setText("Editar Cliente");
 
-        if (cliente.getPerson() != null) {
-            txtNombres.setText(cliente.getPerson().getFirstName());
-            txtApellidos.setText(cliente.getPerson().getLastName() != null ? cliente.getPerson().getLastName() : "");
-            txtTelefono.setText(cliente.getPerson().getPhone());
-            txtDni.setText(cliente.getPerson().getNationalId() != null ? cliente.getPerson().getNationalId() : "");
-            txtRuc.setText(cliente.getTaxId() != null ? cliente.getTaxId() : "");
+        if (customer.getPerson() != null) {
+            txtNombres.setText(customer.getPerson().getFirstName());
+            txtApellidos.setText(customer.getPerson().getLastName() != null ? customer.getPerson().getLastName() : "");
+            txtTelefono.setText(customer.getPerson().getPhone());
+            txtDni.setText(customer.getPerson().getNationalId() != null ? customer.getPerson().getNationalId() : "");
+            txtRuc.setText(customer.getTaxId() != null ? customer.getTaxId() : "");
         }
     }
 
@@ -118,35 +118,35 @@ public class ClienteFormController implements Initializable {
         String finalApellidos = apellidos.isEmpty() ? null : apellidos;
 
         try {
-            if (clienteEditar == null) {
-                CreatePersonaRequest personRequest = new CreatePersonaRequest(
+            if (customerEditar == null) {
+                CreatePersonRequest personRequest = new CreatePersonRequest(
                         nombres, 
                         finalApellidos, 
                         finalNationalId, 
                         telefono
                 );
                 
-                CreateClienteRequest createRequest = new CreateClienteRequest(
+                CreateCustomerRequest createRequest = new CreateCustomerRequest(
                         personRequest,
                         finalTaxId
                 );
                 
-                clienteService.crearCliente(createRequest);
+                customerService.crearCliente(createRequest);
                 
             } else {
-                UpdatePersonaRequest personRequest = new UpdatePersonaRequest(
+                UpdatePersonRequest personRequest = new UpdatePersonRequest(
                         nombres,
                         finalApellidos,
                         finalNationalId,
                         telefono
                 );
                 
-                UpdateClienteRequest updateRequest = new UpdateClienteRequest(
+                UpdateCustomerRequest updateRequest = new UpdateCustomerRequest(
                         personRequest,
                         finalTaxId
                 );
                 
-                clienteService.actualizarCliente(clienteEditar.getCode(), updateRequest);
+                customerService.actualizarCliente(customerEditar.getCode(), updateRequest);
             }
 
             cerrarModal();

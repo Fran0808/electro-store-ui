@@ -1,19 +1,19 @@
 package com.store.inventario.model.ventas;
 
-import com.store.inventario.model.clientes.Cliente;
+import com.store.inventario.module.person.model.entity.Customer;
 import com.store.inventario.module.auth.model.entity.User;
 import java.util.List;
 
 public class Venta {
     private String code;
     private User user;
-    private Cliente customer;
+    private Customer customer;
     private String saleDate;
     private List<VentaDetalle> details;
 
     public Venta() {}
 
-    public Venta(String code, User user, Cliente customer, String saleDate, List<VentaDetalle> details) {
+    public Venta(String code, User user, Customer customer, String saleDate, List<VentaDetalle> details) {
         this.code = code;
         this.user = user;
         this.customer = customer;
@@ -37,11 +37,11 @@ public class Venta {
         this.user = user;
     }
 
-    public Cliente getCustomer() {
+    public Customer getCustomer() {
         return customer;
     }
 
-    public void setCustomer(Cliente customer) {
+    public void setCustomer(Customer customer) {
         this.customer = customer;
     }
 

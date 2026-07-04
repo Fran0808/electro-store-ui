@@ -1,12 +1,12 @@
-package com.store.inventario.controller.empleados;
+package com.store.inventario.module.person.controller;
 
-import com.store.inventario.model.empleado.CreateEmployeeRequest;
-import com.store.inventario.model.empleado.Empleado;
-import com.store.inventario.model.empleado.EmployeePosition;
-import com.store.inventario.model.empleado.UpdateEmployeeRequest;
-import com.store.inventario.model.persona.CreatePersonaRequest;
-import com.store.inventario.model.persona.UpdatePersonaRequest;
-import com.store.inventario.service.empleado.EmpleadoService;
+import com.store.inventario.module.person.request.CreateEmployeeRequest;
+import com.store.inventario.module.person.model.entity.Employee;
+import com.store.inventario.module.person.model.enums.EmployeePosition;
+import com.store.inventario.module.person.request.UpdateEmployeeRequest;
+import com.store.inventario.module.person.request.CreatePersonRequest;
+import com.store.inventario.module.person.request.UpdatePersonRequest;
+import com.store.inventario.module.person.service.EmployeeService;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -14,7 +14,7 @@ import javafx.stage.Stage;
 
 import java.math.BigDecimal;
 
-public class EmpleadosFormController {
+public class EmployeeFormController {
 
     @FXML
     private Label lblTitulo;
@@ -37,9 +37,9 @@ public class EmpleadosFormController {
     @FXML
     private Button btnCancelar;
 
-    private final EmpleadoService empleadoService = new EmpleadoService();
+    private final EmployeeService employeeService = new EmployeeService();
 
-    private Empleado empleadoEditar;
+    private Employee employeeEditar;
     private boolean modoEdicion = false;
 
     @FXML
@@ -67,18 +67,18 @@ public class EmpleadosFormController {
         com.store.inventario.utils.ValidationUtils.hacerSoloDecimal(txtSueldo, 8, 2);
     }
 
-    public void setEmpleadoEditar(Empleado empleado) {
-        this.empleadoEditar = empleado;
+    public void setEmpleadoEditar(Employee employee) {
+        this.employeeEditar = employee;
         this.modoEdicion = true;
         lblTitulo.setText("Editar Empleado");
         lblSubtitulo.setText("Modifique la información del empleado");
         btnGuardar.setText("Actualizar");
-        txtNombre.setText(empleado.getPerson().getFirstName());
-        txtApellido.setText(empleado.getPerson().getLastName());
-        txtTelefono.setText(empleado.getPerson().getPhone());
-        txtDni.setText(empleado.getPerson().getNationalId());
-        cbCargo.setValue(empleado.getPosition());
-        txtSueldo.setText(empleado.getSalary() != null ? empleado.getSalary().toString() : "");
+        txtNombre.setText(employee.getPerson().getFirstName());
+        txtApellido.setText(employee.getPerson().getLastName());
+        txtTelefono.setText(employee.getPerson().getPhone());
+        txtDni.setText(employee.getPerson().getNationalId());
+        cbCargo.setValue(employee.getPosition());
+        txtSueldo.setText(employee.getSalary() != null ? employee.getSalary().toString() : "");
     }
 
     @FXML
@@ -109,7 +109,7 @@ public class EmpleadosFormController {
         try {
             BigDecimal sueldo = new BigDecimal(txtSueldo.getText().trim());
             if (modoEdicion) {
-                UpdatePersonaRequest personRequest = new UpdatePersonaRequest(
+                UpdatePersonRequest personRequest = new UpdatePersonRequest(
                         txtNombre.getText().trim(),
                         txtApellido.getText().trim(),
                         txtDni.getText().trim(),
@@ -118,14 +118,14 @@ public class EmpleadosFormController {
                         personRequest,
                         cbCargo.getValue(),
                         sueldo);
-                empleadoService.actualizarEmpleado(empleadoEditar.getCode(), updateRequest);
+                employeeService.actualizarEmpleado(employeeEditar.getCode(), updateRequest);
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Éxito");
                 alert.setHeaderText("Empleado actualizado");
                 alert.setContentText("El empleado se actualizó correctamente.");
                 alert.showAndWait();
             } else {
-                CreatePersonaRequest personRequest = new CreatePersonaRequest(
+                CreatePersonRequest personRequest = new CreatePersonRequest(
                         txtNombre.getText().trim(),
                         txtApellido.getText().trim(),
                         txtDni.getText().trim(),
@@ -136,7 +136,7 @@ public class EmpleadosFormController {
                         cbCargo.getValue(),
                         sueldo
                 );
-                empleadoService.crearEmpleado(createRequest);
+                employeeService.crearEmpleado(createRequest);
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Éxito");
                 alert.setHeaderText("Empleado registrado");

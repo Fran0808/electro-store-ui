@@ -1,8 +1,8 @@
-package com.store.inventario.controller.clientes;
+package com.store.inventario.module.person.controller;
 
 import com.store.inventario.model.PageResponse;
-import com.store.inventario.model.clientes.Cliente;
-import com.store.inventario.service.clientes.ClienteService;
+import com.store.inventario.module.person.model.entity.Customer;
+import com.store.inventario.module.person.service.CustomerService;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -17,22 +17,22 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class ClienteSearchModalController implements Initializable {
+public class CustomerSearchModalController implements Initializable {
 
     @FXML private TextField txtBuscar;
-    @FXML private TableView<Cliente> tblClientes;
-    @FXML private TableColumn<Cliente, String> colCodigo;
-    @FXML private TableColumn<Cliente, String> colNombre;
-    @FXML private TableColumn<Cliente, String> colDni;
-    @FXML private TableColumn<Cliente, String> colRuc;
+    @FXML private TableView<Customer> tblClientes;
+    @FXML private TableColumn<Customer, String> colCodigo;
+    @FXML private TableColumn<Customer, String> colNombre;
+    @FXML private TableColumn<Customer, String> colDni;
+    @FXML private TableColumn<Customer, String> colRuc;
     @FXML private Label lblResumenPaginacion;
     @FXML private Button btnAnterior;
     @FXML private Button btnSiguiente;
     @FXML private Button btnCancelar;
     @FXML private Button btnSeleccionar;
 
-    private final ClienteService clienteService = new ClienteService();
-    private Cliente clienteSeleccionado = null;
+    private final CustomerService customerService = new CustomerService();
+    private Customer customerSeleccionado = null;
     
     private int paginaActual = 0;
     private final int tamanoPagina = 10;
@@ -64,12 +64,12 @@ public class ClienteSearchModalController implements Initializable {
         Platform.runLater(() -> {
             try {
                 String search = txtBuscar.getText().trim();
-                PageResponse<Cliente> response = clienteService.obtenerClientes(search, paginaActual, tamanoPagina);
-                List<Cliente> clientes = (response != null && response.getContent() != null)
+                PageResponse<Customer> response = customerService.obtenerClientes(search, paginaActual, tamanoPagina);
+                List<Customer> customers = (response != null && response.getContent() != null)
                         ? response.getContent()
                         : java.util.Collections.emptyList();
 
-                tblClientes.setItems(FXCollections.observableArrayList(clientes));
+                tblClientes.setItems(FXCollections.observableArrayList(customers));
 
                 if (response != null) {
                     totalPaginas = response.getTotalPages();
@@ -85,7 +85,7 @@ public class ClienteSearchModalController implements Initializable {
                         lblResumenPaginacion.setText("No hay clientes para mostrar");
                     } else {
                         long desde = (long) pageNum * pageSize + 1;
-                        long hasta = Math.min(desde + clientes.size() - 1, total);
+                        long hasta = Math.min(desde + customers.size() - 1, total);
                         lblResumenPaginacion.setText("Mostrando " + desde + "-" + hasta + " de " + total + " clientes (Página " + (pageNum + 1) + " de " + paginas + ")");
                     }
                 }
@@ -133,7 +133,7 @@ public class ClienteSearchModalController implements Initializable {
 
     @FXML
     private void handleSeleccionar() {
-        Cliente selected = tblClientes.getSelectionModel().getSelectedItem();
+        Customer selected = tblClientes.getSelectionModel().getSelectedItem();
         if (selected == null) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Atención");
@@ -143,13 +143,13 @@ public class ClienteSearchModalController implements Initializable {
             alert.showAndWait();
             return;
         }
-        this.clienteSeleccionado = selected;
+        this.customerSeleccionado = selected;
         cerrarModal();
     }
 
     @FXML
     private void handleCancelar() {
-        this.clienteSeleccionado = null;
+        this.customerSeleccionado = null;
         cerrarModal();
     }
 
@@ -158,7 +158,7 @@ public class ClienteSearchModalController implements Initializable {
         stage.close();
     }
 
-    public Cliente getClienteSeleccionado() {
-        return clienteSeleccionado;
+    public Customer getClienteSeleccionado() {
+        return customerSeleccionado;
     }
 }

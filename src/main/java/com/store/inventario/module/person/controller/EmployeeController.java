@@ -1,8 +1,8 @@
-package com.store.inventario.controller.empleados;
+package com.store.inventario.module.person.controller;
 
 import com.store.inventario.model.PageResponse;
-import com.store.inventario.model.empleado.Empleado;
-import com.store.inventario.service.empleado.EmpleadoService;
+import com.store.inventario.module.person.model.entity.Employee;
+import com.store.inventario.module.person.service.EmployeeService;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -26,7 +26,7 @@ import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-public class EmpleadosController implements Initializable {
+public class EmployeeController implements Initializable {
 
     @FXML
     private TextField txtBuscar;
@@ -36,23 +36,23 @@ public class EmpleadosController implements Initializable {
     private Button btnBuscar;
 
     @FXML
-    private TableView<Empleado> tblView;
+    private TableView<Employee> tblView;
     @FXML
-    private TableColumn<Empleado, String> colCodigo;
+    private TableColumn<Employee, String> colCodigo;
     @FXML
-    private TableColumn<Empleado, String> colNombre;
+    private TableColumn<Employee, String> colNombre;
     @FXML
-    private TableColumn<Empleado, String> colApellido;
+    private TableColumn<Employee, String> colApellido;
     @FXML
-    private TableColumn<Empleado, String> colTelefono;
+    private TableColumn<Employee, String> colTelefono;
     @FXML
-    private TableColumn<Empleado, String> colDni;
+    private TableColumn<Employee, String> colDni;
     @FXML
-    private TableColumn<Empleado, String> colCargo;
+    private TableColumn<Employee, String> colCargo;
     @FXML
-    private TableColumn<Empleado, BigDecimal> colSueldo;
+    private TableColumn<Employee, BigDecimal> colSueldo;
     @FXML
-    private TableColumn<Empleado, Void> colAcciones;
+    private TableColumn<Employee, Void> colAcciones;
 
     @FXML
     private Label lblResumenPaginacion;
@@ -61,9 +61,9 @@ public class EmpleadosController implements Initializable {
     @FXML
     private Button btnSiguiente;
 
-    private final EmpleadoService empleadoService = new EmpleadoService();
-    private final ObservableList<Empleado> masterData = FXCollections.observableArrayList();
-    private FilteredList<Empleado> filteredData;
+    private final EmployeeService employeeService = new EmployeeService();
+    private final ObservableList<Employee> masterData = FXCollections.observableArrayList();
+    private FilteredList<Employee> filteredData;
     private int paginaActual = 0;
     private final int tamanoPagina = 30;
     private int totalPaginas = 1;
@@ -114,7 +114,7 @@ public class EmpleadosController implements Initializable {
 
     private void obtenerEmpleados() {
         try {
-            PageResponse<Empleado> response = empleadoService.obtenerEmpleados(paginaActual, tamanoPagina);
+            PageResponse<Employee> response = employeeService.obtenerEmpleados(paginaActual, tamanoPagina);
             masterData.setAll(response.getContent());
             totalPaginas = response != null ? response.getTotalPages() : 1;
             btnAnterior.setDisable(paginaActual == 0);
@@ -132,7 +132,7 @@ public class EmpleadosController implements Initializable {
 
     @FXML
     public void abrirModalNuevoEmpleado() throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/views/empleados/empleado-form.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/views/person/empleado-form.fxml"));
         Parent root = loader.load();
         Stage modal = new Stage();
         com.store.inventario.utils.WindowUtils.applyIcon(modal);
@@ -144,12 +144,12 @@ public class EmpleadosController implements Initializable {
         obtenerEmpleados();
     }
 
-    private void handleEditar(Empleado empleado){
+    private void handleEditar(Employee employee){
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/views/empleados/empleado-form.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/views/person/empleado-form.fxml"));
             Parent root = loader.load();
-            EmpleadosFormController controller = loader.getController();
-            controller.setEmpleadoEditar(empleado);
+            EmployeeFormController controller = loader.getController();
+            controller.setEmpleadoEditar(employee);
             Stage modal = new Stage();
             com.store.inventario.utils.WindowUtils.applyIcon(modal);
             modal.initModality(Modality.APPLICATION_MODAL);
@@ -168,20 +168,20 @@ public class EmpleadosController implements Initializable {
         }
     }
 
-    private void handleEliminar(Empleado empleado){
+    private void handleEliminar(Employee employee){
         Platform.runLater(() -> {
             Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
             confirmacion.setTitle("Confirmar Eliminacion");
             confirmacion.setHeaderText(null);
-            confirmacion.setContentText("Se eliminara al empleado " + empleado.getPerson().getFirstName()
+            confirmacion.setContentText("Se eliminara al empleado " + employee.getPerson().getFirstName()
                     + " "
-                    + empleado.getPerson().getLastName()
+                    + employee.getPerson().getLastName()
                     + ".");
 
             Optional<ButtonType> resultado = confirmacion.showAndWait();
             if (resultado.isPresent() && resultado.get() == ButtonType.OK) {
                 try {
-                    empleadoService.eliminarEmpleado(empleado.getCode());
+                    employeeService.eliminarEmpleado(employee.getCode());
                     
                     Alert exito = new Alert(Alert.AlertType.INFORMATION);
                     exito.setTitle("Exito");
@@ -203,9 +203,9 @@ public class EmpleadosController implements Initializable {
     }
 
     private void configurarColumnaAcciones(){
-        Callback<TableColumn<Empleado, Void>, TableCell<Empleado, Void>> cellFactory = new Callback<>() {
+        Callback<TableColumn<Employee, Void>, TableCell<Employee, Void>> cellFactory = new Callback<>() {
             @Override
-            public TableCell<Empleado, Void> call(final TableColumn<Empleado, Void> param) {
+            public TableCell<Employee, Void> call(final TableColumn<Employee, Void> param) {
                 return new TableCell<>(){
                     private final Button btnAcciones = new Button("⋮");
                     private final ContextMenu menuAcciones = new ContextMenu();
@@ -222,12 +222,12 @@ public class EmpleadosController implements Initializable {
                                 0,
                                 0));
                         itemEditar.setOnAction(event -> {
-                            Empleado empleado = getTableView().getItems().get(getIndex());
-                            handleEditar(empleado);
+                            Employee employee = getTableView().getItems().get(getIndex());
+                            handleEditar(employee);
                         });
                         itemEliminar.setOnAction(event -> {
-                            Empleado empleado = getTableView().getItems().get(getIndex());
-                            handleEliminar(empleado);
+                            Employee employee = getTableView().getItems().get(getIndex());
+                            handleEliminar(employee);
                         });
                     }
                     @Override
@@ -245,7 +245,7 @@ public class EmpleadosController implements Initializable {
         colAcciones.setCellFactory(cellFactory);
     }
 
-    private void actualizarPaginacion(PageResponse<Empleado> response){
+    private void actualizarPaginacion(PageResponse<Employee> response){
         long total = response.getTotalElements();
         int paginaActual = response.getNumber();
         int totalPaginas = response.getTotalPages();
@@ -277,12 +277,12 @@ public class EmpleadosController implements Initializable {
             filteredData.setPredicate(p -> true);
         } else {
             String lowerCaseFilter = text.toLowerCase().trim();
-            filteredData.setPredicate(empleado -> {
-                if (empleado.getCode() != null && empleado.getCode().toLowerCase().contains(lowerCaseFilter)) {
+            filteredData.setPredicate(employee -> {
+                if (employee.getCode() != null && employee.getCode().toLowerCase().contains(lowerCaseFilter)) {
                     return true;
                 }
-                if (empleado.getPerson() != null) {
-                    var person = empleado.getPerson();
+                if (employee.getPerson() != null) {
+                    var person = employee.getPerson();
                     if (person.getFirstName() != null && person.getFirstName().toLowerCase().contains(lowerCaseFilter)) {
                         return true;
                     }
@@ -293,7 +293,7 @@ public class EmpleadosController implements Initializable {
                         return true;
                     }
                 }
-                if (empleado.getPosition() != null && empleado.getPosition().name().toLowerCase().contains(lowerCaseFilter)) {
+                if (employee.getPosition() != null && employee.getPosition().name().toLowerCase().contains(lowerCaseFilter)) {
                     return true;
                 }
                 return false;

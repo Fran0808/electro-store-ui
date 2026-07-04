@@ -1,18 +1,19 @@
-package com.store.inventario.model.empleado;
+package com.store.inventario.module.person.model.entity;
 
-import com.store.inventario.model.persona.Persona;
+import com.store.inventario.module.person.model.enums.EmployeePosition;
+
 import java.math.BigDecimal;
 
-public class Empleado {
+public class Employee {
 
     private String code;
-    private Persona person;
+    private Person person;
     private EmployeePosition position;
     private BigDecimal salary;
 
-    public Empleado() {}
+    public Employee() {}
 
-    public Empleado(String code, Persona person, EmployeePosition position, BigDecimal salary) {
+    public Employee(String code, Person person, EmployeePosition position, BigDecimal salary) {
         this.code = code;
         this.person = person;
         this.position = position;
@@ -27,11 +28,11 @@ public class Empleado {
         this.code = code;
     }
 
-    public Persona getPerson() {
+    public Person getPerson() {
         return person;
     }
 
-    public void setPerson(Persona person) {
+    public void setPerson(Person person) {
         this.person = person;
     }
 

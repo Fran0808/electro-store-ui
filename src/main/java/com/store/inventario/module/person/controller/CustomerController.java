@@ -1,10 +1,10 @@
-package com.store.inventario.controller.clientes;
+package com.store.inventario.module.person.controller;
 
-import com.store.inventario.controller.clientes.ClienteFormController;
 import com.store.inventario.model.PageResponse;
-import com.store.inventario.model.clientes.Cliente;
+import com.store.inventario.module.person.model.entity.Customer;
+import com.store.inventario.module.person.model.entity.CustomerMetrics;
 import com.store.inventario.security.SessionManager;
-import com.store.inventario.service.clientes.ClienteService;
+import com.store.inventario.module.person.service.CustomerService;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-public class ClienteController implements Initializable {
+public class CustomerController implements Initializable {
     @FXML
     private Button btnActualizar;
     @FXML
@@ -53,21 +53,21 @@ public class ClienteController implements Initializable {
     private Button btnSiguiente;
 
     @FXML
-    private TableView<Cliente> tblClientes;
+    private TableView<Customer> tblClientes;
     @FXML
-    private TableColumn<Cliente, String> colCodigo;
+    private TableColumn<Customer, String> colCodigo;
     @FXML
-    private TableColumn<Cliente, String> colNombre;
+    private TableColumn<Customer, String> colNombre;
     @FXML
-    private TableColumn<Cliente, String> colDni;
+    private TableColumn<Customer, String> colDni;
     @FXML
-    private TableColumn<Cliente, String> colRuc;
+    private TableColumn<Customer, String> colRuc;
     @FXML
-    private TableColumn<Cliente, String> colTelefono;
+    private TableColumn<Customer, String> colTelefono;
     @FXML
-    private TableColumn<Cliente, Void> colAcciones;
+    private TableColumn<Customer, Void> colAcciones;
 
-    private final ClienteService clienteService = new ClienteService();
+    private final CustomerService customerService = new CustomerService();
     private int paginaActual = 0;
     private final int tamanoPagina = 10;
     private int totalPaginas = 1;
@@ -111,7 +111,7 @@ public class ClienteController implements Initializable {
 
     @FXML
     private void handleNuevoCliente() throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/views/clientes/cliente-form.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/views/person/cliente-form.fxml"));
         Parent root = loader.load();
 
         Stage modal = new Stage();
@@ -146,9 +146,9 @@ public class ClienteController implements Initializable {
     }
 
     private void configurarColumnaAcciones() {
-        Callback<TableColumn<Cliente, Void>, TableCell<Cliente, Void>> cellFactory = new Callback<>() {
+        Callback<TableColumn<Customer, Void>, TableCell<Customer, Void>> cellFactory = new Callback<>() {
             @Override
-            public TableCell<Cliente, Void> call(final TableColumn<Cliente, Void> param) {
+            public TableCell<Customer, Void> call(final TableColumn<Customer, Void> param) {
                 return new TableCell<>() {
                     private final Button btnAcciones = new Button("⋮");
                     private final ContextMenu menuAcciones = new ContextMenu();
@@ -178,13 +178,13 @@ public class ClienteController implements Initializable {
                         });
 
                         itemEditar.setOnAction(event -> {
-                            Cliente cliente = getTableView().getItems().get(getIndex());
-                            handleEditar(cliente);
+                            Customer customer = getTableView().getItems().get(getIndex());
+                            handleEditar(customer);
                         });
 
                         itemEliminar.setOnAction(event -> {
-                            Cliente cliente = getTableView().getItems().get(getIndex());
-                            handleEliminar(cliente);
+                            Customer customer = getTableView().getItems().get(getIndex());
+                            handleEliminar(customer);
                         });
                     }
 
@@ -203,13 +203,13 @@ public class ClienteController implements Initializable {
         colAcciones.setCellFactory(cellFactory);
     }
 
-    private void handleEditar(Cliente cliente) {
+    private void handleEditar(Customer customer) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/views/clientes/cliente-form.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/views/person/cliente-form.fxml"));
             Parent root = loader.load();
 
-            ClienteFormController controller = loader.getController();
-            controller.setClienteEditar(cliente);
+            CustomerFormController controller = loader.getController();
+            controller.setClienteEditar(customer);
 
             Stage modal = new Stage();
             com.store.inventario.utils.WindowUtils.applyIcon(modal);
@@ -224,21 +224,21 @@ public class ClienteController implements Initializable {
         }
     }
 
-    private void handleEliminar(Cliente cliente) {
+    private void handleEliminar(Customer customer) {
         javafx.application.Platform.runLater(() -> {
             Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
             confirmacion.setTitle("Confirmar Eliminación");
             confirmacion.setHeaderText("¿Eliminar cliente?");
             confirmacion.setContentText("Se eliminará al cliente \"" + 
-                    (cliente.getPerson() != null ? cliente.getPerson().getFirstName() + " " + cliente.getPerson().getLastName() : "") + 
-                    "\" (Código: " + cliente.getCode() + "). Esta acción no se puede deshacer.");
+                    (customer.getPerson() != null ? customer.getPerson().getFirstName() + " " + customer.getPerson().getLastName() : "") +
+                    "\" (Código: " + customer.getCode() + "). Esta acción no se puede deshacer.");
             com.store.inventario.utils.WindowUtils.applyIcon(confirmacion);
 
             Optional<ButtonType> resultado = confirmacion.showAndWait();
 
             if (resultado.isPresent() && resultado.get() == ButtonType.OK) {
                 try {
-                    clienteService.eliminarCliente(cliente.getCode());
+                    customerService.eliminarCliente(customer.getCode());
 
                     Alert exito = new Alert(Alert.AlertType.INFORMATION);
                     exito.setTitle("Éxito");
@@ -264,12 +264,12 @@ public class ClienteController implements Initializable {
     private void obtenerClientes() {
         try {
             String search = (txtBuscar != null) ? txtBuscar.getText().trim() : "";
-            PageResponse<Cliente> response = clienteService.obtenerClientes(search, paginaActual, tamanoPagina);
-            List<Cliente> clientes = (response != null && response.getContent() != null) 
+            PageResponse<Customer> response = customerService.obtenerClientes(search, paginaActual, tamanoPagina);
+            List<Customer> customers = (response != null && response.getContent() != null)
                     ? response.getContent() 
                     : java.util.Collections.emptyList();
             
-            tblClientes.setItems(FXCollections.observableArrayList(clientes));
+            tblClientes.setItems(FXCollections.observableArrayList(customers));
 
             if (response != null) {
                 totalPaginas = response.getTotalPages();
@@ -278,7 +278,7 @@ public class ClienteController implements Initializable {
             }
 
             try {
-                com.store.inventario.model.clientes.CustomerMetrics metrics = clienteService.obtenerMetricas();
+                CustomerMetrics metrics = customerService.obtenerMetricas();
                 if (metrics != null) {
                     if (lblTotalClientes != null) lblTotalClientes.setText(String.valueOf(metrics.getTotalCustomers()));
                     if (lblClientesDni != null) lblClientesDni.setText(String.valueOf(metrics.getTotalWithDni()));
@@ -303,7 +303,7 @@ public class ClienteController implements Initializable {
                     lblResumenPaginacion.setText("No hay clientes para mostrar");
                 } else {
                     long desde = (long) pageNum * pageSize + 1;
-                    long hasta = Math.min(desde + clientes.size() - 1, total);
+                    long hasta = Math.min(desde + customers.size() - 1, total);
                     lblResumenPaginacion.setText("Mostrando " + desde + "-" + hasta + " de " + total + " clientes (Página " + (pageNum + 1) + " de " + paginas + ")");
                 }
             }

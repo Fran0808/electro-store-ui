@@ -1,14 +1,15 @@
 package com.store.inventario.controller.ventas;
 
 import com.store.inventario.model.PageResponse;
-import com.store.inventario.model.clientes.Cliente;
-import com.store.inventario.model.clientes.CreateClienteRequest;
-import com.store.inventario.model.persona.CreatePersonaRequest;
+import com.store.inventario.module.person.model.entity.Customer;
+import com.store.inventario.module.person.request.CreateCustomerRequest;
+import com.store.inventario.module.person.request.CreatePersonRequest;
 import com.store.inventario.model.producto.Producto;
 import com.store.inventario.model.ventas.CreateSaleDetailRequest;
 import com.store.inventario.model.ventas.CreateSaleRequest;
+import com.store.inventario.module.person.controller.CustomerSearchModalController;
 import com.store.inventario.security.SessionManager;
-import com.store.inventario.service.clientes.ClienteService;
+import com.store.inventario.module.person.service.CustomerService;
 import com.store.inventario.service.producto.ProductoService;
 import com.store.inventario.service.venta.VentaService;
 import com.store.inventario.utils.WindowUtils;
@@ -39,7 +40,7 @@ public class VentaFormController {
     @FXML private TextField txtCliente;
     @FXML private TextField txtVendedor;
 
-    private Cliente clienteSeleccionado = null;
+    private Customer customerSeleccionado = null;
 
     // Controles para el catálogo de productos
     @FXML private TableColumn<Producto, String> colCatCodigo;
@@ -62,7 +63,7 @@ public class VentaFormController {
     @FXML private Label lblTotalVenta;
     @FXML private Button btnCancelar;
 
-    private ClienteService clienteService = new ClienteService();
+    private CustomerService customerService = new CustomerService();
     private ProductoService productoService = new ProductoService();
     private VentaService ventaService = new VentaService();
 
@@ -145,11 +146,11 @@ public class VentaFormController {
     private void seleccionarClientePorDefecto() {
         Platform.runLater(() -> {
             try {
-                PageResponse<Cliente> response = clienteService.obtenerClientes("Consumidor", 0, 10);
-                Cliente consumidorFinal = null;
+                PageResponse<Customer> response = customerService.obtenerClientes("Consumidor", 0, 10);
+                Customer consumidorFinal = null;
 
                 if (response != null && response.getContent() != null) {
-                    for (Cliente c : response.getContent()) {
+                    for (Customer c : response.getContent()) {
                         if (c.getPerson() != null &&
                             "Consumidor".equalsIgnoreCase(c.getPerson().getFirstName()) &&
                             "Final".equalsIgnoreCase(c.getPerson().getLastName())) {
@@ -162,11 +163,11 @@ public class VentaFormController {
                 if (consumidorFinal != null) {
                     setClienteSeleccionado(consumidorFinal);
                 } else {
-                    CreatePersonaRequest personRequest = new CreatePersonaRequest("Consumidor", "Final", null, null);
-                    CreateClienteRequest createRequest = new CreateClienteRequest(personRequest, null);
-                    Cliente nuevoCliente = clienteService.crearCliente(createRequest);
-                    if (nuevoCliente != null) {
-                        setClienteSeleccionado(nuevoCliente);
+                    CreatePersonRequest personRequest = new CreatePersonRequest("Consumidor", "Final", null, null);
+                    CreateCustomerRequest createRequest = new CreateCustomerRequest(personRequest, null);
+                    Customer nuevoCustomer = customerService.crearCliente(createRequest);
+                    if (nuevoCustomer != null) {
+                        setClienteSeleccionado(nuevoCustomer);
                     }
                 }
             } catch (Exception e) {
@@ -175,10 +176,10 @@ public class VentaFormController {
         });
     }
 
-    private void setClienteSeleccionado(Cliente cliente) {
-        this.clienteSeleccionado = cliente;
-        if (cliente != null && cliente.getPerson() != null) {
-            txtCliente.setText(cliente.getPerson().getFullName());
+    private void setClienteSeleccionado(Customer customer) {
+        this.customerSeleccionado = customer;
+        if (customer != null && customer.getPerson() != null) {
+            txtCliente.setText(customer.getPerson().getFullName());
         } else {
             txtCliente.setText("Seleccione un cliente...");
         }
@@ -187,10 +188,10 @@ public class VentaFormController {
     @FXML
     private void abrirBuscadorCliente() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/views/clientes/cliente-search-modal.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/views/person/cliente-search-modal.fxml"));
             Parent root = loader.load();
 
-            com.store.inventario.controller.clientes.ClienteSearchModalController controller = loader.getController();
+            CustomerSearchModalController controller = loader.getController();
 
             Stage modal = new Stage();
             com.store.inventario.utils.WindowUtils.applyIcon(modal);
@@ -199,7 +200,7 @@ public class VentaFormController {
             modal.setScene(new Scene(root));
             modal.showAndWait();
 
-            Cliente seleccionado = controller.getClienteSeleccionado();
+            Customer seleccionado = controller.getClienteSeleccionado();
             if (seleccionado != null) {
                 setClienteSeleccionado(seleccionado);
             }
@@ -329,7 +330,7 @@ public class VentaFormController {
 
     @FXML
     private void registrarVenta() {
-        if (this.clienteSeleccionado == null) {
+        if (this.customerSeleccionado == null) {
             mostrarAlerta("Campos requeridos", "Debe seleccionar un Cliente.");
             return;
         }
@@ -340,7 +341,7 @@ public class VentaFormController {
         }
 
         try {
-            String clientCode = this.clienteSeleccionado.getCode();
+            String clientCode = this.customerSeleccionado.getCode();
             List<CreateSaleDetailRequest> details = new ArrayList<>();
             for (VentaFormController.DetalleTemporal item : listaDetalle) {
                 details.add(new CreateSaleDetailRequest(item.getProducto().getCode(), item.getQuantity()));

@@ -1,4 +1,4 @@
-package com.store.inventario.model.clientes;
+package com.store.inventario.module.person.model.entity;
 
 public class CustomerMetrics {
     private long totalCustomers;

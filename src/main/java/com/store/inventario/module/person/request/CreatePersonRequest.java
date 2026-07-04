@@ -1,6 +1,6 @@
-package com.store.inventario.model.persona;
+package com.store.inventario.module.person.request;
 
-public record UpdatePersonaRequest(
+public record CreatePersonRequest(
     String firstName,
     String lastName,
     String nationalId,

@@ -1,23 +1,21 @@
-package com.store.inventario.model.clientes;
+package com.store.inventario.module.person.model.entity;
 
-import com.store.inventario.model.persona.Persona;
-
-public class Cliente {
-    private Persona person;
+public class Customer {
+    private Person person;
     private String code;
     private String taxId;
 
-    public Cliente(){}
+    public Customer(){}
 
-    public Cliente(Persona person, String code, String taxId) {
+    public Customer(Person person, String code, String taxId) {
         this.person = person;
         this.code = code;
         this.taxId = taxId;
     }
 
-    public Persona getPerson() {return person;}
+    public Person getPerson() {return person;}
 
-    public void setPerson(Persona person) {this.person = person;}
+    public void setPerson(Person person) {this.person = person;}
 
     public String getCode() {return code;}
 

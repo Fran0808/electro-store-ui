@@ -4,12 +4,10 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.store.inventario.config.ApiConfig;
 import com.store.inventario.model.PageResponse;
-import com.store.inventario.model.clientes.Cliente;
 import com.store.inventario.model.compra.Compra;
 import com.store.inventario.model.compra.CreatePurchaseRequest;
 import com.store.inventario.model.compra.PurchaseMetrics;
 import com.store.inventario.security.SessionManager;
-import com.store.inventario.service.clientes.ClienteService;
 
 import java.io.IOException;
 import java.lang.reflect.Type;

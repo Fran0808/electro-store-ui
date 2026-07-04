@@ -1,12 +1,12 @@
-package com.store.inventario.service.clientes;
+package com.store.inventario.module.person.service;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.store.inventario.config.ApiConfig;
 import com.store.inventario.model.PageResponse;
-import com.store.inventario.model.clientes.Cliente;
-import com.store.inventario.model.clientes.CreateClienteRequest;
-import com.store.inventario.model.clientes.UpdateClienteRequest;
+import com.store.inventario.module.person.model.entity.Customer;
+import com.store.inventario.module.person.request.CreateCustomerRequest;
+import com.store.inventario.module.person.request.UpdateCustomerRequest;
 import com.store.inventario.security.SessionManager;
 
 import java.io.IOException;
@@ -16,9 +16,9 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
-import com.store.inventario.model.clientes.CustomerMetrics;
+import com.store.inventario.module.person.model.entity.CustomerMetrics;
 
-public class ClienteService {
+public class CustomerService {
     private static final String URL = ApiConfig.BASE_URL + "/customers";
     private final HttpClient client;
     private final Gson gson;
@@ -40,12 +40,12 @@ public class ClienteService {
         }
     }
 
-    public ClienteService() {
+    public CustomerService() {
         client = HttpClient.newHttpClient();
         gson = new Gson();
     }
 
-    public PageResponse<Cliente> listar(int page, int size) {
+    public PageResponse<Customer> listar(int page, int size) {
         try {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(URL + "?page=" + page + "&size=" + size))
@@ -61,7 +61,7 @@ public class ClienteService {
                 throw new RuntimeException("Error al obtener clientes: HTTP " + response.statusCode());
             }
 
-            Type type = new TypeToken<PageResponse<Cliente>>() {}.getType();
+            Type type = new TypeToken<PageResponse<Customer>>() {}.getType();
             return gson.fromJson(response.body(), type);
 
         } catch (IOException | InterruptedException e) {
@@ -69,7 +69,7 @@ public class ClienteService {
         }
     }
 
-    public PageResponse<Cliente> obtenerClientes(String search, int page, int size) {
+    public PageResponse<Customer> obtenerClientes(String search, int page, int size) {
         try{
             String urlStr = URL + "?page=" + page + "&size=" + size;
             if (search != null && !search.trim().isEmpty()) {
@@ -85,7 +85,7 @@ public class ClienteService {
             if (response.statusCode() >= 400) {
                 throw new RuntimeException("Error al obtener clientes: HTTP " + response.statusCode());
             }
-            Type type = new TypeToken<PageResponse<Cliente>>() {}.getType();
+            Type type = new TypeToken<PageResponse<Customer>>() {}.getType();
             return gson.fromJson(response.body(), type);
 
         } catch (IOException | InterruptedException e) {
@@ -93,7 +93,7 @@ public class ClienteService {
         }
     }
 
-    public Cliente crearCliente(CreateClienteRequest createRequest) {
+    public Customer crearCliente(CreateCustomerRequest createRequest) {
         try {
             String json = gson.toJson(createRequest);
             HttpRequest request = HttpRequest.newBuilder()
@@ -108,13 +108,13 @@ public class ClienteService {
                 throw new RuntimeException("Error al crear cliente: HTTP " + response.statusCode());
             }
 
-            return gson.fromJson(response.body(), Cliente.class);
+            return gson.fromJson(response.body(), Customer.class);
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public Cliente actualizarCliente(String code, UpdateClienteRequest updateRequest) {
+    public Customer actualizarCliente(String code, UpdateCustomerRequest updateRequest) {
         try {
             String json = gson.toJson(updateRequest);
             HttpRequest request = HttpRequest.newBuilder()
@@ -129,7 +129,7 @@ public class ClienteService {
                 throw new RuntimeException("Error al actualizar cliente: HTTP " + response.statusCode());
             }
 
-            return gson.fromJson(response.body(), Cliente.class);
+            return gson.fromJson(response.body(), Customer.class);
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }

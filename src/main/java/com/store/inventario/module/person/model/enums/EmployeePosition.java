@@ -1,4 +1,4 @@
-package com.store.inventario.model.empleado;
+package com.store.inventario.module.person.model.enums;
 
 public enum EmployeePosition {
     MANAGER,
