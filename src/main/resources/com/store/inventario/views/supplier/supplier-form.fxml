@@ -6,7 +6,7 @@
 <?import javafx.geometry.Insets?>
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.store.inventario.controller.proveedor.ProveedorFormController"
+            fx:controller="com.store.inventario.module.supplier.controller.SupplierFormController"
             stylesheets="@../../styles/style.css"
             prefHeight="620.0" prefWidth="500.0">
 

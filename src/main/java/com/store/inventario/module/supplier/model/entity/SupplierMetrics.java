@@ -1,4 +1,4 @@
-package com.store.inventario.model.proveedor;
+package com.store.inventario.module.supplier.model.entity;
 
 public class SupplierMetrics {
     private long totalSuppliers;

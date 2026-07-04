@@ -1,9 +1,9 @@
-package com.store.inventario.controller.proveedor;
+package com.store.inventario.module.supplier.controller;
 
-import com.store.inventario.model.proveedor.CreateProveedorRequest;
-import com.store.inventario.model.proveedor.Proveedor;
-import com.store.inventario.model.proveedor.UpdateProveedorRequest;
-import com.store.inventario.service.proveedor.ProveedorService;
+import com.store.inventario.module.supplier.request.CreateSupplierRequest;
+import com.store.inventario.module.supplier.model.entity.Supplier;
+import com.store.inventario.module.supplier.request.UpdateSupplierRequest;
+import com.store.inventario.module.supplier.service.SupplierService;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -12,7 +12,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-public class ProveedorFormController {
+public class SupplierFormController {
     @FXML
     private Label lblTitulo;
     @FXML
@@ -30,8 +30,8 @@ public class ProveedorFormController {
     @FXML
     private Button btnCancelar;
 
-    private final ProveedorService proveedorService = new ProveedorService();
-    private Proveedor proveedorEditar;
+    private final SupplierService supplierService = new SupplierService();
+    private Supplier supplierEditar;
     private boolean modoEdicion = false;
 
     @FXML
@@ -41,16 +41,16 @@ public class ProveedorFormController {
         txtTelefono.setText("+51 ");
     }
 
-    public void setProveedorEditar(Proveedor proveedor) {
-        this.proveedorEditar = proveedor;
+    public void setProveedorEditar(Supplier supplier) {
+        this.supplierEditar = supplier;
         this.modoEdicion = true;
         lblTitulo.setText("Editar Proveedor");
         lblSubtitulo.setText("Modifique la información del proveedor");
         btnGuardar.setText("Actualizar Proveedor");
-        txtNombreComercial.setText(proveedor.getTradeName());
-        txtRazonSocial.setText(proveedor.getLegalName());
-        txtRuc.setText(proveedor.getTaxId());
-        txtTelefono.setText(proveedor.getPhone());
+        txtNombreComercial.setText(supplier.getTradeName());
+        txtRazonSocial.setText(supplier.getLegalName());
+        txtRuc.setText(supplier.getTaxId());
+        txtTelefono.setText(supplier.getPhone());
     }
 
     @FXML
@@ -68,28 +68,28 @@ public class ProveedorFormController {
         }
         try {
             if (modoEdicion) {
-                UpdateProveedorRequest updateRequest =
-                        new UpdateProveedorRequest(
+                UpdateSupplierRequest updateRequest =
+                        new UpdateSupplierRequest(
                                 txtRuc.getText().trim(),
                                 txtNombreComercial.getText().trim(),
                                 txtTelefono.getText().trim(),
                                 txtRazonSocial.getText().trim()
                         );
-                proveedorService.actualizar(proveedorEditar.getCode(), updateRequest);
+                supplierService.actualizar(supplierEditar.getCode(), updateRequest);
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Éxito");
                 alert.setHeaderText("Proveedor actualizado");
                 alert.setContentText("El proveedor se actualizó correctamente.");
                 alert.showAndWait();
             } else {
-                CreateProveedorRequest createRequest =
-                        new CreateProveedorRequest(
+                CreateSupplierRequest createRequest =
+                        new CreateSupplierRequest(
                                 txtRuc.getText().trim(),
                                 txtNombreComercial.getText().trim(),
                                 txtTelefono.getText().trim(),
                                 txtRazonSocial.getText().trim()
                         );
-                proveedorService.crear(createRequest);
+                supplierService.crear(createRequest);
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Éxito");
                 alert.setHeaderText("Proveedor registrado");

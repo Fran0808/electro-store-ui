@@ -4,12 +4,12 @@ import com.store.inventario.model.PageResponse;
 import com.store.inventario.model.compra.CreatePurchaseDetailRequest;
 import com.store.inventario.model.compra.CreatePurchaseRequest;
 import com.store.inventario.module.product.model.entity.Product;
-import com.store.inventario.model.proveedor.Proveedor;
+import com.store.inventario.module.supplier.model.entity.Supplier;
 import com.store.inventario.security.SessionManager;
 import com.store.inventario.service.compra.CompraService;
-import com.store.inventario.service.proveedor.ProveedorService;
+import com.store.inventario.module.supplier.service.SupplierService;
 import com.store.inventario.module.product.service.ProductService;
-import com.store.inventario.controller.proveedor.ProveedorSearchModalController;
+import com.store.inventario.module.supplier.controller.SupplierSearchModalController;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -37,7 +37,7 @@ public class CompraFormController {
     @FXML private TextField txtUsuario;
     @FXML private TextField txtFecha;
 
-    private Proveedor proveedorSeleccionado = null;
+    private Supplier supplierSeleccionado = null;
     
     // Controles para el catálogo de productos
     @FXML private TextField txtBuscarProducto;
@@ -61,7 +61,7 @@ public class CompraFormController {
     @FXML private Label lblTotal;
     @FXML private Button btnCancelar;
 
-    private final ProveedorService proveedorService = new ProveedorService();
+    private final SupplierService supplierService = new SupplierService();
     private final ProductService productService = new ProductService();
     private final CompraService compraService = new CompraService();
     
@@ -151,10 +151,10 @@ public class CompraFormController {
         cargarProductos("");
     }
 
-    private void setProveedorSeleccionado(Proveedor proveedor) {
-        this.proveedorSeleccionado = proveedor;
-        if (proveedor != null) {
-            txtProveedor.setText(proveedor.getTradeName());
+    private void setProveedorSeleccionado(Supplier supplier) {
+        this.supplierSeleccionado = supplier;
+        if (supplier != null) {
+            txtProveedor.setText(supplier.getTradeName());
         } else {
             txtProveedor.setText("Seleccione un proveedor...");
         }
@@ -163,10 +163,10 @@ public class CompraFormController {
     @FXML
     private void abrirBuscadorProveedor() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/views/proveedores/proveedor-search-modal.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/views/supplier/supplier-search-modal.fxml"));
             Parent root = loader.load();
 
-            ProveedorSearchModalController controller = loader.getController();
+            SupplierSearchModalController controller = loader.getController();
 
             Stage modal = new Stage();
             com.store.inventario.utils.WindowUtils.applyIcon(modal);
@@ -175,7 +175,7 @@ public class CompraFormController {
             modal.setScene(new Scene(root));
             modal.showAndWait();
 
-            Proveedor seleccionado = controller.getProveedorSeleccionado();
+            Supplier seleccionado = controller.getProveedorSeleccionado();
             if (seleccionado != null) {
                 setProveedorSeleccionado(seleccionado);
             }
@@ -291,7 +291,7 @@ public class CompraFormController {
 
     @FXML
     private void registrarCompra() {
-        if (this.proveedorSeleccionado == null) {
+        if (this.supplierSeleccionado == null) {
             mostrarAlerta("Campos requeridos", "Debe seleccionar un proveedor.");
             return;
         }
@@ -302,7 +302,7 @@ public class CompraFormController {
         }
 
         try {
-            String supplierCode = this.proveedorSeleccionado.getCode();
+            String supplierCode = this.supplierSeleccionado.getCode();
             List<CreatePurchaseDetailRequest> details = new ArrayList<>();
             for (DetalleTemporal item : listaDetalle) {
                 details.add(new CreatePurchaseDetailRequest(item.getProducto().getCode(), item.getPrecioCompra(), item.getQuantity()));

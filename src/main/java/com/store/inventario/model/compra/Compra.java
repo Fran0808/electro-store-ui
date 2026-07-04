@@ -1,6 +1,6 @@
 package com.store.inventario.model.compra;
 
-import com.store.inventario.model.proveedor.Proveedor;
+import com.store.inventario.module.supplier.model.entity.Supplier;
 import com.store.inventario.module.auth.model.entity.User;
 
 import java.util.List;
@@ -8,13 +8,13 @@ import java.util.List;
 public class Compra {
     private String code;
     private User user;
-    private Proveedor supplier;
+    private Supplier supplier;
     private String purchaseDate;
     private List<CompraDetalle> details;
 
     public Compra() {}
 
-    public Compra(String code, User user, Proveedor supplier, String purchaseDate, List<CompraDetalle> details) {
+    public Compra(String code, User user, Supplier supplier, String purchaseDate, List<CompraDetalle> details) {
         this.code = code;
         this.user = user;
         this.supplier = supplier;
@@ -39,11 +39,11 @@ public class Compra {
         this.user = user;
     }
 
-    public Proveedor getSupplier() {
+    public Supplier getSupplier() {
         return supplier;
     }
 
-    public void setSupplier(Proveedor supplier) {
+    public void setSupplier(Supplier supplier) {
         this.supplier = supplier;
     }
 

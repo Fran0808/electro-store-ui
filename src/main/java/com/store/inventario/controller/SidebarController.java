@@ -137,7 +137,7 @@ public class SidebarController {
 
     @FXML
     private void handleProveedores() {
-        NavigationManager.getInstance().navegar("/com/store/inventario/views/proveedores/proveedores.fxml");
+        NavigationManager.getInstance().navegar("/com/store/inventario/views/supplier/supplier.fxml");
     }
 
     @FXML

@@ -1,10 +1,9 @@
-package com.store.inventario.controller.proveedor;
+package com.store.inventario.module.supplier.controller;
 
 import com.store.inventario.model.PageResponse;
-import com.store.inventario.model.proveedor.Proveedor;
-import com.store.inventario.service.proveedor.ProveedorService;
+import com.store.inventario.module.supplier.model.entity.Supplier;
+import com.store.inventario.module.supplier.service.SupplierService;
 import javafx.application.Platform;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -17,23 +16,23 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class ProveedorSearchModalController implements Initializable {
+public class SupplierSearchModalController implements Initializable {
 
     @FXML private TextField txtBuscar;
-    @FXML private TableView<Proveedor> tblProveedores;
-    @FXML private TableColumn<Proveedor, String> colCodigo;
-    @FXML private TableColumn<Proveedor, String> colNombreComercial;
-    @FXML private TableColumn<Proveedor, String> colRazonSocial;
-    @FXML private TableColumn<Proveedor, String> colRuc;
-    @FXML private TableColumn<Proveedor, String> colTelefono;
+    @FXML private TableView<Supplier> tblProveedores;
+    @FXML private TableColumn<Supplier, String> colCodigo;
+    @FXML private TableColumn<Supplier, String> colNombreComercial;
+    @FXML private TableColumn<Supplier, String> colRazonSocial;
+    @FXML private TableColumn<Supplier, String> colRuc;
+    @FXML private TableColumn<Supplier, String> colTelefono;
     @FXML private Label lblResumenPaginacion;
     @FXML private Button btnAnterior;
     @FXML private Button btnSiguiente;
     @FXML private Button btnCancelar;
     @FXML private Button btnSeleccionar;
 
-    private final ProveedorService proveedorService = new ProveedorService();
-    private Proveedor proveedorSeleccionado = null;
+    private final SupplierService supplierService = new SupplierService();
+    private Supplier supplierSeleccionado = null;
     
     private int paginaActual = 0;
     private final int tamanoPagina = 10;
@@ -54,8 +53,8 @@ public class ProveedorSearchModalController implements Initializable {
         Platform.runLater(() -> {
             try {
                 String search = txtBuscar.getText().trim();
-                PageResponse<Proveedor> response = proveedorService.listar(search, paginaActual, tamanoPagina);
-                List<Proveedor> proveedores = (response != null && response.getContent() != null)
+                PageResponse<Supplier> response = supplierService.listar(search, paginaActual, tamanoPagina);
+                List<Supplier> proveedores = (response != null && response.getContent() != null)
                         ? response.getContent()
                         : java.util.Collections.emptyList();
 
@@ -123,7 +122,7 @@ public class ProveedorSearchModalController implements Initializable {
 
     @FXML
     private void handleSeleccionar() {
-        Proveedor selected = tblProveedores.getSelectionModel().getSelectedItem();
+        Supplier selected = tblProveedores.getSelectionModel().getSelectedItem();
         if (selected == null) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Atención");
@@ -133,13 +132,13 @@ public class ProveedorSearchModalController implements Initializable {
             alert.showAndWait();
             return;
         }
-        this.proveedorSeleccionado = selected;
+        this.supplierSeleccionado = selected;
         cerrarModal();
     }
 
     @FXML
     private void handleCancelar() {
-        this.proveedorSeleccionado = null;
+        this.supplierSeleccionado = null;
         cerrarModal();
     }
 
@@ -148,7 +147,7 @@ public class ProveedorSearchModalController implements Initializable {
         stage.close();
     }
 
-    public Proveedor getProveedorSeleccionado() {
-        return proveedorSeleccionado;
+    public Supplier getProveedorSeleccionado() {
+        return supplierSeleccionado;
     }
 }

@@ -1,9 +1,10 @@
-package com.store.inventario.controller.proveedor;
+package com.store.inventario.module.supplier.controller;
 
 import com.store.inventario.model.PageResponse;
-import com.store.inventario.model.proveedor.Proveedor;
+import com.store.inventario.module.supplier.model.entity.Supplier;
+import com.store.inventario.module.supplier.model.entity.SupplierMetrics;
 import com.store.inventario.security.SessionManager;
-import com.store.inventario.service.proveedor.ProveedorService;
+import com.store.inventario.module.supplier.service.SupplierService;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -23,28 +24,28 @@ import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-public class ProveedorController implements Initializable {
+public class SupplierController implements Initializable {
 
     @FXML
-    private TableView<Proveedor> tblProveedores;
+    private TableView<Supplier> tblProveedores;
 
     @FXML
-    private TableColumn<Proveedor, String> colCodigo;
+    private TableColumn<Supplier, String> colCodigo;
 
     @FXML
-    private TableColumn<Proveedor, String> colRuc;
+    private TableColumn<Supplier, String> colRuc;
 
     @FXML
-    private TableColumn<Proveedor, String> colNombreComercial;
+    private TableColumn<Supplier, String> colNombreComercial;
 
     @FXML
-    private TableColumn<Proveedor, String> colRazonSocial;
+    private TableColumn<Supplier, String> colRazonSocial;
 
     @FXML
-    private TableColumn<Proveedor, String> colTelefono;
+    private TableColumn<Supplier, String> colTelefono;
 
     @FXML
-    private TableColumn<Proveedor, Void> colAcciones;
+    private TableColumn<Supplier, Void> colAcciones;
 
     @FXML
     private Label lblTotalProveedor;
@@ -67,8 +68,8 @@ public class ProveedorController implements Initializable {
     @FXML
     private Button btnSiguiente;
 
-    private final ProveedorService proveedorService =
-            new ProveedorService();
+    private final SupplierService supplierService =
+            new SupplierService();
     private int paginaActual = 0;
     private final int tamanoPagina = 10;
     private int totalPaginas = 1;
@@ -105,7 +106,7 @@ public class ProveedorController implements Initializable {
 
     @FXML
     private void handleForm() throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/views/proveedores/proveedor-form.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/views/supplier/supplier-form.fxml"));
         Parent root = loader.load();
         Stage modal = new Stage();
         com.store.inventario.utils.WindowUtils.applyIcon(modal);
@@ -117,12 +118,12 @@ public class ProveedorController implements Initializable {
         obtenerProveedores();
     }
 
-    private void handleEditar(Proveedor proveedor) {
+    private void handleEditar(Supplier supplier) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/views/proveedores/proveedor-form.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/views/supplier/supplier-form.fxml"));
             Parent root = loader.load();
-            ProveedorFormController controller = loader.getController();
-            controller.setProveedorEditar(proveedor);
+            SupplierFormController controller = loader.getController();
+            controller.setProveedorEditar(supplier);
             Stage modal = new Stage();
             com.store.inventario.utils.WindowUtils.applyIcon(modal);
             modal.initModality(Modality.APPLICATION_MODAL);
@@ -142,17 +143,17 @@ public class ProveedorController implements Initializable {
         }
     }
 
-    private void handleEliminar(Proveedor proveedor) {
+    private void handleEliminar(Supplier supplier) {
         javafx.application.Platform.runLater(() -> {
             Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
             confirmacion.setTitle("Confirmar Eliminación");
             confirmacion.setHeaderText("¿Eliminar proveedor?");
-            confirmacion.setContentText("Se eliminará el proveedor \"" + proveedor.getTradeName() + "\"");
+            confirmacion.setContentText("Se eliminará el proveedor \"" + supplier.getTradeName() + "\"");
             com.store.inventario.utils.WindowUtils.applyIcon(confirmacion);
             Optional<ButtonType> resultado = confirmacion.showAndWait();
             if (resultado.isPresent() && resultado.get() == ButtonType.OK) {
                 try {
-                    proveedorService.eliminar(proveedor.getCode());
+                    supplierService.eliminar(supplier.getCode());
                     Alert exito = new Alert(Alert.AlertType.INFORMATION);
                     exito.setTitle("Éxito");
                     exito.setHeaderText("Proveedor eliminado");
@@ -174,9 +175,9 @@ public class ProveedorController implements Initializable {
     }
 
     private void configurarColumnaAcciones() {
-        Callback<TableColumn<Proveedor, Void>, TableCell<Proveedor, Void>> cellFactory = new Callback<>() {
+        Callback<TableColumn<Supplier, Void>, TableCell<Supplier, Void>> cellFactory = new Callback<>() {
                     @Override
-                    public TableCell<Proveedor, Void> call(final TableColumn<Proveedor, Void> param) {
+                    public TableCell<Supplier, Void> call(final TableColumn<Supplier, Void> param) {
                         return new TableCell<>() {
                             private final Button btnAcciones = new Button("⋮");
                             private final ContextMenu menuAcciones = new ContextMenu();
@@ -205,12 +206,12 @@ public class ProveedorController implements Initializable {
                                 });
 
                                 itemEditar.setOnAction(event -> {
-                                    Proveedor proveedor = getTableView().getItems().get(getIndex());
-                                    handleEditar(proveedor);
+                                    Supplier supplier = getTableView().getItems().get(getIndex());
+                                    handleEditar(supplier);
                                 });
                                 itemEliminar.setOnAction(event -> {
-                                    Proveedor proveedor = getTableView().getItems().get(getIndex());
-                                    handleEliminar(proveedor);
+                                    Supplier supplier = getTableView().getItems().get(getIndex());
+                                    handleEliminar(supplier);
                                 });
                             }
 
@@ -235,8 +236,8 @@ public class ProveedorController implements Initializable {
     private void obtenerProveedores() {
         try {
             String search = (txtBuscar != null) ? txtBuscar.getText().trim() : "";
-            PageResponse<Proveedor> response = proveedorService.listar(search, paginaActual, tamanoPagina);
-            List<Proveedor> proveedores = (response != null && response.getContent() != null)
+            PageResponse<Supplier> response = supplierService.listar(search, paginaActual, tamanoPagina);
+            List<Supplier> proveedores = (response != null && response.getContent() != null)
                     ? response.getContent()
                     : java.util.Collections.emptyList();
             tblProveedores.setItems(FXCollections.observableArrayList(proveedores));
@@ -258,9 +259,9 @@ public class ProveedorController implements Initializable {
         }
     }
 
-    private void actualizarMetricas(PageResponse<Proveedor> response) {
+    private void actualizarMetricas(PageResponse<Supplier> response) {
         try {
-            com.store.inventario.model.proveedor.SupplierMetrics metrics = proveedorService.obtenerMetricas();
+            SupplierMetrics metrics = supplierService.obtenerMetricas();
             if (metrics != null) {
                 lblTotalProveedor.setText(String.valueOf(metrics.getTotalSuppliers()));
                 lblUltimoRegistrado.setText(metrics.getLastSupplierName() != null ? metrics.getLastSupplierName() : "Ninguno");
@@ -288,7 +289,7 @@ public class ProveedorController implements Initializable {
         }
     }
 
-    private void actualizarPaginacion(PageResponse<Proveedor> response) {
+    private void actualizarPaginacion(PageResponse<Supplier> response) {
         if (response == null) return;
         long total = response.getTotalElements();
         int pageNum = response.getNumber();

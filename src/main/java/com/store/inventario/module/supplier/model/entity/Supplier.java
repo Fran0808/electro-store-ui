@@ -1,16 +1,16 @@
-package com.store.inventario.model.proveedor;
+package com.store.inventario.module.supplier.model.entity;
 
-public class Proveedor {
+public class Supplier {
     private String code;
     private String taxId;
     private String tradeName;
     private String phone;
     private String legalName;
 
-    public Proveedor (){
+    public Supplier(){
     }
 
-    public Proveedor(String code, String taxId, String tradeName, String phone, String legalName){
+    public Supplier(String code, String taxId, String tradeName, String phone, String legalName){
         this.code = code;
         this.taxId = taxId;
         this.tradeName = tradeName;
