@@ -178,7 +178,7 @@ public class VentaFormController {
     private void setClienteSeleccionado(Cliente cliente) {
         this.clienteSeleccionado = cliente;
         if (cliente != null && cliente.getPerson() != null) {
-            txtCliente.setText(cliente.getCode() + " - " + cliente.getPerson().getFullName());
+            txtCliente.setText(cliente.getPerson().getFullName());
         } else {
             txtCliente.setText("Seleccione un cliente...");
         }

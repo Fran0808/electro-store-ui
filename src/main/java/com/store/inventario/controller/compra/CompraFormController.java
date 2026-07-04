@@ -155,7 +155,7 @@ public class CompraFormController {
     private void setProveedorSeleccionado(Proveedor proveedor) {
         this.proveedorSeleccionado = proveedor;
         if (proveedor != null) {
-            txtProveedor.setText(proveedor.getCode() + " - " + proveedor.getTradeName());
+            txtProveedor.setText(proveedor.getTradeName());
         } else {
             txtProveedor.setText("Seleccione un proveedor...");
         }
