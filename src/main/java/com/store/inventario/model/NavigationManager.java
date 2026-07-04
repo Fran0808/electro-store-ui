@@ -5,6 +5,7 @@ import java.util.function.Consumer;
 public class NavigationManager {
     private static NavigationManager instance;
     private Consumer<String> onNavegar;
+    private Runnable onRefreshAlerts;
 
     private NavigationManager() {}
 
@@ -15,6 +16,16 @@ public class NavigationManager {
 
     public void setOnNavegar(Consumer<String> handler) {
         this.onNavegar = handler;
+    }
+
+    public void setOnRefreshAlerts(Runnable handler) {
+        this.onRefreshAlerts = handler;
+    }
+
+    public void refreshAlerts() {
+        if (onRefreshAlerts != null) {
+            onRefreshAlerts.run();
+        }
     }
 
     public void navegar(String fxmlPath) {

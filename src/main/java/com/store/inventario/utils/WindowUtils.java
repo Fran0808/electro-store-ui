@@ -25,4 +25,10 @@ public class WindowUtils {
             stage.getIcons().add(icon);
         }
     }
+
+    public static void applyIcon(javafx.scene.control.Alert alert) {
+        if (alert != null && alert.getDialogPane().getScene().getWindow() instanceof Stage) {
+            applyIcon((Stage) alert.getDialogPane().getScene().getWindow());
+        }
+    }
 }

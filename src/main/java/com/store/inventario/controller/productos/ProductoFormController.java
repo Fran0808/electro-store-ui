@@ -223,6 +223,7 @@ public class ProductoFormController {
                 alert.showAndWait();
             }
 
+            com.store.inventario.model.NavigationManager.getInstance().refreshAlerts();
             Stage stage = (Stage) btnGuardar.getScene().getWindow();
             stage.close();
 

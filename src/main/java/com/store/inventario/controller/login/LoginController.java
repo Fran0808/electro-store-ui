@@ -1,6 +1,7 @@
 package com.store.inventario.controller.login;
 
 import com.store.inventario.service.auth.LoginService;
+import com.store.inventario.security.SessionManager;
 import com.store.inventario.utils.DialogUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -69,6 +70,15 @@ public class LoginController {
             boolean loginExitoso = loginService.autenticar(usuario, password);
 
             if (loginExitoso) {
+                if (chMantenerSesion.isSelected()) {
+                    SessionManager.getInstance().guardarSesion(
+                            SessionManager.getInstance().getToken(),
+                            SessionManager.getInstance().getUsername(),
+                            SessionManager.getInstance().getRole(),
+                            true
+                    );
+                }
+
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/layout-view.fxml"));
                 Parent root = loader.load();
 

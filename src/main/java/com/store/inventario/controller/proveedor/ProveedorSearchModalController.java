@@ -1,8 +1,8 @@
-package com.store.inventario.controller.clientes;
+package com.store.inventario.controller.proveedor;
 
 import com.store.inventario.model.PageResponse;
-import com.store.inventario.model.clientes.Cliente;
-import com.store.inventario.service.clientes.ClienteService;
+import com.store.inventario.model.proveedor.Proveedor;
+import com.store.inventario.service.proveedor.ProveedorService;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -17,22 +17,23 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class ClienteSearchModalController implements Initializable {
+public class ProveedorSearchModalController implements Initializable {
 
     @FXML private TextField txtBuscar;
-    @FXML private TableView<Cliente> tblClientes;
-    @FXML private TableColumn<Cliente, String> colCodigo;
-    @FXML private TableColumn<Cliente, String> colNombre;
-    @FXML private TableColumn<Cliente, String> colDni;
-    @FXML private TableColumn<Cliente, String> colRuc;
+    @FXML private TableView<Proveedor> tblProveedores;
+    @FXML private TableColumn<Proveedor, String> colCodigo;
+    @FXML private TableColumn<Proveedor, String> colNombreComercial;
+    @FXML private TableColumn<Proveedor, String> colRazonSocial;
+    @FXML private TableColumn<Proveedor, String> colRuc;
+    @FXML private TableColumn<Proveedor, String> colTelefono;
     @FXML private Label lblResumenPaginacion;
     @FXML private Button btnAnterior;
     @FXML private Button btnSiguiente;
     @FXML private Button btnCancelar;
     @FXML private Button btnSeleccionar;
 
-    private final ClienteService clienteService = new ClienteService();
-    private Cliente clienteSeleccionado = null;
+    private final ProveedorService proveedorService = new ProveedorService();
+    private Proveedor proveedorSeleccionado = null;
     
     private int paginaActual = 0;
     private final int tamanoPagina = 10;
@@ -41,35 +42,24 @@ public class ClienteSearchModalController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         colCodigo.setCellValueFactory(new PropertyValueFactory<>("code"));
-        
-        colNombre.setCellValueFactory(cellData -> {
-            var person = cellData.getValue().getPerson();
-            return new SimpleStringProperty(person != null ? person.getFirstName() + " " + person.getLastName() : "");
-        });
-        
-        colDni.setCellValueFactory(cellData -> {
-            var person = cellData.getValue().getPerson();
-            return new SimpleStringProperty(person != null && person.getNationalId() != null ? person.getNationalId() : "");
-        });
-        
-        colRuc.setCellValueFactory(cellData -> {
-            String taxId = cellData.getValue().getTaxId();
-            return new SimpleStringProperty(taxId != null ? taxId : "");
-        });
+        colNombreComercial.setCellValueFactory(new PropertyValueFactory<>("tradeName"));
+        colRazonSocial.setCellValueFactory(new PropertyValueFactory<>("legalName"));
+        colRuc.setCellValueFactory(new PropertyValueFactory<>("taxId"));
+        colTelefono.setCellValueFactory(new PropertyValueFactory<>("phone"));
 
-        obtenerClientes();
+        obtenerProveedores();
     }
 
-    private void obtenerClientes() {
+    private void obtenerProveedores() {
         Platform.runLater(() -> {
             try {
                 String search = txtBuscar.getText().trim();
-                PageResponse<Cliente> response = clienteService.obtenerClientes(search, paginaActual, tamanoPagina);
-                List<Cliente> clientes = (response != null && response.getContent() != null)
+                PageResponse<Proveedor> response = proveedorService.listar(search, paginaActual, tamanoPagina);
+                List<Proveedor> proveedores = (response != null && response.getContent() != null)
                         ? response.getContent()
                         : java.util.Collections.emptyList();
 
-                tblClientes.setItems(FXCollections.observableArrayList(clientes));
+                tblProveedores.setItems(FXCollections.observableArrayList(proveedores));
 
                 if (response != null) {
                     totalPaginas = response.getTotalPages();
@@ -82,11 +72,11 @@ public class ClienteSearchModalController implements Initializable {
                     int pageSize = response.getSize();
 
                     if (total == 0) {
-                        lblResumenPaginacion.setText("No hay clientes para mostrar");
+                        lblResumenPaginacion.setText("No hay proveedores para mostrar");
                     } else {
                         long desde = (long) pageNum * pageSize + 1;
-                        long hasta = Math.min(desde + clientes.size() - 1, total);
-                        lblResumenPaginacion.setText("Mostrando " + desde + "-" + hasta + " de " + total + " clientes (Página " + (pageNum + 1) + " de " + paginas + ")");
+                        long hasta = Math.min(desde + proveedores.size() - 1, total);
+                        lblResumenPaginacion.setText("Mostrando " + desde + "-" + hasta + " de " + total + " proveedores (Página " + (pageNum + 1) + " de " + paginas + ")");
                     }
                 }
             } catch (Exception e) {
@@ -98,21 +88,21 @@ public class ClienteSearchModalController implements Initializable {
     @FXML
     private void handleBuscar() {
         paginaActual = 0;
-        obtenerClientes();
+        obtenerProveedores();
     }
 
     @FXML
     private void handleLimpiar() {
         txtBuscar.clear();
         paginaActual = 0;
-        obtenerClientes();
+        obtenerProveedores();
     }
 
     @FXML
     private void handlePaginaAnterior() {
         if (paginaActual > 0) {
             paginaActual--;
-            obtenerClientes();
+            obtenerProveedores();
         }
     }
 
@@ -120,7 +110,7 @@ public class ClienteSearchModalController implements Initializable {
     private void handlePaginaSiguiente() {
         if (paginaActual < totalPaginas - 1) {
             paginaActual++;
-            obtenerClientes();
+            obtenerProveedores();
         }
     }
 
@@ -133,23 +123,23 @@ public class ClienteSearchModalController implements Initializable {
 
     @FXML
     private void handleSeleccionar() {
-        Cliente selected = tblClientes.getSelectionModel().getSelectedItem();
+        Proveedor selected = tblProveedores.getSelectionModel().getSelectedItem();
         if (selected == null) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Atención");
             alert.setHeaderText(null);
-            alert.setContentText("Debe seleccionar un cliente de la lista.");
+            alert.setContentText("Debe seleccionar un proveedor de la lista.");
             com.store.inventario.utils.WindowUtils.applyIcon(alert);
             alert.showAndWait();
             return;
         }
-        this.clienteSeleccionado = selected;
+        this.proveedorSeleccionado = selected;
         cerrarModal();
     }
 
     @FXML
     private void handleCancelar() {
-        this.clienteSeleccionado = null;
+        this.proveedorSeleccionado = null;
         cerrarModal();
     }
 
@@ -158,7 +148,7 @@ public class ClienteSearchModalController implements Initializable {
         stage.close();
     }
 
-    public Cliente getClienteSeleccionado() {
-        return clienteSeleccionado;
+    public Proveedor getProveedorSeleccionado() {
+        return proveedorSeleccionado;
     }
 }

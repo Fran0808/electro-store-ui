@@ -232,6 +232,7 @@ public class ClienteController implements Initializable {
             confirmacion.setContentText("Se eliminará al cliente \"" + 
                     (cliente.getPerson() != null ? cliente.getPerson().getFirstName() + " " + cliente.getPerson().getLastName() : "") + 
                     "\" (Código: " + cliente.getCode() + "). Esta acción no se puede deshacer.");
+            com.store.inventario.utils.WindowUtils.applyIcon(confirmacion);
 
             Optional<ButtonType> resultado = confirmacion.showAndWait();
 
@@ -243,6 +244,7 @@ public class ClienteController implements Initializable {
                     exito.setTitle("Éxito");
                     exito.setHeaderText("Cliente Eliminado");
                     exito.setContentText("El cliente se ha eliminado correctamente del sistema.");
+                    com.store.inventario.utils.WindowUtils.applyIcon(exito);
                     exito.showAndWait();
 
                     obtenerClientes();
@@ -252,6 +254,7 @@ public class ClienteController implements Initializable {
                     error.setTitle("Error");
                     error.setHeaderText("No se pudo eliminar el cliente");
                     error.setContentText("Ocurrió un error al intentar eliminar al cliente. Asegúrese de que no tenga registros dependientes en el sistema: " + e.getMessage());
+                    com.store.inventario.utils.WindowUtils.applyIcon(error);
                     error.showAndWait();
                 }
             }

@@ -26,6 +26,7 @@ public class SidebarController {
     @FXML private HBox itemEmpleados;
     @FXML private HBox itemUsuarios;
     @FXML private HBox itemAlertas;
+    @FXML private HBox itemReportes;
 
     @FXML private Label lblBadgeAlertas;
 
@@ -62,9 +63,10 @@ public class SidebarController {
         actualizarVisibilidadGrupo(groupCatalogo, itemProductos, itemCategorias, itemProveedores, itemClientes);
         actualizarVisibilidadGrupo(groupOperaciones, itemCompras, itemVentas, itemGuias);
         actualizarVisibilidadGrupo(groupGestion, itemEmpleados, itemUsuarios);
-        actualizarVisibilidadGrupo(groupAnalisis, itemAlertas);
+        actualizarVisibilidadGrupo(groupAnalisis, itemAlertas, itemReportes);
 
         cargarBadgeAlertas();
+        NavigationManager.getInstance().setOnRefreshAlerts(this::cargarBadgeAlertas);
     }
 
     private void ocultarComponente(HBox item) {
@@ -167,6 +169,16 @@ public class SidebarController {
         NavigationManager.getInstance().navegar("/com/store/inventario/views/alertas/alertas.fxml");
     }
 
+    @FXML
+    private void handleReportes() {
+        javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.INFORMATION);
+        alert.setTitle("Reportes");
+        alert.setHeaderText(null);
+        alert.setContentText("Falta todavia");
+        com.store.inventario.utils.WindowUtils.applyIcon(alert);
+        alert.showAndWait();
+    }
+
 
 
     @FXML
@@ -183,7 +195,7 @@ public class SidebarController {
             loginStage.setScene(new Scene(root));
             loginStage.setMinWidth(1280);
             loginStage.setMinHeight(800);
-
+            loginStage.setMaximized(true);
             loginStage.show();
 
             Stage currentStage = (Stage) itemDashboard.getScene().getWindow();

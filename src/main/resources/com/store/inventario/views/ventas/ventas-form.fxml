@@ -102,7 +102,7 @@
                         <TableColumn prefWidth="220.0" text="Producto" fx:id="colDetProducto"/>
                         <TableColumn prefWidth="110.0" text="Precio Unit." fx:id="colDetPrecio"/>
                         <TableColumn prefWidth="80.0" text="Cant." fx:id="colDetCantidad"/>
-                        <TableColumn prefWidth="110.0" text="Subtotal" fx:id="colDetSubtotal"/>
+                        <TableColumn prefWidth="110.0" text="Importe" fx:id="colDetSubtotal"/>
                         <TableColumn prefWidth="80.0" text="Acción" fx:id="colEliminar"/>
                     </columns>
                 </TableView>

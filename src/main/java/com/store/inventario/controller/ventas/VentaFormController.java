@@ -11,6 +11,7 @@ import com.store.inventario.security.SessionManager;
 import com.store.inventario.service.clientes.ClienteService;
 import com.store.inventario.service.producto.ProductoService;
 import com.store.inventario.service.venta.VentaService;
+import com.store.inventario.utils.WindowUtils;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -177,7 +178,7 @@ public class VentaFormController {
     private void setClienteSeleccionado(Cliente cliente) {
         this.clienteSeleccionado = cliente;
         if (cliente != null && cliente.getPerson() != null) {
-            txtCliente.setText(cliente.getCode() + " - " + cliente.getPerson().getFullName());
+            txtCliente.setText(cliente.getPerson().getFullName());
         } else {
             txtCliente.setText("Seleccione un cliente...");
         }
@@ -235,6 +236,12 @@ public class VentaFormController {
             return;
         }
 
+        int stockDisponible = (selected.getStock() != null) ? selected.getStock() : 0;
+        if (stockDisponible <= 0) {
+            mostrarAlerta("Stock agotado", "El producto seleccionado no cuenta con stock disponible.");
+            return;
+        }
+
         String cantStr = txtCantidad.getText();
         int cantidad;
         try {
@@ -242,6 +249,11 @@ public class VentaFormController {
             if (cantidad <= 0) throw new NumberFormatException();
         } catch (NumberFormatException e) {
             mostrarAlerta("Error", "Cantidad inválida. Debe ser un número entero mayor a 0.");
+            return;
+        }
+
+        if (cantidad > stockDisponible) {
+            mostrarAlerta("Stock insuficiente", "Stock insuficiente. Solo quedan " + stockDisponible + " unidades disponibles.");
             return;
         }
 
@@ -255,8 +267,25 @@ public class VentaFormController {
             return;
         }
 
-        listaDetalle.removeIf(d -> d.getProducto().getCode().equals(selected.getCode()));
-        listaDetalle.add(new VentaFormController.DetalleTemporal(selected, precio, cantidad));
+        int index = -1;
+        for (int i = 0; i < listaDetalle.size(); i++) {
+            if (listaDetalle.get(i).getProducto().getCode().equals(selected.getCode())) {
+                index = i;
+                break;
+            }
+        }
+
+        if (index >= 0) {
+            int nuevaCantidad = listaDetalle.get(index).getQuantity() + cantidad;
+            if (nuevaCantidad > stockDisponible) {
+                mostrarAlerta("Stock insuficiente", "Stock insuficiente. Ya tiene " + listaDetalle.get(index).getQuantity() + " en la lista y solo quedan " + stockDisponible + " unidades disponibles en total.");
+                return;
+            }
+            listaDetalle.set(index, new VentaFormController.DetalleTemporal(selected, precio, nuevaCantidad));
+        } else {
+            listaDetalle.add(new VentaFormController.DetalleTemporal(selected, precio, cantidad));
+        }
+        
         actualizarTotal();
         tblProductos.getSelectionModel().clearSelection();
     }
@@ -319,6 +348,7 @@ public class VentaFormController {
 
             CreateSaleRequest request = new CreateSaleRequest(clientCode, details);
             ventaService.crearVenta(request);
+            com.store.inventario.model.NavigationManager.getInstance().refreshAlerts();
 
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Éxito");
@@ -347,6 +377,7 @@ public class VentaFormController {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle(titulo);
         alert.setHeaderText(null);
+        WindowUtils.applyIcon(alert);
         alert.setContentText(mensaje);
         alert.showAndWait();
     }

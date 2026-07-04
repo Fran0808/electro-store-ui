@@ -92,6 +92,7 @@ public class AlertasFormController {
         alert.setTitle(titulo);
         alert.setHeaderText(null);
         alert.setContentText(mensaje);
+        com.store.inventario.utils.WindowUtils.applyIcon(alert);
         alert.showAndWait();
     }
 }

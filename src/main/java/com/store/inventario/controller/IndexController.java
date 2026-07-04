@@ -2,7 +2,9 @@ package com.store.inventario.controller;
 
 import com.store.inventario.model.NavigationManager;
 import com.store.inventario.security.SessionManager;
+import com.store.inventario.service.BackupService;
 import com.store.inventario.utils.DialogUtils;
+import com.store.inventario.utils.WindowUtils;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -15,9 +17,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.VBox;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.io.File;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -159,6 +163,50 @@ public class IndexController implements Initializable {
 
     @FXML
     private void handleRealizarCopia(ActionEvent event) {
+        Stage stage = (Stage) lblBienvenida.getScene().getWindow();
+
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        directoryChooser.setTitle("Seleccionar carpeta para guardar la copia de seguridad");
+        File directorioSeleccionado = directoryChooser.showDialog(stage);
+
+        if (directorioSeleccionado == null) {
+            return;
+        }
+
+        btnRealizarCopia.setDisable(true);
+        btnRealizarCopia.setText("Generando copia...");
+
+        try {
+            BackupService backupService = new BackupService();
+            File archivoBackup = backupService.descargarBackup(directorioSeleccionado);
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy, hh:mm:ss a");
+            String fechaActual = LocalDateTime.now().format(formatter);
+
+            lblUltimaCopia.setText("Última copia: " + fechaActual);
+            lblEstadoCopia.setText("Estado: Guardado correctamente");
+            lblUbicacionCopia.setText("Ubicación: " + archivoBackup.getAbsolutePath());
+
+            javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.INFORMATION);
+            alert.setTitle("Copia de Seguridad");
+            alert.setHeaderText(null);
+            alert.setContentText("Copia de seguridad generada exitosamente.\n\nArchivo: " + archivoBackup.getName() + "\nUbicación: " + directorioSeleccionado.getAbsolutePath());
+            WindowUtils.applyIcon(alert);
+            alert.showAndWait();
+
+        } catch (Exception e) {
+            lblEstadoCopia.setText("Estado: Error al generar copia");
+
+            javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.ERROR);
+            alert.setTitle("Error de Copia de Seguridad");
+            alert.setHeaderText(null);
+            alert.setContentText("No se pudo generar la copia de seguridad.\n\nDetalle: " + e.getMessage());
+            WindowUtils.applyIcon(alert);
+            alert.showAndWait();
+        } finally {
+            btnRealizarCopia.setDisable(false);
+            btnRealizarCopia.setText("Realizar Copia Ahora");
+        }
     }
 
     @FXML

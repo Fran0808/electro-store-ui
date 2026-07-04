@@ -63,21 +63,21 @@
                 <TableColumn fx:id="colProducto" prefWidth="450.0" text="Producto"/>
                 <TableColumn fx:id="colCantidad" prefWidth="100.0" text="Cantidad"/>
                 <TableColumn fx:id="colPrecio" prefWidth="180.0" text="Precio Unitario"/>
-                <TableColumn fx:id="colSubtotal" prefWidth="180.0" text="Subtotal"/>
+                <TableColumn fx:id="colSubtotal" prefWidth="180.0" text="Importe"/>
             </columns>
         </TableView>
 
         <!-- Sección de Totales -->
         <HBox alignment="CENTER_RIGHT" spacing="40.0" style="-fx-background-color: #FFFFFF; -fx-border-color: #E2E8F0; -fx-border-width: 1px; -fx-background-radius: 8px; -fx-border-radius: 8px; -fx-padding: 16px 24px;">
             <VBox spacing="4.0" alignment="CENTER_RIGHT">
-                <Label style="-fx-text-fill: #64748B; -fx-font-size: 11px; -fx-font-weight: bold;" text="SUBTOTAL COMPRA"/>
+                <Label style="-fx-text-fill: #64748B; -fx-font-size: 11px; -fx-font-weight: bold;" text="SUBTOTAL (SIN IGV)"/>
                 <Label fx:id="lblSubtotal" style="-fx-text-fill: #0F172A; -fx-font-size: 15px; -fx-font-weight: bold;" text="S/ 0.00"/>
             </VBox>
             
             <Separator orientation="VERTICAL" style="-fx-opacity: 0.5;"/>
             
             <VBox spacing="4.0" alignment="CENTER_RIGHT">
-                <Label style="-fx-text-fill: #64748B; -fx-font-size: 11px; -fx-font-weight: bold;" text="IMPUESTOS (IGV 18%)"/>
+                <Label style="-fx-text-fill: #64748B; -fx-font-size: 11px; -fx-font-weight: bold;" text="IGV (18%)"/>
                 <Label fx:id="lblImpuesto" style="-fx-text-fill: #0F172A; -fx-font-size: 15px; -fx-font-weight: bold;" text="S/ 0.00"/>
             </VBox>
             

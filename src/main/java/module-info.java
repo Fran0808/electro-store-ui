@@ -4,6 +4,7 @@ module com.store.inventario {
     requires java.net.http;
     requires com.google.gson;
     requires java.desktop;
+    requires java.prefs;
 
     exports com.store.inventario;
 

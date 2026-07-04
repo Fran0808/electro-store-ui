@@ -153,6 +153,7 @@ public class CompraController {
                 alert.setTitle("Error");
                 alert.setHeaderText("No se pudo cargar el detalle");
                 alert.setContentText("Ocurrió un error al cargar la vista de detalle: " + e.getMessage());
+                com.store.inventario.utils.WindowUtils.applyIcon(alert);
                 alert.showAndWait();
             }
         });
@@ -217,6 +218,7 @@ public class CompraController {
             alert.setTitle("Error");
             alert.setHeaderText("No se pudieron obtener las compras");
             alert.setContentText("Ocurrió un error al cargar el listado de compras desde el servidor: " + e.getMessage());
+            com.store.inventario.utils.WindowUtils.applyIcon(alert);
             alert.showAndWait();
         }
     }
