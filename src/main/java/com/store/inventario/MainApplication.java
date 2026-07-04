@@ -1,23 +1,33 @@
 package com.store.inventario;
 
+import com.store.inventario.security.SessionManager;
 import com.store.inventario.utils.WindowUtils;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import java.io.IOException;
-import java.util.Objects;
 
 public class MainApplication extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
+        String viewPath;
+        String title;
+
+        if (SessionManager.getInstance().isAutenticado()) {
+            viewPath = "layout-view.fxml";
+            title = "ElectroStore System";
+        } else {
+            viewPath = "views/login.fxml";
+            title = "Sistema de Inventario";
+        }
+
         FXMLLoader loader = new FXMLLoader(
-                MainApplication.class.getResource("views/login.fxml")
+                MainApplication.class.getResource(viewPath)
         );
         Scene scene = new Scene(loader.load());
-        stage.setTitle("Sistema de Inventario");
+        stage.setTitle(title);
 
         WindowUtils.applyIcon(stage);
 
