@@ -146,6 +146,7 @@ public class VentaController {
                 alert.setTitle("Error");
                 alert.setHeaderText("No se pudo cargar el detalle");
                 alert.setContentText("Ocurrio un error al cargar la vista de detalle: " + e.getMessage());
+                com.store.inventario.utils.WindowUtils.applyIcon(alert);
                 alert.showAndWait();
             }
         });
@@ -205,6 +206,7 @@ public class VentaController {
             alert.setTitle("Error");
             alert.setHeaderText("No se pudieron obtener las ventas");
             alert.setContentText("Ocurrió un error al cargar el listado de ventas desde el servidor.");
+            com.store.inventario.utils.WindowUtils.applyIcon(alert);
             alert.showAndWait();
         }
     }

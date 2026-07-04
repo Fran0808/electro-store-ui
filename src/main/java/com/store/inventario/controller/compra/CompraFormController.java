@@ -341,6 +341,7 @@ public class CompraFormController {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle(titulo);
         alert.setHeaderText(null);
+        com.store.inventario.utils.WindowUtils.applyIcon(alert);
         alert.setContentText(mensaje);
         alert.showAndWait();
     }

@@ -129,6 +129,7 @@ public class ProveedorSearchModalController implements Initializable {
             alert.setTitle("Atención");
             alert.setHeaderText(null);
             alert.setContentText("Debe seleccionar un proveedor de la lista.");
+            com.store.inventario.utils.WindowUtils.applyIcon(alert);
             alert.showAndWait();
             return;
         }

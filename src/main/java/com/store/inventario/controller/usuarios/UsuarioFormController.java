@@ -212,6 +212,7 @@ public class UsuarioFormController implements Initializable {
         alerta.setTitle(titulo);
         alerta.setHeaderText(null);
         alerta.setContentText(mensaje);
+        com.store.inventario.utils.WindowUtils.applyIcon(alerta);
         alerta.showAndWait();
     }
 }

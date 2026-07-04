@@ -139,6 +139,7 @@ public class ClienteSearchModalController implements Initializable {
             alert.setTitle("Atención");
             alert.setHeaderText(null);
             alert.setContentText("Debe seleccionar un cliente de la lista.");
+            com.store.inventario.utils.WindowUtils.applyIcon(alert);
             alert.showAndWait();
             return;
         }

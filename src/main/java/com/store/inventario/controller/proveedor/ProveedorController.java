@@ -137,6 +137,7 @@ public class ProveedorController implements Initializable {
             alert.setTitle("Error");
             alert.setHeaderText("No se pudo abrir el formulario");
             alert.setContentText(e.getMessage());
+            com.store.inventario.utils.WindowUtils.applyIcon(alert);
             alert.showAndWait();
         }
     }
@@ -147,6 +148,7 @@ public class ProveedorController implements Initializable {
             confirmacion.setTitle("Confirmar Eliminación");
             confirmacion.setHeaderText("¿Eliminar proveedor?");
             confirmacion.setContentText("Se eliminará el proveedor \"" + proveedor.getTradeName() + "\"");
+            com.store.inventario.utils.WindowUtils.applyIcon(confirmacion);
             Optional<ButtonType> resultado = confirmacion.showAndWait();
             if (resultado.isPresent() && resultado.get() == ButtonType.OK) {
                 try {
@@ -155,6 +157,7 @@ public class ProveedorController implements Initializable {
                     exito.setTitle("Éxito");
                     exito.setHeaderText("Proveedor eliminado");
                     exito.setContentText("El proveedor se eliminó correctamente");
+                    com.store.inventario.utils.WindowUtils.applyIcon(exito);
                     exito.showAndWait();
                     obtenerProveedores();
                 } catch (Exception e) {
@@ -163,6 +166,7 @@ public class ProveedorController implements Initializable {
                     error.setTitle("Error");
                     error.setHeaderText("No se pudo eliminar el proveedor");
                     error.setContentText(e.getMessage());
+                    com.store.inventario.utils.WindowUtils.applyIcon(error);
                     error.showAndWait();
                 }
             }
@@ -249,6 +253,7 @@ public class ProveedorController implements Initializable {
             alert.setTitle("Error");
             alert.setHeaderText("No se pudieron obtener los proveedores");
             alert.setContentText(e.getMessage());
+            com.store.inventario.utils.WindowUtils.applyIcon(alert);
             alert.showAndWait();
         }
     }
