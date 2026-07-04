@@ -1,7 +1,7 @@
-package com.store.inventario.controller.usuarios;
+package com.store.inventario.module.auth.controller;
 
 import com.store.inventario.model.PageResponse;
-import com.store.inventario.model.usuario.Usuario;
+import com.store.inventario.module.auth.model.entity.User;
 import com.store.inventario.service.usuario.UsuarioService;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -22,27 +22,27 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
-public class UsuariosController {
+public class UserController {
     @FXML private TextField txtBuscar;
     @FXML private Button btnLimpiar;
     @FXML private Button btnBuscar;
     @FXML private Button btnAnterior;
     @FXML public Button btnSiguiente;
     
-    private final ObservableList<Usuario> masterData = FXCollections.observableArrayList();
-    private javafx.collections.transformation.FilteredList<Usuario> filteredData;
+    private final ObservableList<User> masterData = FXCollections.observableArrayList();
+    private javafx.collections.transformation.FilteredList<User> filteredData;
     private int paginaActual = 0;
     private final int tamanoPagina = 30;
     private int totalPaginas = 1;
-    @FXML private TableView<Usuario> tblUsuarios;
-    @FXML private TableColumn<Usuario, String> colCodigo;
-    @FXML private TableColumn<Usuario, String> colUsuario;
-    @FXML private TableColumn<Usuario, String> colRol;
-    @FXML private TableColumn<Usuario, String> colCodigoEmpleado;
-    @FXML private TableColumn<Usuario, String> colNombre;
-    @FXML private TableColumn<Usuario, String> colApellido;
-    @FXML private TableColumn<Usuario, Void> colAcciones;
-    @FXML private TableColumn<Usuario, Boolean> colEstado;
+    @FXML private TableView<User> tblUsuarios;
+    @FXML private TableColumn<User, String> colCodigo;
+    @FXML private TableColumn<User, String> colUsuario;
+    @FXML private TableColumn<User, String> colRol;
+    @FXML private TableColumn<User, String> colCodigoEmpleado;
+    @FXML private TableColumn<User, String> colNombre;
+    @FXML private TableColumn<User, String> colApellido;
+    @FXML private TableColumn<User, Void> colAcciones;
+    @FXML private TableColumn<User, Boolean> colEstado;
     
     @FXML private Label lblTotalUsuarios;
     @FXML private Label lblTotalAdmins;
@@ -53,7 +53,7 @@ public class UsuariosController {
 
     @FXML
     public void abrirModalNuevoUsuario() throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/views/usuarios/usuarios-form.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/views/auth/user-form.fxml"));
         Parent root = loader.load();
         
         Stage modal = new Stage();
@@ -104,7 +104,7 @@ public class UsuariosController {
         colEstado.setCellValueFactory(cellData -> new javafx.beans.property.SimpleBooleanProperty(cellData.getValue().isStatus()));
         colEstado.setCellFactory(new Callback<>() {
             @Override
-            public TableCell<Usuario, Boolean> call(TableColumn<Usuario, Boolean> param) {
+            public TableCell<User, Boolean> call(TableColumn<User, Boolean> param) {
                 return new TableCell<>() {
                     private final Label lblStatus = new Label();
                     private final HBox contenedor = new HBox(lblStatus);
@@ -133,9 +133,9 @@ public class UsuariosController {
     }
 
     private void configurarColumnaAcciones() {
-        Callback<TableColumn<Usuario, Void>, TableCell<Usuario, Void>> cellFactory = new Callback<>() {
+        Callback<TableColumn<User, Void>, TableCell<User, Void>> cellFactory = new Callback<>() {
             @Override
-            public TableCell<Usuario, Void> call(final TableColumn<Usuario, Void> param) {
+            public TableCell<User, Void> call(final TableColumn<User, Void> param) {
                 return new TableCell<>() {
                     private final Button btnAcciones = new Button("⋮");
                     private final ContextMenu menuAcciones = new ContextMenu();
@@ -155,8 +155,8 @@ public class UsuariosController {
                         });
 
                         itemEditar.setOnAction(event -> {
-                            Usuario usuario = getTableView().getItems().get(getIndex());
-                            handleEditar(usuario);
+                            User user = getTableView().getItems().get(getIndex());
+                            handleEditar(user);
                         });
                     }
 
@@ -166,15 +166,15 @@ public class UsuariosController {
                         if (empty) {
                             setGraphic(null);
                         } else {
-                            Usuario usuario = getTableView().getItems().get(getIndex());
+                            User user = getTableView().getItems().get(getIndex());
                             
                             menuAcciones.getItems().clear();
                             menuAcciones.getItems().add(itemEditar);
                             
-                            MenuItem itemActivarDesactivar = new MenuItem(usuario.isStatus() ? "Desactivar" : "Activar");
-                            itemActivarDesactivar.getStyleClass().add(usuario.isStatus() ? "menu-item-eliminar" : "menu-item-editar");
+                            MenuItem itemActivarDesactivar = new MenuItem(user.isStatus() ? "Desactivar" : "Activar");
+                            itemActivarDesactivar.getStyleClass().add(user.isStatus() ? "menu-item-eliminar" : "menu-item-editar");
                             itemActivarDesactivar.setOnAction(event -> {
-                                handleActivarDesactivar(usuario);
+                                handleActivarDesactivar(user);
                             });
                             menuAcciones.getItems().add(itemActivarDesactivar);
                             
@@ -187,24 +187,24 @@ public class UsuariosController {
         colAcciones.setCellFactory(cellFactory);
     }
 
-    private void handleActivarDesactivar(Usuario usuario) {
+    private void handleActivarDesactivar(User user) {
         Platform.runLater(() -> {
-            boolean active = usuario.isStatus();
+            boolean active = user.isStatus();
             Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
             confirmacion.setTitle(active ? "Confirmar Desactivación" : "Confirmar Activación");
             confirmacion.setHeaderText(active ? "Desactivar usuario" : "Activar usuario");
             confirmacion.setContentText(active 
-                ? "¿Está seguro de que desea desactivar al usuario " + usuario.getUsername() + "? No podrá iniciar sesión hasta ser reactivado."
-                : "¿Está seguro de que desea activar al usuario " + usuario.getUsername() + "?");
+                ? "¿Está seguro de que desea desactivar al usuario " + user.getUsername() + "? No podrá iniciar sesión hasta ser reactivado."
+                : "¿Está seguro de que desea activar al usuario " + user.getUsername() + "?");
 
             Optional<ButtonType> resultado = confirmacion.showAndWait();
 
             if (resultado.isPresent() && resultado.get() == ButtonType.OK) {
                 try {
                     if (active) {
-                        usuarioService.desactivarUsuario(usuario.getCode());
+                        usuarioService.desactivarUsuario(user.getCode());
                     } else {
-                        usuarioService.activarUsuario(usuario.getCode());
+                        usuarioService.activarUsuario(user.getCode());
                     }
 
                     Alert exito = new Alert(Alert.AlertType.INFORMATION);
@@ -226,13 +226,13 @@ public class UsuariosController {
         });
     }
 
-    private void handleEditar(Usuario usuario) {
+    private void handleEditar(User user) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/views/usuarios/usuarios-form.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/views/auth/user-form.fxml"));
             Parent root = loader.load();
 
-            UsuarioFormController controller = loader.getController();
-            controller.setUsuarioEditar(usuario);
+            UserFormController controller = loader.getController();
+            controller.setUsuarioEditar(user);
 
             Stage modal = new Stage();
             com.store.inventario.utils.WindowUtils.applyIcon(modal);
@@ -284,27 +284,27 @@ public class UsuariosController {
 
     private void obtenerUsuarios() {
         try {
-            PageResponse<Usuario> response = usuarioService.obtenerUsuarios(paginaActual, tamanoPagina);
-            List<Usuario> usuarios = (response != null) ? response.getContent() : java.util.Collections.emptyList();
-            masterData.setAll(usuarios);
+            PageResponse<User> response = usuarioService.obtenerUsuarios(paginaActual, tamanoPagina);
+            List<User> users = (response != null) ? response.getContent() : java.util.Collections.emptyList();
+            masterData.setAll(users);
             
             totalPaginas = response != null ? response.getTotalPages() : 1;
             btnAnterior.setDisable(paginaActual == 0);
             btnSiguiente.setDisable(paginaActual >= totalPaginas - 1);
             
             if (lblTotalUsuarios != null) {
-                lblTotalUsuarios.setText(String.valueOf(response != null ? response.getTotalElements() : usuarios.size()));
+                lblTotalUsuarios.setText(String.valueOf(response != null ? response.getTotalElements() : users.size()));
             }
             
             if (lblTotalAdmins != null) {
-                long totalAdmins = usuarios.stream()
+                long totalAdmins = users.stream()
                         .filter(u -> u.getRole() != null && "ADMIN".equalsIgnoreCase(u.getRole().trim()))
                         .count();
                 lblTotalAdmins.setText(String.valueOf(totalAdmins));
             }
             
             if (lblTotalOperativos != null) {
-                long totalOperativos = usuarios.stream()
+                long totalOperativos = users.stream()
                         .filter(u -> u.getRole() != null && !"ADMIN".equalsIgnoreCase(u.getRole().trim()))
                         .count();
                 lblTotalOperativos.setText(String.valueOf(totalOperativos));

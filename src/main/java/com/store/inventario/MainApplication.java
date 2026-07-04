@@ -19,10 +19,9 @@ public class MainApplication extends Application {
             viewPath = "layout-view.fxml";
             title = "ElectroStore System";
         } else {
-            viewPath = "views/login.fxml";
+            viewPath = "views/auth/login.fxml";
             title = "Sistema de Inventario";
         }
-
         FXMLLoader loader = new FXMLLoader(
                 MainApplication.class.getResource(viewPath)
         );

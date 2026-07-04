@@ -1,9 +1,9 @@
-package com.store.inventario.service.auth;
+package com.store.inventario.module.auth.service;
 
 import com.google.gson.Gson;
 import com.store.inventario.config.ApiConfig;
-import com.store.inventario.model.auth.LoginRequest;
-import com.store.inventario.model.auth.LoginResponse;
+import com.store.inventario.module.auth.request.LoginRequest;
+import com.store.inventario.module.auth.response.LoginResponse;
 import com.store.inventario.security.SessionManager;
 
 import java.net.URI;

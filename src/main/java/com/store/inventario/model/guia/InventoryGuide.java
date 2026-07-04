@@ -1,11 +1,11 @@
 package com.store.inventario.model.guia;
 
-import com.store.inventario.model.usuario.Usuario;
+import com.store.inventario.module.auth.model.entity.User;
 import java.util.List;
 
 public class InventoryGuide {
     private String code;
-    private Usuario user;
+    private User user;
     private String type;
     private String reason;
     private String description;
@@ -15,7 +15,7 @@ public class InventoryGuide {
     public InventoryGuide() {
     }
 
-    public InventoryGuide(String code, Usuario user, String type, String reason, String description, String guideDate, List<GuideDetail> details) {
+    public InventoryGuide(String code, User user, String type, String reason, String description, String guideDate, List<GuideDetail> details) {
         this.code = code;
         this.user = user;
         this.type = type;
@@ -33,11 +33,11 @@ public class InventoryGuide {
         this.code = code;
     }
 
-    public Usuario getUser() {
+    public User getUser() {
         return user;
     }
 
-    public void setUser(Usuario user) {
+    public void setUser(User user) {
         this.user = user;
     }
 

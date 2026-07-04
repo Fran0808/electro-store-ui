@@ -1,6 +1,6 @@
-package com.store.inventario.controller.login;
+package com.store.inventario.module.auth.controller;
 
-import com.store.inventario.service.auth.LoginService;
+import com.store.inventario.module.auth.service.LoginService;
 import com.store.inventario.security.SessionManager;
 import com.store.inventario.utils.DialogUtils;
 import javafx.event.ActionEvent;

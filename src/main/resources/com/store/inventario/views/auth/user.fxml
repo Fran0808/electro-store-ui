@@ -11,7 +11,7 @@
 
 <AnchorPane prefHeight="800.0" prefWidth="1040.0" styleClass="root" stylesheets="@../../styles/style.css"
             xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.store.inventario.controller.usuarios.UsuariosController">
+            fx:controller="com.store.inventario.module.auth.controller.UserController">
 
 
     <VBox spacing="24.0" styleClass="view-container" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0"

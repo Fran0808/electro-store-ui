@@ -1,4 +1,4 @@
-package com.store.inventario.model.auth;
+package com.store.inventario.module.auth.response;
 
 public class LoginResponse {
     private String token;

@@ -8,7 +8,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -161,7 +160,7 @@ public class SidebarController {
 
     @FXML
     private void handleUsuarios() {
-        NavigationManager.getInstance().navegar("/com/store/inventario/views/usuarios/usuarios.fxml");
+        NavigationManager.getInstance().navegar("/com/store/inventario/views/auth/user.fxml");
     }
 
     @FXML
@@ -186,7 +185,7 @@ public class SidebarController {
         try {
             SessionManager.getInstance().cerrarSesion();
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/views/login.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/views/auth/login.fxml"));
             Parent root = loader.load();
 
             Stage loginStage = new Stage();

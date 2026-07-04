@@ -1,21 +1,20 @@
 package com.store.inventario.model.compra;
 
 import com.store.inventario.model.proveedor.Proveedor;
-import com.store.inventario.model.usuario.Usuario;
+import com.store.inventario.module.auth.model.entity.User;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 public class Compra {
     private String code;
-    private Usuario user;
+    private User user;
     private Proveedor supplier;
     private String purchaseDate;
     private List<CompraDetalle> details;
 
     public Compra() {}
 
-    public Compra(String code, Usuario user, Proveedor supplier, String purchaseDate, List<CompraDetalle> details) {
+    public Compra(String code, User user, Proveedor supplier, String purchaseDate, List<CompraDetalle> details) {
         this.code = code;
         this.user = user;
         this.supplier = supplier;
@@ -32,11 +31,11 @@ public class Compra {
         this.code = code;
     }
 
-    public Usuario getUser() {
+    public User getUser() {
         return user;
     }
 
-    public void setUser(Usuario user) {
+    public void setUser(User user) {
         this.user = user;
     }
 

@@ -1,6 +1,6 @@
-package com.store.inventario.controller.usuarios;
+package com.store.inventario.module.auth.controller;
  
-import com.store.inventario.model.usuario.Usuario;
+import com.store.inventario.module.auth.model.entity.User;
 import com.store.inventario.service.usuario.UsuarioService;
 import com.store.inventario.service.empleado.EmpleadoService;
 import com.store.inventario.model.empleado.Empleado;
@@ -14,7 +14,7 @@ import javafx.stage.Stage;
 import java.net.URL;
 import java.util.ResourceBundle;
  
-public class UsuarioFormController implements Initializable {
+public class UserFormController implements Initializable {
  
     @FXML
     private Label lblTitulo;
@@ -32,7 +32,7 @@ public class UsuarioFormController implements Initializable {
     private Button btnGuardar;
  
     private final UsuarioService usuarioService = new UsuarioService();
-    private Usuario usuarioEditar;
+    private User userEditar;
     private java.util.List<Empleado> listaEmpleados = new java.util.ArrayList<>();
     private java.util.Set<String> empleadosConUsuario = new java.util.HashSet<>();
  
@@ -70,10 +70,10 @@ public class UsuarioFormController implements Initializable {
  
     private void cargarEmpleados() {
         try {
-            PageResponse<Usuario> usuariosResponse = usuarioService.obtenerUsuarios();
+            PageResponse<User> usuariosResponse = usuarioService.obtenerUsuarios();
             empleadosConUsuario.clear();
             if (usuariosResponse != null && usuariosResponse.getContent() != null) {
-                for (Usuario u : usuariosResponse.getContent()) {
+                for (User u : usuariosResponse.getContent()) {
                     if (u.getEmployeeCode() != null) {
                         empleadosConUsuario.add(u.getEmployeeCode());
                     }
@@ -113,15 +113,15 @@ public class UsuarioFormController implements Initializable {
         cbEmpleado.setItems(items);
     }
  
-    public void setUsuarioEditar(Usuario usuario) {
-        this.usuarioEditar = usuario;
+    public void setUsuarioEditar(User user) {
+        this.userEditar = user;
         if (lblTitulo != null) {
             lblTitulo.setText("Editar Usuario");
         }
-        txtUsername.setText(usuario.getUsername());
+        txtUsername.setText(user.getUsername());
         txtUsername.setEditable(false);
         
-        String rolEspanol = usuario.getRole();
+        String rolEspanol = user.getRole();
         if ("SELLER".equalsIgnoreCase(rolEspanol)) rolEspanol = "VENDEDOR";
         else if ("STOREKEEPER".equalsIgnoreCase(rolEspanol)) rolEspanol = "ALMACENERO";
         else if (rolEspanol != null) rolEspanol = rolEspanol.toUpperCase().trim();
@@ -129,9 +129,9 @@ public class UsuarioFormController implements Initializable {
         
         filtrarYMostrarEmpleados(false);
         Empleado matchingEmp = null;
-        if (usuario.getEmployeeCode() != null) {
+        if (user.getEmployeeCode() != null) {
             matchingEmp = listaEmpleados.stream()
-                    .filter(e -> usuario.getEmployeeCode().equals(e.getCode()))
+                    .filter(e -> user.getEmployeeCode().equals(e.getCode()))
                     .findFirst()
                     .orElse(null);
         }
@@ -145,7 +145,7 @@ public class UsuarioFormController implements Initializable {
             }
             empValue = matchingEmp.getCode() + " - " + nombre;
         } else {
-            empValue = usuario.getEmployeeCode() + " - " + usuario.getFullName();
+            empValue = user.getEmployeeCode() + " - " + user.getFullName();
         }
         cbEmpleado.setValue(empValue);
         cbEmpleado.setDisable(true);
@@ -166,7 +166,7 @@ public class UsuarioFormController implements Initializable {
         String rol = txtRol.getText();
         String empleadoSeleccionado = cbEmpleado.getValue();
  
-        boolean esNuevo = (usuarioEditar == null);
+        boolean esNuevo = (userEditar == null);
         
         if (username == null || username.trim().isEmpty() ||
             (esNuevo && (password == null || password.trim().isEmpty())) ||
@@ -183,8 +183,8 @@ public class UsuarioFormController implements Initializable {
             if ("VENDEDOR".equals(rol)) rolBackend = "SELLER";
             else if ("ALMACENERO".equals(rol)) rolBackend = "STOREKEEPER";
  
-            Usuario nuevoUsuario = new Usuario(
-                esNuevo ? null : usuarioEditar.getCode(),
+            User nuevoUser = new User(
+                esNuevo ? null : userEditar.getCode(),
                 username.trim(),
                 (password != null && !password.trim().isEmpty()) ? password.trim() : null,
                 rolBackend,
@@ -194,9 +194,9 @@ public class UsuarioFormController implements Initializable {
             );
 
             if (esNuevo) {
-                usuarioService.crearUsuario(nuevoUsuario);
+                usuarioService.crearUsuario(nuevoUser);
             } else {
-                usuarioService.actualizarUsuario(usuarioEditar.getCode(), nuevoUsuario);
+                usuarioService.actualizarUsuario(userEditar.getCode(), nuevoUser);
             }
 
             cerrarModal();

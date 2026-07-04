@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.store.inventario.config.ApiConfig;
 import com.store.inventario.model.PageResponse;
-import com.store.inventario.model.usuario.Usuario;
+import com.store.inventario.module.auth.model.entity.User;
 import com.store.inventario.security.SessionManager;
 
 import java.io.IOException;
@@ -24,11 +24,11 @@ public class UsuarioService {
         gson = new Gson();
     }
 
-    public PageResponse<Usuario> obtenerUsuarios() {
+    public PageResponse<User> obtenerUsuarios() {
         return obtenerUsuarios(0, 1000);
     }
 
-    public PageResponse<Usuario> obtenerUsuarios(int page, int size) {
+    public PageResponse<User> obtenerUsuarios(int page, int size) {
         try {
             String url = URL + "?page=" + page + "&size=" + size;
             HttpRequest request = HttpRequest.newBuilder()
@@ -42,7 +42,7 @@ public class UsuarioService {
                 throw new RuntimeException("Error al obtener usuarios: HTTP " + response.statusCode());
             }
 
-            Type type = new TypeToken<PageResponse<Usuario>>() {}.getType();
+            Type type = new TypeToken<PageResponse<User>>() {}.getType();
             return gson.fromJson(response.body(), type);
 
         } catch (IOException | InterruptedException e) {
@@ -50,9 +50,9 @@ public class UsuarioService {
         }
     }
 
-    public Usuario crearUsuario(Usuario usuario) {
+    public User crearUsuario(User user) {
         try {
-            String json = gson.toJson(usuario);
+            String json = gson.toJson(user);
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(URL))
                     .header("Content-Type", "application/json")
@@ -65,15 +65,15 @@ public class UsuarioService {
                 throw new RuntimeException("Error al crear usuario: HTTP " + response.statusCode());
             }
 
-            return gson.fromJson(response.body(), Usuario.class);
+            return gson.fromJson(response.body(), User.class);
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public Usuario actualizarUsuario(String code, Usuario usuario) {
+    public User actualizarUsuario(String code, User user) {
         try {
-            String json = gson.toJson(usuario);
+            String json = gson.toJson(user);
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(URL + "/" + code))
                     .header("Content-Type", "application/json")
@@ -86,7 +86,7 @@ public class UsuarioService {
                 throw new RuntimeException("Error al actualizar usuario: HTTP " + response.statusCode());
             }
 
-            return gson.fromJson(response.body(), Usuario.class);
+            return gson.fromJson(response.body(), User.class);
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -109,7 +109,7 @@ public class UsuarioService {
         }
     }
 
-    public Usuario activarUsuario(String code) {
+    public User activarUsuario(String code) {
         try {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(URL + "/activate/" + code))
@@ -122,13 +122,13 @@ public class UsuarioService {
                 throw new RuntimeException("Error al activar usuario: HTTP " + response.statusCode() + " - " + response.body());
             }
 
-            return gson.fromJson(response.body(), Usuario.class);
+            return gson.fromJson(response.body(), User.class);
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public Usuario desactivarUsuario(String code) {
+    public User desactivarUsuario(String code) {
         try {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(URL + "/deactivate/" + code))
@@ -141,7 +141,7 @@ public class UsuarioService {
                 throw new RuntimeException("Error al desactivar usuario: HTTP " + response.statusCode() + " - " + response.body());
             }
 
-            return gson.fromJson(response.body(), Usuario.class);
+            return gson.fromJson(response.body(), User.class);
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }

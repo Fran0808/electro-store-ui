@@ -1,6 +1,6 @@
-package com.store.inventario.model.usuario;
+package com.store.inventario.module.auth.model.entity;
 
-public class Usuario {
+public class User {
     private String code;
     private String username;
     private String password;
@@ -10,10 +10,10 @@ public class Usuario {
     private String lastName;
     private boolean status;
 
-    public Usuario() {
+    public User() {
     }
 
-    public Usuario(String code, String username, String password, String role, String employeeCode, String firstName, String lastName) {
+    public User(String code, String username, String password, String role, String employeeCode, String firstName, String lastName) {
         this.code = code;
         this.username = username;
         this.password = password;
@@ -24,7 +24,7 @@ public class Usuario {
         this.status = true;
     }
 
-    public Usuario(String code, String username, String password, String role, String employeeCode, String firstName, String lastName, boolean status) {
+    public User(String code, String username, String password, String role, String employeeCode, String firstName, String lastName, boolean status) {
         this.code = code;
         this.username = username;
         this.password = password;
