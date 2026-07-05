@@ -82,7 +82,7 @@ public class IndexController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        String username = SessionManager.getInstance().getUsername();
+        String username = SessionManager.getInstance().getUser().getUsername();
         if (username == null || username.trim().isEmpty()) {
             username = "Administrador";
         } else {
@@ -115,7 +115,7 @@ public class IndexController implements Initializable {
     }
 
     private void configurarSeguridadYVistas() {
-        String role = SessionManager.getInstance().getRole();
+        String role = SessionManager.getInstance().getUser().getRole();
         if (role == null) {
             role = "";
         } else {
@@ -131,7 +131,7 @@ public class IndexController implements Initializable {
             btnRealizarCopia.setManaged(true);
         } else {
             lblBackupTitle.setText("Informacion de Sesion");
-            lblUltimaCopia.setText("Usuario: " + SessionManager.getInstance().getUsername());
+            lblUltimaCopia.setText("Usuario: " + SessionManager.getInstance().getUser().getUsername());
 
             String roleDisplayName = role;
             if ("STOREKEEPER".equals(role)) {

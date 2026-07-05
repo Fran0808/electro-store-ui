@@ -5,6 +5,7 @@ module com.store.inventario {
     requires com.google.gson;
     requires java.desktop;
     requires java.prefs;
+    requires static lombok;
 
     exports com.store.inventario;
 
@@ -43,5 +44,6 @@ module com.store.inventario {
     opens com.store.inventario.module.sale.request;
     opens com.store.inventario.component;
     opens com.store.inventario.shared.model;
+    opens com.store.inventario.shared.utils;
 
 }

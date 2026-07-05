@@ -67,18 +67,10 @@ public class LoginController {
         }
 
         try {
-            boolean loginExitoso = loginService.autenticar(usuario, password);
-
+            boolean remember = chMantenerSesion.isSelected();
+            boolean loginExitoso = loginService.autenticar(usuario, password, remember);
+            System.out.println(remember);
             if (loginExitoso) {
-                if (chMantenerSesion.isSelected()) {
-                    SessionManager.getInstance().guardarSesion(
-                            SessionManager.getInstance().getToken(),
-                            SessionManager.getInstance().getUsername(),
-                            SessionManager.getInstance().getRole(),
-                            true
-                    );
-                }
-
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/component/layout-view.fxml"));
                 Parent root = loader.load();
 

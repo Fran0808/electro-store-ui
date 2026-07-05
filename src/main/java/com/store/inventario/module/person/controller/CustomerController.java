@@ -163,7 +163,7 @@ public class CustomerController implements Initializable {
                         itemEditar.getStyleClass().add("menu-item-editar");
                         itemEliminar.getStyleClass().add("menu-item-eliminar");
 
-                        String rolActual = SessionManager.getInstance().getRole();
+                        String rolActual = SessionManager.getInstance().getUser().getRole();
 
                         if(!"ADMIN".equalsIgnoreCase(rolActual)){
                             menuAcciones.getItems().addAll(itemEditar);
