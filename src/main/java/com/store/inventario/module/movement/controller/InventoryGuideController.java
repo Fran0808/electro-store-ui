@@ -1,6 +1,6 @@
 package com.store.inventario.module.movement.controller;
 
-import com.store.inventario.model.PageResponse;
+import com.store.inventario.shared.model.PageResponse;
 import com.store.inventario.module.movement.model.entity.InventoryGuide;
 import com.store.inventario.module.movement.service.InventoryGuideService;
 import javafx.collections.FXCollections;
@@ -257,7 +257,7 @@ public class InventoryGuideController {
         Parent root = loader.load();
 
         Stage modal = new Stage();
-        com.store.inventario.utils.WindowUtils.applyIcon(modal);
+        com.store.inventario.shared.utils.WindowUtils.applyIcon(modal);
         modal.initModality(Modality.APPLICATION_MODAL);
         modal.setTitle("Agregar nueva guía");
         modal.setScene(new Scene(root));
@@ -274,7 +274,7 @@ public class InventoryGuideController {
         controller.setGuideCode(guide.getCode());
 
         Stage modal = new Stage();
-        com.store.inventario.utils.WindowUtils.applyIcon(modal);
+        com.store.inventario.shared.utils.WindowUtils.applyIcon(modal);
         modal.initModality(Modality.APPLICATION_MODAL);
         modal.setTitle("Detalle de Guía - " + guide.getCode());
         modal.setScene(new Scene(root));

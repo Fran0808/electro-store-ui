@@ -1,6 +1,6 @@
 package com.store.inventario.module.person.controller;
 
-import com.store.inventario.model.PageResponse;
+import com.store.inventario.shared.model.PageResponse;
 import com.store.inventario.module.person.model.entity.Employee;
 import com.store.inventario.module.person.service.EmployeeService;
 import javafx.application.Platform;
@@ -135,7 +135,7 @@ public class EmployeeController implements Initializable {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/views/person/employee-form.fxml"));
         Parent root = loader.load();
         Stage modal = new Stage();
-        com.store.inventario.utils.WindowUtils.applyIcon(modal);
+        com.store.inventario.shared.utils.WindowUtils.applyIcon(modal);
         modal.initModality(Modality.APPLICATION_MODAL);
         modal.setTitle("Nuevo Empleado");
         modal.setResizable(false);
@@ -151,7 +151,7 @@ public class EmployeeController implements Initializable {
             EmployeeFormController controller = loader.getController();
             controller.setEmpleadoEditar(employee);
             Stage modal = new Stage();
-            com.store.inventario.utils.WindowUtils.applyIcon(modal);
+            com.store.inventario.shared.utils.WindowUtils.applyIcon(modal);
             modal.initModality(Modality.APPLICATION_MODAL);
             modal.setTitle("Editar Empleado");
             modal.setResizable(false);

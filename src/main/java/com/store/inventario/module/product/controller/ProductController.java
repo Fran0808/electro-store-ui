@@ -1,6 +1,6 @@
 package com.store.inventario.module.product.controller;
 
-import com.store.inventario.model.PageResponse;
+import com.store.inventario.shared.model.PageResponse;
 import com.store.inventario.module.product.model.entity.Category;
 import com.store.inventario.module.product.model.entity.ProductMetrics;
 import com.store.inventario.module.product.model.entity.Product;
@@ -8,6 +8,7 @@ import com.store.inventario.module.product.service.CategoryService;
 import com.store.inventario.security.SessionManager;
 import com.store.inventario.module.product.service.ProductService;
 
+import com.store.inventario.shared.model.NavigationManager;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -95,7 +96,7 @@ public class ProductController implements Initializable {
         Parent root = loader.load();
 
         Stage modal = new Stage();
-        com.store.inventario.utils.WindowUtils.applyIcon(modal);
+        com.store.inventario.shared.utils.WindowUtils.applyIcon(modal);
         modal.initModality(Modality.APPLICATION_MODAL);
         modal.setTitle("Nuevo Producto");
         modal.setScene(new Scene(root));
@@ -116,7 +117,7 @@ public class ProductController implements Initializable {
             Parent root = loader.load();
 
             Stage modal = new Stage();
-            com.store.inventario.utils.WindowUtils.applyIcon(modal);
+            com.store.inventario.shared.utils.WindowUtils.applyIcon(modal);
             modal.initModality(Modality.APPLICATION_MODAL);
             modal.setTitle("Gestión de Categorías");
             modal.setScene(new Scene(root));
@@ -142,7 +143,7 @@ public class ProductController implements Initializable {
             controller.setProductoEditar(product);
 
             Stage modal = new Stage();
-            com.store.inventario.utils.WindowUtils.applyIcon(modal);
+            com.store.inventario.shared.utils.WindowUtils.applyIcon(modal);
             modal.initModality(Modality.APPLICATION_MODAL);
             modal.setTitle("Editar Producto");
             modal.setScene(new Scene(root));
@@ -179,7 +180,7 @@ public class ProductController implements Initializable {
                     exito.showAndWait();
 
                     refreshData();
-                    com.store.inventario.model.NavigationManager.getInstance().refreshAlerts();
+                    NavigationManager.getInstance().refreshAlerts();
                 } catch (Exception e) {
                     e.printStackTrace();
                     Alert error = new Alert(Alert.AlertType.ERROR);

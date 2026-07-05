@@ -1,6 +1,6 @@
 package com.store.inventario.module.product.controller;
 
-import com.store.inventario.model.PageResponse;
+import com.store.inventario.shared.model.PageResponse;
 import com.store.inventario.module.product.model.entity.Category;
 import com.store.inventario.security.SessionManager;
 import com.store.inventario.module.product.service.CategoryService;
@@ -219,7 +219,7 @@ public class CategoryManagementController {
         alerta.setTitle(titulo);
         alerta.setHeaderText(null);
         alerta.setContentText(mensaje);
-        com.store.inventario.utils.WindowUtils.applyIcon(alerta);
+        com.store.inventario.shared.utils.WindowUtils.applyIcon(alerta);
         alerta.showAndWait();
     }
 }

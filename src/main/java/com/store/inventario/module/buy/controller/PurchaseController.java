@@ -1,6 +1,6 @@
 package com.store.inventario.module.buy.controller;
 
-import com.store.inventario.model.PageResponse;
+import com.store.inventario.shared.model.PageResponse;
 import com.store.inventario.module.buy.model.entity.Purchase;
 import com.store.inventario.module.buy.model.entity.PurchaseDetail;
 import com.store.inventario.module.buy.service.PucharseService;
@@ -142,7 +142,7 @@ public class PurchaseController {
                 controller.setCompra(purchase);
 
                 Stage modal = new Stage();
-                com.store.inventario.utils.WindowUtils.applyIcon(modal);
+                com.store.inventario.shared.utils.WindowUtils.applyIcon(modal);
                 modal.initModality(Modality.APPLICATION_MODAL);
                 modal.setTitle("Detalle de Compra - " + purchase.getCode());
                 modal.setScene(new Scene(root));
@@ -153,7 +153,7 @@ public class PurchaseController {
                 alert.setTitle("Error");
                 alert.setHeaderText("No se pudo cargar el detalle");
                 alert.setContentText("Ocurrió un error al cargar la vista de detalle: " + e.getMessage());
-                com.store.inventario.utils.WindowUtils.applyIcon(alert);
+                com.store.inventario.shared.utils.WindowUtils.applyIcon(alert);
                 alert.showAndWait();
             }
         });
@@ -218,7 +218,7 @@ public class PurchaseController {
             alert.setTitle("Error");
             alert.setHeaderText("No se pudieron obtener las compras");
             alert.setContentText("Ocurrió un error al cargar el listado de compras desde el servidor: " + e.getMessage());
-            com.store.inventario.utils.WindowUtils.applyIcon(alert);
+            com.store.inventario.shared.utils.WindowUtils.applyIcon(alert);
             alert.showAndWait();
         }
     }
@@ -340,7 +340,7 @@ public class PurchaseController {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/views/buy/purchase-form.fxml"));
         Parent root = loader.load();
         Stage modal = new Stage();
-        com.store.inventario.utils.WindowUtils.applyIcon(modal);
+        com.store.inventario.shared.utils.WindowUtils.applyIcon(modal);
         modal.initModality(Modality.APPLICATION_MODAL);
         modal.setTitle("Nueva Compra");
         modal.setScene(new Scene(root));

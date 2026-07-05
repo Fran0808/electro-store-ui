@@ -2,8 +2,8 @@ package com.store.inventario.module.buy.service;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.store.inventario.config.ApiConfig;
-import com.store.inventario.model.PageResponse;
+import com.store.inventario.shared.config.ApiConfig;
+import com.store.inventario.shared.model.PageResponse;
 import com.store.inventario.module.buy.model.entity.Purchase;
 import com.store.inventario.module.buy.request.CreatePurchaseRequest;
 import com.store.inventario.module.buy.model.entity.PurchaseMetrics;

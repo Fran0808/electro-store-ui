@@ -1,6 +1,6 @@
 package com.store.inventario.module.supplier.controller;
 
-import com.store.inventario.model.PageResponse;
+import com.store.inventario.shared.model.PageResponse;
 import com.store.inventario.module.supplier.model.entity.Supplier;
 import com.store.inventario.module.supplier.service.SupplierService;
 import javafx.application.Platform;
@@ -128,7 +128,7 @@ public class SupplierSearchModalController implements Initializable {
             alert.setTitle("Atención");
             alert.setHeaderText(null);
             alert.setContentText("Debe seleccionar un proveedor de la lista.");
-            com.store.inventario.utils.WindowUtils.applyIcon(alert);
+            com.store.inventario.shared.utils.WindowUtils.applyIcon(alert);
             alert.showAndWait();
             return;
         }

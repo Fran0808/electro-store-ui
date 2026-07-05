@@ -1,6 +1,6 @@
 package com.store.inventario.module.buy.controller;
 
-import com.store.inventario.model.PageResponse;
+import com.store.inventario.shared.model.PageResponse;
 import com.store.inventario.module.buy.request.CreatePurchaseDetailRequest;
 import com.store.inventario.module.buy.request.CreatePurchaseRequest;
 import com.store.inventario.module.product.model.entity.Product;
@@ -10,6 +10,7 @@ import com.store.inventario.module.buy.service.PucharseService;
 import com.store.inventario.module.supplier.service.SupplierService;
 import com.store.inventario.module.product.service.ProductService;
 import com.store.inventario.module.supplier.controller.SupplierSearchModalController;
+import com.store.inventario.shared.model.NavigationManager;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -169,7 +170,7 @@ public class PurchaseFormController {
             SupplierSearchModalController controller = loader.getController();
 
             Stage modal = new Stage();
-            com.store.inventario.utils.WindowUtils.applyIcon(modal);
+            com.store.inventario.shared.utils.WindowUtils.applyIcon(modal);
             modal.initModality(javafx.stage.Modality.APPLICATION_MODAL);
             modal.setTitle("Buscar Proveedor");
             modal.setScene(new Scene(root));
@@ -310,7 +311,7 @@ public class PurchaseFormController {
 
             CreatePurchaseRequest request = new CreatePurchaseRequest(supplierCode, details);
             pucharseService.crearCompra(request);
-            com.store.inventario.model.NavigationManager.getInstance().refreshAlerts();
+            NavigationManager.getInstance().refreshAlerts();
 
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Éxito");
@@ -340,7 +341,7 @@ public class PurchaseFormController {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle(titulo);
         alert.setHeaderText(null);
-        com.store.inventario.utils.WindowUtils.applyIcon(alert);
+        com.store.inventario.shared.utils.WindowUtils.applyIcon(alert);
         alert.setContentText(mensaje);
         alert.showAndWait();
     }

@@ -5,7 +5,7 @@ import com.store.inventario.module.person.model.enums.EmployeePosition;
 import com.store.inventario.module.auth.service.UserService;
 import com.store.inventario.module.person.service.EmployeeService;
 import com.store.inventario.module.person.model.entity.Employee;
-import com.store.inventario.model.PageResponse;
+import com.store.inventario.shared.model.PageResponse;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -213,7 +213,7 @@ public class UserFormController implements Initializable {
         alerta.setTitle(titulo);
         alerta.setHeaderText(null);
         alerta.setContentText(mensaje);
-        com.store.inventario.utils.WindowUtils.applyIcon(alerta);
+        com.store.inventario.shared.utils.WindowUtils.applyIcon(alerta);
         alerta.showAndWait();
     }
 }

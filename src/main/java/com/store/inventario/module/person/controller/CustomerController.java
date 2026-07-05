@@ -1,6 +1,6 @@
 package com.store.inventario.module.person.controller;
 
-import com.store.inventario.model.PageResponse;
+import com.store.inventario.shared.model.PageResponse;
 import com.store.inventario.module.person.model.entity.Customer;
 import com.store.inventario.module.person.model.entity.CustomerMetrics;
 import com.store.inventario.security.SessionManager;
@@ -115,7 +115,7 @@ public class CustomerController implements Initializable {
         Parent root = loader.load();
 
         Stage modal = new Stage();
-        com.store.inventario.utils.WindowUtils.applyIcon(modal);
+        com.store.inventario.shared.utils.WindowUtils.applyIcon(modal);
         modal.initModality(Modality.APPLICATION_MODAL);
         modal.setTitle("Nuevo Cliente");
         modal.setScene(new Scene(root));
@@ -212,7 +212,7 @@ public class CustomerController implements Initializable {
             controller.setClienteEditar(customer);
 
             Stage modal = new Stage();
-            com.store.inventario.utils.WindowUtils.applyIcon(modal);
+            com.store.inventario.shared.utils.WindowUtils.applyIcon(modal);
             modal.initModality(Modality.APPLICATION_MODAL);
             modal.setTitle("Editar Cliente");
             modal.setScene(new Scene(root));
@@ -232,7 +232,7 @@ public class CustomerController implements Initializable {
             confirmacion.setContentText("Se eliminará al cliente \"" + 
                     (customer.getPerson() != null ? customer.getPerson().getFirstName() + " " + customer.getPerson().getLastName() : "") +
                     "\" (Código: " + customer.getCode() + "). Esta acción no se puede deshacer.");
-            com.store.inventario.utils.WindowUtils.applyIcon(confirmacion);
+            com.store.inventario.shared.utils.WindowUtils.applyIcon(confirmacion);
 
             Optional<ButtonType> resultado = confirmacion.showAndWait();
 
@@ -244,7 +244,7 @@ public class CustomerController implements Initializable {
                     exito.setTitle("Éxito");
                     exito.setHeaderText("Cliente Eliminado");
                     exito.setContentText("El cliente se ha eliminado correctamente del sistema.");
-                    com.store.inventario.utils.WindowUtils.applyIcon(exito);
+                    com.store.inventario.shared.utils.WindowUtils.applyIcon(exito);
                     exito.showAndWait();
 
                     obtenerClientes();
@@ -254,7 +254,7 @@ public class CustomerController implements Initializable {
                     error.setTitle("Error");
                     error.setHeaderText("No se pudo eliminar el cliente");
                     error.setContentText("Ocurrió un error al intentar eliminar al cliente. Asegúrese de que no tenga registros dependientes en el sistema: " + e.getMessage());
-                    com.store.inventario.utils.WindowUtils.applyIcon(error);
+                    com.store.inventario.shared.utils.WindowUtils.applyIcon(error);
                     error.showAndWait();
                 }
             }

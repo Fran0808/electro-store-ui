@@ -2,8 +2,8 @@ package com.store.inventario.module.person.service;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.store.inventario.config.ApiConfig;
-import com.store.inventario.model.PageResponse;
+import com.store.inventario.shared.config.ApiConfig;
+import com.store.inventario.shared.model.PageResponse;
 import com.store.inventario.module.person.model.entity.Customer;
 import com.store.inventario.module.person.request.CreateCustomerRequest;
 import com.store.inventario.module.person.request.UpdateCustomerRequest;

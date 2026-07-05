@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.SVGPath?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      prefWidth="450.0"
+      spacing="24.0"
+      styleClass="metric-card"
+      fx:controller="com.store.inventario.component.ModalController">
+
+    <stylesheets>
+        <URL value="@../styles/style.css" />
+    </stylesheets>
+
+    <HBox spacing="16.0" alignment="TOP_LEFT">
+        <StackPane fx:id="paneIcono" styleClass="metric-icon-container">
+            <SVGPath fx:id="svgAlerta" content="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z M12 9v4 M12 17h.01" styleClass="metric-icon" visible="false" managed="false"/>
+            <SVGPath fx:id="svgError" content="M12 22c5.52 0 10-4.48 10-10S17.52 2 12 2 2 6.48 2 12s4.48 10 10 10z M15 9l-6 6 M9 9l6 6" styleClass="metric-icon" visible="false" managed="false"/>
+        </StackPane>
+
+        <VBox spacing="8.0" HBox.hgrow="ALWAYS">
+            <Label fx:id="lblCategoria" text="SISTEMA" styleClass="metric-label"/>
+            <Label fx:id="lblTitulo" text="Título del Mensaje" styleClass="header-title" wrapText="true"/>
+            <Label fx:id="lblMensaje" text="Aquí puedes mostrar cualquier tipo de información relevante, confirmación, error o aviso general. Este diseño es versátil y se adapta a cualquier contexto." styleClass="header-subtitle" wrapText="true"/>
+        </VBox>
+    </HBox>
+
+    <HBox spacing="12.0" alignment="CENTER_RIGHT" maxWidth="Infinity">
+        <Button fx:id="btnCancelar" text="Cancelar" styleClass="btn-secondary"/>
+        <Button fx:id="btnConfirmar" text="Aceptar" styleClass="btn-primary"/>
+    </HBox>
+
+</VBox>

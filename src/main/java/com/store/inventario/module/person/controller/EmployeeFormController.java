@@ -61,10 +61,10 @@ public class EmployeeFormController {
                 return null;
             }
         });
-        com.store.inventario.utils.ValidationUtils.hacerSoloNumericoConLimite(txtDni, 8);
-        com.store.inventario.utils.ValidationUtils.hacerSoloTelefono(txtTelefono);
+        com.store.inventario.shared.utils.ValidationUtils.hacerSoloNumericoConLimite(txtDni, 8);
+        com.store.inventario.shared.utils.ValidationUtils.hacerSoloTelefono(txtTelefono);
         txtTelefono.setText("+51 ");
-        com.store.inventario.utils.ValidationUtils.hacerSoloDecimal(txtSueldo, 8, 2);
+        com.store.inventario.shared.utils.ValidationUtils.hacerSoloDecimal(txtSueldo, 8, 2);
     }
 
     public void setEmpleadoEditar(Employee employee) {

@@ -1,6 +1,6 @@
 package com.store.inventario.module.movement.controller;
 
-import com.store.inventario.model.PageResponse;
+import com.store.inventario.shared.model.PageResponse;
 import com.store.inventario.module.movement.request.CreateGuideDetailRequest;
 import com.store.inventario.module.movement.request.CreateInventoryGuideRequest;
 import com.store.inventario.module.movement.model.entity.RowDetail;
@@ -9,6 +9,7 @@ import com.store.inventario.module.product.model.entity.Product;
 import com.store.inventario.security.SessionManager;
 import com.store.inventario.module.movement.service.InventoryGuideService;
 import com.store.inventario.module.product.service.ProductService;
+import com.store.inventario.shared.model.NavigationManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -197,7 +198,7 @@ public class GuideDetailFormController {
             InventoryGuide guide = guideService.crearGuia(
                     new CreateInventoryGuideRequest(tipo, motivo, desc, details)
             );
-            com.store.inventario.model.NavigationManager.getInstance().refreshAlerts();
+            NavigationManager.getInstance().refreshAlerts();
             mostrarAlerta(Alert.AlertType.INFORMATION, "Éxito",
                     "Guía " + guide.getCode() + " registrada correctamente.");
             cerrarVentana(btnGuardar);
@@ -243,7 +244,7 @@ public class GuideDetailFormController {
         alerta.setTitle(titulo);
         alerta.setHeaderText(null);
         alerta.setContentText(mensaje);
-        com.store.inventario.utils.WindowUtils.applyIcon(alerta);
+        com.store.inventario.shared.utils.WindowUtils.applyIcon(alerta);
         alerta.showAndWait();
     }
 }

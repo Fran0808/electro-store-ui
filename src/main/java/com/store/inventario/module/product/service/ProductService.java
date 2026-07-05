@@ -1,7 +1,7 @@
 package com.store.inventario.module.product.service;
 
-import com.store.inventario.config.ApiConfig;
-import com.store.inventario.model.PageResponse;
+import com.store.inventario.shared.config.ApiConfig;
+import com.store.inventario.shared.model.PageResponse;
 import com.store.inventario.module.product.request.CreateProductRequest;
 import com.store.inventario.module.product.request.UpdateProductRequest;
 import com.store.inventario.module.product.model.entity.Product;

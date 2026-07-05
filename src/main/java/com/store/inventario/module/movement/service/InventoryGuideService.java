@@ -2,8 +2,8 @@ package com.store.inventario.module.movement.service;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.store.inventario.config.ApiConfig;
-import com.store.inventario.model.PageResponse;
+import com.store.inventario.shared.config.ApiConfig;
+import com.store.inventario.shared.model.PageResponse;
 import com.store.inventario.module.movement.request.CreateInventoryGuideRequest;
 import com.store.inventario.module.movement.model.entity.InventoryGuide;
 import com.store.inventario.security.SessionManager;

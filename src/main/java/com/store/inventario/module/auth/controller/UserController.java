@@ -1,6 +1,6 @@
 package com.store.inventario.module.auth.controller;
 
-import com.store.inventario.model.PageResponse;
+import com.store.inventario.shared.model.PageResponse;
 import com.store.inventario.module.auth.model.entity.User;
 import com.store.inventario.module.auth.service.UserService;
 import javafx.application.Platform;
@@ -57,7 +57,7 @@ public class UserController {
         Parent root = loader.load();
         
         Stage modal = new Stage();
-        com.store.inventario.utils.WindowUtils.applyIcon(modal);
+        com.store.inventario.shared.utils.WindowUtils.applyIcon(modal);
         modal.initModality(Modality.APPLICATION_MODAL);
         modal.setTitle("Nuevo Usuario");
         modal.setResizable(false);
@@ -235,7 +235,7 @@ public class UserController {
             controller.setUsuarioEditar(user);
 
             Stage modal = new Stage();
-            com.store.inventario.utils.WindowUtils.applyIcon(modal);
+            com.store.inventario.shared.utils.WindowUtils.applyIcon(modal);
             modal.initModality(Modality.APPLICATION_MODAL);
             modal.setTitle("Editar Usuario");
             modal.setResizable(false);

@@ -9,13 +9,6 @@ module com.store.inventario {
     exports com.store.inventario;
 
     opens com.store.inventario;
-    opens com.store.inventario.controller;
-    opens com.store.inventario.controller.ventas;
-    opens com.store.inventario.controller.alertas;
-
-
-    opens com.store.inventario.model;
-    opens com.store.inventario.model.ventas;
 
     //AUTH
     opens com.store.inventario.module.auth.controller;
@@ -44,5 +37,11 @@ module com.store.inventario {
     opens com.store.inventario.module.buy.controller;
     opens com.store.inventario.module.buy.model.entity;
     opens com.store.inventario.module.buy.request;
+    //SALE
+    opens com.store.inventario.module.sale.controller;
+    opens com.store.inventario.module.sale.model.entity;
+    opens com.store.inventario.module.sale.request;
+    opens com.store.inventario.component;
+    opens com.store.inventario.shared.model;
 
 }

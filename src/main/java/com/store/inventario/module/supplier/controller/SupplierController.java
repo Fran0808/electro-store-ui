@@ -1,6 +1,6 @@
 package com.store.inventario.module.supplier.controller;
 
-import com.store.inventario.model.PageResponse;
+import com.store.inventario.shared.model.PageResponse;
 import com.store.inventario.module.buy.model.entity.PurchaseMetrics;
 import com.store.inventario.module.buy.service.PucharseService;
 import com.store.inventario.module.supplier.model.entity.Supplier;
@@ -111,7 +111,7 @@ public class SupplierController implements Initializable {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/views/supplier/supplier-form.fxml"));
         Parent root = loader.load();
         Stage modal = new Stage();
-        com.store.inventario.utils.WindowUtils.applyIcon(modal);
+        com.store.inventario.shared.utils.WindowUtils.applyIcon(modal);
         modal.initModality(Modality.APPLICATION_MODAL);
         modal.setTitle("Nuevo Proveedor");
         modal.setResizable(false);
@@ -127,7 +127,7 @@ public class SupplierController implements Initializable {
             SupplierFormController controller = loader.getController();
             controller.setProveedorEditar(supplier);
             Stage modal = new Stage();
-            com.store.inventario.utils.WindowUtils.applyIcon(modal);
+            com.store.inventario.shared.utils.WindowUtils.applyIcon(modal);
             modal.initModality(Modality.APPLICATION_MODAL);
             modal.setTitle("Editar Proveedor");
             modal.setResizable(false);
@@ -140,7 +140,7 @@ public class SupplierController implements Initializable {
             alert.setTitle("Error");
             alert.setHeaderText("No se pudo abrir el formulario");
             alert.setContentText(e.getMessage());
-            com.store.inventario.utils.WindowUtils.applyIcon(alert);
+            com.store.inventario.shared.utils.WindowUtils.applyIcon(alert);
             alert.showAndWait();
         }
     }
@@ -151,7 +151,7 @@ public class SupplierController implements Initializable {
             confirmacion.setTitle("Confirmar Eliminación");
             confirmacion.setHeaderText("¿Eliminar proveedor?");
             confirmacion.setContentText("Se eliminará el proveedor \"" + supplier.getTradeName() + "\"");
-            com.store.inventario.utils.WindowUtils.applyIcon(confirmacion);
+            com.store.inventario.shared.utils.WindowUtils.applyIcon(confirmacion);
             Optional<ButtonType> resultado = confirmacion.showAndWait();
             if (resultado.isPresent() && resultado.get() == ButtonType.OK) {
                 try {
@@ -160,7 +160,7 @@ public class SupplierController implements Initializable {
                     exito.setTitle("Éxito");
                     exito.setHeaderText("Proveedor eliminado");
                     exito.setContentText("El proveedor se eliminó correctamente");
-                    com.store.inventario.utils.WindowUtils.applyIcon(exito);
+                    com.store.inventario.shared.utils.WindowUtils.applyIcon(exito);
                     exito.showAndWait();
                     obtenerProveedores();
                 } catch (Exception e) {
@@ -169,7 +169,7 @@ public class SupplierController implements Initializable {
                     error.setTitle("Error");
                     error.setHeaderText("No se pudo eliminar el proveedor");
                     error.setContentText(e.getMessage());
-                    com.store.inventario.utils.WindowUtils.applyIcon(error);
+                    com.store.inventario.shared.utils.WindowUtils.applyIcon(error);
                     error.showAndWait();
                 }
             }
@@ -256,7 +256,7 @@ public class SupplierController implements Initializable {
             alert.setTitle("Error");
             alert.setHeaderText("No se pudieron obtener los proveedores");
             alert.setContentText(e.getMessage());
-            com.store.inventario.utils.WindowUtils.applyIcon(alert);
+            com.store.inventario.shared.utils.WindowUtils.applyIcon(alert);
             alert.showAndWait();
         }
     }

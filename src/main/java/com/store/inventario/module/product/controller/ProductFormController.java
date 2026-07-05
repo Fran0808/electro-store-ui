@@ -1,6 +1,6 @@
 package com.store.inventario.module.product.controller;
 
-import com.store.inventario.model.PageResponse;
+import com.store.inventario.shared.model.PageResponse;
 import com.store.inventario.module.product.model.entity.Category;
 import com.store.inventario.module.product.request.CreateProductRequest;
 import com.store.inventario.module.product.model.entity.Product;
@@ -9,6 +9,7 @@ import com.store.inventario.security.SessionManager;
 import com.store.inventario.module.product.service.CategoryService;
 import com.store.inventario.module.product.service.ProductService;
 
+import com.store.inventario.shared.model.NavigationManager;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -70,9 +71,9 @@ public class ProductFormController {
     @FXML
     public void initialize() {
         cargarCategorias();
-        com.store.inventario.utils.ValidationUtils.hacerSoloDecimal(txtPrecio, 8, 2);
-        com.store.inventario.utils.ValidationUtils.hacerSoloNumericoConLimite(txtGarantia, 3);
-        com.store.inventario.utils.ValidationUtils.hacerSoloNumericoConLimite(txtStockMinimo, 4);
+        com.store.inventario.shared.utils.ValidationUtils.hacerSoloDecimal(txtPrecio, 8, 2);
+        com.store.inventario.shared.utils.ValidationUtils.hacerSoloNumericoConLimite(txtGarantia, 3);
+        com.store.inventario.shared.utils.ValidationUtils.hacerSoloNumericoConLimite(txtStockMinimo, 4);
         String roleActual = SessionManager.getInstance().getRole();
 
         if(!"ADMIN".equalsIgnoreCase(roleActual)){
@@ -221,7 +222,7 @@ public class ProductFormController {
                 alert.showAndWait();
             }
 
-            com.store.inventario.model.NavigationManager.getInstance().refreshAlerts();
+            NavigationManager.getInstance().refreshAlerts();
             Stage stage = (Stage) btnGuardar.getScene().getWindow();
             stage.close();
 
@@ -247,7 +248,7 @@ public class ProductFormController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/views/product/category-form-modal.fxml"));
             Parent root = loader.load();
             Stage modal = new Stage();
-            com.store.inventario.utils.WindowUtils.applyIcon(modal);
+            com.store.inventario.shared.utils.WindowUtils.applyIcon(modal);
 
             modal.initModality(Modality.APPLICATION_MODAL);
             modal.setTitle("Nueva Categoría");

@@ -31,7 +31,7 @@ public class CategoryFormModalController {
             alert.setTitle("Advertencia");
             alert.setHeaderText("Campo Obligatorio");
             alert.setContentText("Por favor, ingrese el nombre de la categoría.");
-            com.store.inventario.utils.WindowUtils.applyIcon(alert);
+            com.store.inventario.shared.utils.WindowUtils.applyIcon(alert);
             alert.showAndWait();
             return;
         }
@@ -49,7 +49,7 @@ public class CategoryFormModalController {
             alert.setTitle("Error");
             alert.setHeaderText("No se pudo crear la categoría");
             alert.setContentText("Ocurrió un error al guardar: " + e.getMessage());
-            com.store.inventario.utils.WindowUtils.applyIcon(alert);
+            com.store.inventario.shared.utils.WindowUtils.applyIcon(alert);
             alert.showAndWait();
         }
     }

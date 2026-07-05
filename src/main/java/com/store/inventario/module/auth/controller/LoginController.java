@@ -2,7 +2,7 @@ package com.store.inventario.module.auth.controller;
 
 import com.store.inventario.module.auth.service.LoginService;
 import com.store.inventario.security.SessionManager;
-import com.store.inventario.utils.DialogUtils;
+import com.store.inventario.shared.utils.DialogUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -79,11 +79,11 @@ public class LoginController {
                     );
                 }
 
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/layout-view.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/component/layout-view.fxml"));
                 Parent root = loader.load();
 
                 Stage layoutStage = new Stage();
-                com.store.inventario.utils.WindowUtils.applyIcon(layoutStage);
+                com.store.inventario.shared.utils.WindowUtils.applyIcon(layoutStage);
                 layoutStage.setTitle("ElectroStore System");
                 layoutStage.setScene(new Scene(root));
                 layoutStage.setMinWidth(1280);

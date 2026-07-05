@@ -1,7 +1,7 @@
 package com.store.inventario;
 
 import com.store.inventario.security.SessionManager;
-import com.store.inventario.utils.WindowUtils;
+import com.store.inventario.shared.utils.WindowUtils;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;

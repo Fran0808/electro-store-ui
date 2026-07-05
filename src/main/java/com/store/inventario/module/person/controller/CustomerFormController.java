@@ -40,7 +40,7 @@ public class CustomerFormController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        com.store.inventario.utils.ValidationUtils.hacerSoloTelefono(txtTelefono);
+        com.store.inventario.shared.utils.ValidationUtils.hacerSoloTelefono(txtTelefono);
         txtTelefono.setText("+51 ");
 
         txtDni.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -162,7 +162,7 @@ public class CustomerFormController implements Initializable {
         alerta.setTitle(titulo);
         alerta.setHeaderText(null);
         alerta.setContentText(mensaje);
-        com.store.inventario.utils.WindowUtils.applyIcon(alerta);
+        com.store.inventario.shared.utils.WindowUtils.applyIcon(alerta);
         alerta.showAndWait();
     }
 }

@@ -1,6 +1,6 @@
 package com.store.inventario.module.person.controller;
 
-import com.store.inventario.model.PageResponse;
+import com.store.inventario.shared.model.PageResponse;
 import com.store.inventario.module.person.model.entity.Customer;
 import com.store.inventario.module.person.service.CustomerService;
 import javafx.application.Platform;
@@ -139,7 +139,7 @@ public class CustomerSearchModalController implements Initializable {
             alert.setTitle("Atención");
             alert.setHeaderText(null);
             alert.setContentText("Debe seleccionar un cliente de la lista.");
-            com.store.inventario.utils.WindowUtils.applyIcon(alert);
+            com.store.inventario.shared.utils.WindowUtils.applyIcon(alert);
             alert.showAndWait();
             return;
         }
