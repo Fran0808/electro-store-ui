@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 
-<AnchorPane prefHeight="750.0" prefWidth="1150.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.store.inventario.controller.guias.GuiaFormController">
+<AnchorPane prefHeight="750.0" prefWidth="1150.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.store.inventario.module.movement.controller.GuideDetailFormController">
     <stylesheets>
         <URL value="@../../styles/style.css" />
     </stylesheets>

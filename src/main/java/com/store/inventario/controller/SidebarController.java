@@ -152,7 +152,7 @@ public class SidebarController {
 
     @FXML
     private void handleGuias() {
-        NavigationManager.getInstance().navegar("/com/store/inventario/views/guias/guias.fxml");
+        NavigationManager.getInstance().navegar("/com/store/inventario/views/movement/inventory-guide.fxml");
     }
 
     @FXML

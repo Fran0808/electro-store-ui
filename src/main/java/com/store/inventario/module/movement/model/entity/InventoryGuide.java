@@ -1,4 +1,4 @@
-package com.store.inventario.model.guia;
+package com.store.inventario.module.movement.model.entity;
 
 import com.store.inventario.module.auth.model.entity.User;
 import java.util.List;

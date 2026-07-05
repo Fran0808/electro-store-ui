@@ -1,8 +1,8 @@
-package com.store.inventario.controller.guias;
+package com.store.inventario.module.movement.controller;
 
 import com.store.inventario.model.PageResponse;
-import com.store.inventario.model.guia.InventoryGuide;
-import com.store.inventario.service.guia.InventoryGuideService;
+import com.store.inventario.module.movement.model.entity.InventoryGuide;
+import com.store.inventario.module.movement.service.InventoryGuideService;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,7 +15,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.List;
 
-public class GuiasController {
+public class InventoryGuideController {
     @FXML
     private TextField txtBuscar;
     @FXML
@@ -253,7 +253,7 @@ public class GuiasController {
 
     @FXML
     private void handleNuevaGuia() throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/views/guias/guia-form.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/views/movement/inventory-guide-form.fxml"));
         Parent root = loader.load();
 
         Stage modal = new Stage();
@@ -267,10 +267,10 @@ public class GuiasController {
     }
 
     private void handleVerDetalle(InventoryGuide guide) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/views/guias/guia-detail.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/views/movement/guide-detail.fxml"));
         Parent root = loader.load();
 
-        GuiaDetailController controller = loader.getController();
+        InventoryGuideDetailController controller = loader.getController();
         controller.setGuideCode(guide.getCode());
 
         Stage modal = new Stage();

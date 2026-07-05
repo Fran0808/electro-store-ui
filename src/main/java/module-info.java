@@ -12,12 +12,10 @@ module com.store.inventario {
     opens com.store.inventario.controller;
     opens com.store.inventario.controller.ventas;
     opens com.store.inventario.controller.alertas;
-    opens com.store.inventario.controller.guias;
     opens com.store.inventario.controller.compra;
 
 
     opens com.store.inventario.model;
-    opens com.store.inventario.model.guia;
     opens com.store.inventario.model.ventas;
     opens com.store.inventario.model.compra;
 
@@ -40,5 +38,9 @@ module com.store.inventario {
     opens com.store.inventario.module.supplier.model.entity;
     opens com.store.inventario.module.supplier.request;
     opens com.store.inventario.module.supplier.service;
+    //MOVEMENT
+    opens com.store.inventario.module.movement.model.entity;
+    opens com.store.inventario.module.movement.request;
+    opens com.store.inventario.module.movement.controller;
 
 }

@@ -1,13 +1,13 @@
-package com.store.inventario.controller.guias;
+package com.store.inventario.module.movement.controller;
 
 import com.store.inventario.model.PageResponse;
-import com.store.inventario.model.guia.CreateGuideDetailRequest;
-import com.store.inventario.model.guia.CreateInventoryGuideRequest;
-import com.store.inventario.model.guia.DetalleFila;
-import com.store.inventario.model.guia.InventoryGuide;
+import com.store.inventario.module.movement.request.CreateGuideDetailRequest;
+import com.store.inventario.module.movement.request.CreateInventoryGuideRequest;
+import com.store.inventario.module.movement.model.entity.RowDetail;
+import com.store.inventario.module.movement.model.entity.InventoryGuide;
 import com.store.inventario.module.product.model.entity.Product;
 import com.store.inventario.security.SessionManager;
-import com.store.inventario.service.guia.InventoryGuideService;
+import com.store.inventario.module.movement.service.InventoryGuideService;
 import com.store.inventario.module.product.service.ProductService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -19,7 +19,7 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GuiaFormController {
+public class GuideDetailFormController {
 
     @FXML private TextField txtMotivo;
     @FXML private TextField txtUsuario;
@@ -38,12 +38,12 @@ public class GuiaFormController {
     @FXML private TableColumn<Product, Integer> colCatStock;
     @FXML private Label lblProductoSeleccionado;
 
-    @FXML private TableView<DetalleFila> tblDetalle;
-    @FXML private TableColumn<DetalleFila, String> colCod;
-    @FXML private TableColumn<DetalleFila, String> colProducto;
-    @FXML private TableColumn<DetalleFila, Integer> colStockActual;
-    @FXML private TableColumn<DetalleFila, Integer> colCantidad;
-    @FXML private TableColumn<DetalleFila, Void> colAcciones;
+    @FXML private TableView<RowDetail> tblDetalle;
+    @FXML private TableColumn<RowDetail, String> colCod;
+    @FXML private TableColumn<RowDetail, String> colProducto;
+    @FXML private TableColumn<RowDetail, Integer> colStockActual;
+    @FXML private TableColumn<RowDetail, Integer> colCantidad;
+    @FXML private TableColumn<RowDetail, Void> colAcciones;
 
     @FXML private Label lblTotalProductos;
     @FXML private Label lblTotalUnidades;
@@ -52,7 +52,7 @@ public class GuiaFormController {
 
     private final InventoryGuideService guideService = new InventoryGuideService();
     private final ProductService productService = new ProductService();
-    private final ObservableList<DetalleFila> filas = FXCollections.observableArrayList();
+    private final ObservableList<RowDetail> filas = FXCollections.observableArrayList();
     private List<Product> listaProducts = new ArrayList<>();
     private Product productSeleccionado;
 
@@ -112,7 +112,7 @@ public class GuiaFormController {
             {
                 btnQuitar.getStyleClass().add("btn-acciones");
                 btnQuitar.setOnAction(e -> {
-                    DetalleFila selected = getTableRow().getItem();
+                    RowDetail selected = getTableRow().getItem();
                     if (selected != null) {
                         filas.remove(selected);
                         actualizarResumen();
@@ -149,7 +149,7 @@ public class GuiaFormController {
 
         String code = productSeleccionado.getCode();
 
-        DetalleFila existente = filas.stream()
+        RowDetail existente = filas.stream()
                 .filter(f -> f.getCodigo().equals(code))
                 .findFirst()
                 .orElse(null);
@@ -158,7 +158,7 @@ public class GuiaFormController {
             existente.setCantidad(existente.getCantidad() + cantidad);
             tblDetalle.refresh();
         } else {
-            filas.add(new DetalleFila(
+            filas.add(new RowDetail(
                     code,
                     productSeleccionado.getName(),
                     productSeleccionado.getStock(),
@@ -189,7 +189,7 @@ public class GuiaFormController {
         String desc = txtDescripcion.getText() != null ? txtDescripcion.getText().trim() : "";
 
         List<CreateGuideDetailRequest> details = new ArrayList<>();
-        for (DetalleFila f : filas) {
+        for (RowDetail f : filas) {
             details.add(new CreateGuideDetailRequest(f.getCodigo(), f.getCantidad()));
         }
 
@@ -230,7 +230,7 @@ public class GuiaFormController {
     private void actualizarResumen() {
         lblTotalProductos.setText(String.valueOf(filas.size()));
         lblTotalUnidades.setText(String.valueOf(
-                filas.stream().mapToInt(DetalleFila::getCantidad).sum()
+                filas.stream().mapToInt(RowDetail::getCantidad).sum()
         ));
     }
 

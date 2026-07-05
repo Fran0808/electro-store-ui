@@ -1,4 +1,4 @@
-package com.store.inventario.model.guia;
+package com.store.inventario.module.movement.request;
 
 import java.util.List;
 

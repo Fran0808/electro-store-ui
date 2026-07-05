@@ -1,8 +1,8 @@
-package com.store.inventario.controller.guias;
+package com.store.inventario.module.movement.controller;
 
-import com.store.inventario.model.guia.GuideDetail;
-import com.store.inventario.model.guia.InventoryGuide;
-import com.store.inventario.service.guia.InventoryGuideService;
+import com.store.inventario.module.movement.model.entity.GuideDetail;
+import com.store.inventario.module.movement.model.entity.InventoryGuide;
+import com.store.inventario.module.movement.service.InventoryGuideService;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -12,7 +12,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
 
-public class GuiaDetailController {
+public class InventoryGuideDetailController {
     @FXML
     private Label lblCodigo;
     @FXML

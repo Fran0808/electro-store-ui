@@ -1,12 +1,12 @@
-package com.store.inventario.model.guia;
+package com.store.inventario.module.movement.model.entity;
 
-public class DetalleFila {
+public class RowDetail {
     private final String codigo;
     private final String nombre;
     private final int stockActual;
     private int cantidad;
 
-    public DetalleFila(String codigo, String nombre, int stockActual, int cantidad) {
+    public RowDetail(String codigo, String nombre, int stockActual, int cantidad) {
         this.codigo = codigo;
         this.nombre = nombre;
         this.stockActual = stockActual;
