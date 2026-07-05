@@ -74,7 +74,7 @@ public class ProductFormController {
         com.store.inventario.shared.utils.ValidationUtils.hacerSoloDecimal(txtPrecio, 8, 2);
         com.store.inventario.shared.utils.ValidationUtils.hacerSoloNumericoConLimite(txtGarantia, 3);
         com.store.inventario.shared.utils.ValidationUtils.hacerSoloNumericoConLimite(txtStockMinimo, 4);
-        String roleActual = SessionManager.getInstance().getRole();
+        String roleActual = SessionManager.getInstance().getUser().getRole();
 
         if(!"ADMIN".equalsIgnoreCase(roleActual)){
             btnNuevaCategoria.setVisible(false);

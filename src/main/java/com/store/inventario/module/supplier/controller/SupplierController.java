@@ -190,7 +190,7 @@ public class SupplierController implements Initializable {
                                 btnAcciones.getStyleClass().add("btn-acciones");
                                 contenedor.setAlignment(Pos.CENTER);
 
-                                String rolActual = SessionManager.getInstance().getRole();
+                                String rolActual = SessionManager.getInstance().getUser().getRole();
 
                                 if(!"ADMIN".equalsIgnoreCase(rolActual)){
                                     menuAcciones.getItems().addAll(itemEditar);

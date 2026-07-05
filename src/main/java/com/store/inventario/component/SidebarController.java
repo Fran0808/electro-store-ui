@@ -39,7 +39,7 @@ public class SidebarController {
 
     @FXML
     private void initialize() {
-        String role = SessionManager.getInstance().getRole();
+        String role = SessionManager.getInstance().getUser().getRole();
 
         if (role == null || !"ADMIN".equalsIgnoreCase(role.trim())) {
             ocultarComponente(itemDashboard);
@@ -185,7 +185,7 @@ public class SidebarController {
     @FXML
     private void handleLogout() {
         try {
-            SessionManager.getInstance().cerrarSesion();
+            SessionManager.getInstance().close();
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/auth/login.fxml"));
             Parent root = loader.load();

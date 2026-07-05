@@ -60,7 +60,7 @@ public class ProductController implements Initializable {
 
     private final ProductService productService = new ProductService();
     private final CategoryService categoryService = new CategoryService();
-    private final String rolActual = SessionManager.getInstance().getRole();
+    private final String rolActual = SessionManager.getInstance().getUser().getRole();
     private int paginaActual = 0;
     private final int tamanoPagina = 20;
     private int totalPaginas = 1;

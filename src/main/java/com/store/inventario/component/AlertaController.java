@@ -58,7 +58,7 @@ public class AlertaController implements Initializable {
         btnAnterior.setOnAction(e -> handleAnterior());
         btnSiguiente.setOnAction(e -> handleSiguiente());
 
-        String rolActual = SessionManager.getInstance().getRole();
+        String rolActual = SessionManager.getInstance().getUser().getRole();
         if ("SELLER".equalsIgnoreCase(rolActual)) {
             btnConfigLimite.setVisible(false);
             btnConfigLimite.setManaged(false);

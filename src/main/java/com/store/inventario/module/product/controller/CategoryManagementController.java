@@ -51,7 +51,7 @@ public class CategoryManagementController {
         configurarColumnaAcciones();
         cargarCategorias();
 
-        String roleActual = SessionManager.getInstance().getRole();
+        String roleActual = SessionManager.getInstance().getUser().getRole();
 
         if(!"ADMIN".equalsIgnoreCase(roleActual)){
             contenedorCrearCategoria.setVisible(false);

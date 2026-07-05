@@ -91,7 +91,7 @@ public class PurchaseFormController {
 
     @FXML
     public void initialize() {
-        String user = SessionManager.getInstance().getUsername();
+        String user = SessionManager.getInstance().getUser().getUsername();
         txtUsuario.setText(user != null && !user.isEmpty()
                 ? user.substring(0, 1).toUpperCase() + user.substring(1)
                 : "Sesión Activa");

@@ -16,7 +16,7 @@ public class App extends Application {
         String title;
 
         if (SessionManager.getInstance().isAutenticado()) {
-            viewPath = "layout-view.fxml";
+            viewPath = "/views/component/layout-view.fxml";
             title = "ElectroStore System";
         } else {
             viewPath = "/views/auth/login.fxml";
