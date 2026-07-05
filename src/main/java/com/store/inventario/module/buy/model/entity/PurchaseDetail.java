@@ -1,19 +1,19 @@
-package com.store.inventario.model.compra;
+package com.store.inventario.module.buy.model.entity;
 
 import com.store.inventario.module.product.model.entity.Product;
 
 
 import java.math.BigDecimal;
 
-public class CompraDetalle {
+public class PurchaseDetail {
     private String code;
     private Product product;
     private BigDecimal purchasePrice;
     private int quantity;
 
-    public CompraDetalle(){ }
+    public PurchaseDetail(){ }
 
-    public CompraDetalle(String code, Product product, BigDecimal purchasePrice, int quantity) {
+    public PurchaseDetail(String code, Product product, BigDecimal purchasePrice, int quantity) {
         this.code = code;
         this.product = product;
         this.purchasePrice = purchasePrice;

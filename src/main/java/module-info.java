@@ -12,12 +12,10 @@ module com.store.inventario {
     opens com.store.inventario.controller;
     opens com.store.inventario.controller.ventas;
     opens com.store.inventario.controller.alertas;
-    opens com.store.inventario.controller.compra;
 
 
     opens com.store.inventario.model;
     opens com.store.inventario.model.ventas;
-    opens com.store.inventario.model.compra;
 
     //AUTH
     opens com.store.inventario.module.auth.controller;
@@ -42,5 +40,9 @@ module com.store.inventario {
     opens com.store.inventario.module.movement.model.entity;
     opens com.store.inventario.module.movement.request;
     opens com.store.inventario.module.movement.controller;
+    //PURCHASE
+    opens com.store.inventario.module.buy.controller;
+    opens com.store.inventario.module.buy.model.entity;
+    opens com.store.inventario.module.buy.request;
 
 }

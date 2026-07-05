@@ -1,4 +1,4 @@
-package com.store.inventario.model.compra;
+package com.store.inventario.module.buy.request;
 
 import java.math.BigDecimal;
 

@@ -1,9 +1,9 @@
-package com.store.inventario.controller.compra;
+package com.store.inventario.module.buy.controller;
 
 import com.store.inventario.model.PageResponse;
-import com.store.inventario.model.compra.Compra;
-import com.store.inventario.model.compra.CompraDetalle;
-import com.store.inventario.service.compra.CompraService;
+import com.store.inventario.module.buy.model.entity.Purchase;
+import com.store.inventario.module.buy.model.entity.PurchaseDetail;
+import com.store.inventario.module.buy.service.PucharseService;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -20,23 +20,23 @@ import javafx.geometry.Pos;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import com.store.inventario.model.compra.PurchaseMetrics;
+import com.store.inventario.module.buy.model.entity.PurchaseMetrics;
 
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Collections;
 
-public class CompraController {
+public class PurchaseController {
 
-    @FXML private TableView<Compra> tblCompras;
-    @FXML private TableColumn<Compra, String> colCodigo;
-    @FXML private TableColumn<Compra, String> colProveedor;
-    @FXML private TableColumn<Compra, String> colUsuario;
-    @FXML private TableColumn<Compra, String> colFecha;
-    @FXML private TableColumn<Compra, Integer> colCantidad;
-    @FXML private TableColumn<Compra, BigDecimal> colTotal;
-    @FXML private TableColumn<Compra, Void> colAcciones;
+    @FXML private TableView<Purchase> tblCompras;
+    @FXML private TableColumn<Purchase, String> colCodigo;
+    @FXML private TableColumn<Purchase, String> colProveedor;
+    @FXML private TableColumn<Purchase, String> colUsuario;
+    @FXML private TableColumn<Purchase, String> colFecha;
+    @FXML private TableColumn<Purchase, Integer> colCantidad;
+    @FXML private TableColumn<Purchase, BigDecimal> colTotal;
+    @FXML private TableColumn<Purchase, Void> colAcciones;
 
     @FXML private TextField txtBuscarCompra;
     @FXML private ComboBox<String> cbFecha;
@@ -52,11 +52,11 @@ public class CompraController {
     @FXML private Label lblProveedorFrecuente;
     @FXML private Label lblProveedorFrecuenteCompras;
 
-    private List<Compra> comprasOriginales = Collections.emptyList();
+    private List<Purchase> comprasOriginales = Collections.emptyList();
     private int paginaActual = 0;
     private final int tamanoPagina = 20;
     private int totalPaginas = 1;
-    private final CompraService compraService = new CompraService();
+    private final PucharseService pucharseService = new PucharseService();
 
     @FXML
     public void initialize() {
@@ -72,19 +72,19 @@ public class CompraController {
         });
 
         colCantidad.setCellValueFactory(cellData -> {
-            List<CompraDetalle> details = cellData.getValue().getDetails();
+            List<PurchaseDetail> details = cellData.getValue().getDetails();
             int sum = 0;
             if (details != null) {
-                sum = details.stream().mapToInt(CompraDetalle::getQuantity).sum();
+                sum = details.stream().mapToInt(PurchaseDetail::getQuantity).sum();
             }
             return new SimpleIntegerProperty(sum).asObject();
         });
 
         colTotal.setCellValueFactory(cellData -> {
-            List<CompraDetalle> details = cellData.getValue().getDetails();
+            List<PurchaseDetail> details = cellData.getValue().getDetails();
             BigDecimal total = BigDecimal.ZERO;
             if (details != null) {
-                for (CompraDetalle detail : details) {
+                for (PurchaseDetail detail : details) {
                     BigDecimal price = detail.getPurchasePrice() != null ? detail.getPurchasePrice() : BigDecimal.ZERO;
                     total = total.add(price.multiply(BigDecimal.valueOf(detail.getQuantity())));
                 }
@@ -100,9 +100,9 @@ public class CompraController {
     }
 
     private void configurarColumnaAcciones() {
-        Callback<TableColumn<Compra, Void>, TableCell<Compra, Void>> cellFactory = new Callback<>() {
+        Callback<TableColumn<Purchase, Void>, TableCell<Purchase, Void>> cellFactory = new Callback<>() {
             @Override
-            public TableCell<Compra, Void> call(final TableColumn<Compra, Void> param) {
+            public TableCell<Purchase, Void> call(final TableColumn<Purchase, Void> param) {
                 return new TableCell<>() {
                     private final Button btnDetalle = new Button("Ver Detalle");
                     private final HBox contenedor = new HBox(btnDetalle);
@@ -112,8 +112,8 @@ public class CompraController {
                         contenedor.setAlignment(Pos.CENTER);
 
                         btnDetalle.setOnAction(event -> {
-                            Compra compra = getTableView().getItems().get(getIndex());
-                            handleVerDetalle(compra);
+                            Purchase purchase = getTableView().getItems().get(getIndex());
+                            handleVerDetalle(purchase);
                         });
                     }
 
@@ -132,19 +132,19 @@ public class CompraController {
         colAcciones.setCellFactory(cellFactory);
     }
 
-    private void handleVerDetalle(Compra compra) {
+    private void handleVerDetalle(Purchase purchase) {
         Platform.runLater(() -> {
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/views/compras/compra-detail.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/views/buy/purchase-detail.fxml"));
                 Parent root = loader.load();
 
-                CompraDetailController controller = loader.getController();
-                controller.setCompra(compra);
+                PurchaseDetailController controller = loader.getController();
+                controller.setCompra(purchase);
 
                 Stage modal = new Stage();
                 com.store.inventario.utils.WindowUtils.applyIcon(modal);
                 modal.initModality(Modality.APPLICATION_MODAL);
-                modal.setTitle("Detalle de Compra - " + compra.getCode());
+                modal.setTitle("Detalle de Compra - " + purchase.getCode());
                 modal.setScene(new Scene(root));
                 modal.showAndWait();
             } catch (IOException e) {
@@ -182,15 +182,15 @@ public class CompraController {
 
     private void obtenerComprasConFiltro(String search) {
         try {
-            PageResponse<Compra> response = compraService.obtenerCompra(search, paginaActual, tamanoPagina);
-            List<Compra> compras = (response != null && response.getContent() != null) 
+            PageResponse<Purchase> response = pucharseService.obtenerCompra(search, paginaActual, tamanoPagina);
+            List<Purchase> purchases = (response != null && response.getContent() != null)
                     ? response.getContent() 
                     : Collections.emptyList();
             
-            comprasOriginales = compras;
+            comprasOriginales = purchases;
             cargarProveedoresYUsuarios();
             
-            tblCompras.setItems(FXCollections.observableArrayList(compras));
+            tblCompras.setItems(FXCollections.observableArrayList(purchases));
             aplicarFiltrosLocales();
             cargarMetricas();
 
@@ -267,7 +267,7 @@ public class CompraController {
         String rangoFecha = cbFecha.getValue();
         java.time.LocalDate hoy = java.time.LocalDate.now();
 
-        List<Compra> resultado = comprasOriginales.stream().filter(c -> {
+        List<Purchase> resultado = comprasOriginales.stream().filter(c -> {
             if (proveedor == null || proveedor.equals("Todos")) return true;
             return c.getSupplier() != null && proveedor.equals(c.getSupplier().getTradeName());
         }).filter(c -> {
@@ -314,7 +314,7 @@ public class CompraController {
 
     private void cargarMetricas() {
         try {
-            PurchaseMetrics metrics = compraService.obtenerMetricas();
+            PurchaseMetrics metrics = pucharseService.obtenerMetricas();
             if (metrics != null) {
                 if (lblComprasSemanales != null) {
                     lblComprasSemanales.setText(String.valueOf(metrics.getWeeklyPurchases()));
@@ -337,7 +337,7 @@ public class CompraController {
 
     @FXML
     public void abrirModalNuevaCompra() throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/views/compras/compra-form.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/views/buy/purchase-form.fxml"));
         Parent root = loader.load();
         Stage modal = new Stage();
         com.store.inventario.utils.WindowUtils.applyIcon(modal);

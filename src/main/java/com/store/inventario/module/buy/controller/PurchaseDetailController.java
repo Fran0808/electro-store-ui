@@ -1,9 +1,8 @@
-package com.store.inventario.controller.compra;
+package com.store.inventario.module.buy.controller;
 
-import com.store.inventario.model.compra.Compra;
-import com.store.inventario.model.compra.CompraDetalle;
+import com.store.inventario.module.buy.model.entity.Purchase;
+import com.store.inventario.module.buy.model.entity.PurchaseDetail;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -18,7 +17,7 @@ import java.math.RoundingMode;
 import java.util.Collections;
 import java.util.List;
 
-public class CompraDetailController {
+public class PurchaseDetailController {
 
     @FXML private Label lblCodigoCompra;
     @FXML private Label lblFecha;
@@ -26,11 +25,11 @@ public class CompraDetailController {
     @FXML private Label lblResponsable;
     @FXML private Label lblItemsCount;
 
-    @FXML private TableView<CompraDetalle> tblDetalleCompra;
-    @FXML private TableColumn<CompraDetalle, String> colProducto;
-    @FXML private TableColumn<CompraDetalle, Integer> colCantidad;
-    @FXML private TableColumn<CompraDetalle, BigDecimal> colPrecio;
-    @FXML private TableColumn<CompraDetalle, BigDecimal> colSubtotal;
+    @FXML private TableView<PurchaseDetail> tblDetalleCompra;
+    @FXML private TableColumn<PurchaseDetail, String> colProducto;
+    @FXML private TableColumn<PurchaseDetail, Integer> colCantidad;
+    @FXML private TableColumn<PurchaseDetail, BigDecimal> colPrecio;
+    @FXML private TableColumn<PurchaseDetail, BigDecimal> colSubtotal;
 
     @FXML private Label lblSubtotal;
     @FXML private Label lblImpuesto;
@@ -48,12 +47,12 @@ public class CompraDetailController {
         colSubtotal.setCellValueFactory(new PropertyValueFactory<>("subtotal"));
     }
 
-    public void setCompra(Compra compra) {
-        if (compra == null) return;
+    public void setCompra(Purchase purchase) {
+        if (purchase == null) return;
 
-        lblCodigoCompra.setText(compra.getCode() != null ? compra.getCode() : "N/A");
+        lblCodigoCompra.setText(purchase.getCode() != null ? purchase.getCode() : "N/A");
         
-        String dateStr = compra.getPurchaseDate();
+        String dateStr = purchase.getPurchaseDate();
         if (dateStr != null && dateStr.contains("T")) {
             dateStr = dateStr.replace("T", " ");
             if (dateStr.contains(".")) {
@@ -62,15 +61,15 @@ public class CompraDetailController {
         }
         lblFecha.setText(dateStr != null ? dateStr : "N/A");
         
-        lblProveedor.setText(compra.getSupplier() != null ? compra.getSupplier().getTradeName() : "N/A");
-        lblResponsable.setText(compra.getUser() != null ? compra.getUser().getUsername() : "N/A");
+        lblProveedor.setText(purchase.getSupplier() != null ? purchase.getSupplier().getTradeName() : "N/A");
+        lblResponsable.setText(purchase.getUser() != null ? purchase.getUser().getUsername() : "N/A");
 
-        List<CompraDetalle> details = compra.getDetails() != null ? compra.getDetails() : Collections.emptyList();
+        List<PurchaseDetail> details = purchase.getDetails() != null ? purchase.getDetails() : Collections.emptyList();
         tblDetalleCompra.setItems(FXCollections.observableArrayList(details));
         lblItemsCount.setText("Items: " + details.size());
 
         BigDecimal total = BigDecimal.ZERO;
-        for (CompraDetalle detail : details) {
+        for (PurchaseDetail detail : details) {
             BigDecimal price = detail.getPurchasePrice() != null ? detail.getPurchasePrice() : BigDecimal.ZERO;
             total = total.add(price.multiply(BigDecimal.valueOf(detail.getQuantity())));
         }

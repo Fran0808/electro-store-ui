@@ -1,12 +1,12 @@
-package com.store.inventario.controller.compra;
+package com.store.inventario.module.buy.controller;
 
 import com.store.inventario.model.PageResponse;
-import com.store.inventario.model.compra.CreatePurchaseDetailRequest;
-import com.store.inventario.model.compra.CreatePurchaseRequest;
+import com.store.inventario.module.buy.request.CreatePurchaseDetailRequest;
+import com.store.inventario.module.buy.request.CreatePurchaseRequest;
 import com.store.inventario.module.product.model.entity.Product;
 import com.store.inventario.module.supplier.model.entity.Supplier;
 import com.store.inventario.security.SessionManager;
-import com.store.inventario.service.compra.CompraService;
+import com.store.inventario.module.buy.service.PucharseService;
 import com.store.inventario.module.supplier.service.SupplierService;
 import com.store.inventario.module.product.service.ProductService;
 import com.store.inventario.module.supplier.controller.SupplierSearchModalController;
@@ -30,7 +30,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CompraFormController {
+public class PurchaseFormController {
 
     @FXML private Label lblTitulo;
     @FXML private TextField txtProveedor;
@@ -63,7 +63,7 @@ public class CompraFormController {
 
     private final SupplierService supplierService = new SupplierService();
     private final ProductService productService = new ProductService();
-    private final CompraService compraService = new CompraService();
+    private final PucharseService pucharseService = new PucharseService();
     
     private final ObservableList<Product> listaCatalogProducts = FXCollections.observableArrayList();
     private final ObservableList<DetalleTemporal> listaDetalle = FXCollections.observableArrayList();
@@ -309,7 +309,7 @@ public class CompraFormController {
             }
 
             CreatePurchaseRequest request = new CreatePurchaseRequest(supplierCode, details);
-            compraService.crearCompra(request);
+            pucharseService.crearCompra(request);
             com.store.inventario.model.NavigationManager.getInstance().refreshAlerts();
 
             Alert alert = new Alert(Alert.AlertType.INFORMATION);

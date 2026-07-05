@@ -13,7 +13,7 @@
 
 <AnchorPane prefHeight="750.0" prefWidth="1150.0" styleClass="root" stylesheets="@../../styles/style.css"
             xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.store.inventario.controller.compra.CompraFormController">
+            fx:controller="com.store.inventario.module.buy.controller.PurchaseFormController">
 
     <VBox spacing="16.0" styleClass="modal-container" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0"
           AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">

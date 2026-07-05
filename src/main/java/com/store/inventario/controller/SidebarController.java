@@ -142,7 +142,7 @@ public class SidebarController {
 
     @FXML
     private void handleCompras() {
-        NavigationManager.getInstance().navegar("/com/store/inventario/views/compras/compras.fxml");
+        NavigationManager.getInstance().navegar("/com/store/inventario/views/buy/purchase.fxml");
     }
 
     @FXML

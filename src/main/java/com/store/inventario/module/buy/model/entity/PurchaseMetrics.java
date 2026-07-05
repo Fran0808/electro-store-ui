@@ -1,4 +1,4 @@
-package com.store.inventario.model.compra;
+package com.store.inventario.module.buy.model.entity;
 
 public class PurchaseMetrics {
     private long weeklyPurchases;

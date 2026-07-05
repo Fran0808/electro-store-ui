@@ -1,20 +1,20 @@
-package com.store.inventario.model.compra;
+package com.store.inventario.module.buy.model.entity;
 
 import com.store.inventario.module.supplier.model.entity.Supplier;
 import com.store.inventario.module.auth.model.entity.User;
 
 import java.util.List;
 
-public class Compra {
+public class Purchase {
     private String code;
     private User user;
     private Supplier supplier;
     private String purchaseDate;
-    private List<CompraDetalle> details;
+    private List<PurchaseDetail> details;
 
-    public Compra() {}
+    public Purchase() {}
 
-    public Compra(String code, User user, Supplier supplier, String purchaseDate, List<CompraDetalle> details) {
+    public Purchase(String code, User user, Supplier supplier, String purchaseDate, List<PurchaseDetail> details) {
         this.code = code;
         this.user = user;
         this.supplier = supplier;
@@ -55,11 +55,11 @@ public class Compra {
         this.purchaseDate = purchaseDate;
     }
 
-    public List<CompraDetalle> getDetails() {
+    public List<PurchaseDetail> getDetails() {
         return details;
     }
 
-    public void setDetails(List<CompraDetalle> details) {
+    public void setDetails(List<PurchaseDetail> details) {
         this.details = details;
     }
 }

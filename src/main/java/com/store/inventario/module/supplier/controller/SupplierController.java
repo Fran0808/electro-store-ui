@@ -1,6 +1,8 @@
 package com.store.inventario.module.supplier.controller;
 
 import com.store.inventario.model.PageResponse;
+import com.store.inventario.module.buy.model.entity.PurchaseMetrics;
+import com.store.inventario.module.buy.service.PucharseService;
 import com.store.inventario.module.supplier.model.entity.Supplier;
 import com.store.inventario.module.supplier.model.entity.SupplierMetrics;
 import com.store.inventario.security.SessionManager;
@@ -276,8 +278,8 @@ public class SupplierController implements Initializable {
         }
 
         try {
-            com.store.inventario.service.compra.CompraService compraService = new com.store.inventario.service.compra.CompraService();
-            com.store.inventario.model.compra.PurchaseMetrics purchaseMetrics = compraService.obtenerMetricas();
+            PucharseService pucharseService = new PucharseService();
+            PurchaseMetrics purchaseMetrics = pucharseService.obtenerMetricas();
             if (purchaseMetrics != null && purchaseMetrics.getFrequentSupplierName() != null && !purchaseMetrics.getFrequentSupplierName().trim().isEmpty()) {
                 lblProveedorFrecuente.setText(purchaseMetrics.getFrequentSupplierName());
             } else {
