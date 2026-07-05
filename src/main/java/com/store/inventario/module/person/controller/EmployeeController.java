@@ -132,7 +132,7 @@ public class EmployeeController implements Initializable {
 
     @FXML
     public void abrirModalNuevoEmpleado() throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/views/person/employee-form.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/person/employee-form.fxml"));
         Parent root = loader.load();
         Stage modal = new Stage();
         com.store.inventario.shared.utils.WindowUtils.applyIcon(modal);
@@ -146,7 +146,7 @@ public class EmployeeController implements Initializable {
 
     private void handleEditar(Employee employee){
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/views/person/employee-form.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/person/employee-form.fxml"));
             Parent root = loader.load();
             EmployeeFormController controller = loader.getController();
             controller.setEmpleadoEditar(employee);

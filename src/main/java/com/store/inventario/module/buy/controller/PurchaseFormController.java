@@ -164,7 +164,7 @@ public class PurchaseFormController {
     @FXML
     private void abrirBuscadorProveedor() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/views/supplier/supplier-search-modal.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/supplier/supplier-search-modal.fxml"));
             Parent root = loader.load();
 
             SupplierSearchModalController controller = loader.getController();

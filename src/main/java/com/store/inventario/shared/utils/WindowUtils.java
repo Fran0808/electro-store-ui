@@ -11,7 +11,7 @@ public class WindowUtils {
     public static Image getAppIcon() {
         if (appIcon == null) {
             try {
-                appIcon = new Image(Objects.requireNonNull(WindowUtils.class.getResourceAsStream("/logo.png")));
+                appIcon = new Image(Objects.requireNonNull(WindowUtils.class.getResourceAsStream("/images/logo.png")));
             } catch (Exception e) {
                 System.err.println("No se pudo cargar el logo de la aplicación: " + e.getMessage());
             }

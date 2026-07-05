@@ -8,7 +8,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import java.io.IOException;
 
-public class MainApplication extends Application {
+public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -19,11 +19,11 @@ public class MainApplication extends Application {
             viewPath = "layout-view.fxml";
             title = "ElectroStore System";
         } else {
-            viewPath = "views/auth/login.fxml";
+            viewPath = "/views/auth/login.fxml";
             title = "Sistema de Inventario";
         }
         FXMLLoader loader = new FXMLLoader(
-                MainApplication.class.getResource(viewPath)
+                App.class.getResource(viewPath)
         );
         Scene scene = new Scene(loader.load());
         stage.setTitle(title);

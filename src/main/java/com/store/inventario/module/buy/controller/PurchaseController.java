@@ -135,7 +135,7 @@ public class PurchaseController {
     private void handleVerDetalle(Purchase purchase) {
         Platform.runLater(() -> {
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/views/buy/purchase-detail.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/buy/purchase-detail.fxml"));
                 Parent root = loader.load();
 
                 PurchaseDetailController controller = loader.getController();
@@ -337,7 +337,7 @@ public class PurchaseController {
 
     @FXML
     public void abrirModalNuevaCompra() throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/views/buy/purchase-form.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/buy/purchase-form.fxml"));
         Parent root = loader.load();
         Stage modal = new Stage();
         com.store.inventario.shared.utils.WindowUtils.applyIcon(modal);

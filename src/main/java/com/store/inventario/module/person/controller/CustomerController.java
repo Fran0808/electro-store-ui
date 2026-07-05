@@ -111,7 +111,7 @@ public class CustomerController implements Initializable {
 
     @FXML
     private void handleNuevoCliente() throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/views/person/customer-form.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/person/customer-form.fxml"));
         Parent root = loader.load();
 
         Stage modal = new Stage();
@@ -205,7 +205,7 @@ public class CustomerController implements Initializable {
 
     private void handleEditar(Customer customer) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/views/person/customer-form.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/person/customer-form.fxml"));
             Parent root = loader.load();
 
             CustomerFormController controller = loader.getController();

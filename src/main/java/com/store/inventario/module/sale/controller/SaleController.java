@@ -130,7 +130,7 @@ public class SaleController {
     private void handleVerDetalle(Sale sale){
         Platform.runLater(() -> {
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/views/sale/sale-detail.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/sale/sale-detail.fxml"));
                 Parent root = loader.load();
                 SaleDetailController controller = loader.getController();
                 controller.setVenta(sale);
@@ -300,7 +300,7 @@ public class SaleController {
 
     @FXML
     public void abrirModalNuevaVenta() throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/views/sale/sale-form.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/sale/sale-form.fxml"));
         Parent root = loader.load();
         Stage modal = new Stage();
         com.store.inventario.shared.utils.WindowUtils.applyIcon(modal);

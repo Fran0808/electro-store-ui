@@ -15,7 +15,7 @@
             fx:controller="com.store.inventario.component.SidebarController">
    
    <stylesheets>
-      <URL value="@../styles/style.css" />
+      <URL value="@../../styles/style.css" />
    </stylesheets>
 
    <children>

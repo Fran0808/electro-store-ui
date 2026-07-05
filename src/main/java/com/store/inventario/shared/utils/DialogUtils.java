@@ -16,7 +16,7 @@ public class DialogUtils {
 
     public static void mostrarMensaje(Stage ownerStage, String titulo, String mensaje, String categoria, String icono, Runnable accionConfirmar, boolean mostrarCancelar, boolean mostrarConfirmar) {
         try {
-            FXMLLoader loader = new FXMLLoader(DialogUtils.class.getResource("/com/store/inventario/component/custom-dialog.fxml"));
+            FXMLLoader loader = new FXMLLoader(DialogUtils.class.getResource("/views/component/custom-dialog.fxml"));
             VBox modalRoot = loader.load();
 
             ModalController controller = loader.getController();

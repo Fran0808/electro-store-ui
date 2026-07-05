@@ -117,57 +117,57 @@ public class SidebarController {
 
     @FXML
     private void handleDashboard() {
-        NavigationManager.getInstance().navegar("/com/store/inventario/component/dashboard.fxml");
+        NavigationManager.getInstance().navegar("/views/component/dashboard.fxml");
     }
 
     @FXML
     private void handleProductos() {
-        NavigationManager.getInstance().navegar("/com/store/inventario/views/product/product.fxml");
+        NavigationManager.getInstance().navegar("/views/product/product.fxml");
     }
 
     @FXML
     private void handleCategorias() {
-        NavigationManager.getInstance().navegar("/com/store/inventario/views/product/category-management.fxml");
+        NavigationManager.getInstance().navegar("/views/product/category-management.fxml");
     }
 
     @FXML
     private void handleClientes() {
-        NavigationManager.getInstance().navegar("/com/store/inventario/views/person/customer.fxml");
+        NavigationManager.getInstance().navegar("/views/person/customer.fxml");
     }
 
     @FXML
     private void handleProveedores() {
-        NavigationManager.getInstance().navegar("/com/store/inventario/views/supplier/supplier.fxml");
+        NavigationManager.getInstance().navegar("/views/supplier/supplier.fxml");
     }
 
     @FXML
     private void handleCompras() {
-        NavigationManager.getInstance().navegar("/com/store/inventario/views/buy/purchase.fxml");
+        NavigationManager.getInstance().navegar("/views/buy/purchase.fxml");
     }
 
     @FXML
     private void handleVentas() {
-        NavigationManager.getInstance().navegar("/com/store/inventario/views/sale/sale.fxml");
+        NavigationManager.getInstance().navegar("/views/sale/sale.fxml");
     }
 
     @FXML
     private void handleGuias() {
-        NavigationManager.getInstance().navegar("/com/store/inventario/views/movement/inventory-guide.fxml");
+        NavigationManager.getInstance().navegar("/views/movement/inventory-guide.fxml");
     }
 
     @FXML
     private void handleEmpleados() {
-        NavigationManager.getInstance().navegar("/com/store/inventario/views/person/employee.fxml");
+        NavigationManager.getInstance().navegar("/views/person/employee.fxml");
     }
 
     @FXML
     private void handleUsuarios() {
-        NavigationManager.getInstance().navegar("/com/store/inventario/views/auth/user.fxml");
+        NavigationManager.getInstance().navegar("/views/auth/user.fxml");
     }
 
     @FXML
     private void handleAlertas() {
-        NavigationManager.getInstance().navegar("/com/store/inventario/component/alertas.fxml");
+        NavigationManager.getInstance().navegar("/views/component/alertas.fxml");
     }
 
     @FXML
@@ -187,7 +187,7 @@ public class SidebarController {
         try {
             SessionManager.getInstance().cerrarSesion();
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/views/auth/login.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/auth/login.fxml"));
             Parent root = loader.load();
 
             Stage loginStage = new Stage();

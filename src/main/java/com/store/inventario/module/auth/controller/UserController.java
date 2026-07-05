@@ -53,7 +53,7 @@ public class UserController {
 
     @FXML
     public void abrirModalNuevoUsuario() throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/views/auth/user-form.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/auth/user-form.fxml"));
         Parent root = loader.load();
         
         Stage modal = new Stage();
@@ -228,7 +228,7 @@ public class UserController {
 
     private void handleEditar(User user) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/views/auth/user-form.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/auth/user-form.fxml"));
             Parent root = loader.load();
 
             UserFormController controller = loader.getController();

@@ -23,7 +23,7 @@
 <AnchorPane prefHeight="800.0" prefWidth="1040.0" styleClass="root" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.store.inventario.component.DashboardController">
 
     <stylesheets>
-        <URL value="@../styles/style.css" />
+        <URL value="@../../styles/style.css" />
     </stylesheets>
 
     <VBox spacing="24.0" styleClass="view-container" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">

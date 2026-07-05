@@ -92,7 +92,7 @@ public class ProductController implements Initializable {
 
     @FXML
     private void handleForm() throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/views/product/product-form.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/product/product-form.fxml"));
         Parent root = loader.load();
 
         Stage modal = new Stage();
@@ -113,7 +113,7 @@ public class ProductController implements Initializable {
     @FXML
     private void handleGestionarCategorias() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/views/product/category-management.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/product/category-management.fxml"));
             Parent root = loader.load();
 
             Stage modal = new Stage();
@@ -136,7 +136,7 @@ public class ProductController implements Initializable {
 
     private void handleEditar(Product product) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/views/product/product-form.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/product/product-form.fxml"));
             Parent root = loader.load();
 
             ProductFormController controller = loader.getController();

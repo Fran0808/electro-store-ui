@@ -253,7 +253,7 @@ public class InventoryGuideController {
 
     @FXML
     private void handleNuevaGuia() throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/views/movement/inventory-guide-form.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/movement/inventory-guide-form.fxml"));
         Parent root = loader.load();
 
         Stage modal = new Stage();
@@ -267,7 +267,7 @@ public class InventoryGuideController {
     }
 
     private void handleVerDetalle(InventoryGuide guide) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/views/movement/guide-detail.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/movement/guide-detail.fxml"));
         Parent root = loader.load();
 
         InventoryGuideDetailController controller = loader.getController();

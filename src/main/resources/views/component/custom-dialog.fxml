@@ -13,7 +13,7 @@
       fx:controller="com.store.inventario.component.ModalController">
 
     <stylesheets>
-        <URL value="@../styles/style.css" />
+        <URL value="@../../styles/style.css" />
     </stylesheets>
 
     <HBox spacing="16.0" alignment="TOP_LEFT">

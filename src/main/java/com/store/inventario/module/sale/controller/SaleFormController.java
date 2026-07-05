@@ -189,7 +189,7 @@ public class SaleFormController {
     @FXML
     private void abrirBuscadorCliente() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/views/person/customer-search-modal.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/person/customer-search-modal.fxml"));
             Parent root = loader.load();
 
             CustomerSearchModalController controller = loader.getController();

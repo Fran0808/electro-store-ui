@@ -245,7 +245,7 @@ public class ProductFormController {
     @FXML
     private void handleNuevaCategoria() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/views/product/category-form-modal.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/product/category-form-modal.fxml"));
             Parent root = loader.load();
             Stage modal = new Stage();
             com.store.inventario.shared.utils.WindowUtils.applyIcon(modal);

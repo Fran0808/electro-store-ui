@@ -79,7 +79,7 @@ public class LoginController {
                     );
                 }
 
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/component/layout-view.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/component/layout-view.fxml"));
                 Parent root = loader.load();
 
                 Stage layoutStage = new Stage();

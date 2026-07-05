@@ -20,7 +20,7 @@ public class LayoutController {
             try {
                 if (mainContent.getScene() != null && mainContent.getScene().getWindow() instanceof Stage) {
                     Stage stage = (Stage) mainContent.getScene().getWindow();
-                    Image icon = new Image(getClass().getResourceAsStream("/logo.png"));
+                    Image icon = new Image(getClass().getResourceAsStream("/images/logo.png"));
                     if (stage.getIcons().isEmpty() || !stage.getIcons().contains(icon)) {
                         stage.getIcons().add(icon);
                     }
@@ -36,7 +36,7 @@ public class LayoutController {
                 e.printStackTrace();
             }
         });
-        NavigationManager.getInstance().navegar("/com/store/inventario/component/index.fxml");
+        NavigationManager.getInstance().navegar("/views/component/index.fxml");
     }
 
     private void cargarVista(String fxmlPath) throws IOException {

@@ -108,7 +108,7 @@ public class SupplierController implements Initializable {
 
     @FXML
     private void handleForm() throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/views/supplier/supplier-form.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/supplier/supplier-form.fxml"));
         Parent root = loader.load();
         Stage modal = new Stage();
         com.store.inventario.shared.utils.WindowUtils.applyIcon(modal);
@@ -122,7 +122,7 @@ public class SupplierController implements Initializable {
 
     private void handleEditar(Supplier supplier) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/store/inventario/views/supplier/supplier-form.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/supplier/supplier-form.fxml"));
             Parent root = loader.load();
             SupplierFormController controller = loader.getController();
             controller.setProveedorEditar(supplier);
