@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import java.net.URL?>
+
+<AnchorPane prefWidth="420.0" prefHeight="240.0" style="-fx-background-color: #F8FAFC;" xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.store.inventario.module.product.controller.CategoryFormModalController">
+    <stylesheets>
+        <URL value="@../../styles/style.css"/>
+    </stylesheets>
+    <VBox spacing="20.0" styleClass="modal-container" AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"
+          AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+        <padding>
+            <Insets top="25.0" right="25.0" bottom="25.0" left="25.0"/>
+        </padding>
+        <VBox spacing="6.0">
+            <Label text="Nueva Categoría" styleClass="header-title"/>
+            <Label wrapText="true" styleClass="header-subtitle"
+                   text="Ingrese el nombre para registrar la nueva categoría"/>
+        </VBox>
+
+        <VBox spacing="6.0">
+            <Label style="-fx-font-weight: bold; -fx-text-fill: #334155; -fx-font-size: 13px;"
+                   text="Nombre de la Categoría *"/>
+            <TextField fx:id="txtNombre" prefHeight="40.0" promptText="Ej. Cómputo, Seguridad, Audio..."
+                       styleClass="search-field"/>
+        </VBox>
+
+        <HBox spacing="12.0" alignment="CENTER_RIGHT" style="-fx-padding: 10px 0 0 0;">
+            <Button fx:id="btnCancelar" onAction="#handleCancelar" prefWidth="120.0" styleClass="btn-secondary"
+                    text="Cancelar"/>
+            <Button fx:id="btnGuardar" onAction="#handleGuardar" prefWidth="120.0" styleClass="btn-primary"
+                    text="Guardar"/>
+        </HBox>
+    </VBox>
+</AnchorPane>

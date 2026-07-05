@@ -1,0 +1,389 @@
+package com.store.inventario.module.sale.controller;
+
+import com.store.inventario.shared.model.PageResponse;
+import com.store.inventario.module.person.model.entity.Customer;
+import com.store.inventario.module.person.request.CreateCustomerRequest;
+import com.store.inventario.module.person.request.CreatePersonRequest;
+import com.store.inventario.module.product.model.entity.Product;
+import com.store.inventario.module.sale.request.CreateSaleDetailRequest;
+import com.store.inventario.module.sale.request.CreateSaleRequest;
+import com.store.inventario.module.person.controller.CustomerSearchModalController;
+import com.store.inventario.security.SessionManager;
+import com.store.inventario.module.person.service.CustomerService;
+import com.store.inventario.module.product.service.ProductService;
+import com.store.inventario.module.sale.service.SaleService;
+import com.store.inventario.shared.model.NavigationManager;
+import com.store.inventario.shared.utils.WindowUtils;
+import javafx.application.Platform;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
+import javafx.util.Callback;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+public class SaleFormController {
+
+    @FXML private TextField txtFecha;
+    @FXML private TextField txtCliente;
+    @FXML private TextField txtVendedor;
+
+    private Customer customerSeleccionado = null;
+
+    // Controles para el catálogo de productos
+    @FXML private TableColumn<Product, String> colCatCodigo;
+    @FXML private TableView<Product> tblProductos;
+    @FXML private TableColumn<Product, String> colCatNombre;
+    @FXML private TableColumn<Product, Integer> colCatStock;
+    @FXML private TableColumn<Product, BigDecimal> colCatPrecio;
+    @FXML private Label lblProductoSeleccionado;
+    @FXML private TextField txtCantidad;
+    @FXML private TextField txtPrecioVenta;
+    @FXML private TextField txtBuscarProducto;
+
+    // Controles para el detalle de la venta
+    @FXML private TableView<SaleFormController.DetalleTemporal> tblDetalleVenta;
+    @FXML private TableColumn<DetalleTemporal, String> colDetProducto;
+    @FXML private TableColumn<DetalleTemporal, BigDecimal> colDetPrecio;
+    @FXML private TableColumn<DetalleTemporal, Integer> colDetCantidad;
+    @FXML private TableColumn<DetalleTemporal, BigDecimal> colDetSubtotal;
+    @FXML private TableColumn<DetalleTemporal, Void> colEliminar;
+    @FXML private Label lblTotalVenta;
+    @FXML private Button btnCancelar;
+
+    private CustomerService customerService = new CustomerService();
+    private ProductService productService = new ProductService();
+    private SaleService saleService = new SaleService();
+
+    private final ObservableList<Product> listaCatalogProducts = FXCollections.observableArrayList();
+    private final ObservableList<SaleFormController.DetalleTemporal> listaDetalle = FXCollections.observableArrayList();
+
+    public static class DetalleTemporal {
+        private final Product product;
+        private final BigDecimal precioVenta;
+        private final int cantidad;
+
+        public DetalleTemporal(Product product, BigDecimal precioVenta, int cantidad) {
+            this.product = product;
+            this.precioVenta = precioVenta;
+            this.cantidad = cantidad;
+        }
+
+        public Product getProducto() {
+            return product;
+        }
+        public String getNombreProducto() {
+            return product != null ? product.getName() : "";
+        }
+        public BigDecimal getPrecioVenta() {
+            return precioVenta;
+        }
+        public int getQuantity() {
+            return cantidad;
+        }
+        public BigDecimal getSubtotal() {
+            return precioVenta != null ? precioVenta.multiply(BigDecimal.valueOf(cantidad)) : BigDecimal.ZERO;
+        }
+    }
+
+    @FXML
+    public void initialize() {
+        String user = SessionManager.getInstance().getUsername();
+        txtVendedor.setText(user != null && !user.isEmpty()
+                ? user.substring(0, 1).toUpperCase() + user.substring(1)
+                : "Sesión Activa");
+        txtFecha.setText(LocalDate.now().toString());
+
+        colCatCodigo.setCellValueFactory(new PropertyValueFactory<>("code"));
+        colCatNombre.setCellValueFactory(new PropertyValueFactory<>("name"));
+        colCatStock.setCellValueFactory(new PropertyValueFactory<>("stock"));
+        colCatPrecio.setCellValueFactory(new PropertyValueFactory<>("salePrice"));
+
+        colDetProducto.setCellValueFactory(cellData ->
+                new SimpleStringProperty(cellData.getValue().getNombreProducto()));
+        colDetPrecio.setCellValueFactory(new PropertyValueFactory<>("precioVenta"));
+        colDetCantidad.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+        colDetSubtotal.setCellValueFactory(new PropertyValueFactory<>("subtotal"));
+
+        configurarColumnaEliminar();
+
+        tblDetalleVenta.setItems(listaDetalle);
+        tblProductos.setItems(listaCatalogProducts);
+
+        tblProductos.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                lblProductoSeleccionado.setText("Producto: " + newSelection.getName() + " (" + newSelection.getCode() + ")");
+                txtCantidad.setText("1");
+                if (newSelection.getSalePrice() != null) {
+                    BigDecimal listPrice = newSelection.getSalePrice();
+                    txtPrecioVenta.setText(listPrice.setScale(2, RoundingMode.HALF_UP).toString());
+                } else {
+                    txtPrecioVenta.clear();
+                }
+            } else {
+                lblProductoSeleccionado.setText("Seleccione un producto del catálogo...");
+                txtCantidad.clear();
+                txtPrecioVenta.clear();
+            }
+        });
+
+        seleccionarClientePorDefecto();
+        cargarProductos("");
+    }
+
+    private void seleccionarClientePorDefecto() {
+        Platform.runLater(() -> {
+            try {
+                PageResponse<Customer> response = customerService.obtenerClientes("Consumidor", 0, 10);
+                Customer consumidorFinal = null;
+
+                if (response != null && response.getContent() != null) {
+                    for (Customer c : response.getContent()) {
+                        if (c.getPerson() != null &&
+                            "Consumidor".equalsIgnoreCase(c.getPerson().getFirstName()) &&
+                            "Final".equalsIgnoreCase(c.getPerson().getLastName())) {
+                            consumidorFinal = c;
+                            break;
+                        }
+                    }
+                }
+
+                if (consumidorFinal != null) {
+                    setClienteSeleccionado(consumidorFinal);
+                } else {
+                    CreatePersonRequest personRequest = new CreatePersonRequest("Consumidor", "Final", null, null);
+                    CreateCustomerRequest createRequest = new CreateCustomerRequest(personRequest, null);
+                    Customer nuevoCustomer = customerService.crearCliente(createRequest);
+                    if (nuevoCustomer != null) {
+                        setClienteSeleccionado(nuevoCustomer);
+                    }
+                }
+            } catch (Exception e) {
+                System.err.println("Error al configurar el cliente por defecto: " + e.getMessage());
+            }
+        });
+    }
+
+    private void setClienteSeleccionado(Customer customer) {
+        this.customerSeleccionado = customer;
+        if (customer != null && customer.getPerson() != null) {
+            txtCliente.setText(customer.getPerson().getFullName());
+        } else {
+            txtCliente.setText("Seleccione un cliente...");
+        }
+    }
+
+    @FXML
+    private void abrirBuscadorCliente() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/person/customer-search-modal.fxml"));
+            Parent root = loader.load();
+
+            CustomerSearchModalController controller = loader.getController();
+
+            Stage modal = new Stage();
+            com.store.inventario.shared.utils.WindowUtils.applyIcon(modal);
+            modal.initModality(javafx.stage.Modality.APPLICATION_MODAL);
+            modal.setTitle("Buscar Cliente");
+            modal.setScene(new Scene(root));
+            modal.showAndWait();
+
+            Customer seleccionado = controller.getClienteSeleccionado();
+            if (seleccionado != null) {
+                setClienteSeleccionado(seleccionado);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            mostrarAlerta("Error", "No se pudo abrir el buscador de clientes: " + e.getMessage());
+        }
+    }
+
+    private void cargarProductos(String search) {
+        Platform.runLater(() -> {
+            try {
+                PageResponse<Product> response = productService.obtenerProductos(search, 0, 100);
+                if (response != null && response.getContent() != null) {
+                    listaCatalogProducts.setAll(response.getContent());
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    @FXML
+    private void ejecutarBusquedaLocal() {
+        String query = txtBuscarProducto.getText();
+        cargarProductos(query != null ? query.trim() : "");
+    }
+
+    @FXML
+    private void agregarProductoALaLista() {
+        Product selected = tblProductos.getSelectionModel().getSelectedItem();
+        if (selected == null) {
+            mostrarAlerta("Campos requeridos", "Debe seleccionar un producto del catálogo de la izquierda.");
+            return;
+        }
+
+        int stockDisponible = (selected.getStock() != null) ? selected.getStock() : 0;
+        if (stockDisponible <= 0) {
+            mostrarAlerta("Stock agotado", "El producto seleccionado no cuenta con stock disponible.");
+            return;
+        }
+
+        String cantStr = txtCantidad.getText();
+        int cantidad;
+        try {
+            cantidad = Integer.parseInt(cantStr.trim());
+            if (cantidad <= 0) throw new NumberFormatException();
+        } catch (NumberFormatException e) {
+            mostrarAlerta("Error", "Cantidad inválida. Debe ser un número entero mayor a 0.");
+            return;
+        }
+
+        if (cantidad > stockDisponible) {
+            mostrarAlerta("Stock insuficiente", "Stock insuficiente. Solo quedan " + stockDisponible + " unidades disponibles.");
+            return;
+        }
+
+        String precioStr = txtPrecioVenta.getText();
+        BigDecimal precio;
+        try {
+            precio = new BigDecimal(precioStr.trim());
+            if (precio.compareTo(BigDecimal.ZERO) <= 0) throw new NumberFormatException();
+        } catch (NumberFormatException e) {
+            mostrarAlerta("Error", "Precio unitario de venta inválido. Debe ser un número mayor a 0.");
+            return;
+        }
+
+        int index = -1;
+        for (int i = 0; i < listaDetalle.size(); i++) {
+            if (listaDetalle.get(i).getProducto().getCode().equals(selected.getCode())) {
+                index = i;
+                break;
+            }
+        }
+
+        if (index >= 0) {
+            int nuevaCantidad = listaDetalle.get(index).getQuantity() + cantidad;
+            if (nuevaCantidad > stockDisponible) {
+                mostrarAlerta("Stock insuficiente", "Stock insuficiente. Ya tiene " + listaDetalle.get(index).getQuantity() + " en la lista y solo quedan " + stockDisponible + " unidades disponibles en total.");
+                return;
+            }
+            listaDetalle.set(index, new SaleFormController.DetalleTemporal(selected, precio, nuevaCantidad));
+        } else {
+            listaDetalle.add(new SaleFormController.DetalleTemporal(selected, precio, cantidad));
+        }
+        
+        actualizarTotal();
+        tblProductos.getSelectionModel().clearSelection();
+    }
+
+    private void configurarColumnaEliminar() {
+        colEliminar.setCellFactory(new Callback<>() {
+            @Override
+            public TableCell<SaleFormController.DetalleTemporal, Void> call(TableColumn<SaleFormController.DetalleTemporal, Void> param) {
+                return new TableCell<>() {
+                    private final Button btnEliminar = new Button("Quitar");
+                    private final HBox contenedor = new HBox(btnEliminar);
+
+                    {
+                        btnEliminar.getStyleClass().add("btn-acciones");
+                        contenedor.setAlignment(Pos.CENTER);
+
+                        btnEliminar.setOnAction(event -> {
+                            SaleFormController.DetalleTemporal selected = getTableView().getItems().get(getIndex());
+                            listaDetalle.remove(selected);
+                            actualizarTotal();
+                        });
+                    }
+
+                    @Override
+                    protected void updateItem(Void item, boolean empty) {
+                        super.updateItem(item, empty);
+                        setGraphic(empty ? null : contenedor);
+                    }
+                };
+            }
+        });
+    }
+
+    private void actualizarTotal() {
+        BigDecimal total = BigDecimal.ZERO;
+        for (SaleFormController.DetalleTemporal item : listaDetalle) {
+            total = total.add(item.getSubtotal());
+        }
+        lblTotalVenta.setText("S/ " + total.setScale(2, RoundingMode.HALF_UP).toString());
+    }
+
+    @FXML
+    private void registrarVenta() {
+        if (this.customerSeleccionado == null) {
+            mostrarAlerta("Campos requeridos", "Debe seleccionar un Cliente.");
+            return;
+        }
+
+        if (listaDetalle.isEmpty()) {
+            mostrarAlerta("Tabla vacía", "Debe agregar al menos un producto a la venta.");
+            return;
+        }
+
+        try {
+            String clientCode = this.customerSeleccionado.getCode();
+            List<CreateSaleDetailRequest> details = new ArrayList<>();
+            for (SaleFormController.DetalleTemporal item : listaDetalle) {
+                details.add(new CreateSaleDetailRequest(item.getProducto().getCode(), item.getQuantity()));
+            }
+
+            CreateSaleRequest request = new CreateSaleRequest(clientCode, details);
+            saleService.crearVenta(request);
+            NavigationManager.getInstance().refreshAlerts();
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Éxito");
+            alert.setHeaderText("Venta Registrada");
+            alert.setContentText("La venta se ha registrado y el stock de los productos ha disminuído.");
+            alert.showAndWait();
+            cerrarModal();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Alert error = new Alert(Alert.AlertType.ERROR);
+            error.setTitle("Error");
+            error.setHeaderText("No se pudo registrar la venta");
+            error.setContentText("Ocurrió un error al registrar la transacción: " + e.getMessage());
+            error.showAndWait();
+        }
+    }
+
+    @FXML
+    private void cerrarModal() {
+        Stage stage = (Stage) btnCancelar.getScene().getWindow();
+        stage.close();
+    }
+
+    private void mostrarAlerta(String titulo, String mensaje) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle(titulo);
+        alert.setHeaderText(null);
+        WindowUtils.applyIcon(alert);
+        alert.setContentText(mensaje);
+        alert.showAndWait();
+    }
+
+
+
+}
