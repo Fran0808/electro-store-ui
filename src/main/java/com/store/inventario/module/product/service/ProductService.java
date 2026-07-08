@@ -170,4 +170,47 @@ public class ProductService {
             throw new RuntimeException(e);
         }
     }
+
+    public java.util.List<Product> obtenerProductosStockBajo(int limit) {
+        try {
+            String urlStr = URL + "?stockStatus=" + java.net.URLEncoder.encode("Stock Bajo", java.nio.charset.StandardCharsets.UTF_8)
+                    + "&page=0&size=" + limit;
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(urlStr))
+                    .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
+                    .GET()
+                    .build();
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() >= 400) {
+                throw new RuntimeException("Error al obtener productos con stock bajo: HTTP " + response.statusCode());
+            }
+
+            Type type = new TypeToken<PageResponse<Product>>() {}.getType();
+            PageResponse<Product> page = gson.fromJson(response.body(), type);
+            return page != null && page.getContent() != null ? page.getContent() : new java.util.ArrayList<>();
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public java.util.List<com.store.inventario.shared.model.CategoryDistribution> obtenerDistribucionCategorias() {
+        try {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(URL + "/category-distribution"))
+                    .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
+                    .GET()
+                    .build();
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() >= 400) {
+                throw new RuntimeException("Error al obtener distribución de categorías: HTTP " + response.statusCode());
+            }
+
+            java.lang.reflect.Type type = new com.google.gson.reflect.TypeToken<java.util.List<com.store.inventario.shared.model.CategoryDistribution>>() {}.getType();
+            return gson.fromJson(response.body(), type);
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
