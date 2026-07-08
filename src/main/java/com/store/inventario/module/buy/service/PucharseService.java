@@ -5,6 +5,7 @@ import com.google.gson.reflect.TypeToken;
 import com.store.inventario.shared.config.ApiConfig;
 import com.store.inventario.shared.model.PageResponse;
 import com.store.inventario.module.buy.model.entity.Purchase;
+import com.store.inventario.module.buy.model.entity.PurchaseDashboard;
 import com.store.inventario.module.buy.request.CreatePurchaseRequest;
 import com.store.inventario.module.buy.model.entity.PurchaseMetrics;
 import com.store.inventario.security.SessionManager;
@@ -78,6 +79,25 @@ public class PucharseService {
         }
     }
 
+    public PurchaseDashboard obtenerDashboard() {
+        try {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(URL + "/dashboard"))
+                    .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
+                    .GET()
+                    .build();
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() >= 400) {
+                throw new RuntimeException("Error al obtener dashboard de compras: HTTP " + response.statusCode());
+            }
+
+            return gson.fromJson(response.body(), PurchaseDashboard.class);
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public PurchaseMetrics obtenerMetricas() {
         try {
             HttpRequest request = HttpRequest.newBuilder()
@@ -92,6 +112,26 @@ public class PucharseService {
             }
 
             return gson.fromJson(response.body(), PurchaseMetrics.class);
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public java.util.List<com.store.inventario.shared.model.DailySummary> obtenerResumenDiario(int days) {
+        try {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(URL + "/daily-summary?days=" + days))
+                    .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
+                    .GET()
+                    .build();
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() >= 400) {
+                throw new RuntimeException("Error al obtener resumen diario de compras: HTTP " + response.statusCode());
+            }
+
+            java.lang.reflect.Type type = new com.google.gson.reflect.TypeToken<java.util.List<com.store.inventario.shared.model.DailySummary>>() {}.getType();
+            return gson.fromJson(response.body(), type);
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
