@@ -40,8 +40,8 @@
                 
                 <HBox spacing="16.0" alignment="CENTER">
                     <VBox spacing="12.0" styleClass="card" HBox.hgrow="ALWAYS">
-                        <Label styleClass="metric-label" text="VALOR DEL INVENTARIO" />
-                        <Label fx:id="lblValorInventario" styleClass="metric-value" text="S/ 487,250" />
+                        <Label styleClass="metric-label" text="PRODUCTOS EN INVENTARIO" />
+                        <Label fx:id="lblValorInventario" styleClass="metric-value" text="—" />
                         <HBox alignment="CENTER_LEFT" spacing="6.0">
                             <Label styleClass="kpi-trend, up" text="▲ 3.2%" />
                             <Label styleClass="kpi-period" text="vs. mes anterior" />
@@ -49,26 +49,26 @@
                     </VBox>
 
                     <VBox spacing="12.0" styleClass="card" HBox.hgrow="ALWAYS">
-                        <Label styleClass="metric-label" text="VENTAS DEL MES" />
-                        <Label fx:id="lblVentasMes" styleClass="metric-value" text="S/ 86,420" />
+                        <Label styleClass="metric-label" text="VENTAS DE HOY" />
+                        <Label fx:id="lblVentasMes" styleClass="metric-value" text="—" />
                         <HBox alignment="CENTER_LEFT" spacing="6.0">
                             <Label styleClass="kpi-trend, up" text="▲ 12.4%" />
-                            <Label styleClass="kpi-period" text="vs. mes anterior" />
+                            <Label styleClass="kpi-period" text="vs. ayer" />
                         </HBox>
                     </VBox>
 
                     <VBox spacing="12.0" styleClass="card" HBox.hgrow="ALWAYS">
-                        <Label styleClass="metric-label" text="COMPRAS DEL MES" />
-                        <Label fx:id="lblComprasMes" styleClass="metric-value" text="S/ 52,180" />
+                        <Label styleClass="metric-label" text="COMPRAS DE HOY" />
+                        <Label fx:id="lblComprasMes" styleClass="metric-value" text="—" />
                         <HBox alignment="CENTER_LEFT" spacing="6.0">
                             <Label styleClass="kpi-trend, down" text="▼ 4.1%" />
-                            <Label styleClass="kpi-period" text="vs. mes anterior" />
+                            <Label styleClass="kpi-period" text="vs. ayer" />
                         </HBox>
                     </VBox>
 
                     <VBox spacing="12.0" styleClass="card" HBox.hgrow="ALWAYS">
                         <Label styleClass="metric-label" text="STOCK CRÍTICO" />
-                        <Label fx:id="lblStockCritico" styleClass="metric-value" text="8 productos" />
+                        <Label fx:id="lblStockCritico" styleClass="metric-value" text="—" />
                         <HBox alignment="CENTER_LEFT" spacing="6.0">
                             <Label style="-fx-text-fill: #EF4444; -fx-font-weight: bold; -fx-font-size: 11px;" text="Requiere reposición" />
                             <Label styleClass="kpi-period" text="· 5 órdenes pend." />
@@ -81,10 +81,8 @@
                         <HBox alignment="CENTER_LEFT">
                             <VBox spacing="4.0">
                                 <Label styleClass="panel-title" text="Ventas vs. compras" />
-                                <Label styleClass="panel-sub" text="Comparativo mensual, últimos 6 meses" />
+                                <Label styleClass="panel-sub" text="Comparativo diario, últimos 7 días" />
                             </VBox>
-                            <Region HBox.hgrow="ALWAYS" />
-                            <ComboBox fx:id="cbPeriodoVentas" promptText="Últimos 14 días" styleClass="filter-combo" />
                         </HBox>
                         <LineChart fx:id="chartVentasCompras" legendVisible="true" style="-fx-padding: 10;" VBox.vgrow="ALWAYS" prefHeight="300">
                             <xAxis>
@@ -99,7 +97,7 @@
                     <VBox spacing="12.0" styleClass="panel" HBox.hgrow="ALWAYS" prefWidth="380">
                         <VBox spacing="4.0">
                             <Label styleClass="panel-title" text="Inventario por categoría" />
-                            <Label styleClass="panel-sub" text="Distribución del valor total" />
+                            <Label styleClass="panel-sub" text="Distribución por cantidad de productos" />
                         </VBox>
                         <PieChart fx:id="chartCategorias" legendVisible="true" labelsVisible="false" VBox.vgrow="ALWAYS" prefHeight="300" style="-fx-padding: 10;" />
                     </VBox>
@@ -112,8 +110,6 @@
                                 <Label styleClass="panel-title" text="Productos más vendidos" />
                                 <Label styleClass="panel-sub" text="Unidades vendidas · últimos 30 días" />
                             </VBox>
-                            <Region HBox.hgrow="ALWAYS" />
-                            <ComboBox fx:id="cbPeriodoProductos" promptText="Último mes" styleClass="filter-combo" />
                         </HBox>
                         <BarChart fx:id="chartTopProductos" legendVisible="false" style="-fx-padding: 10;" VBox.vgrow="ALWAYS" prefHeight="300">
                             <xAxis>
@@ -139,29 +135,6 @@
                         </ScrollPane>
                     </VBox>
                 </HBox>
-
-                <VBox spacing="12.0" styleClass="panel" VBox.vgrow="ALWAYS">
-                    <HBox alignment="CENTER_LEFT">
-                        <VBox spacing="4.0">
-                            <Label styleClass="panel-title" text="Actividad reciente" />
-                            <Label styleClass="panel-sub" text="Últimos movimientos de compras, ventas y guías" />
-                        </VBox>
-                        <Region HBox.hgrow="ALWAYS" />
-                        <Label styleClass="panel-tag" text="Hoy, 15 jun" />
-                    </HBox>
-                    <TableView fx:id="tblActividad" prefHeight="260" styleClass="table-view" VBox.vgrow="ALWAYS">
-                        <columnResizePolicy>
-                            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                        </columnResizePolicy>
-                        <columns>
-                            <TableColumn fx:id="colMovimiento" prefWidth="280.0" text="Movimiento" />
-                            <TableColumn fx:id="colContraparte" prefWidth="180.0" text="Contraparte" />
-                            <TableColumn fx:id="colMonto" prefWidth="120.0" text="Monto" />
-                            <TableColumn fx:id="colFecha" prefWidth="120.0" text="Fecha" />
-                            <TableColumn fx:id="colEstado" prefWidth="120.0" text="Estado" />
-                        </columns>
-                    </TableView>
-                </VBox>
 
             </VBox>
         </ScrollPane>

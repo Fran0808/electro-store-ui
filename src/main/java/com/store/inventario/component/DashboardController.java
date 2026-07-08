@@ -1,8 +1,22 @@
 package com.store.inventario.component;
 
+import java.math.BigDecimal;
 import java.net.URL;
-import java.util.ResourceBundle;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
+
+import com.store.inventario.module.buy.model.entity.PurchaseDashboard;
+import com.store.inventario.module.buy.model.entity.PurchaseMetrics;
+import com.store.inventario.module.buy.service.PucharseService;
+import com.store.inventario.module.product.model.entity.Product;
+import com.store.inventario.module.product.model.entity.ProductMetrics;
+import com.store.inventario.module.product.service.ProductService;
+import com.store.inventario.module.sale.model.entity.Sale;
+import com.store.inventario.module.sale.model.entity.SaleMetrics;
+import com.store.inventario.module.sale.service.SaleService;
+import com.store.inventario.module.buy.model.entity.Purchase;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -12,7 +26,7 @@ import javafx.scene.chart.BarChart;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
-import javafx.scene.control.ComboBox;
+
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TableCell;
@@ -36,54 +50,144 @@ public class DashboardController implements Initializable {
     @FXML private BarChart<String, Number> chartTopProductos;
     @FXML private PieChart chartCategorias;
 
-    @FXML private ComboBox<String> cbPeriodoVentas;
-    @FXML private ComboBox<String> cbPeriodoProductos;
-
     @FXML private VBox vboxAlertasProgress;
 
-    @FXML private TableView<MovimientoReciente> tblActividad;
-    @FXML private TableColumn<MovimientoReciente, MovimientoReciente> colMovimiento;
-    @FXML private TableColumn<MovimientoReciente, String> colContraparte;
-    @FXML private TableColumn<MovimientoReciente, String> colMonto;
-    @FXML private TableColumn<MovimientoReciente, String> colFecha;
-    @FXML private TableColumn<MovimientoReciente, String> colEstado;
+    private final ProductService productService = new ProductService();
+    private final SaleService saleService = new SaleService();
+    private final PucharseService purchaseService = new PucharseService();
+
+
+    private ProductMetrics productMetrics;
+    private SaleMetrics saleMetrics;
+    private PurchaseDashboard purchaseDashboard;
+    private PurchaseMetrics purchaseMetrics;
+    private List<Product> lowStockProducts = new ArrayList<>();
+
+    private List<com.store.inventario.shared.model.DailySummary> dailySales = new ArrayList<>();
+    private List<com.store.inventario.shared.model.DailySummary> dailyPurchases = new ArrayList<>();
+    private List<com.store.inventario.shared.model.TopProduct> topProducts = new ArrayList<>();
+    private List<com.store.inventario.shared.model.CategoryDistribution> categoryDistribution = new ArrayList<>();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        initializeCombos();
+        loadApiData();
         loadFechaYKPIs();
         loadChartVentasCompras();
         loadChartTopProductos();
         loadChartCategorias();
         loadAlertasProgress();
-        loadActividadReciente();
     }
 
-    private void initializeCombos() {
-        cbPeriodoVentas.setItems(FXCollections.observableArrayList(
-                "Últimos 7 días", "Últimos 14 días", "Último mes", "Últimos 3 meses"
-        ));
-        cbPeriodoVentas.setValue("Últimos 14 días");
 
-        cbPeriodoProductos.setItems(FXCollections.observableArrayList(
-                "Último mes", "Últimos 3 meses", "Último año"
-        ));
-        cbPeriodoProductos.setValue("Último mes");
+    private void loadApiData() {
+        try {
+            productMetrics = productService.obtenerMetricas();
+        } catch (Exception e) {
+            System.err.println("[Dashboard] Error al cargar métricas de productos: " + e.getMessage());
+            productMetrics = null;
+        }
+
+        try {
+            saleMetrics = saleService.obtenerMetricas();
+        } catch (Exception e) {
+            System.err.println("[Dashboard] Error al cargar métricas de ventas: " + e.getMessage());
+            saleMetrics = null;
+        }
+
+        try {
+            purchaseDashboard = purchaseService.obtenerDashboard();
+        } catch (Exception e) {
+            System.err.println("[Dashboard] Error al cargar dashboard de compras: " + e.getMessage());
+            purchaseDashboard = null;
+        }
+
+        try {
+            purchaseMetrics = purchaseService.obtenerMetricas();
+        } catch (Exception e) {
+            System.err.println("[Dashboard] Error al cargar métricas de compras: " + e.getMessage());
+            purchaseMetrics = null;
+        }
+
+        try {
+            lowStockProducts = productService.obtenerProductosStockBajo(10);
+        } catch (Exception e) {
+            System.err.println("[Dashboard] Error al cargar productos con stock bajo: " + e.getMessage());
+            lowStockProducts = new ArrayList<>();
+        }
+
+
+        try {
+            dailySales = saleService.obtenerResumenDiario(7);
+        } catch (Exception e) {
+            System.err.println("[Dashboard] Error al cargar resumen diario de ventas: " + e.getMessage());
+            dailySales = new ArrayList<>();
+        }
+
+        try {
+            dailyPurchases = purchaseService.obtenerResumenDiario(7);
+        } catch (Exception e) {
+            System.err.println("[Dashboard] Error al cargar resumen diario de compras: " + e.getMessage());
+            dailyPurchases = new ArrayList<>();
+        }
+
+
+        try {
+            topProducts = saleService.obtenerTopProductos(5);
+        } catch (Exception e) {
+            System.err.println("[Dashboard] Error al cargar productos más vendidos: " + e.getMessage());
+            topProducts = new ArrayList<>();
+        }
+
+
+        try {
+            categoryDistribution = productService.obtenerDistribucionCategorias();
+        } catch (Exception e) {
+            System.err.println("[Dashboard] Error al cargar distribución de categorías: " + e.getMessage());
+            categoryDistribution = new ArrayList<>();
+        }
     }
 
     private void loadFechaYKPIs() {
         java.time.LocalDate today = java.time.LocalDate.now();
         java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern(
-                "d 'de' MMMM, yyyy", new java.util.Locale("es", "PE")
+                "d 'de' MMMM, yyyy", new Locale("es", "PE")
         );
         if (lblFechaResumen != null) {
             lblFechaResumen.setText("Resumen de operaciones · " + today.format(formatter));
         }
 
-        if (lblValorInventario != null) lblValorInventario.setText("S/ 487,250");
-        if (lblVentasMes != null) lblVentasMes.setText("S/ 86,420");
-        if (lblComprasMes != null) lblComprasMes.setText("S/ 52,180");
-        if (lblStockCritico != null) lblStockCritico.setText("8 productos");
+        if (lblValorInventario != null) {
+            if (productMetrics != null) {
+                lblValorInventario.setText(productMetrics.getTotalProducts() + " productos");
+            } else {
+                lblValorInventario.setText("—");
+            }
+        }
+
+        if (lblVentasMes != null) {
+            if (saleMetrics != null && saleMetrics.getTodaySales() != null) {
+                lblVentasMes.setText("S/ " + formatMonto(saleMetrics.getTodaySales()));
+            } else {
+                lblVentasMes.setText("S/ 0.00");
+            }
+        }
+
+        if (lblComprasMes != null) {
+            if (purchaseDashboard != null && purchaseDashboard.getTodayPurchases() != null) {
+                lblComprasMes.setText("S/ " + formatMonto(purchaseDashboard.getTodayPurchases()));
+            } else {
+                lblComprasMes.setText("S/ 0.00");
+            }
+        }
+
+        if (lblStockCritico != null) {
+            if (productMetrics != null) {
+                long critico = productMetrics.getLowStockCount() + productMetrics.getOutOfStockCount();
+                lblStockCritico.setText(critico + " productos");
+            } else {
+                lblStockCritico.setText("—");
+            }
+        }
     }
 
     private void loadChartVentasCompras() {
@@ -91,25 +195,26 @@ public class DashboardController implements Initializable {
 
         XYChart.Series<String, Number> seriesVentas = new XYChart.Series<>();
         seriesVentas.setName("Ventas");
-        seriesVentas.getData().addAll(
-                new XYChart.Data<>("Ene", 62000),
-                new XYChart.Data<>("Feb", 71000),
-                new XYChart.Data<>("Mar", 68500),
-                new XYChart.Data<>("Abr", 79200),
-                new XYChart.Data<>("May", 91300),
-                new XYChart.Data<>("Jun", 86420)
-        );
+        if (dailySales != null && !dailySales.isEmpty()) {
+            for (com.store.inventario.shared.model.DailySummary item : dailySales) {
+
+                String label = item.getDate().substring(Math.max(0, item.getDate().length() - 5)); // e.g. "07-08"
+                seriesVentas.getData().add(new XYChart.Data<>(label, item.getTotal()));
+            }
+        } else {
+            seriesVentas.getData().add(new XYChart.Data<>("Sin datos", 0));
+        }
 
         XYChart.Series<String, Number> seriesCompras = new XYChart.Series<>();
         seriesCompras.setName("Compras");
-        seriesCompras.getData().addAll(
-                new XYChart.Data<>("Ene", 45000),
-                new XYChart.Data<>("Feb", 50200),
-                new XYChart.Data<>("Mar", 48100),
-                new XYChart.Data<>("Abr", 55300),
-                new XYChart.Data<>("May", 60500),
-                new XYChart.Data<>("Jun", 52180)
-        );
+        if (dailyPurchases != null && !dailyPurchases.isEmpty()) {
+            for (com.store.inventario.shared.model.DailySummary item : dailyPurchases) {
+                String label = item.getDate().substring(Math.max(0, item.getDate().length() - 5));
+                seriesCompras.getData().add(new XYChart.Data<>(label, item.getTotal()));
+            }
+        } else {
+            seriesCompras.getData().add(new XYChart.Data<>("Sin datos", 0));
+        }
 
         chartVentasCompras.getData().addAll(seriesVentas, seriesCompras);
 
@@ -128,16 +233,17 @@ public class DashboardController implements Initializable {
 
         XYChart.Series<String, Number> series = new XYChart.Series<>();
         series.setName("Unidades Vendidas");
-        series.getData().addAll(
-                new XYChart.Data<>("Refri Samsung", 42),
-                new XYChart.Data<>("Lava LG", 38),
-                new XYChart.Data<>("Microondas", 35),
-                new XYChart.Data<>("Aire Split", 29),
-                new XYChart.Data<>("Licuadora", 27)
-        );
+        if (topProducts != null && !topProducts.isEmpty()) {
+            for (com.store.inventario.shared.model.TopProduct item : topProducts) {
+                String shortName = item.getProductName().length() > 12 ? item.getProductName().substring(0, 10) + ".." : item.getProductName();
+                series.getData().add(new XYChart.Data<>(shortName, item.getTotalQuantity()));
+            }
+        } else {
+            series.getData().add(new XYChart.Data<>("Sin datos", 0));
+        }
 
         chartTopProductos.getData().add(series);
-        
+
         javafx.application.Platform.runLater(() -> {
             for (XYChart.Data<String, Number> data : series.getData()) {
                 if (data.getNode() != null) {
@@ -150,14 +256,16 @@ public class DashboardController implements Initializable {
     private void loadChartCategorias() {
         chartCategorias.getData().clear();
 
-        chartCategorias.getData().addAll(
-                new PieChart.Data("Refrigeración (28%)", 28),
-                new PieChart.Data("Lavado y secado (22%)", 22),
-                new PieChart.Data("Climatización (18%)", 18),
-                new PieChart.Data("Cocina (16%)", 16),
-                new PieChart.Data("TV y audio (10%)", 10),
-                new PieChart.Data("Pequeños electrod. (6%)", 6)
-        );
+        if (categoryDistribution != null && !categoryDistribution.isEmpty()) {
+            long total = categoryDistribution.stream().mapToLong(com.store.inventario.shared.model.CategoryDistribution::getCount).sum();
+            for (com.store.inventario.shared.model.CategoryDistribution item : categoryDistribution) {
+                double pct = total > 0 ? (double) item.getCount() / total * 100 : 0;
+                String label = String.format("%s (%d%%)", item.getCategoryName(), (int) pct);
+                chartCategorias.getData().add(new PieChart.Data(label, item.getCount()));
+            }
+        } else {
+            chartCategorias.getData().add(new PieChart.Data("Sin datos", 1));
+        }
 
         javafx.application.Platform.runLater(() -> {
             String[] colors = new String[]{"#D97706", "#0D9488", "#3B82F6", "#8B5CF6", "#EF4444", "#64748B"};
@@ -174,174 +282,57 @@ public class DashboardController implements Initializable {
     private void loadAlertasProgress() {
         vboxAlertasProgress.getChildren().clear();
 
-        List<AlertaItem> list = List.of(
-                new AlertaItem("Plancha a vapor ProSteam", 3, 10, true),
-                new AlertaItem("Cafetera programable 1.5L", 4, 12, true),
-                new AlertaItem("Aspiradora ciclónica 1400W", 9, 20, true),
-                new AlertaItem("Horno eléctrico 45L", 5, 10, false),
-                new AlertaItem("Ventilador de torre 40\"", 8, 15, false)
-        );
+        if (lowStockProducts.isEmpty()) {
+            Label lblEmpty = new Label("No hay productos con stock bajo en este momento.");
+            lblEmpty.setStyle("-fx-text-fill: #64748B; -fx-font-size: 13px; -fx-padding: 10 0 0 0;");
+            vboxAlertasProgress.getChildren().add(lblEmpty);
+            return;
+        }
 
-        for (AlertaItem item : list) {
+        for (Product product : lowStockProducts) {
+            int stockActual = product.getStock() != null ? product.getStock() : 0;
+            int stockMinimo = product.getLowStock() != null ? product.getLowStock() : 1;
+            boolean isCritico = stockMinimo > 0 && stockActual <= (stockMinimo / 2.0);
+
             VBox row = new VBox(6);
-            
+
             HBox topRow = new HBox();
             topRow.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
-            
-            Label lblName = new Label(item.nombre);
+
+            Label lblName = new Label(product.getName());
             lblName.setStyle("-fx-font-weight: bold; -fx-font-size: 13px; -fx-text-fill: #0F172A;");
-            
+
             Region spacer = new Region();
             HBox.setHgrow(spacer, javafx.scene.layout.Priority.ALWAYS);
-            
-            Label lblBadge = new Label(item.isCritico ? "Crítico" : "Bajo");
-            lblBadge.getStyleClass().add(item.isCritico ? "badge-critical" : "badge-low");
-            
+
+            Label lblBadge = new Label(isCritico ? "Crítico" : "Bajo");
+            lblBadge.getStyleClass().add(isCritico ? "badge-critical" : "badge-low");
+
             topRow.getChildren().addAll(lblName, spacer, lblBadge);
-            
-            ProgressBar bar = new ProgressBar((double) item.actual / item.limite);
+
+            double progress = stockMinimo > 0 ? (double) stockActual / stockMinimo : 0.0;
+            ProgressBar bar = new ProgressBar(Math.min(progress, 1.0));
             bar.setMaxWidth(Double.MAX_VALUE);
             bar.setPrefHeight(6);
-            
 
-            if (item.isCritico) {
+            if (isCritico) {
                 bar.setStyle("-fx-accent: #EF4444; -fx-control-inner-background: #F1F5F9;");
             } else {
                 bar.setStyle("-fx-accent: #D97706; -fx-control-inner-background: #F1F5F9;");
             }
-            
-            Label lblMeta = new Label(item.actual + " / " + item.limite + " unidades");
+
+            Label lblMeta = new Label(stockActual + " / " + stockMinimo + " unidades (mín.)");
             lblMeta.setStyle("-fx-text-fill: #64748B; -fx-font-size: 11px;");
-            
+
             row.getChildren().addAll(topRow, bar, lblMeta);
             vboxAlertasProgress.getChildren().add(row);
         }
     }
 
-    private void loadActividadReciente() {
-        ObservableList<MovimientoReciente> data = FXCollections.observableArrayList(
-                new MovimientoReciente("Venta #V-2456", "Refrigeradora Inverter 300L ×1", "J. Mendoza", "S/ 2,150.00", "Hoy, 10:24", "Completado"),
-                new MovimientoReciente("Compra #C-0892", "Microondas digital 23L ×20", "Electro Import S.A.C.", "S/ 8,400.00", "Hoy, 09:10", "En tránsito"),
-                new MovimientoReciente("Venta #V-2455", "Licuadora 3 velocidades ×2", "M. Torres", "S/ 240.00", "Hoy, 08:55", "Completado"),
-                new MovimientoReciente("Guía #G-1033", "Salida de almacén → Tienda Surco · 15 prod", "Tienda Surco", "—", "Ayer, 17:40", "Enviado"),
-                new MovimientoReciente("Compra #C-0891", "Aire acondicionado Split 12000 BTU ×10", "Hogar Tech Perú", "S/ 35,000.00", "Ayer, 14:20", "Pendiente")
-        );
 
-        colMovimiento.setCellValueFactory(cellData -> new javafx.beans.property.SimpleObjectProperty<>(cellData.getValue()));
-        colContraparte.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getContraparte()));
-        colMonto.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getMonto()));
-        colFecha.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getFecha()));
-        colEstado.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getEstado()));
 
-        colMovimiento.setCellFactory(column -> new TableCell<>() {
-            @Override
-            protected void updateItem(MovimientoReciente item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty || item == null) {
-                    setGraphic(null);
-                } else {
-                    HBox cellBox = new HBox(10);
-                    cellBox.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
-
-                    StackPane iconContainer = new StackPane();
-                    iconContainer.setPrefSize(30, 30);
-                    iconContainer.setMinSize(30, 30);
-                    iconContainer.setMaxSize(30, 30);
-                    
-                    SVGPath svg = new SVGPath();
-                    svg.setScaleX(1.1);
-                    svg.setScaleY(1.1);
-
-                    if (item.getTitulo().startsWith("Venta")) {
-                        svg.setContent("M3 17l6-6 4 4 8-8M15 7h6v6");
-                        svg.setStyle("-fx-fill: transparent; -fx-stroke: #0D9488; -fx-stroke-width: 2px;");
-                        iconContainer.setStyle("-fx-background-color: #F0FDFA; -fx-background-radius: 8px;");
-                    } else if (item.getTitulo().startsWith("Compra")) {
-                        svg.setContent("M19 6h-2c0-2.76-2.24-5-5-5S7 3.24 7 6H5c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-7-3c1.66 0 3 1.34 3 3H9c0-1.66 1.34-3 3-3zm7 17H5V8h14v12z");
-                        svg.setStyle("-fx-fill: #D97706;");
-                        iconContainer.setStyle("-fx-background-color: #FFFBEB; -fx-background-radius: 8px;");
-                    } else {
-                        svg.setContent("M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z");
-                        svg.setStyle("-fx-fill: #64748B;");
-                        iconContainer.setStyle("-fx-background-color: #F1F5F9; -fx-background-radius: 8px;");
-                    }
-                    iconContainer.getChildren().add(svg);
-
-                    VBox textBox = new VBox(2);
-                    Label lblTitle = new Label(item.getTitulo());
-                    lblTitle.setStyle("-fx-font-weight: bold; -fx-font-size: 13px; -fx-text-fill: #0F172A;");
-                    
-                    Label lblSub = new Label(item.getSubtitulo());
-                    lblSub.setStyle("-fx-text-fill: #64748B; -fx-font-size: 11px;");
-                    
-                    textBox.getChildren().addAll(lblTitle, lblSub);
-                    cellBox.getChildren().addAll(iconContainer, textBox);
-                    setGraphic(cellBox);
-                }
-            }
-        });
-
-        colEstado.setCellFactory(column -> new TableCell<>() {
-            @Override
-            protected void updateItem(String item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty || item == null) {
-                    setGraphic(null);
-                } else {
-                    Label lblStatus = new Label(item);
-                    if ("Completado".equalsIgnoreCase(item)) {
-                        lblStatus.setStyle("-fx-background-color: rgba(74,222,128,0.15); -fx-text-fill: #16A34A; -fx-font-weight: bold; -fx-padding: 3 10 3 10; -fx-background-radius: 7px;");
-                    } else if ("En tránsito".equalsIgnoreCase(item)) {
-                        lblStatus.setStyle("-fx-background-color: #F0FDFA; -fx-text-fill: #0D9488; -fx-font-weight: bold; -fx-padding: 3 10 3 10; -fx-background-radius: 7px;");
-                    } else if ("Pendiente".equalsIgnoreCase(item)) {
-                        lblStatus.setStyle("-fx-background-color: #FFFBEB; -fx-text-fill: #D97706; -fx-font-weight: bold; -fx-padding: 3 10 3 10; -fx-background-radius: 7px;");
-                    } else {
-                        lblStatus.setStyle("-fx-background-color: #F1F5F9; -fx-text-fill: #64748B; -fx-font-weight: bold; -fx-padding: 3 10 3 10; -fx-background-radius: 7px;");
-                    }
-                    setGraphic(lblStatus);
-                }
-            }
-        });
-
-        tblActividad.setItems(data);
-    }
-
-    private static class AlertaItem {
-        String nombre;
-        int actual;
-        int limite;
-        boolean isCritico;
-
-        AlertaItem(String nombre, int actual, int limite, boolean isCritico) {
-            this.nombre = nombre;
-            this.actual = actual;
-            this.limite = limite;
-            this.isCritico = isCritico;
-        }
-    }
-
-    public static class MovimientoReciente {
-        private String titulo;
-        private String subtitulo;
-        private String contraparte;
-        private String monto;
-        private String fecha;
-        private String estado;
-
-        public MovimientoReciente(String titulo, String subtitulo, String contraparte, String monto, String fecha, String estado) {
-            this.titulo = titulo;
-            this.subtitulo = subtitulo;
-            this.contraparte = contraparte;
-            this.monto = monto;
-            this.fecha = fecha;
-            this.estado = estado;
-        }
-
-        public String getTitulo() { return titulo; }
-        public String getSubtitulo() { return subtitulo; }
-        public String getContraparte() { return contraparte; }
-        public String getMonto() { return monto; }
-        public String getFecha() { return fecha; }
-        public String getEstado() { return estado; }
+    private String formatMonto(BigDecimal monto) {
+        if (monto == null) return "0.00";
+        return String.format("%,.2f", monto);
     }
 }
