@@ -94,4 +94,44 @@ public class SaleService {
             throw new RuntimeException(e);
         }
     }
+
+    public java.util.List<com.store.inventario.shared.model.DailySummary> obtenerResumenDiario(int days) {
+        try {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(URL + "/daily-summary?days=" + days))
+                    .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
+                    .GET()
+                    .build();
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() >= 400) {
+                throw new RuntimeException("Error al obtener resumen diario de ventas: HTTP " + response.statusCode());
+            }
+
+            java.lang.reflect.Type type = new com.google.gson.reflect.TypeToken<java.util.List<com.store.inventario.shared.model.DailySummary>>() {}.getType();
+            return gson.fromJson(response.body(), type);
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public java.util.List<com.store.inventario.shared.model.TopProduct> obtenerTopProductos(int limit) {
+        try {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(URL + "/top-products?limit=" + limit))
+                    .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
+                    .GET()
+                    .build();
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() >= 400) {
+                throw new RuntimeException("Error al obtener productos más vendidos: HTTP " + response.statusCode());
+            }
+
+            java.lang.reflect.Type type = new com.google.gson.reflect.TypeToken<java.util.List<com.store.inventario.shared.model.TopProduct>>() {}.getType();
+            return gson.fromJson(response.body(), type);
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
