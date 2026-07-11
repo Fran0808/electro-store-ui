@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+
+<AnchorPane prefHeight="800.0" prefWidth="1040.0" styleClass="root" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.store.inventario.component.AjustesController">
+    <stylesheets>
+        <URL value="@../../styles/style.css" />
+    </stylesheets>
+    
+    <VBox spacing="24.0" styleClass="view-container" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <VBox spacing="4.0">
+            <children>
+                <Label styleClass="header-title" text="Configuración" />
+                <Label styleClass="header-subtitle" text="Administre los parámetros generales, reportes y seguridad de la aplicación" />
+            </children>
+        </VBox>
+
+        <ScrollPane fitToWidth="true" style="-fx-background-color: transparent; -fx-background: #F8FAFC; -fx-padding: 0; -fx-border-width: 0;" VBox.vgrow="ALWAYS">
+            <content>
+                <VBox spacing="24.0" style="-fx-padding: 0 16 16 0; -fx-background-color: transparent;">
+                    <children>
+                        <VBox spacing="16.0" styleClass="card">
+                            <children>
+                                <VBox spacing="4.0">
+                                    <children>
+                                        <Label styleClass="panel-title" text="Ajustes de Negocio" />
+                                        <Label styleClass="panel-sub" text="Configure la moneda oficial y la tasa de impuestos por defecto" />
+                                    </children>
+                                </VBox>
+                                <GridPane hgap="20.0" vgap="14.0">
+                                    <columnConstraints>
+                                        <ColumnConstraints percentWidth="50.0" />
+                                        <ColumnConstraints percentWidth="50.0" />
+                                    </columnConstraints>
+                                    <children>
+                                        <VBox spacing="6.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                                            <children>
+                                                <Label style="-fx-font-weight: bold; -fx-text-fill: #334155; -fx-font-size: 13px;" text="Moneda Predeterminada" />
+                                                <ComboBox fx:id="cbMoneda" prefHeight="40.0" maxWidth="Infinity" styleClass="filter-combo" />
+                                            </children>
+                                        </VBox>
+                                        <VBox spacing="6.0" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                                            <children>
+                                                <Label style="-fx-font-weight: bold; -fx-text-fill: #334155; -fx-font-size: 13px;" text="Tasa de Impuesto (IGV/IVA %)" />
+                                                <TextField fx:id="txtTasaImpuesto" prefHeight="40.0" styleClass="search-field" promptText="18" />
+                                            </children>
+                                        </VBox>
+                                    </children>
+                                </GridPane>
+                            </children>
+                        </VBox>
+                        <VBox spacing="16.0" styleClass="card">
+                            <children>
+                                <VBox spacing="4.0">
+                                    <children>
+                                        <Label styleClass="panel-title" text="Preferencias de Archivos y Reportes" />
+                                        <Label styleClass="panel-sub" text="Defina el comportamiento de los comprobantes y la ruta de exportación" />
+                                    </children>
+                                </VBox>
+                                <VBox spacing="14.0">
+                                    <children>
+                                        <CheckBox fx:id="chkAutoGenerarPdf" text="Auto-generar PDF al Vender (apertura automática)" style="-fx-font-size: 13px; -fx-text-fill: #334155; -fx-font-family: 'Inter';" />
+                                        <VBox spacing="6.0">
+                                            <children>
+                                                <Label style="-fx-font-weight: bold; -fx-text-fill: #334155; -fx-font-size: 13px;" text="Ruta de Guardado de Reportes" />
+                                                <HBox spacing="10.0" alignment="CENTER_LEFT">
+                                                    <children>
+                                                        <TextField fx:id="txtRutaReportes" prefHeight="40.0" styleClass="search-field" HBox.hgrow="ALWAYS" promptText="Seleccione una ruta..." />
+                                                        <Button fx:id="btnExaminarReportes" onAction="#handleExaminarReportes" prefHeight="40.0" styleClass="btn-secondary" text="Examinar..." />
+                                                    </children>
+                                                </HBox>
+                                            </children>
+                                        </VBox>
+                                    </children>
+                                </VBox>
+                            </children>
+                        </VBox>
+
+                        <VBox spacing="16.0" styleClass="card">
+                            <children>
+                                <VBox spacing="4.0">
+                                    <children>
+                                        <Label styleClass="panel-title" text="Copias de Seguridad (Backup)" />
+                                        <Label styleClass="panel-sub" text="Configure los respaldos automáticos y su directorio de destino" />
+                                    </children>
+                                </VBox>
+                                <VBox spacing="14.0">
+                                    <children>
+                                        <CheckBox fx:id="chkRespaldosAuto" text="Respaldos Automáticos (realizar copia al cerrar la aplicación)" style="-fx-font-size: 13px; -fx-text-fill: #334155; -fx-font-family: 'Inter';" />
+                                        <VBox spacing="6.0">
+                                            <children>
+                                                <Label style="-fx-font-weight: bold; -fx-text-fill: #334155; -fx-font-size: 13px;" text="Ruta de Respaldos" />
+                                                <HBox spacing="10.0" alignment="CENTER_LEFT">
+                                                    <children>
+                                                        <TextField fx:id="txtRutaRespaldos" prefHeight="40.0" styleClass="search-field" HBox.hgrow="ALWAYS" promptText="Seleccione una ruta..." />
+                                                        <Button fx:id="btnExaminarRespaldos" onAction="#handleExaminarRespaldos" prefHeight="40.0" styleClass="btn-secondary" text="Examinar..." />
+                                                    </children>
+                                                </HBox>
+                                            </children>
+                                        </VBox>
+                                    </children>
+                                </VBox>
+                            </children>
+                        </VBox>
+
+                        <VBox spacing="16.0" styleClass="card">
+                            <children>
+                                <VBox spacing="4.0">
+                                    <children>
+                                        <Label styleClass="panel-title" text="Seguridad y Sesión" />
+                                        <Label styleClass="panel-sub" text="Establezca la expiración de la sesión por inactividad" />
+                                    </children>
+                                </VBox>
+                                <VBox spacing="6.0" maxWidth="350.0">
+                                    <children>
+                                        <Label style="-fx-font-weight: bold; -fx-text-fill: #334155; -fx-font-size: 13px;" text="Expiración de Sesión" />
+                                        <ComboBox fx:id="cbExpiracionSesion" prefHeight="40.0" maxWidth="Infinity" styleClass="filter-combo" />
+                                    </children>
+                                </VBox>
+                            </children>
+                        </VBox>
+
+                        <HBox spacing="14.0" alignment="CENTER_LEFT" style="-fx-padding: 10px 0 0 0;">
+                            <children>
+                                <Button fx:id="btnGuardarCambios" onAction="#handleGuardarCambios" prefWidth="160.0" styleClass="btn-primary" text="Guardar Cambios" />
+                                <Button fx:id="btnRestablecer" onAction="#handleRestablecer" prefWidth="120.0" styleClass="btn-secondary" text="Restablecer" />
+                            </children>
+                        </HBox>
+                    </children>
+                </VBox>
+            </content>
+        </ScrollPane>
+    </VBox>
+</AnchorPane>

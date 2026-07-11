@@ -28,6 +28,7 @@ public class SidebarController {
     @FXML private HBox itemUsuarios;
     @FXML private HBox itemAlertas;
     @FXML private HBox itemReportes;
+    @FXML private HBox itemAjustes;
 
     @FXML private Label lblBadgeAlertas;
 
@@ -45,6 +46,7 @@ public class SidebarController {
             ocultarComponente(itemDashboard);
             ocultarComponente(itemEmpleados);
             ocultarComponente(itemUsuarios);
+            ocultarComponente(itemAjustes);
         }
 
         if ("STOREKEEPER".equalsIgnoreCase(role)) {
@@ -168,6 +170,11 @@ public class SidebarController {
     @FXML
     private void handleAlertas() {
         NavigationManager.getInstance().navegar("/views/component/alertas.fxml");
+    }
+
+    @FXML
+    private void handleAjustes() {
+        NavigationManager.getInstance().navegar("/views/component/ajustes.fxml");
     }
 
     @FXML
