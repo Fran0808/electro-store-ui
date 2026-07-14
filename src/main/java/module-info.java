@@ -45,5 +45,8 @@ module com.store.inventario {
     opens com.store.inventario.component;
     opens com.store.inventario.shared.model;
     opens com.store.inventario.shared.utils;
+    //REPORT
+    opens com.store.inventario.module.report.controller;
+    opens com.store.inventario.module.report.service;
 
 }
