@@ -31,36 +31,7 @@
             <content>
                 <VBox spacing="24.0" style="-fx-padding: 0 16 16 0; -fx-background-color: transparent;">
                     <children>
-                        <VBox spacing="16.0" styleClass="card">
-                            <children>
-                                <VBox spacing="4.0">
-                                    <children>
-                                        <Label styleClass="panel-title" text="Ajustes de Negocio" />
-                                        <Label styleClass="panel-sub" text="Configure la moneda oficial y la tasa de impuestos por defecto" />
-                                    </children>
-                                </VBox>
-                                <GridPane hgap="20.0" vgap="14.0">
-                                    <columnConstraints>
-                                        <ColumnConstraints percentWidth="50.0" />
-                                        <ColumnConstraints percentWidth="50.0" />
-                                    </columnConstraints>
-                                    <children>
-                                        <VBox spacing="6.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
-                                            <children>
-                                                <Label style="-fx-font-weight: bold; -fx-text-fill: #334155; -fx-font-size: 13px;" text="Moneda Predeterminada" />
-                                                <ComboBox fx:id="cbMoneda" prefHeight="40.0" maxWidth="Infinity" styleClass="filter-combo" />
-                                            </children>
-                                        </VBox>
-                                        <VBox spacing="6.0" GridPane.columnIndex="1" GridPane.rowIndex="0">
-                                            <children>
-                                                <Label style="-fx-font-weight: bold; -fx-text-fill: #334155; -fx-font-size: 13px;" text="Tasa de Impuesto (IGV/IVA %)" />
-                                                <TextField fx:id="txtTasaImpuesto" prefHeight="40.0" styleClass="search-field" promptText="18" />
-                                            </children>
-                                        </VBox>
-                                    </children>
-                                </GridPane>
-                            </children>
-                        </VBox>
+
                         <VBox spacing="16.0" styleClass="card">
                             <children>
                                 <VBox spacing="4.0">

@@ -26,6 +26,7 @@ import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
+import java.util.prefs.Preferences;
 
 public class IndexController implements Initializable {
 
@@ -163,14 +164,21 @@ public class IndexController implements Initializable {
 
     @FXML
     private void handleRealizarCopia(ActionEvent event) {
-        Stage stage = (Stage) lblBienvenida.getScene().getWindow();
+        Preferences prefs = Preferences.userNodeForPackage(AjustesController.class);
+        String defaultBackupPath = System.getProperty("user.home") + File.separator + "Documents" + File.separator + "ElectroStore" + File.separator + "Backups";
+        String rutaRespaldos = prefs.get("ruta_respaldos", defaultBackupPath);
+        File directorioSeleccionado = new File(rutaRespaldos);
 
-        DirectoryChooser directoryChooser = new DirectoryChooser();
-        directoryChooser.setTitle("Seleccionar carpeta para guardar la copia de seguridad");
-        File directorioSeleccionado = directoryChooser.showDialog(stage);
-
-        if (directorioSeleccionado == null) {
-            return;
+        if (!directorioSeleccionado.exists()) {
+            if (!directorioSeleccionado.mkdirs()) {
+                javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.ERROR);
+                alert.setTitle("Error de Carpeta");
+                alert.setHeaderText(null);
+                alert.setContentText("No se pudo crear la carpeta de copias de seguridad: " + rutaRespaldos);
+                WindowUtils.applyIcon(alert);
+                alert.showAndWait();
+                return;
+            }
         }
 
         btnRealizarCopia.setDisable(true);
