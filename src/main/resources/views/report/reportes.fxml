@@ -45,12 +45,42 @@
 
                 <Region VBox.vgrow="ALWAYS" />
                 
-                <VBox spacing="8.0" alignment="BOTTOM_LEFT">
-                    <Label text="Seleccione el Año:" styleClass="metric-label" />
-                    <HBox spacing="12.0" alignment="CENTER_LEFT">
-                        <ComboBox fx:id="cbAnio" styleClass="filter-combo" prefWidth="180.0" />
-                        <Button styleClass="btn-primary" text="Generar PDF" onAction="#handleGenerarVentas" prefWidth="140.0" />
+                <VBox spacing="12.0" alignment="BOTTOM_LEFT">
+                    <VBox spacing="4.0" maxWidth="Infinity">
+                        <Label text="Seleccione el Año:" styleClass="metric-label" />
+                        <ComboBox fx:id="cbAnio" styleClass="filter-combo" maxWidth="Infinity" prefHeight="40.0" />
+                    </VBox>
+                    <Button styleClass="btn-primary" text="Generar PDF" onAction="#handleGenerarVentas" maxWidth="Infinity" prefHeight="40.0" />
+                </VBox>
+            </VBox>
+
+            <VBox spacing="20.0" styleClass="card" HBox.hgrow="ALWAYS">
+                <HBox alignment="CENTER_LEFT" spacing="12">
+                    <StackPane styleClass="metric-icon-container, icon-orange">
+                        <SVGPath content="M19 6h-2c0-2.76-2.24-5-5-5S7 3.24 7 6H5c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-7-3c1.66 0 3 1.34 3 3H9c0-1.66 1.34-3 3-3zm7 17H5V8h14v12z" styleClass="metric-icon" />
+                    </StackPane>
+                    <VBox spacing="2">
+                        <Label styleClass="panel-title" text="Reporte de Compras" />
+                        <Label styleClass="panel-sub" text="Estadísticas de gastos e inversiones con proveedores." />
+                    </VBox>
+                </HBox>
+                
+                <Label wrapText="true" text="Genera un informe consolidado de compras. Incluye el total de unidades adquiridas, montos invertidos, el proveedor principal, la evolución de compras y la distribución de gasto por categorías." styleClass="panel-sub" />
+
+                <Region VBox.vgrow="ALWAYS" />
+                
+                <VBox spacing="12.0" alignment="BOTTOM_LEFT">
+                    <HBox spacing="12.0">
+                        <VBox spacing="4.0" HBox.hgrow="ALWAYS">
+                            <Label text="Frecuencia:" styleClass="metric-label" />
+                            <ComboBox fx:id="cbComprasFrecuencia" styleClass="filter-combo" maxWidth="Infinity" prefHeight="40.0" />
+                        </VBox>
+                        <VBox spacing="4.0" HBox.hgrow="ALWAYS">
+                            <Label text="Fecha Referencia:" styleClass="metric-label" />
+                            <DatePicker fx:id="dpComprasFechaRef" promptText="dd/mm/aaaa" prefHeight="40.0" maxWidth="Infinity" />
+                        </VBox>
                     </HBox>
+                    <Button styleClass="btn-primary" text="Generar PDF" onAction="#handleGenerarCompras" maxWidth="Infinity" prefHeight="40.0" />
                 </VBox>
             </VBox>
 
@@ -65,32 +95,26 @@
                     </VBox>
                 </HBox>
                 
-                <Label wrapText="true" text="Visualiza el historial detallado de movimientos de entrada y salida para un electrodoméstico seleccionado, calculando el costo promedio ponderado y stock restante." styleClass="panel-sub" />
+                <Label wrapText="true" text="Visualiza el historial detallado de movimientos de entrada y salida para un producto específico, calculando el costo promedio ponderado y el stock restante por periodo de tiempo." styleClass="panel-sub" />
 
                 <Region VBox.vgrow="ALWAYS" />
                 
                 <VBox spacing="12.0" alignment="BOTTOM_LEFT">
-                    <HBox spacing="12.0" alignment="CENTER_LEFT">
-                        <VBox spacing="4.0" HBox.hgrow="ALWAYS">
-                            <Label text="Producto (SKU / Código):" styleClass="metric-label" />
-                            <TextField promptText="Ej: PRD-0001" styleClass="search-field" disable="true" />
-                        </VBox>
-                    </HBox>
+                    <VBox spacing="4.0" maxWidth="Infinity">
+                        <Label text="Producto (SKU / Código) - Requerido:" styleClass="metric-label" />
+                        <TextField fx:id="txtKardexProducto" promptText="Ej: PRD-0001" styleClass="search-field" prefHeight="40.0" />
+                    </VBox>
                     <HBox spacing="12.0">
                         <VBox spacing="4.0" HBox.hgrow="ALWAYS">
                             <Label text="Fecha Inicio:" styleClass="metric-label" />
-                            <DatePicker promptText="dd/mm/aaaa" disable="true" prefHeight="40.0" maxWidth="Infinity" />
+                            <DatePicker fx:id="dpKardexInicio" promptText="dd/mm/aaaa" prefHeight="40.0" maxWidth="Infinity" />
                         </VBox>
                         <VBox spacing="4.0" HBox.hgrow="ALWAYS">
                             <Label text="Fecha Fin:" styleClass="metric-label" />
-                            <DatePicker promptText="dd/mm/aaaa" disable="true" prefHeight="40.0" maxWidth="Infinity" />
+                            <DatePicker fx:id="dpKardexFin" promptText="dd/mm/aaaa" prefHeight="40.0" maxWidth="Infinity" />
                         </VBox>
                     </HBox>
-                    <HBox spacing="12.0" alignment="CENTER_LEFT">
-                        <Button styleClass="btn-secondary" text="Exportar PDF" disable="true" prefWidth="120.0" />
-                        <Button styleClass="btn-secondary" text="Exportar Excel" disable="true" prefWidth="120.0" />
-                        <Label text="(Pendiente backend)" styleClass="panel-sub" textFill="#EF4444" />
-                    </HBox>
+                    <Button styleClass="btn-primary" text="Generar PDF" onAction="#handleGenerarKardex" maxWidth="Infinity" prefHeight="40.0" />
                 </VBox>
             </VBox>
         </HBox>

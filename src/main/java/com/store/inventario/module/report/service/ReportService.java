@@ -37,4 +37,64 @@ public class ReportService {
             throw new RuntimeException("Error de conexión al descargar el reporte", e);
         }
     }
+
+    public byte[] descargarReporteCompras(String frequency, String date) {
+        try {
+            String url = BASE_URL + "/purchases-report?frequency=" + frequency;
+            if (date != null && !date.trim().isEmpty()) {
+                url += "&date=" + date;
+            }
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
+                    .GET()
+                    .build();
+
+            HttpResponse<byte[]> response = client.send(request, HttpResponse.BodyHandlers.ofByteArray());
+
+            if (response.statusCode() >= 400) {
+                throw new RuntimeException("Error en el servidor: HTTP " + response.statusCode());
+            }
+
+            return response.body();
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException("Error de conexión al descargar el reporte de compras", e);
+        }
+    }
+
+    public byte[] descargarReporteKardex(String productCode, String startDate, String endDate) {
+        try {
+            StringBuilder urlBuilder = new StringBuilder(BASE_URL).append("/kardex-report?");
+            boolean firstParam = true;
+            if (productCode != null && !productCode.trim().isEmpty()) {
+                urlBuilder.append("productCode=").append(productCode);
+                firstParam = false;
+            }
+            if (startDate != null && !startDate.trim().isEmpty()) {
+                if (!firstParam) urlBuilder.append("&");
+                urlBuilder.append("startDate=").append(startDate);
+                firstParam = false;
+            }
+            if (endDate != null && !endDate.trim().isEmpty()) {
+                if (!firstParam) urlBuilder.append("&");
+                urlBuilder.append("endDate=").append(endDate);
+            }
+
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(urlBuilder.toString()))
+                    .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
+                    .GET()
+                    .build();
+
+            HttpResponse<byte[]> response = client.send(request, HttpResponse.BodyHandlers.ofByteArray());
+
+            if (response.statusCode() >= 400) {
+                throw new RuntimeException("Error en el servidor: HTTP " + response.statusCode());
+            }
+
+            return response.body();
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException("Error de conexión al descargar el reporte de kardex", e);
+        }
+    }
 }
