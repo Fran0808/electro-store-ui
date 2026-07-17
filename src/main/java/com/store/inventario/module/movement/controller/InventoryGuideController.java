@@ -148,6 +148,7 @@ public class InventoryGuideController {
         });
 
         cargarGuias();
+        com.store.inventario.shared.utils.TableUtils.habilitarDobleClicParaCopiar(tblGuias);
     }
 
     private void cargarGuias() {

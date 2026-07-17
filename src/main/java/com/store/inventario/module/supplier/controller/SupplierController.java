@@ -104,6 +104,7 @@ public class SupplierController implements Initializable {
         configurarColumnaAcciones();
 
         obtenerProveedores();
+        com.store.inventario.shared.utils.TableUtils.habilitarDobleClicParaCopiar(tblProveedores);
     }
 
     @FXML

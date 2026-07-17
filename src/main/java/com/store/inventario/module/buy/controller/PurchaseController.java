@@ -97,6 +97,7 @@ public class PurchaseController {
         cbFecha.getSelectionModel().selectFirst();
 
         obtenerCompras();
+        com.store.inventario.shared.utils.TableUtils.habilitarDobleClicParaCopiar(tblCompras);
     }
 
     private void configurarColumnaAcciones() {

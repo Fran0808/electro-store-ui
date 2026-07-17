@@ -95,6 +95,7 @@ public class SaleController {
         cbRangoFecha.setItems(FXCollections.observableArrayList("Todas","Hoy", "Esta semana", "Este mes"));
         cbRangoFecha.getSelectionModel().selectFirst();
         obtenerVentas();
+        com.store.inventario.shared.utils.TableUtils.habilitarDobleClicParaCopiar(tblVentas);
     }
 
     private void configurarColumnaAcciones() {

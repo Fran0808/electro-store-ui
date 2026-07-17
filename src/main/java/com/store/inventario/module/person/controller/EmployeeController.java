@@ -110,6 +110,7 @@ public class EmployeeController implements Initializable {
         btnSiguiente.setOnAction(e -> handlePaginaSiguiente());
 
         obtenerEmpleados();
+        com.store.inventario.shared.utils.TableUtils.habilitarDobleClicParaCopiar(tblView);
     }
 
     private void obtenerEmpleados() {
