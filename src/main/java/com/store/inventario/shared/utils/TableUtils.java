@@ -25,6 +25,8 @@ public class TableUtils {
                             ClipboardContent content = new ClipboardContent();
                             content.putString(textoACopiar);
                             clipboard.setContent(content);
+
+                            NotificationUtils.showToast(tabla.getScene().getWindow(), "¡Copiado al portapapeles!");
                         }
                     }
                 }
