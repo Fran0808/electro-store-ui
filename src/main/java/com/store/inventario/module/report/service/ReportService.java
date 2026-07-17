@@ -66,7 +66,7 @@ public class ReportService {
         }
     }
 
-    public byte[] descargarReporteKardex(String productCode, String startDate, String endDate) {
+    public byte[] descargarReporteKardex(String productCode, String startDate, String endDate, String frequency, String date) {
         try {
             StringBuilder urlBuilder = new StringBuilder(BASE_URL).append("/kardex-report?");
             boolean firstParam = true;
@@ -82,6 +82,16 @@ public class ReportService {
             if (endDate != null && !endDate.trim().isEmpty()) {
                 if (!firstParam) urlBuilder.append("&");
                 urlBuilder.append("endDate=").append(endDate);
+                firstParam = false;
+            }
+            if (frequency != null && !frequency.trim().isEmpty()) {
+                if (!firstParam) urlBuilder.append("&");
+                urlBuilder.append("frequency=").append(frequency);
+                firstParam = false;
+            }
+            if (date != null && !date.trim().isEmpty()) {
+                if (!firstParam) urlBuilder.append("&");
+                urlBuilder.append("date=").append(date);
             }
 
             HttpRequest request = HttpRequest.newBuilder()

@@ -7,6 +7,8 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.scene.control.DatePicker;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import java.io.File;
@@ -26,26 +28,49 @@ public class ReportesController {
 
     // Kardex bindings
     @FXML private TextField txtKardexProducto;
+    @FXML private ComboBox<String> cbKardexFrecuencia;
+    @FXML private HBox containerKardexRango;
+    @FXML private VBox containerKardexFechaRef;
     @FXML private DatePicker dpKardexInicio;
     @FXML private DatePicker dpKardexFin;
+    @FXML private DatePicker dpKardexFechaRef;
 
     private final ReportService reportService = new ReportService();
 
     @FXML
     public void initialize() {
-        // Ventas
-        cbVentasFrecuencia.getItems().addAll("Anual", "Mensual", "Semanal");
+        // Ventas:
+        cbVentasFrecuencia.getItems().addAll("Anual", "Mensual", "Semanal", "Diario");
         cbVentasFrecuencia.getSelectionModel().selectFirst();
         dpVentasFechaRef.setValue(LocalDate.now());
 
-        // Compras
-        cbComprasFrecuencia.getItems().addAll("Anual", "Mensual", "Semanal");
+        // Compras:
+        cbComprasFrecuencia.getItems().addAll("Anual", "Mensual", "Semanal", "Diario");
         cbComprasFrecuencia.getSelectionModel().selectFirst();
         dpComprasFechaRef.setValue(LocalDate.now());
 
-        // Kardex
+        // Kardex Frecuencias:
+        cbKardexFrecuencia.getItems().addAll("Rango Personalizado", "Anual", "Mensual", "Semanal", "Diario");
+        cbKardexFrecuencia.getSelectionModel().selectFirst();
+
+        // Kardex Dates:
         dpKardexInicio.setValue(LocalDate.now().withDayOfYear(1));
         dpKardexFin.setValue(LocalDate.now());
+        dpKardexFechaRef.setValue(LocalDate.now());
+
+        cbKardexFrecuencia.valueProperty().addListener((obs, oldVal, newVal) -> {
+            boolean isCustom = "Rango Personalizado".equals(newVal);
+            containerKardexRango.setVisible(isCustom);
+            containerKardexRango.setManaged(isCustom);
+            containerKardexFechaRef.setVisible(!isCustom);
+            containerKardexFechaRef.setManaged(!isCustom);
+        });
+
+        boolean isCustom = "Rango Personalizado".equals(cbKardexFrecuencia.getValue());
+        containerKardexRango.setVisible(isCustom);
+        containerKardexRango.setManaged(isCustom);
+        containerKardexFechaRef.setVisible(!isCustom);
+        containerKardexFechaRef.setManaged(!isCustom);
     }
 
     @FXML
@@ -54,16 +79,11 @@ public class ReportesController {
         LocalDate fechaRef = dpVentasFechaRef.getValue();
 
         if (frecuencia == null || fechaRef == null) {
-            mostrarAlertaWarning("Campos Requeridos", "Debe seleccionar la frecuencia y la fecha de referencia.");
+            mostrarAlertaWarning("Campos Requeridos", "Debe seleccionar la frecuencia y la fecha por consultar.");
             return;
         }
 
-        String freqParam = "ANNUAL";
-        if ("Mensual".equals(frecuencia)) {
-            freqParam = "MONTHLY";
-        } else if ("Semanal".equals(frecuencia)) {
-            freqParam = "WEEKLY";
-        }
+        String freqParam = mapFrecuenciaParam(frecuencia);
 
         try {
             FileChooser fileChooser = new FileChooser();
@@ -102,16 +122,11 @@ public class ReportesController {
         LocalDate fechaRef = dpComprasFechaRef.getValue();
 
         if (frecuencia == null || fechaRef == null) {
-            mostrarAlertaWarning("Campos Requeridos", "Debe seleccionar la frecuencia y la fecha de referencia.");
+            mostrarAlertaWarning("Campos Requeridos", "Debe seleccionar la frecuencia y la fecha por consultar.");
             return;
         }
 
-        String freqParam = "ANNUAL";
-        if ("Mensual".equals(frecuencia)) {
-            freqParam = "MONTHLY";
-        } else if ("Semanal".equals(frecuencia)) {
-            freqParam = "WEEKLY";
-        }
+        String freqParam = mapFrecuenciaParam(frecuencia);
 
         try {
             FileChooser fileChooser = new FileChooser();
@@ -147,26 +162,50 @@ public class ReportesController {
     @FXML
     private void handleGenerarKardex() {
         String producto = txtKardexProducto.getText();
-        LocalDate inicio = dpKardexInicio.getValue();
-        LocalDate fin = dpKardexFin.getValue();
+        String frecuencia = cbKardexFrecuencia.getValue();
+        boolean isCustom = "Rango Personalizado".equals(frecuencia);
 
-        if (inicio == null || fin == null) {
-            mostrarAlertaWarning("Validación", "Por favor, seleccione las fechas de inicio y fin para el rango del Kardex.");
-            return;
-        }
+        String startStr = null;
+        String endStr = null;
+        String freqParam = null;
+        String refDateStr = null;
+        String fileNamePeriodStr = "";
 
-        if (inicio.isAfter(fin)) {
-            mostrarAlertaWarning("Rango de Fechas Incorrecto", "La fecha de inicio no puede ser posterior a la fecha de fin.");
-            return;
+        if (isCustom) {
+            LocalDate inicio = dpKardexInicio.getValue();
+            LocalDate fin = dpKardexFin.getValue();
+
+            if (inicio == null || fin == null) {
+                mostrarAlertaWarning("Validación", "Por favor, seleccione las fechas de inicio y fin para el rango del Kardex.");
+                return;
+            }
+
+            if (inicio.isAfter(fin)) {
+                mostrarAlertaWarning("Rango de Fechas Incorrecto", "La fecha de inicio no puede ser posterior a la fecha de fin.");
+                return;
+            }
+
+            startStr = inicio.toString();
+            endStr = fin.toString();
+            fileNamePeriodStr = inicio + "_a_" + fin;
+        } else {
+            LocalDate fechaRef = dpKardexFechaRef.getValue();
+            if (fechaRef == null) {
+                mostrarAlertaWarning("Validación", "Por favor, seleccione la fecha por consultar para el Kardex.");
+                return;
+            }
+
+            freqParam = mapFrecuenciaParam(frecuencia);
+            refDateStr = fechaRef.toString();
+            fileNamePeriodStr = freqParam + "_" + fechaRef;
         }
 
         try {
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Guardar Reporte de Kardex");
             
-            String fileName = (producto != null && !producto.trim().isEmpty()) 
-                ? "Reporte_Kardex_" + producto.trim() + "_" + inicio + "_a_" + fin + ".pdf" 
-                : "Reporte_Kardex_General_" + inicio + "_a_" + fin + ".pdf";
+            String prodClean = (producto != null && !producto.trim().isEmpty()) ? producto.trim() : "General";
+            String fileName = "Reporte_Kardex_" + prodClean + "_" + fileNamePeriodStr + ".pdf";
             fileChooser.setInitialFileName(fileName);
             
             fileChooser.getExtensionFilters().add(
@@ -177,8 +216,8 @@ public class ReportesController {
             File destFile = fileChooser.showSaveDialog(stage);
 
             if (destFile != null) {
-                String prodParam = (producto != null && !producto.trim().isEmpty()) ? producto.trim() : null;
-                byte[] pdfBytes = reportService.descargarReporteKardex(prodParam, inicio.toString(), fin.toString());
+                String prodParam = "General".equals(prodClean) ? null : prodClean;
+                byte[] pdfBytes = reportService.descargarReporteKardex(prodParam, startStr, endStr, freqParam, refDateStr);
 
                 try (FileOutputStream fos = new FileOutputStream(destFile)) {
                     fos.write(pdfBytes);
@@ -195,6 +234,13 @@ public class ReportesController {
             e.printStackTrace();
             mostrarAlertaError("Error", "No se pudo generar el reporte de Kardex: " + e.getMessage());
         }
+    }
+
+    private String mapFrecuenciaParam(String frecuencia) {
+        if ("Mensual".equals(frecuencia)) return "MONTHLY";
+        if ("Semanal".equals(frecuencia)) return "WEEKLY";
+        if ("Diario".equals(frecuencia)) return "DAILY";
+        return "ANNUAL"; // Anual por defecto
     }
 
     private void mostrarAlerta(Alert.AlertType type, String titulo, String mensaje) {

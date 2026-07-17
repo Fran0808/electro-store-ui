@@ -52,7 +52,7 @@
                             <ComboBox fx:id="cbVentasFrecuencia" styleClass="filter-combo" maxWidth="Infinity" prefHeight="40.0" />
                         </VBox>
                         <VBox spacing="4.0" HBox.hgrow="ALWAYS">
-                            <Label text="Fecha Referencia:" styleClass="metric-label" />
+                            <Label text="Fecha por Consultar:" styleClass="metric-label" />
                             <DatePicker fx:id="dpVentasFechaRef" promptText="dd/mm/aaaa" prefHeight="40.0" maxWidth="Infinity" />
                         </VBox>
                     </HBox>
@@ -82,7 +82,7 @@
                             <ComboBox fx:id="cbComprasFrecuencia" styleClass="filter-combo" maxWidth="Infinity" prefHeight="40.0" />
                         </VBox>
                         <VBox spacing="4.0" HBox.hgrow="ALWAYS">
-                            <Label text="Fecha Referencia:" styleClass="metric-label" />
+                            <Label text="Fecha por Consultar:" styleClass="metric-label" />
                             <DatePicker fx:id="dpComprasFechaRef" promptText="dd/mm/aaaa" prefHeight="40.0" maxWidth="Infinity" />
                         </VBox>
                     </HBox>
@@ -106,11 +106,18 @@
                 <Region VBox.vgrow="ALWAYS" />
                 
                 <VBox spacing="12.0" alignment="BOTTOM_LEFT">
-                    <VBox spacing="4.0" maxWidth="Infinity">
-                        <Label text="Producto (SKU / Código) - Opcional:" styleClass="metric-label" />
-                        <TextField fx:id="txtKardexProducto" promptText="Ej: PRD-0001" styleClass="search-field" prefHeight="40.0" />
-                    </VBox>
                     <HBox spacing="12.0">
+                        <VBox spacing="4.0" HBox.hgrow="ALWAYS">
+                            <Label text="Producto (SKU) - Opcional:" styleClass="metric-label" />
+                            <TextField fx:id="txtKardexProducto" promptText="Ej: PRD-0001" styleClass="search-field" prefHeight="40.0" />
+                        </VBox>
+                        <VBox spacing="4.0" prefWidth="130.0">
+                            <Label text="Frecuencia:" styleClass="metric-label" />
+                            <ComboBox fx:id="cbKardexFrecuencia" styleClass="filter-combo" maxWidth="Infinity" prefHeight="40.0" />
+                        </VBox>
+                    </HBox>
+                    
+                    <HBox fx:id="containerKardexRango" spacing="12.0">
                         <VBox spacing="4.0" HBox.hgrow="ALWAYS">
                             <Label text="Fecha Inicio:" styleClass="metric-label" />
                             <DatePicker fx:id="dpKardexInicio" promptText="dd/mm/aaaa" prefHeight="40.0" maxWidth="Infinity" />
@@ -120,6 +127,12 @@
                             <DatePicker fx:id="dpKardexFin" promptText="dd/mm/aaaa" prefHeight="40.0" maxWidth="Infinity" />
                         </VBox>
                     </HBox>
+
+                    <VBox fx:id="containerKardexFechaRef" spacing="4.0" maxWidth="Infinity">
+                        <Label text="Fecha por Consultar:" styleClass="metric-label" />
+                        <DatePicker fx:id="dpKardexFechaRef" promptText="dd/mm/aaaa" prefHeight="40.0" maxWidth="Infinity" />
+                    </VBox>
+                    
                     <Button styleClass="btn-primary" text="Generar PDF" onAction="#handleGenerarKardex" maxWidth="Infinity" prefHeight="40.0" />
                 </VBox>
             </VBox>
