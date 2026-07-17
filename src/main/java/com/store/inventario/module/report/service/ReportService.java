@@ -33,7 +33,11 @@ public class ReportService {
             HttpResponse<byte[]> response = client.send(request, HttpResponse.BodyHandlers.ofByteArray());
 
             if (response.statusCode() >= 400) {
-                throw new RuntimeException("Error en el servidor: HTTP " + response.statusCode());
+                String errorBody = new String(response.body()).trim();
+                String mensaje = errorBody.contains("message")
+                        ? errorBody.replaceAll(".*\"message\":\"([^\"]+)\".*", "$1")
+                        : "El servidor no pudo generar el reporte (HTTP " + response.statusCode() + ")";
+                throw new RuntimeException(mensaje);
             }
 
             return response.body();
@@ -57,7 +61,11 @@ public class ReportService {
             HttpResponse<byte[]> response = client.send(request, HttpResponse.BodyHandlers.ofByteArray());
 
             if (response.statusCode() >= 400) {
-                throw new RuntimeException("Error en el servidor: HTTP " + response.statusCode());
+                String errorBody = new String(response.body()).trim();
+                String mensaje = errorBody.contains("message")
+                        ? errorBody.replaceAll(".*\"message\":\"([^\"]+)\".*", "$1")
+                        : "El servidor no pudo generar el reporte (HTTP " + response.statusCode() + ")";
+                throw new RuntimeException(mensaje);
             }
 
             return response.body();
@@ -103,7 +111,11 @@ public class ReportService {
             HttpResponse<byte[]> response = client.send(request, HttpResponse.BodyHandlers.ofByteArray());
 
             if (response.statusCode() >= 400) {
-                throw new RuntimeException("Error en el servidor: HTTP " + response.statusCode());
+                String errorBody = new String(response.body()).trim();
+                String mensaje = errorBody.contains("message")
+                        ? errorBody.replaceAll(".*\"message\":\"([^\"]+)\".*", "$1")
+                        : "El servidor no pudo generar el reporte (HTTP " + response.statusCode() + ")";
+                throw new RuntimeException(mensaje);
             }
 
             return response.body();
