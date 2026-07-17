@@ -107,6 +107,7 @@ public class CustomerController implements Initializable {
 
         configurarColumnaAcciones();
         obtenerClientes();
+        com.store.inventario.shared.utils.TableUtils.habilitarDobleClicParaCopiar(tblClientes);
     }
 
     @FXML

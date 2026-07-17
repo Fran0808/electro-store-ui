@@ -112,7 +112,11 @@ public class SidebarController {
                     }
                 });
             } catch (Exception e) {
-                e.printStackTrace();
+                if (e.getMessage() != null && e.getMessage().contains("HTTP 401")) {
+                    javafx.application.Platform.runLater(this::handleLogout);
+                } else {
+                    e.printStackTrace();
+                }
             }
         }).start();
     }
@@ -179,12 +183,7 @@ public class SidebarController {
 
     @FXML
     private void handleReportes() {
-        javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.INFORMATION);
-        alert.setTitle("Reportes");
-        alert.setHeaderText(null);
-        alert.setContentText("Falta todavia");
-        com.store.inventario.shared.utils.WindowUtils.applyIcon(alert);
-        alert.showAndWait();
+        NavigationManager.getInstance().navegar("/views/report/reportes.fxml");
     }
 
 
@@ -206,8 +205,10 @@ public class SidebarController {
             loginStage.setMaximized(true);
             loginStage.show();
 
-            Stage currentStage = (Stage) itemDashboard.getScene().getWindow();
-            currentStage.close();
+            if (itemDashboard.getScene() != null && itemDashboard.getScene().getWindow() != null) {
+                Stage currentStage = (Stage) itemDashboard.getScene().getWindow();
+                currentStage.close();
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

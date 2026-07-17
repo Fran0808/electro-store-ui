@@ -98,6 +98,7 @@ public class UserController {
         btnSiguiente.setOnAction(e -> handlePaginaSiguiente());
 
         obtenerUsuarios();
+        com.store.inventario.shared.utils.TableUtils.habilitarDobleClicParaCopiar(tblUsuarios);
     }
 
     private void configurarColumnaEstado() {

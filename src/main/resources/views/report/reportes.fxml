@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.shape.SVGPath?>
+<?import javafx.scene.layout.StackPane?>
+
+<AnchorPane prefHeight="800.0" prefWidth="1040.0" styleClass="root" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.store.inventario.module.report.controller.ReportesController">
+    
+    <stylesheets>
+        <URL value="@../../styles/style.css" />
+    </stylesheets>
+
+    <VBox spacing="24.0" styleClass="view-container" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+
+        <HBox alignment="CENTER_LEFT" spacing="20">
+            <VBox spacing="4" HBox.hgrow="ALWAYS">
+                <Label styleClass="header-title" text="Reportes y Análisis" />
+                <Label styleClass="header-subtitle" text="Genera reportes anuales de ventas, rendimiento y auditoría de inventario." />
+            </VBox>
+        </HBox>
+
+        <HBox spacing="24.0" prefHeight="450.0" minHeight="450.0" maxHeight="450.0" alignment="TOP_LEFT">
+
+            <VBox spacing="20.0" styleClass="card" HBox.hgrow="ALWAYS">
+                <HBox alignment="CENTER_LEFT" spacing="12">
+                    <StackPane styleClass="metric-icon-container, icon-blue">
+                        <SVGPath content="M12 20h9M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" styleClass="metric-icon" />
+                    </StackPane>
+                    <VBox spacing="2">
+                        <Label styleClass="panel-title" text="Reporte de Ventas" />
+                        <Label styleClass="panel-sub" text="Estadísticas de ventas y rendimiento de ingresos." />
+                    </VBox>
+                </HBox>
+                
+                <Label wrapText="true" text="Genera un informe consolidado de ventas en PDF. Incluye el total de ventas, ingresos, margen de ganancias, evolución de ventas y un desglose de los productos con mayor rendimiento." styleClass="panel-sub" />
+
+                <Region VBox.vgrow="ALWAYS" />
+                
+                <VBox spacing="12.0" alignment="BOTTOM_LEFT">
+                    <HBox spacing="12.0">
+                        <VBox spacing="4.0" HBox.hgrow="ALWAYS">
+                            <Label text="Frecuencia:" styleClass="metric-label" />
+                            <ComboBox fx:id="cbVentasFrecuencia" styleClass="filter-combo" maxWidth="Infinity" prefHeight="40.0" />
+                        </VBox>
+                        <VBox spacing="4.0" HBox.hgrow="ALWAYS">
+                            <Label text="Fecha Referencia:" styleClass="metric-label" />
+                            <DatePicker fx:id="dpVentasFechaRef" promptText="dd/mm/aaaa" prefHeight="40.0" maxWidth="Infinity" />
+                        </VBox>
+                    </HBox>
+                    <Button styleClass="btn-primary" text="Generar PDF" onAction="#handleGenerarVentas" maxWidth="Infinity" prefHeight="40.0" />
+                </VBox>
+            </VBox>
+
+            <VBox spacing="20.0" styleClass="card" HBox.hgrow="ALWAYS">
+                <HBox alignment="CENTER_LEFT" spacing="12">
+                    <StackPane styleClass="metric-icon-container, icon-orange">
+                        <SVGPath content="M19 6h-2c0-2.76-2.24-5-5-5S7 3.24 7 6H5c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-7-3c1.66 0 3 1.34 3 3H9c0-1.66 1.34-3 3-3zm7 17H5V8h14v12z" styleClass="metric-icon" />
+                    </StackPane>
+                    <VBox spacing="2">
+                        <Label styleClass="panel-title" text="Reporte de Compras" />
+                        <Label styleClass="panel-sub" text="Estadísticas de gastos e inversiones con proveedores." />
+                    </VBox>
+                </HBox>
+                
+                <Label wrapText="true" text="Genera un informe consolidado de compras. Incluye el total de unidades adquiridas, montos invertidos, el proveedor principal, la evolución de compras y la distribución de gasto por categorías." styleClass="panel-sub" />
+
+                <Region VBox.vgrow="ALWAYS" />
+                
+                <VBox spacing="12.0" alignment="BOTTOM_LEFT">
+                    <HBox spacing="12.0">
+                        <VBox spacing="4.0" HBox.hgrow="ALWAYS">
+                            <Label text="Frecuencia:" styleClass="metric-label" />
+                            <ComboBox fx:id="cbComprasFrecuencia" styleClass="filter-combo" maxWidth="Infinity" prefHeight="40.0" />
+                        </VBox>
+                        <VBox spacing="4.0" HBox.hgrow="ALWAYS">
+                            <Label text="Fecha Referencia:" styleClass="metric-label" />
+                            <DatePicker fx:id="dpComprasFechaRef" promptText="dd/mm/aaaa" prefHeight="40.0" maxWidth="Infinity" />
+                        </VBox>
+                    </HBox>
+                    <Button styleClass="btn-primary" text="Generar PDF" onAction="#handleGenerarCompras" maxWidth="Infinity" prefHeight="40.0" />
+                </VBox>
+            </VBox>
+
+            <VBox spacing="20.0" styleClass="card" HBox.hgrow="ALWAYS">
+                <HBox alignment="CENTER_LEFT" spacing="12">
+                    <StackPane styleClass="metric-icon-container, icon-purple">
+                        <SVGPath content="M4 19.5A2.5 2.5 0 0 1 6.5 17H20M4 19.5A2.5 2.5 0 0 0 6.5 22H20M4 19.5V3a2.5 2.5 0 0 1 2.5-2.5H20v14H6.5a2.5 2.5 0 0 0-2.5 2.5z" styleClass="metric-icon" />
+                    </StackPane>
+                    <VBox spacing="2">
+                        <Label styleClass="panel-title" text="Kardex de Inventario" />
+                        <Label styleClass="panel-sub" text="Auditoría física y valorada de los movimientos de almacén." />
+                    </VBox>
+                </HBox>
+                
+                <Label wrapText="true" text="Visualiza el historial detallado de movimientos de entrada y salida para un producto específico, calculando el costo promedio ponderado y el stock restante por periodo de tiempo." styleClass="panel-sub" />
+
+                <Region VBox.vgrow="ALWAYS" />
+                
+                <VBox spacing="12.0" alignment="BOTTOM_LEFT">
+                    <VBox spacing="4.0" maxWidth="Infinity">
+                        <Label text="Producto (SKU / Código) - Opcional:" styleClass="metric-label" />
+                        <TextField fx:id="txtKardexProducto" promptText="Ej: PRD-0001" styleClass="search-field" prefHeight="40.0" />
+                    </VBox>
+                    <HBox spacing="12.0">
+                        <VBox spacing="4.0" HBox.hgrow="ALWAYS">
+                            <Label text="Fecha Inicio:" styleClass="metric-label" />
+                            <DatePicker fx:id="dpKardexInicio" promptText="dd/mm/aaaa" prefHeight="40.0" maxWidth="Infinity" />
+                        </VBox>
+                        <VBox spacing="4.0" HBox.hgrow="ALWAYS">
+                            <Label text="Fecha Fin:" styleClass="metric-label" />
+                            <DatePicker fx:id="dpKardexFin" promptText="dd/mm/aaaa" prefHeight="40.0" maxWidth="Infinity" />
+                        </VBox>
+                    </HBox>
+                    <Button styleClass="btn-primary" text="Generar PDF" onAction="#handleGenerarKardex" maxWidth="Infinity" prefHeight="40.0" />
+                </VBox>
+            </VBox>
+        </HBox>
+    </VBox>
+</AnchorPane>

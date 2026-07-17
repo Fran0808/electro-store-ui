@@ -50,6 +50,7 @@ public class CategoryManagementController {
 
         configurarColumnaAcciones();
         cargarCategorias();
+        com.store.inventario.shared.utils.TableUtils.habilitarDobleClicParaCopiar(tblCategorias);
 
         String roleActual = SessionManager.getInstance().getUser().getRole();
 

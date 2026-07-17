@@ -78,6 +78,7 @@ public class ProductController implements Initializable {
         configurarColumnaAcciones();
         configurarFiltros();
         refreshData();
+        com.store.inventario.shared.utils.TableUtils.habilitarDobleClicParaCopiar(tblProductos);
 
         if("SELLER".equalsIgnoreCase(rolActual)){
             btnNuevoProducto.setVisible(false);
