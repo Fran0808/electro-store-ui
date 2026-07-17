@@ -16,11 +16,15 @@ import java.time.LocalDate;
 
 public class ReportesController {
 
-    @FXML private ComboBox<Integer> cbAnio;
+    // Reporte de Ventas bindings
+    @FXML private ComboBox<String> cbVentasFrecuencia;
+    @FXML private DatePicker dpVentasFechaRef;
 
+    // Reporte de Compras bindings
     @FXML private ComboBox<String> cbComprasFrecuencia;
     @FXML private DatePicker dpComprasFechaRef;
 
+    // Kardex bindings
     @FXML private TextField txtKardexProducto;
     @FXML private DatePicker dpKardexInicio;
     @FXML private DatePicker dpKardexFin;
@@ -30,11 +34,9 @@ public class ReportesController {
     @FXML
     public void initialize() {
         // Ventas
-        int anioActual = LocalDate.now().getYear();
-        for (int i = anioActual; i >= 2020; i--) {
-            cbAnio.getItems().add(i);
-        }
-        cbAnio.getSelectionModel().selectFirst();
+        cbVentasFrecuencia.getItems().addAll("Anual", "Mensual", "Semanal");
+        cbVentasFrecuencia.getSelectionModel().selectFirst();
+        dpVentasFechaRef.setValue(LocalDate.now());
 
         // Compras
         cbComprasFrecuencia.getItems().addAll("Anual", "Mensual", "Semanal");
@@ -48,28 +50,40 @@ public class ReportesController {
 
     @FXML
     private void handleGenerarVentas() {
-        Integer anio = cbAnio.getValue();
-        if (anio == null) return;
+        String frecuencia = cbVentasFrecuencia.getValue();
+        LocalDate fechaRef = dpVentasFechaRef.getValue();
+
+        if (frecuencia == null || fechaRef == null) {
+            mostrarAlertaWarning("Campos Requeridos", "Debe seleccionar la frecuencia y la fecha de referencia.");
+            return;
+        }
+
+        String freqParam = "ANNUAL";
+        if ("Mensual".equals(frecuencia)) {
+            freqParam = "MONTHLY";
+        } else if ("Semanal".equals(frecuencia)) {
+            freqParam = "WEEKLY";
+        }
 
         try {
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Guardar Reporte de Ventas");
-            fileChooser.setInitialFileName("Reporte_Ventas_" + anio + ".pdf");
+            fileChooser.setInitialFileName("Reporte_Ventas_" + freqParam + "_" + fechaRef + ".pdf");
             fileChooser.getExtensionFilters().add(
                 new FileChooser.ExtensionFilter("Archivos PDF (*.pdf)", "*.pdf")
             );
 
-            Stage stage = (Stage) cbAnio.getScene().getWindow();
+            Stage stage = (Stage) cbVentasFrecuencia.getScene().getWindow();
             File destFile = fileChooser.showSaveDialog(stage);
 
             if (destFile != null) {
-                byte[] pdfBytes = reportService.descargarReporteVentas(anio);
+                byte[] pdfBytes = reportService.descargarReporteVentas(freqParam, fechaRef.toString());
 
                 try (FileOutputStream fos = new FileOutputStream(destFile)) {
                     fos.write(pdfBytes);
                 }
 
-                mostrarAlerta("Éxito", "Reporte guardado exitosamente en: " + destFile.getAbsolutePath());
+                mostrarAlerta("Éxito", "Reporte de ventas guardado exitosamente en: " + destFile.getAbsolutePath());
                 
                 if (Desktop.isDesktopSupported()) {
                     Desktop.getDesktop().open(destFile);
@@ -78,7 +92,7 @@ public class ReportesController {
 
         } catch (Exception e) {
             e.printStackTrace();
-            mostrarAlertaError("Error", "No se pudo generar el reporte: " + e.getMessage());
+            mostrarAlertaError("Error", "No se pudo generar el reporte de ventas: " + e.getMessage());
         }
     }
 
@@ -136,11 +150,6 @@ public class ReportesController {
         LocalDate inicio = dpKardexInicio.getValue();
         LocalDate fin = dpKardexFin.getValue();
 
-        if (producto == null || producto.trim().isEmpty()) {
-            mostrarAlertaWarning("Validación", "Por favor, ingrese el código del producto (SKU) para generar el Kardex.");
-            return;
-        }
-
         if (inicio == null || fin == null) {
             mostrarAlertaWarning("Validación", "Por favor, seleccione las fechas de inicio y fin para el rango del Kardex.");
             return;
@@ -154,7 +163,12 @@ public class ReportesController {
         try {
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Guardar Reporte de Kardex");
-            fileChooser.setInitialFileName("Reporte_Kardex_" + producto.trim() + "_" + inicio + "_a_" + fin + ".pdf");
+            
+            String fileName = (producto != null && !producto.trim().isEmpty()) 
+                ? "Reporte_Kardex_" + producto.trim() + "_" + inicio + "_a_" + fin + ".pdf" 
+                : "Reporte_Kardex_General_" + inicio + "_a_" + fin + ".pdf";
+            fileChooser.setInitialFileName(fileName);
+            
             fileChooser.getExtensionFilters().add(
                 new FileChooser.ExtensionFilter("Archivos PDF (*.pdf)", "*.pdf")
             );
@@ -163,7 +177,8 @@ public class ReportesController {
             File destFile = fileChooser.showSaveDialog(stage);
 
             if (destFile != null) {
-                byte[] pdfBytes = reportService.descargarReporteKardex(producto.trim(), inicio.toString(), fin.toString());
+                String prodParam = (producto != null && !producto.trim().isEmpty()) ? producto.trim() : null;
+                byte[] pdfBytes = reportService.descargarReporteKardex(prodParam, inicio.toString(), fin.toString());
 
                 try (FileOutputStream fos = new FileOutputStream(destFile)) {
                     fos.write(pdfBytes);

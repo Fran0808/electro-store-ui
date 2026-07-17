@@ -28,7 +28,7 @@
             </VBox>
         </HBox>
 
-        <HBox spacing="24.0" VBox.vgrow="ALWAYS" fillHeight="true">
+        <HBox spacing="24.0" prefHeight="450.0" minHeight="450.0" maxHeight="450.0" alignment="TOP_LEFT">
 
             <VBox spacing="20.0" styleClass="card" HBox.hgrow="ALWAYS">
                 <HBox alignment="CENTER_LEFT" spacing="12">
@@ -36,20 +36,26 @@
                         <SVGPath content="M12 20h9M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" styleClass="metric-icon" />
                     </StackPane>
                     <VBox spacing="2">
-                        <Label styleClass="panel-title" text="Reporte Anual de Ventas" />
-                        <Label styleClass="panel-sub" text="Estadísticas de ventas e ingresos mensuales." />
+                        <Label styleClass="panel-title" text="Reporte de Ventas" />
+                        <Label styleClass="panel-sub" text="Estadísticas de ventas y rendimiento de ingresos." />
                     </VBox>
                 </HBox>
                 
-                <Label wrapText="true" text="Genera un informe consolidado en PDF del año seleccionado. Incluye gráficos de rendimiento mensual, tasa de crecimiento porcentual y un desglose detallado de los productos con mayores y menores ingresos." styleClass="panel-sub" />
+                <Label wrapText="true" text="Genera un informe consolidado de ventas en PDF. Incluye el total de ventas, ingresos, margen de ganancias, evolución de ventas y un desglose de los productos con mayor rendimiento." styleClass="panel-sub" />
 
                 <Region VBox.vgrow="ALWAYS" />
                 
                 <VBox spacing="12.0" alignment="BOTTOM_LEFT">
-                    <VBox spacing="4.0" maxWidth="Infinity">
-                        <Label text="Seleccione el Año:" styleClass="metric-label" />
-                        <ComboBox fx:id="cbAnio" styleClass="filter-combo" maxWidth="Infinity" prefHeight="40.0" />
-                    </VBox>
+                    <HBox spacing="12.0">
+                        <VBox spacing="4.0" HBox.hgrow="ALWAYS">
+                            <Label text="Frecuencia:" styleClass="metric-label" />
+                            <ComboBox fx:id="cbVentasFrecuencia" styleClass="filter-combo" maxWidth="Infinity" prefHeight="40.0" />
+                        </VBox>
+                        <VBox spacing="4.0" HBox.hgrow="ALWAYS">
+                            <Label text="Fecha Referencia:" styleClass="metric-label" />
+                            <DatePicker fx:id="dpVentasFechaRef" promptText="dd/mm/aaaa" prefHeight="40.0" maxWidth="Infinity" />
+                        </VBox>
+                    </HBox>
                     <Button styleClass="btn-primary" text="Generar PDF" onAction="#handleGenerarVentas" maxWidth="Infinity" prefHeight="40.0" />
                 </VBox>
             </VBox>
@@ -101,7 +107,7 @@
                 
                 <VBox spacing="12.0" alignment="BOTTOM_LEFT">
                     <VBox spacing="4.0" maxWidth="Infinity">
-                        <Label text="Producto (SKU / Código) - Requerido:" styleClass="metric-label" />
+                        <Label text="Producto (SKU / Código) - Opcional:" styleClass="metric-label" />
                         <TextField fx:id="txtKardexProducto" promptText="Ej: PRD-0001" styleClass="search-field" prefHeight="40.0" />
                     </VBox>
                     <HBox spacing="12.0">

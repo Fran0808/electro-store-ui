@@ -18,10 +18,14 @@ public class ReportService {
         this.client = HttpClient.newHttpClient();
     }
 
-    public byte[] descargarReporteVentas(int anio) {
+    public byte[] descargarReporteVentas(String frequency, String date) {
         try {
+            String url = BASE_URL + "/sales-report?frequency=" + frequency;
+            if (date != null && !date.trim().isEmpty()) {
+                url += "&date=" + date;
+            }
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(BASE_URL + "/sales-report/" + anio))
+                    .uri(URI.create(url))
                     .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
                     .GET()
                     .build();
@@ -34,7 +38,7 @@ public class ReportService {
 
             return response.body();
         } catch (IOException | InterruptedException e) {
-            throw new RuntimeException("Error de conexión al descargar el reporte", e);
+            throw new RuntimeException("Error de conexión al descargar el reporte de ventas", e);
         }
     }
 
