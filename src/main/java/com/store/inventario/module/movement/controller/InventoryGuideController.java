@@ -63,10 +63,12 @@ public class InventoryGuideController {
             cbTipo.getItems().clear();
             cbTipo.getItems().addAll("Todos", "ENTRY", "EXIT");
             cbTipo.setValue("Todos");
+            cbTipo.setOnAction(e -> handleBuscar());
         }
 
         if (cbFecha != null) {
             cbFecha.setValue("Todos");
+            cbFecha.setOnAction(e -> handleBuscar());
         }
 
         if (btnAnterior != null) {

@@ -29,6 +29,7 @@ import java.math.RoundingMode;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Collections;
 import java.util.List;
 
@@ -94,6 +95,15 @@ public class SaleController {
         configurarColumnaAcciones();
         cbRangoFecha.setItems(FXCollections.observableArrayList("Todas","Hoy", "Esta semana", "Este mes"));
         cbRangoFecha.getSelectionModel().selectFirst();
+
+        cargarVendedores();
+
+        cbRangoFecha.setOnAction(e -> { paginaActual = 0; obtenerVentas(); });
+        cbVendedor.setOnAction(e -> { paginaActual = 0; obtenerVentas(); });
+        if (txtBuscarVenta != null) {
+            txtBuscarVenta.setOnAction(e -> { paginaActual = 0; obtenerVentas(); });
+        }
+
         obtenerVentas();
         com.store.inventario.shared.utils.TableUtils.habilitarDobleClicParaCopiar(tblVentas);
     }
@@ -169,20 +179,58 @@ public class SaleController {
         }
     }
 
-    private void obtenerVentas(){
-        String search = (txtBuscarVenta != null) ? txtBuscarVenta.getText().trim() : "";
-        obtenerVentasConFiltro(search);
+    private void cargarVendedores() {
+        try {
+            List<String> vendedores = saleService.obtenerVendedoresFiltro();
+            cbVendedor.getItems().clear();
+            cbVendedor.getItems().add("Todos");
+            if (vendedores != null) {
+                cbVendedor.getItems().addAll(vendedores);
+            }
+            cbVendedor.getSelectionModel().selectFirst();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    private void obtenerVentasConFiltro(String search){
+    private String[] calcularRangoFechas() {
+        if (cbRangoFecha == null || cbRangoFecha.getValue() == null) return new String[]{null, null};
+        String opcion = cbRangoFecha.getValue();
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime start = null;
+        LocalDateTime end = null;
+
+        switch (opcion) {
+            case "Hoy":
+                start = now.with(LocalTime.MIN);
+                end = now.with(LocalTime.MAX);
+                break;
+            case "Esta semana":
+                start = now.with(DayOfWeek.MONDAY).with(LocalTime.MIN);
+                end = now.with(LocalTime.MAX);
+                break;
+            case "Este mes":
+                start = now.with(java.time.temporal.TemporalAdjusters.firstDayOfMonth()).with(LocalTime.MIN);
+                end = now.with(LocalTime.MAX);
+                break;
+            default:
+                return new String[]{null, null};
+        }
+        java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+        return new String[]{start.format(formatter), end.format(formatter)};
+    }
+
+    private void obtenerVentas() {
         try {
-            PageResponse<Sale> response = saleService.obtenerVenta(search, paginaActual, tamanoPagina);
+            String search = (txtBuscarVenta != null) ? txtBuscarVenta.getText().trim() : "";
+            String user = (cbVendedor != null) ? cbVendedor.getValue() : "Todos";
+            String[] fechas = calcularRangoFechas();
+            String startDate = fechas[0];
+            String endDate = fechas[1];
+
+            PageResponse<Sale> response = saleService.obtenerVenta(search, user, startDate, endDate, paginaActual, tamanoPagina);
             List<Sale> sales = (response != null && response.getContent() != null) ? response.getContent() : Collections.emptyList();
-            ventasOriginales = sales;
-            ventasFiltradas = sales;
-            cargarVendedores();
             tblVentas.setItems(FXCollections.observableArrayList(sales));
-            aplicarFiltrosLocales();
             cargarMetricas();
 
             totalPaginas = response != null ? response.getTotalPages() : 1;
@@ -197,7 +245,7 @@ public class SaleController {
                     lblResumenPaginacion.setText("No hay ventas para mostrar");
                 } else {
                     long desde = (long) pageNum * pageSize + 1;
-                    long hasta = Math.min(desde + pageSize - 1, total);
+                    long hasta = Math.min(desde + sales.size() - 1, total);
                     lblResumenPaginacion.setText("Mostrando " + desde + "-" + hasta + " de " + total + " ventas (Página " + (pageNum + 1) + " de " + totalPaginas + ")");
                 }
             }
@@ -208,18 +256,7 @@ public class SaleController {
             alert.setHeaderText("No se pudieron obtener las ventas");
             alert.setContentText("Ocurrió un error al cargar el listado de ventas desde el servidor.");
             com.store.inventario.shared.utils.WindowUtils.applyIcon(alert);
-            alert.showAndWait();
         }
-    }
-
-    @FXML
-    private void ejecutarBusqueda() {
-        obtenerVentas();
-    }
-
-    @FXML
-    private void filtrarVentas() {
-        aplicarFiltrosLocales();
     }
 
     private void cargarMetricas() {
@@ -241,61 +278,18 @@ public class SaleController {
         }
     }
 
-    private void aplicarFiltrosLocales() {
-        String vendedor = cbVendedor.getValue();
-        String rangoFecha = cbRangoFecha.getValue();
-        LocalDate hoy = LocalDate.now();
-        List<Sale> resultado = ventasOriginales.stream().filter(v -> {
-            if(vendedor == null || vendedor.equals("Todos")) return true;
-            return v.getUser() != null && vendedor.equals(v.getUser().getUsername());
-        }).filter(v -> {
-            if(rangoFecha == null || rangoFecha.equals("Todas")) return true;
-            if(v.getSaleDate() == null) return false;
-            try {
-                String dateStr = v.getSaleDate();
-                LocalDate fechaVenta;
-                if (dateStr.contains("T")) {
-                    fechaVenta = LocalDateTime.parse(dateStr).toLocalDate();
-                } else {
-                    fechaVenta = LocalDate.parse(dateStr);
-                }
-                switch (rangoFecha) {
-                    case "Hoy": return fechaVenta.equals(hoy);
-                    case "Esta semana": return !fechaVenta.isBefore(hoy.with(DayOfWeek.MONDAY));
-                    case "Este mes": return fechaVenta.getMonth() == hoy.getMonth() && fechaVenta.getYear() == hoy.getYear();
-                    default: return true;
-                }
-            } catch (Exception e) {
-                return false;
-            }
-        }).toList();
-
-        ventasFiltradas = resultado;
-        tblVentas.setItems(FXCollections.observableArrayList(resultado));
-    }
-
-    private void cargarVendedores() {
-        String vendSelected = cbVendedor.getValue();
-        cbVendedor.getItems().clear();
-        cbVendedor.getItems().add("Todos");
-        ventasOriginales.stream()
-                .filter(v -> v.getUser() != null && v.getUser().getUsername() != null)
-                .map(v -> v.getUser().getUsername())
-                .distinct().sorted()
-                .forEach(cbVendedor.getItems()::add);
-        
-        if (vendSelected != null && cbVendedor.getItems().contains(vendSelected)) {
-            cbVendedor.setValue(vendSelected);
-        } else {
-            cbVendedor.getSelectionModel().selectFirst();
-        }
+    @FXML
+    private void ejecutarBusqueda() {
+        paginaActual = 0;
+        obtenerVentas();
     }
 
     @FXML
     private void limpiarFiltros() {
-        txtBuscarVenta.clear();
-        cbVendedor.getSelectionModel().select("Todos");
-        cbRangoFecha.getSelectionModel().select("Todas");
+        if (txtBuscarVenta != null) txtBuscarVenta.clear();
+        if (cbVendedor != null) cbVendedor.getSelectionModel().select("Todos");
+        if (cbRangoFecha != null) cbRangoFecha.getSelectionModel().select("Todas");
+        paginaActual = 0;
         obtenerVentas();
     }
 

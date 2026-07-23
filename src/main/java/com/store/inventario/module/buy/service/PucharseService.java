@@ -28,21 +28,39 @@ public class PucharseService {
     }
 
     public PageResponse<Purchase> obtenerCompra() {
-        return obtenerCompra("", 0, 20);
+        return obtenerCompra("", null, null, null, null, 0, 20);
     }
 
     public PageResponse<Purchase> obtenerCompra(String search) {
-        return obtenerCompra(search, 0, 20);
+        return obtenerCompra(search, null, null, null, null, 0, 20);
     }
 
     public PageResponse<Purchase> obtenerCompra(String search, int page, int size) {
+        return obtenerCompra(search, null, null, null, null, page, size);
+    }
+
+    public PageResponse<Purchase> obtenerCompra(String search, String supplier, String user, String startDate, String endDate, int page, int size) {
         try {
-            String urlString = URL + "?page=" + page + "&size=" + size;
+            StringBuilder urlBuilder = new StringBuilder(URL);
+            urlBuilder.append("?page=").append(page).append("&size=").append(size);
             if (search != null && !search.trim().isEmpty()) {
-                urlString += "&search=" + java.net.URLEncoder.encode(search.trim(), java.nio.charset.StandardCharsets.UTF_8);
+                urlBuilder.append("&search=").append(java.net.URLEncoder.encode(search.trim(), java.nio.charset.StandardCharsets.UTF_8));
             }
+            if (supplier != null && !supplier.trim().isEmpty() && !"Todos".equalsIgnoreCase(supplier.trim())) {
+                urlBuilder.append("&supplier=").append(java.net.URLEncoder.encode(supplier.trim(), java.nio.charset.StandardCharsets.UTF_8));
+            }
+            if (user != null && !user.trim().isEmpty() && !"Todos".equalsIgnoreCase(user.trim())) {
+                urlBuilder.append("&user=").append(java.net.URLEncoder.encode(user.trim(), java.nio.charset.StandardCharsets.UTF_8));
+            }
+            if (startDate != null && !startDate.trim().isEmpty()) {
+                urlBuilder.append("&startDate=").append(java.net.URLEncoder.encode(startDate.trim(), java.nio.charset.StandardCharsets.UTF_8));
+            }
+            if (endDate != null && !endDate.trim().isEmpty()) {
+                urlBuilder.append("&endDate=").append(java.net.URLEncoder.encode(endDate.trim(), java.nio.charset.StandardCharsets.UTF_8));
+            }
+
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(urlString))
+                    .uri(URI.create(urlBuilder.toString()))
                     .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
                     .GET()
                     .build();
@@ -56,6 +74,42 @@ public class PucharseService {
 
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    public java.util.List<String> obtenerProveedoresFiltro() {
+        try {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(URL + "/filter-suppliers"))
+                    .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
+                    .GET()
+                    .build();
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() >= 400) {
+                return java.util.Collections.emptyList();
+            }
+            Type type = new TypeToken<java.util.List<String>>() {}.getType();
+            return gson.fromJson(response.body(), type);
+        } catch (Exception e) {
+            return java.util.Collections.emptyList();
+        }
+    }
+
+    public java.util.List<String> obtenerUsuariosFiltro() {
+        try {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(URL + "/filter-users"))
+                    .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
+                    .GET()
+                    .build();
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() >= 400) {
+                return java.util.Collections.emptyList();
+            }
+            Type type = new TypeToken<java.util.List<String>>() {}.getType();
+            return gson.fromJson(response.body(), type);
+        } catch (Exception e) {
+            return java.util.Collections.emptyList();
         }
     }
 

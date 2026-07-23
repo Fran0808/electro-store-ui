@@ -29,21 +29,36 @@ public class SaleService {
     }
 
     public PageResponse<Sale> obtenerVenta() {
-        return obtenerVenta("", 0, 20);
+        return obtenerVenta("", null, null, null, 0, 20);
     }
 
     public PageResponse<Sale> obtenerVenta(String search) {
-        return obtenerVenta(search, 0, 20);
+        return obtenerVenta(search, null, null, null, 0, 20);
     }
 
     public PageResponse<Sale> obtenerVenta(String search, int page, int size) {
+        return obtenerVenta(search, null, null, null, page, size);
+    }
+
+    public PageResponse<Sale> obtenerVenta(String search, String user, String startDate, String endDate, int page, int size) {
         try {
-            String urlString = URL + "?page=" + page + "&size=" + size;
+            StringBuilder urlBuilder = new StringBuilder(URL);
+            urlBuilder.append("?page=").append(page).append("&size=").append(size);
             if (search != null && !search.trim().isEmpty()) {
-                urlString += "&search=" + java.net.URLEncoder.encode(search.trim(), StandardCharsets.UTF_8);
+                urlBuilder.append("&search=").append(java.net.URLEncoder.encode(search.trim(), StandardCharsets.UTF_8));
             }
+            if (user != null && !user.trim().isEmpty() && !"Todos".equalsIgnoreCase(user.trim())) {
+                urlBuilder.append("&user=").append(java.net.URLEncoder.encode(user.trim(), StandardCharsets.UTF_8));
+            }
+            if (startDate != null && !startDate.trim().isEmpty()) {
+                urlBuilder.append("&startDate=").append(java.net.URLEncoder.encode(startDate.trim(), StandardCharsets.UTF_8));
+            }
+            if (endDate != null && !endDate.trim().isEmpty()) {
+                urlBuilder.append("&endDate=").append(java.net.URLEncoder.encode(endDate.trim(), StandardCharsets.UTF_8));
+            }
+
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(urlString))
+                    .uri(URI.create(urlBuilder.toString()))
                     .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
                     .GET().build();
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -54,6 +69,24 @@ public class SaleService {
             return gson.fromJson(response.body(), type);
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    public java.util.List<String> obtenerVendedoresFiltro() {
+        try {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(URL + "/sellers"))
+                    .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
+                    .GET()
+                    .build();
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() >= 400) {
+                return java.util.Collections.emptyList();
+            }
+            Type type = new TypeToken<java.util.List<String>>() {}.getType();
+            return gson.fromJson(response.body(), type);
+        } catch (Exception e) {
+            return java.util.Collections.emptyList();
         }
     }
 

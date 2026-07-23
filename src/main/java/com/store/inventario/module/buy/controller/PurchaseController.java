@@ -96,6 +96,15 @@ public class PurchaseController {
         cbFecha.setItems(FXCollections.observableArrayList("Todas", "Hoy", "Esta semana", "Este mes"));
         cbFecha.getSelectionModel().selectFirst();
 
+        cargarOpcionesFiltro();
+
+        cbFecha.setOnAction(e -> { paginaActual = 0; obtenerCompras(); });
+        cbProveedor.setOnAction(e -> { paginaActual = 0; obtenerCompras(); });
+        cbUsuario.setOnAction(e -> { paginaActual = 0; obtenerCompras(); });
+        if (txtBuscarCompra != null) {
+            txtBuscarCompra.setOnAction(e -> { paginaActual = 0; obtenerCompras(); });
+        }
+
         obtenerCompras();
         com.store.inventario.shared.utils.TableUtils.habilitarDobleClicParaCopiar(tblCompras);
     }
@@ -176,23 +185,71 @@ public class PurchaseController {
         }
     }
 
-    private void obtenerCompras() {
-        String search = (txtBuscarCompra != null) ? txtBuscarCompra.getText().trim() : "";
-        obtenerComprasConFiltro(search);
+    private void cargarOpcionesFiltro() {
+        try {
+            List<String> proveedores = pucharseService.obtenerProveedoresFiltro();
+            cbProveedor.getItems().clear();
+            cbProveedor.getItems().add("Todos");
+            if (proveedores != null) {
+                cbProveedor.getItems().addAll(proveedores);
+            }
+            cbProveedor.getSelectionModel().selectFirst();
+
+            List<String> usuarios = pucharseService.obtenerUsuariosFiltro();
+            cbUsuario.getItems().clear();
+            cbUsuario.getItems().add("Todos");
+            if (usuarios != null) {
+                cbUsuario.getItems().addAll(usuarios);
+            }
+            cbUsuario.getSelectionModel().selectFirst();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    private void obtenerComprasConFiltro(String search) {
+    private String[] calcularRangoFechas() {
+        if (cbFecha == null || cbFecha.getValue() == null) return new String[]{null, null};
+        String opcion = cbFecha.getValue();
+        java.time.LocalDateTime now = java.time.LocalDateTime.now();
+        java.time.LocalDateTime start = null;
+        java.time.LocalDateTime end = null;
+
+        switch (opcion) {
+            case "Hoy":
+                start = now.with(java.time.LocalTime.MIN);
+                end = now.with(java.time.LocalTime.MAX);
+                break;
+            case "Esta semana":
+                start = now.with(java.time.DayOfWeek.MONDAY).with(java.time.LocalTime.MIN);
+                end = now.with(java.time.LocalTime.MAX);
+                break;
+            case "Este mes":
+                start = now.with(java.time.temporal.TemporalAdjusters.firstDayOfMonth()).with(java.time.LocalTime.MIN);
+                end = now.with(java.time.LocalTime.MAX);
+                break;
+            default:
+                return new String[]{null, null};
+        }
+        java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+        return new String[]{start.format(formatter), end.format(formatter)};
+    }
+
+    private void obtenerCompras() {
         try {
-            PageResponse<Purchase> response = pucharseService.obtenerCompra(search, paginaActual, tamanoPagina);
+            String search = (txtBuscarCompra != null) ? txtBuscarCompra.getText().trim() : "";
+            String supplier = (cbProveedor != null) ? cbProveedor.getValue() : "Todos";
+            String user = (cbUsuario != null) ? cbUsuario.getValue() : "Todos";
+
+            String[] fechas = calcularRangoFechas();
+            String startDate = fechas[0];
+            String endDate = fechas[1];
+
+            PageResponse<Purchase> response = pucharseService.obtenerCompra(search, supplier, user, startDate, endDate, paginaActual, tamanoPagina);
             List<Purchase> purchases = (response != null && response.getContent() != null)
                     ? response.getContent() 
                     : Collections.emptyList();
-            
-            comprasOriginales = purchases;
-            cargarProveedoresYUsuarios();
-            
+
             tblCompras.setItems(FXCollections.observableArrayList(purchases));
-            aplicarFiltrosLocales();
             cargarMetricas();
 
             totalPaginas = response != null ? response.getTotalPages() : 1;
@@ -208,7 +265,7 @@ public class PurchaseController {
                     lblResumenPaginacion.setText("No hay compras para mostrar");
                 } else {
                     long desde = (long) pageNum * pageSize + 1;
-                    long hasta = Math.min(desde + pageSize - 1, total);
+                    long hasta = Math.min(desde + purchases.size() - 1, total);
                     lblResumenPaginacion.setText("Mostrando " + desde + "-" + hasta + " de " + total + " compras (Página " + (pageNum + 1) + " de " + totalPaginas + ")");
                 }
             }
@@ -224,87 +281,13 @@ public class PurchaseController {
         }
     }
 
-    private void cargarProveedoresYUsuarios() {
-        String provSelected = cbProveedor.getValue();
-        String userSelected = cbUsuario.getValue();
-
-        cbProveedor.getItems().clear();
-        cbProveedor.getItems().add("Todos");
-        comprasOriginales.stream()
-                .filter(c -> c.getSupplier() != null && c.getSupplier().getTradeName() != null)
-                .map(c -> c.getSupplier().getTradeName())
-                .distinct().sorted()
-                .forEach(cbProveedor.getItems()::add);
-        
-        if (provSelected != null && cbProveedor.getItems().contains(provSelected)) {
-            cbProveedor.setValue(provSelected);
-        } else {
-            cbProveedor.getSelectionModel().selectFirst();
-        }
-
-        cbUsuario.getItems().clear();
-        cbUsuario.getItems().add("Todos");
-        comprasOriginales.stream()
-                .filter(c -> c.getUser() != null && c.getUser().getUsername() != null)
-                .map(c -> c.getUser().getUsername())
-                .distinct().sorted()
-                .forEach(cbUsuario.getItems()::add);
-
-        if (userSelected != null && cbUsuario.getItems().contains(userSelected)) {
-            cbUsuario.setValue(userSelected);
-        } else {
-            cbUsuario.getSelectionModel().selectFirst();
-        }
-    }
-
-    @FXML
-    private void filtrarCompras() {
-        aplicarFiltrosLocales();
-    }
-
-    private void aplicarFiltrosLocales() {
-        String proveedor = cbProveedor.getValue();
-        String usuario = cbUsuario.getValue();
-        String rangoFecha = cbFecha.getValue();
-        java.time.LocalDate hoy = java.time.LocalDate.now();
-
-        List<Purchase> resultado = comprasOriginales.stream().filter(c -> {
-            if (proveedor == null || proveedor.equals("Todos")) return true;
-            return c.getSupplier() != null && proveedor.equals(c.getSupplier().getTradeName());
-        }).filter(c -> {
-            if (usuario == null || usuario.equals("Todos")) return true;
-            return c.getUser() != null && usuario.equals(c.getUser().getUsername());
-        }).filter(c -> {
-            if (rangoFecha == null || rangoFecha.equals("Todas")) return true;
-            if (c.getPurchaseDate() == null) return false;
-            try {
-                String dateStr = c.getPurchaseDate();
-                java.time.LocalDate fechaCompra;
-                if (dateStr.contains("T")) {
-                    fechaCompra = java.time.LocalDateTime.parse(dateStr).toLocalDate();
-                } else {
-                    fechaCompra = java.time.LocalDate.parse(dateStr);
-                }
-                switch (rangoFecha) {
-                    case "Hoy": return fechaCompra.equals(hoy);
-                    case "Esta semana": return !fechaCompra.isBefore(hoy.with(java.time.DayOfWeek.MONDAY));
-                    case "Este mes": return fechaCompra.getMonth() == hoy.getMonth() && fechaCompra.getYear() == hoy.getYear();
-                    default: return true;
-                }
-            } catch (Exception e) {
-                return false;
-            }
-        }).toList();
-
-        tblCompras.setItems(FXCollections.observableArrayList(resultado));
-    }
-
     @FXML
     private void limpiarFiltros() {
-        txtBuscarCompra.clear();
-        cbProveedor.getSelectionModel().select("Todos");
-        cbUsuario.getSelectionModel().select("Todos");
-        cbFecha.getSelectionModel().select("Todas");
+        if (txtBuscarCompra != null) txtBuscarCompra.clear();
+        if (cbProveedor != null) cbProveedor.getSelectionModel().select("Todos");
+        if (cbUsuario != null) cbUsuario.getSelectionModel().select("Todos");
+        if (cbFecha != null) cbFecha.getSelectionModel().select("Todas");
+        paginaActual = 0;
         obtenerCompras();
     }
 
